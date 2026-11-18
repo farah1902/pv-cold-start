@@ -178,6 +178,32 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
 - **Change:** w0 = s1²/σp² (guide §3.6) is reported as "the nameplate prior is worth about w0 days of the inverter's
   own data", with its spread across events.
 
+### D23 — Deep-learning rows: four modern baselines replace the TCN [models, Phase 0] [guide deviation]
+- **Request or reason:** the agent proposed Chronos-2 and TimeXer on 18 Nov 2026. The author: "I agree for
+  Chronos-2, TimesFM, TabPFN-TS, also for TimeXer".
+- **Change:** the TCN ablation A6 (guide §5.4) is dropped. Baselines:
+  - zero-shot foundation models with known future covariates: Chronos-2, TimesFM 2.5 and TabPFN-TS;
+  - trained exogenous transformer: TimeXer, given the sun geometry through its future-exogenous variant (its
+    Appendix H.1) and trained with the 9-quantile pinball loss.
+
+  All get the same information set as the main model. Packages, licences and local inference (no data sent to a
+  cloud API) are checked at NB0. If one model is too slow at full scale, a fixed subsample of issue times is chosen
+  on the validation units before scoring.
+- **Evidence:** F19, F20.
+
+### D24 — The author's own named transformer is built as a novel index forecaster [models, Phase 0] [guide deviation]
+- **Request or reason:** the author, 18 Nov 2026: build "another advanced transformer-based time series forecaster,
+  more optimized than TimeXer, with our proposed name as a novel approach … I need novelty".
+- **Change:** a new transformer for the campus index. This overrides guide §1 ("no new deep architecture") and the
+  §6 writing rule against "a novel architecture". The design, name and selection rule were proposed on 18 Nov 2026
+  and **await the author's approval**:
+  - **Design:** censoring-aware donor tokens, coordinate-free donor-set attention, a solar-time daylight encoder,
+    horizon queries built from the known future sun geometry, and a monotone 9-quantile head.
+  - **Name:** KappaFormer, HelioSet or SkyFleet.
+  - **Selection rule:** built and tuned on the validation units only. It becomes the main index forecaster only if it
+    beats LightGBM there at 1 h, before the protocol freeze (D21).
+- **Evidence:** F20 (closest work and the gap).
+
 ### D16 — pvlib 0.16.1 and ruptures 1.1.10 are installed locally and pinned [environment, Phase 0]
 - **Request or reason:** both are in the guide's software list (§5.6) and were missing locally on 18 Nov 2026.
 - **Change:** `pip install pvlib==0.16.1 ruptures==1.1.10`. A dry run first showed that nothing else would be

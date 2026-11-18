@@ -52,3 +52,12 @@ One entry per work session: what was asked, what was done, the key numbers, what
     competitor (F19).
   - Manifest regenerated (169 files).
 - **Open:** the author's choice of models for the deep-learning rows; then NB0/NB1.
+
+## 2026-11-18 (night) — Baselines fixed; the author's own transformer
+
+- **Asked:** the author accepted Chronos-2, TimesFM, TabPFN-TS and TimeXer and asked for a new named transformer of
+  their own, more optimized than TimeXer.
+- **Done:** recorded D23 (baselines, TCN dropped) and D24 (own model, pending design approval). Checked prior art and
+  names (F20): Simeunović et al. (TSTE), SolarCrossFormer (TSTE 2025), Solar-VLM (2026); no clash for the name
+  candidates. Proposed a design to the author.
+- **Open:** the author's approval of the name, the design and the selection rule; NB0/NB1.

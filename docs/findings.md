@@ -136,6 +136,23 @@ repository). Paths are relative to `data/raw/hkust/Dataset/Time series dataset/`
   to 6 h instead of daily; no weather input at all, where theirs needs irradiance with perfect foresight; causal
   information set; real start dates.
 
+### F20 — Closest neural work on PV and irradiance networks, and the gap a fleet-set transformer can fill — *strong* (arXiv abstract pages read on 18 Nov 2026; full texts before citing)
+- **Evidence:**
+  - Simeunović et al., IEEE TSTE (doi:10.1109/TSTE.2021.3125200; arXiv 2107.13875): graph-convolutional LSTM and
+    transformer over 304 real Swiss PV systems, production data only, deterministic. They beat multi-site methods at
+    6 h and NWP-based single-site methods up to 4 h.
+  - Schubnel et al., SolarCrossFormer, IEEE TSTE 2025 (doi:10.1109/TSTE.2025.3624044; arXiv 2509.15827): forecasts
+    **irradiance**, not PV power, from satellite images and ground meteorological stations, with graph neural
+    networks. Probabilistic, 15 min up to 24 h; forecasts sites without data from their coordinates.
+  - Fan et al., Solar-VLM (arXiv 2604.04145, 2026): time series, satellite images and text, with a graph over 8
+    stations.
+  - TimeXer (arXiv 2402.19072): exogenous inputs over the look-back only in its core setup, L2 loss.
+  - Name checks of 18 Nov: no model named KappaFormer, HelioSet, SkyFleet or FleetFormer was found (not exhaustive;
+    re-check before submission).
+- **Reading:** no work found forecasts **PV power** for a unit with no history **and** no coordinates, satellite or
+  weather input. None treats inverter clipping as censoring, or composes an index forecast with a nameplate gain
+  prior. That is the room for the author's model (D24).
+
 ### F16 — Not every site file starts on the 1st of a month — *solid* (4 checked); *provisional* (full count)
 - **Evidence:** among the 18 site files of the first event list, Indoor Sports Centre (2021-12-02), Zone J2
   (2021-11-13), Zone D (2022-01-20) and UG Hall9 (2023-02-11) start mid-month. The audit counts 5 of the 15-min and
