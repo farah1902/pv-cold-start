@@ -1,0 +1,28 @@
+# Data dictionary
+
+Inputs as found on 18 Nov 2026 (checksums in `data/MANIFEST_sha256.csv`), then every output file and column as it is
+created. HKUST paths are relative to `data/raw/hkust/Dataset/`.
+
+## Inputs — HKUST (Dryad)
+
+| File group | Count | Step | Columns | Notes |
+| --- | --- | --- | --- | --- |
+| `Time series dataset/PV generation dataset/PV stations with panel level optimizer/Inverter level dataset/*_Inverter*.csv` | 44 | 5 min | `Time`, `dcVoltage(V)`, `totalActivePower(W)`, then for L1, L2 and L3: `acCurrent(A)`, `acFrequency(Hz)`, `acVoltage(V)`, `activePower(W)`, `reactivePower(W)` | 06:00–17:55 only (F01); two timestamp formats (F02); NA for missing |
+| `…/PV stations with panel level optimizer/Site level dataset/*.csv` | 37 | 15 min | `Time`, `generation(kWh)`, `power(W)` | 00:00–23:45; usually from the 1st of a month (F16) |
+| `…/PV stations without panel level optimizer/Site level dataset/*.csv` | 23 | 1 h | `Time`, `generation(kWh)`, `power(W)` | hourly track; includes the thin-film roofs |
+| `Time series dataset/Meteorological dataset/Irradiance/Irradiance_{2021,2022,2023}.csv` | 3 | 1 min | `Time`, `Irradiance (W/m2)` | LI-COR LI-200R (F09); 525,598 / 522,524 / 519,670 rows |
+| `…/Temperature/`, `…/Relative Humidity/`, `…/Sea Level Pressure/`, `…/Visibility/`, `…/Wind/` | 3 each | 1 min | `Temp (Degree Celsius)`; `RH (%)`; `SLP (hPa)`; `Vis (km)`; `Wind Speed (m/s)`, `Wind Direction (degree)` | timestamps `2022/1/1 0:00` |
+| `…/Rainfall/Rainfall_2021.xlsx`, `Rainfall_{2022,2023}.csv` | 3 | 1 min | `Time`, `Rainfall(mm)` | 2021 is an Excel file |
+| `Metadata/PV generation system metadata.ttl` | 1 | static | Brick: `PV_Generation_System` (coordinates, location, altitude, connectionDate, contractor, ratedPowerOutput kW, azimuth, tiltAngle) → `Inverter` (brand, module = model name, number) → `PV_Panel` (brand, module model, number, degradation, rated power W, efficiency, type) | 2,421 lines; azimuth counterclockwise from north (F15); coarse coordinates (F10) |
+
+## Inputs — other
+
+| File | Content | Notes |
+| --- | --- | --- |
+| `data/raw/safi/*.xlsx` | Safi rooftop: electrical, module temperature and weather files for a-Si, m-Si and p-Si | Not yet opened; audited at NB8a. `Preprocessed Data.xlsx` is never used |
+| `data/external/cams/mcclear/HKUSTcsv.csv`, `safi-2016-2018csv.csv` | Semicolon-separated; `Observation period` (ISO 8601 interval, UT), TOA, clear-sky GHI, BHI, DHI, BNI | Wh/m² per 1-min step: × 60 gives the mean W/m² (F08) |
+| `data/external/open-meteo/open-meteo-32.23N7.95W467m.csv` | Benguerir (32.232 N, 7.954 W, 467 m), hourly `temperature_2m (°C)`, `wind_speed_10m (km/h)`, `precipitation (mm)`, GMT, 2016-06-01 to 2018-12-31 | Follow-up paper (D07) |
+| `data/external/pv_density/digitization/` | Digitised density grid: `pv_density_visual_grid.{csv,geojson,shp}`, georeferenced rasters, `metadata.json`, `README.md` | Visual reconstruction from the ISPRS paper's figure |
+
+## Outputs
+_None yet._

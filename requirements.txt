@@ -1,0 +1,16 @@
+# Pinned where results depend on it. Every run writes the versions it actually used to its summary.json.
+numpy>=1.26          # arrays
+pandas>=2.2          # time series, resampling, parquet I/O
+pyarrow>=15          # parquet engine for the saved panels
+scipy>=1.12          # Wilcoxon signed-rank, optimisation (censored Huber, gains)
+scikit-learn>=1.5    # k-nearest-neighbour analog baseline (A5), utilities
+statsmodels>=0.14    # Newey-West variance for Diebold-Mariano tests
+lightgbm==4.6.0      # quantile LightGBM bank; 4.7.0 crashed on the author's Windows machine (grid project)
+pvlib==0.16.1        # NREL SPA solar position, Ineichen-Perez clear sky, Perez transposition (results depend on it)
+ruptures==1.1.10     # PELT change point that fixes the sensor-drift boundary
+matplotlib>=3.8      # figures (pdf.fonttype 42)
+openpyxl>=3.1        # Safi xlsx files and the 2021 rainfall xlsx
+PyYAML>=6.0          # frozen configuration file
+nbformat>=5.10       # notebook generators
+nbconvert>=7.16      # executing generated notebooks
+# torch>=2.2         # TCN ablation only (NB5b, Colab GPU); installed separately there

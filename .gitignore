@@ -1,0 +1,29 @@
+# Data are never committed (about 1.7 GB). data/MANIFEST_sha256.csv records every file instead (D15).
+data/raw/
+data/external/
+*.zip
+
+# Python and notebooks
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
+venv/
+
+# Scratch and local archives
+*.tmp
+_local_archive/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# LaTeX build files (paper/ is created at the writing phase)
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz
+*.toc

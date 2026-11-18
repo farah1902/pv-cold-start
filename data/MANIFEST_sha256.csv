@@ -1,0 +1,166 @@
+path,bytes,sha256
+external/cams/mcclear/HKUSTcsv.csv,126018424,3338245c10db7491d5b797a8464664a345eb362a149fc12d34d56e471387d2bd
+external/cams/mcclear/safi-2016-2018csv.csv,94681750,8b50b2308dadcb0b55ab5dbb45d454131288f5136fd3357bdb986c5601d43cbf
+external/open-meteo/open-meteo-32.23N7.95W467m.csv,712993,c1a971b317e0107050a85bb477dab7be3a9f032cde2e910a8459cfe440598cd8
+external/pv_density/digitization/figure12_source_image.jpg,270634,f51db81c78aba9fc9a2a41526853a4aa47a163f88e489795178ec070519d2e64
+external/pv_density/digitization/metadata.json,578,2ec56768b082a61a8735d9b09eb3ced0798e2a2df67096b3d5e6b8a75fe3ba45
+external/pv_density/digitization/pv_density_map_georeferenced.pgw,89,4ed40a0e6822e2bd43b8bc5b2ab85b4ecf30f067a8a1cfc642a98d5e2bdcc2a1
+external/pv_density/digitization/pv_density_map_georeferenced.png,887185,3636edbc089b1364bca0d930cd0e66ca899894a2f140c670cc24cb6dab425455
+external/pv_density/digitization/pv_density_map_georeferenced.prj,133,607e2d64273431c8accf6e815c12d1f3c62eca6f677dbf9bc37548a04caecc67
+external/pv_density/digitization/pv_density_map_georeferenced.tfw,89,4ed40a0e6822e2bd43b8bc5b2ab85b4ecf30f067a8a1cfc642a98d5e2bdcc2a1
+external/pv_density/digitization/pv_density_map_georeferenced.tif,1539182,224ed387f0fc2febd0926ca891e3b404ece3e9e784044084bed2ed8cd904f326
+external/pv_density/digitization/pv_density_visual_0_40.prj,133,607e2d64273431c8accf6e815c12d1f3c62eca6f677dbf9bc37548a04caecc67
+external/pv_density/digitization/pv_density_visual_0_40.tfw,89,4ed40a0e6822e2bd43b8bc5b2ab85b4ecf30f067a8a1cfc642a98d5e2bdcc2a1
+external/pv_density/digitization/pv_density_visual_0_40.tif,1721006,f398fe9ae1af491c712bc8da92f478104fc8fef961ca7eb1d6094b78f1cd961c
+external/pv_density/digitization/pv_density_visual_grid.cpg,7,be84ffea9cfc49172ddf1c2102bd8d4148efa3b9ed3e3fd4a7cdb266349c2d7e
+external/pv_density/digitization/pv_density_visual_grid.csv,1082238,25f42c959c7343bb834de2b8100731c794d625ec6bc684654a012761a77bb034
+external/pv_density/digitization/pv_density_visual_grid.dbf,1007922,a2fd7147c06ec29d712704ba0c33be405ee072c676751b9c91fef154e7aa30bd
+external/pv_density/digitization/pv_density_visual_grid.geojson,4046294,e2b8dee48c1e3ee37881ff64ae8558607a3a9f0b4b6d59940917882946383758
+external/pv_density/digitization/pv_density_visual_grid.prj,133,607e2d64273431c8accf6e815c12d1f3c62eca6f677dbf9bc37548a04caecc67
+external/pv_density/digitization/pv_density_visual_grid.shp,553380,788a34737c3a76a518262fc4fae96403ff805a0d0a9c931faefedaa4a2f92407
+external/pv_density/digitization/pv_density_visual_grid.shx,158180,2fcb31627754b0fa5b2660f1f12c53f44ffec6c8a5fd99a51b161191fbca7a5f
+external/pv_density/digitization/pv_density_visual_preview.png,213537,e3bdf0e3469a726aa237a9d2b50ae125e77b87e20e8547db326e66ecebc25075
+external/pv_density/digitization/README.md,2354,f29c5aa06ef52fb93d6e825ded9bb27e59785d380a607b319505936c8022c806
+external/pv_density/isprs-archives-XLVIII-4-W17-2025-317-2026.pdf,6301115,7a9e5c9ee7ee0b1926db99864c14f796d6ce0c446f77b846987f6db0b1ec4c1e
+external/pv_density/pv_clusters_map.png,352025,4f28f87d8fd698f0930f137cd9eae03636ab73ae3f732caf342a9be8970cd023
+external/pv_density/work/density_mask_candidate.png,49646,fef6d664c73163ae53dc5754009748cfc73d92304a1263ce57a0fb75eabbf65f
+external/pv_density/work/page10_0.png,952333,4cc15efb93d7331ae36644b15d02cccbc70e1cf214015bfd9096c979b57b36b6
+external/pv_density/work/page10_1.png,2032975,8a7ff9137b2c95c8780ddaf5826d33e07d26d7198bd1a7541b280a563da704e3
+raw/archives/b2s4ycc2gz-1.zip,48077321,e2538768b7d108a23e0f5ca1e0238258fe774bc228a0cdbc1f7b9326fae8b684
+raw/archives/Dataset.zip,296120633,737e63d1f4d2753c1122fc902102dcfc8b6c22055ef037ce44f18fdecd988c31
+raw/hkust/Dataset/Metadata/PV generation system metadata.ttl,113078,dc09bd8701e04a656b50005995b005f855fa2bf9eeb27a9fb6e0c53dada7b04c
+raw/hkust/Dataset/Time series dataset/Meteorological dataset/Irradiance/Irradiance_2021.csv,12327601,deff6adc06523ca8a8b47357611d750846c6f7cf1fa0093f59367e59da855afc
+raw/hkust/Dataset/Time series dataset/Meteorological dataset/Irradiance/Irradiance_2022.csv,12259200,c572032b8a82177ce0a9dc8fe035e68b05e5f17d4addb3d2018043b9fa7ab97f
+raw/hkust/Dataset/Time series dataset/Meteorological dataset/Irradiance/Irradiance_2023.csv,11998258,c114d4d498a8caee868d9262210386f01d5eb65bee485dbb42aaf639326c5944
+raw/hkust/Dataset/Time series dataset/Meteorological dataset/Rainfall/Rainfall_2021.xlsx,8053835,3c3eb202e4be55c41eed747ab23d90848e4780c4abd7b3d355ffc9173da16475
+raw/hkust/Dataset/Time series dataset/Meteorological dataset/Rainfall/Rainfall_2022.csv,9711174,429b151a8d61e34196107276ec2504f52e07aba4829f0b4b8c76106a78106cca
+raw/hkust/Dataset/Time series dataset/Meteorological dataset/Rainfall/Rainfall_2023.csv,9654394,1165ef0662cc298450b8dceb70db689cbf27f4874575f375eaec7361d10fee36
+raw/hkust/Dataset/Time series dataset/Meteorological dataset/Relative Humidity/Relative Humidity_2021.csv,12314543,91eaa4d54aa3b5c19a8e9e05bca995a57d9d41dd93782486b817b16b4d41483c
+raw/hkust/Dataset/Time series dataset/Meteorological dataset/Relative Humidity/Relative Humidity_2022.csv,12238059,2e59adb4e955aac0d1e300491690cfdc5ad45232e95b3767134cdd9c4616cbb7
+raw/hkust/Dataset/Time series dataset/Meteorological dataset/Relative Humidity/Relative Humidity_2023.csv,12176392,ecd9d525b12185fbae72810a9bae4f5f2bf84d982dcaea6b597cbec0f2cd0d59
+raw/hkust/Dataset/Time series dataset/Meteorological dataset/Sea Level Pressure/Sea Level Pressure_2021.csv,14473567,b212568baffa774c1df0a48307053c2310045af44afcebde44d562f4bb83dc61
+raw/hkust/Dataset/Time series dataset/Meteorological dataset/Sea Level Pressure/Sea Level Pressure_2022.csv,14390062,08a174805615163741a4374d784ea0ea61af4c28beb9f34d8265fe41dc872ee7
+raw/hkust/Dataset/Time series dataset/Meteorological dataset/Sea Level Pressure/Sea Level Pressure_2023.csv,14310191,0f4f6f570315d9dfb199949f81d2e3b3ba883553233ce9a27b376325ba7664e7
+raw/hkust/Dataset/Time series dataset/Meteorological dataset/Temperature/Temperature_2021.csv,12310924,daf8008d9dba8995f870b089fb7571dcc5aad8d507a107370fe6a2b02c4c222d
+raw/hkust/Dataset/Time series dataset/Meteorological dataset/Temperature/Temperature_2022.csv,12240772,44be1bb79649053c8137a8fa3546225debc40e5a6f57db359f0854bf13cee82a
+raw/hkust/Dataset/Time series dataset/Meteorological dataset/Temperature/Temperature_2023.csv,12175298,1f12b5c04071b84d2db60060dbef99e853d785e6bef2ff959837c03cb9352b5d
+raw/hkust/Dataset/Time series dataset/Meteorological dataset/Visibility/Visibility_2021.csv,12304935,03f9ebc27453c18c069c456d066023a94123ad9f1586c5dc6dc429f0590a6d2d
+raw/hkust/Dataset/Time series dataset/Meteorological dataset/Visibility/Visibility_2022.csv,12250154,efcef57b022ab2a006cb9ab56fee83a9fa0fc4cd08908469e35d372b00cd4a7a
+raw/hkust/Dataset/Time series dataset/Meteorological dataset/Visibility/Visibility_2023.csv,12168368,ae15d1f3e1b0dcb1761f8ce2f1358c1fbd3fb4f2d56f319844b8e0bd3649aa22
+raw/hkust/Dataset/Time series dataset/Meteorological dataset/Wind/Wind_2021.csv,15989750,0abdbabd2a10211d2f1bea422a150441e4ccb9c4ca33ef85871a1dd7435588cd
+raw/hkust/Dataset/Time series dataset/Meteorological dataset/Wind/Wind_2022.csv,15886740,334e7a3875b6e211f71e3b8c8f2ff9291d4fc6210f8cf802b75a78cd09471a7a
+raw/hkust/Dataset/Time series dataset/Meteorological dataset/Wind/Wind_2023.csv,15843512,6058f67f7724b3d1ee76126772397ed7fffbe66e91c726b1e7a7c49d930abdfa
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Inverter level dataset/Indoor Sports Centre_Inverter.csv,16511749,feb99f3ea7e61df1604bd1bf100bb721251770fd6c9743a95a94ef7dcc02efff
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Inverter level dataset/Library_Inverter_1.csv,11850868,74047bbfb42195195a70991b615cbaa26cf1877b6e9e930492f6087fe2b27739
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Inverter level dataset/Library_Inverter_2.csv,11864595,9494d4302bb73431a0f1d3ec6ca3e539c208831a2fa97c0348c2192000ddc35a
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Inverter level dataset/Library_Inverter_3.csv,11774786,b6fe37c8b6f1d6c3cfe37d2dcf3c36a3dca7169c170727ff2f502ae202b8ee81
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Inverter level dataset/LSK North_Inverter.csv,20116803,8d1d23152f8643c42c1f65387528135c7c6503df65850f37e13757bbb75e6b3d
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Inverter level dataset/LSK South_Inverter.csv,19953848,28a996a5b4b2c5bbc0e9d19e947d1e8b52af5e754bb0336ebe26db25f94f934e
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Inverter level dataset/S H Ho Sports Hall_Inverter_1.csv,15912047,7f29e96ad2a682b5052c643f181954ba74c0b9d6e282851d800bb1af911f9418
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Inverter level dataset/S H Ho Sports Hall_Inverter_2.csv,17044684,30db2d5fb62db780c7e0eee40067ef693cfa5089ef9369159de1c2e3b678baaf
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Inverter level dataset/Shaw Auditorium_Inverter.csv,3783369,df8877cf7dde33bf2557c8825eb4e1e29590cd82200ceaad1f26bc2416ddcf34
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Inverter level dataset/SQ Apartment1-12_Inverter.csv,16057243,6325f698dd26725100dc080e1593bc297fa72195e75031d45d2b4d84b45e8e82
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Inverter level dataset/SQ Apartment13-24_Inverter.csv,18424701,9b772c654aa185b400509fad17d8319af0f50b6271fe999ae3c274f1c9fa9efb
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Inverter level dataset/SQ Apartment25-36_Inverter.csv,15915015,b2b00e929928b8e543473b65402590162d5353f221c01557fe4aef8f61ac64b3
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Inverter level dataset/SQ Apartment37-48_Inverter.csv,15714333,484be6545925184ec020120306a2077abf944f13de4edc96db59d11623828165
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Inverter level dataset/SQ Block P_Inverter.csv,4049403,c73f6338a2930432551c20b69a0d6090d29b6926905585133c612aefb003ddf4
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Inverter level dataset/SQ Block R_Inverter.csv,17795573,07afaf14852dcc847badaeab4d9f417b5632814d461b938c59eab05515a18dda
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Inverter level dataset/SQ Block S_Inverter.csv,17800061,ebd3cae07d0648b94fba4700f4b8cb1b510b1736482a2c80d096e7c9d60e41e0
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Inverter level dataset/SQ1_Inverter.csv,19764000,c1156373769bd51b8986d9f650508a9ad60ffa6d4b83c9e62fdf536bdd3889e1
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Inverter level dataset/SQ2_Inverter.csv,21013226,b64e5cf1f9bd2eb8b327c0b016bcc505cacd01364b6884b532a4bb515dca2897
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Inverter level dataset/SQ3_Inverter.csv,20900744,75a41a17de9720268196a4bad4e00751892ed926ffc48a69ebd4ac58c444896e
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Inverter level dataset/SQ4_Inverter.csv,21054383,792eb8566398032e353ada573183b5efd2c9397a12c92d30e712bfddb7c366ec
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Inverter level dataset/SQ567_Inverter.csv,16921487,69e608ade657628edaaa24193f748374069b23e7dc3233e0af9cfb94a678f228
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Inverter level dataset/UG Hall2 2F_Inverter.csv,18849225,3d8f8c262bd1741dea4a12f57edaa6f64e4a816fd891ef489ffaa723426696d5
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Inverter level dataset/UG Hall2 RF_Inverter.csv,15951899,839bdc77d41690d1fb10ec3a813d5cd5128c8128b89c2caa4bea2ba007a17f73
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Inverter level dataset/UG Hall3_Inverter.csv,16906775,8a781f50ec65aaaa4649596d30578685c5aa6256f90cf6248552712d620fc552
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Inverter level dataset/UG Hall4_Inverter.csv,16968813,9b2e708798ebcc344922a780e21bc7d1398c38cca3c64510bd7d06c527517eeb
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Inverter level dataset/UG Hall6_Inverter.csv,19738871,deac31ca31b65e72f4fa15766c7de18a848d1fa97764f2c4d829208e676a2fb1
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Inverter level dataset/UG Hall7_Inverter.csv,17035334,c3ece71cbf087cbe557123add835a84fe0fe5fe1ada4c857d237fafc71cc0046
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Inverter level dataset/UG Hall8_Inverter.csv,7731469,bf78a94c8e1e13844c11c4e73524045a9b9a272f9fc0120f563644805a1eeab6
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Inverter level dataset/UG Hall9_Inverter.csv,7083717,fc3e08ebcadc9f6fc6a18794b8890b608c348bdc75ef618e7438cdd5c5a0a5da
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Inverter level dataset/Wong Check She Research Centre_Inverter_1.csv,15967179,7fad480ea9a884f26ddb101e4e5ea9d13d5523597a015451b43b20481fb0c0a3
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Inverter level dataset/Wong Check She Research Centre_Inverter_2.csv,15950750,150b35e9079b8df12edf2c2cccbce8032b2f6f7180424d46753e5f24d741a865
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Inverter level dataset/Zone A1_Inverter.csv,20369979,4372255e78a1d5be93706ed0efcc06057a6f5f82e7cd6fd74dbec478e0322460
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Inverter level dataset/Zone A2_Inverter_1.csv,19113169,87df68419c9397f77a3b6019b511f0da7ddee2a4124740ed1ce908e5b0979475
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Inverter level dataset/Zone A2_Inverter_2.csv,4805378,1f4cdc06a7737de187285e27564537006742562063d53f7824ef9c142fcd6888
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Inverter level dataset/Zone A2_Inverter_3.csv,4821160,b1036e675aa807beb87816e00807df698228ccf59215f28942c6eef953fb6313
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Inverter level dataset/Zone A4_Inverter.csv,19162961,1f2e4af05c4f66c8bcd9d575a774cabcfec463fb1526802e815c4cac03f0ce31
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Inverter level dataset/Zone A5_Inverter.csv,16535867,88e80cfa074ecc536b204d7601b760152d4565bb924ff25787f445026a7b4530
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Inverter level dataset/Zone A6_Inverter.csv,16641229,0187b313b95dc28f0062f9a5b01d59a7e756f262ffb99f5e96a650f8df1c9489
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Inverter level dataset/Zone A7_Inverter.csv,16625716,01cbd0e8451fa096ae76f2bfe9f4f27c0c1769ef80daeaf348de888018c9bcba
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Inverter level dataset/Zone D_Inverter_1.csv,8706808,4850313a05f5a9855fcb9570325a86daafb57f207cec27fe8a54ef339660445c
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Inverter level dataset/Zone D_Inverter_2.csv,14768303,a0df61535538fb727ba99f27b93bc1ce73a14ce02d33dd148286823b6c4d732f
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Inverter level dataset/Zone J1_Inverter.csv,11726519,04f67436d98aeb5c86e2c5b3fc1d349970e02179946220cf0e5187c93fb6fb56
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Inverter level dataset/Zone J2_Inverter.csv,13165416,34a1cc30ef4ca2cdbf6364ee2945880ef54704fbbdef924ac40965fa238ce98e
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Inverter level dataset/Zone L2_Inverter.csv,10734352,e0f540118b3a3867a00dfc84e151d3882e0bb23cfaeed8023c10a4900a71c2db
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Site level dataset/Indoor Sports Centre.csv,2296952,604954f0eda1b7192ffebd6a8119097df62bc2519adb3755f7e2101ed46207b8
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Site level dataset/Library.csv,1817627,f2120474da86c562c33fabbe1c028cef81085eb4cf512123a3eacd1c3c330794
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Site level dataset/LSK North.csv,2973730,ca3d0403baff298f1d4ed29cfae09c6e49162420f633ae2f4b0ea524984206f8
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Site level dataset/LSK South.csv,2962697,badc8a6531ab17b6ad46f1cad04bae87bf0985058a2037db4d76d6b72e3a0b41
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Site level dataset/S H Ho Sports Hall.csv,2481547,98761c97d8082e4deae0b37e9d30f91367c7625f0a8402f31b3be9a4fe877a2c
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Site level dataset/Shaw Auditorium.csv,481540,7ec43ca022b1d7add568202c96da435c2ccf271eac8d521cb39daf4e85acc00e
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Site level dataset/SQ Apartment1-12.csv,2753072,d57b69c65e0125819cb6f41ab67a41075401f8eef98fce7e0900c3300b080678
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Site level dataset/SQ Apartment13-24.csv,2751824,494a754054fea333aa50876d767a983af6e45b5fdd951e26bcc0bdade234dca0
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Site level dataset/SQ Apartment25-36.csv,2751231,bd3b8d5d135df2abb13f9519a69034540c37a655ddb8248c4630b1285cae4786
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Site level dataset/SQ Apartment37-48.csv,2737607,708a178f159370ce76186173cf2cec65fa96e5a95b3fdc079d20812defa5e399
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Site level dataset/SQ Block P.csv,569313,d4a3d5a12c94eb038989aff824eea48dda8de968711dc4a4bc2560511a915d42
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Site level dataset/SQ Block R.csv,2505376,85de84026ab33640bef833a1f4dfd0a6cf6484d3f6cd7201e6a163a5cdffeafc
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Site level dataset/SQ Block S.csv,2499320,e3135c7d7384191bc99d0af08b58ab94cb07a34b7875071850bded7c63b85d2b
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Site level dataset/SQ1.csv,2953489,d17e0ccfedfd3f7a1917eea11a9b465204f488f31e49b55eacfa71bf383b8506
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Site level dataset/SQ2.csv,2987860,bffb41517f90b310044d43bb8f07505059efa9d08d000a1d5c7fc0b6f0baf875
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Site level dataset/SQ3.csv,2989954,53a680c0bf8d5534fd9b3a864c96c9d2fc6c42cd1cd5d63a2ffeb6a87a7a82a6
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Site level dataset/SQ4.csv,2992485,42cd84c3b310afd3ec5c1305a5790138bfed8c87eff4f0606cc7980440eb03b6
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Site level dataset/SQ567.csv,2872301,b041a6631c887cb2f19f93e3d7d2ccbf7abf13254cd982ab5b884a4b832ce992
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Site level dataset/UG Hall2 2F.csv,2828507,19ed8b15bc376ea399a7dd424ab37436fdaf5cc9af22e81335f4eca0e50d4a4a
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Site level dataset/UG Hall2 RF.csv,2823904,61e06bcb81c831363029b5206bf7a08b3ac47b6e5259d3ca72dca6647cb9bf3a
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Site level dataset/UG Hall3.csv,2856404,489e85646fff978968cba724cd16b5a471fb92d8243744a2c1e99d1465bfc5dc
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Site level dataset/UG Hall4.csv,2861450,e2e27a91e461568a45988ab08231531ef0f11cc3cd23f5d8603747d8f8ccdd17
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Site level dataset/UG Hall6.csv,2958009,11cdd60aed728e1f94181dcb3b68226754c27fec0f3bcfb539561da657d75e12
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Site level dataset/UG Hall7.csv,2947315,5b8934fbb662a3032dce6a4b8a84f2eb9da5c82b26466a7fe34b5bde7b71b3be
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Site level dataset/UG Hall8.csv,955895,6e2328e62e61766be7cf412d42201f5c5ee1331ae094718ed9d6a4f0f3cc0eb1
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Site level dataset/UG Hall9.csv,1017576,394faf3348434ba4f90a7cbf1f74798ecc734dc9cb18fa883d8b6cf8d42de327
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Site level dataset/Wong Check She Research Centre.csv,2399104,3c85964518214f3392f298218b9e14dce7439ec366f778a859f6e1da0c1dae1c
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Site level dataset/Zone A1.csv,2296191,cd01c456a7087de50c22022a483c97c9f2875dd9d75930c9e905302390c7cff1
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Site level dataset/Zone A2.csv,2874838,db9ccfd42ec548450b9b877cea71b394316030e54cce7326ae233580881a115d
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Site level dataset/Zone A4.csv,2870330,ea5d3e2d20ba69931cccdd4650cb281cc324418919e18508c5fc137ec3daa766
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Site level dataset/Zone A5.csv,2460793,43081eed3203581320718ca731f20bee7b5748a0cb013f5311787db3cec98947
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Site level dataset/Zone A6.csv,2484654,7b61471205f6233d670113abe6a9de7ca23d282681975a1f5577ff4f232a7552
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Site level dataset/Zone A7.csv,2469885,6eb773ee0304701cf8da6bf2bbb62598be592ec79b48de13f264997c3c5ae4a8
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Site level dataset/Zone D.csv,2233543,c5ac99941cfd796c79ba4f46ab4539f9ee9159f7e4315b8c2eaa72911e3c5c4c
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Site level dataset/Zone J1.csv,1632766,1abe8eb26c05bdf357f46f3eae27269a4a4b3ef56dc685cf8c1745fcc1e355bb
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Site level dataset/Zone J2.csv,2398155,697dea11f80d51b594222cee7d5a534524e66581e2195888429e6e2f43df5d3c
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations with panel level optimizer/Site level dataset/Zone L2.csv,1428303,78b0a8c236e7bc2440647f3a7c40dfb581c96ab156e05d31d22aee351084c37c
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations without panel level optimizer/Site level dataset/CYT (Station 1).csv,727695,8b38628af72877592c9240a71855ecebed1aa66b70448c1086461a413d756520
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations without panel level optimizer/Site level dataset/CYT (Station 2).csv,723017,101d664fbc4e2d25f8c69397c19dfdf07f614f99d74c9689e1f5a0f53bfc6eac
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations without panel level optimizer/Site level dataset/SQ Apartment37-48 Flexible PV.csv,646721,3d720ce6316f167685ac692807af3d82297890889d7360ecf058f0c2fce2f6c9
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations without panel level optimizer/Site level dataset/SQ Block Q (Phrase 2).csv,279777,1fec9404adc4184bb86921e6a52430d31dabc32b20b8a975a5351b02feb29fe0
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations without panel level optimizer/Site level dataset/SQ Block Q.csv,284872,7e5636eba4a4ab370d8c0e616ef0cff84bb80be4f8c893c792f26e59cd8dfa35
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations without panel level optimizer/Site level dataset/SQ10.csv,693304,0b54acfdc2eb0e6acbd382eee0ca7995955c91350efbe5f28806d4f5fd69f13b
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations without panel level optimizer/Site level dataset/SQ11.csv,694183,532d792641a88b141326f9b49dc06ad4a3fa48e355c4d23c5f5ea553e3ddc61c
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations without panel level optimizer/Site level dataset/SQ12.csv,585710,994ecc2741f005f3630f60b841b12080a895fe103ba7199c10b70229988ced77
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations without panel level optimizer/Site level dataset/SQ13.csv,585233,1e887a461a1d63747465697bd7871bbc7a1e0b3ac491a452b22e81d133fdcf2f
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations without panel level optimizer/Site level dataset/SQ14.csv,591895,4df97f4bcc14cbeee12aadd605bdab3a75d4c909b6b7dd71b51962fe8057991b
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations without panel level optimizer/Site level dataset/SQ15.csv,588319,572d79e0a6dd1217aeec42dffd2ad86b1e53aa3de754d1c880b06a10beea25db
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations without panel level optimizer/Site level dataset/SQ16.csv,586625,5f5d99e075eea20ad24bcad806ea108e63168bf2ee0a4c3bb0188df6303c22af
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations without panel level optimizer/Site level dataset/SQ17.csv,587062,c8527d75bcfc2149290280be31f8831b4cd524f30bc9cf47195f8838f927ccd4
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations without panel level optimizer/Site level dataset/SQ18.csv,419144,2f07f7a94c73229c5e0716607c0ba930db279d9c40844b1d73a061d2e466aae0
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations without panel level optimizer/Site level dataset/SQ19.csv,597237,49131174a00fb31d00ee9595097eb8fa0f51bd90fb75e342daf22f55b04f4bb6
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations without panel level optimizer/Site level dataset/SQ567 Flexible PV.csv,610337,57c53f4d4ecb8fa0f3f4a9680c3076b38c8da209c3281f03064a500e442602e0
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations without panel level optimizer/Site level dataset/SQ8.csv,748004,97e33d548e3db5e85ed9755f526ad796ca3fefdee44ffbc10d6459a2b6233651
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations without panel level optimizer/Site level dataset/SQ9.csv,747306,3dd5a0aed1b40a5fbcac0392e4d7a743c38bf02856e0b660f5b053bfdd858b98
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations without panel level optimizer/Site level dataset/Tower A.csv,490946,27eec9008109a97c1eb45d3bfde2a7ddc13f63aac3adeab275fb32d48c72af52
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations without panel level optimizer/Site level dataset/UG Hall4 Flexible PV.csv,584793,91e8720a6716e8ac0b003fa4fe87cb8e8b6d93c1ae25b1cc9efdf9ca8b30776b
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations without panel level optimizer/Site level dataset/UG Hall7 Flexible PV.csv,611188,c05b49021169cf76b77a6529833262b7895e57121573881be29ca90a6e57875d
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations without panel level optimizer/Site level dataset/Zone L1 (Station 1).csv,1076365,75c6ea3ac9a4c0ff63ebf9183c6a21822983722337822ec3a1e4242a006a7590
+raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations without panel level optimizer/Site level dataset/Zone L1(Station 2).csv,819309,8124572f2e8e43a1144e3379afdf3074c96e8674677cd761e34fdd2399fa7592
+raw/hkust/README.md,6057,079d7bc7e444c21114189981ceb235388ac7a4770cf21d8dd6848eed37660cd0
+raw/hkust/s41597-025-04397-y.pdf,4644651,d1dda0d945d01b18decfa901b55d9b79b2c8dd58cd89a1226ea6f02edb94b393
+raw/safi/Electric a-Si.xlsx,7156220,927188320943c1ffb1406c6769a7c8f4a8e7a31006cb12cfbc219fcd33d04b31
+raw/safi/Electric m-Si.xlsx,20142337,4f2c2246c99b148fe060c9398fed8f8d7c7163a26b97b88a4951c5777ef530c8
+raw/safi/Electric p-Si.xlsx,5203149,d42722929a969b5479e2c14914fe2bd47db58e1d28d9e94ffb8e1950717eb33a
+raw/safi/Preprocessed Data.xlsx,3603480,3a34ea5cf439b7f6c4111e0a428883cd3d9e510a37a4657c86ad1ddc41f55038
+raw/safi/Tc a-Si.xlsx,1854531,2064f5191d5bb6c3339e7d7cd30e82b5fa71312d2815304fb3c06371334b1c7d
+raw/safi/Tc m-Si.xlsx,5370875,a2f1e4fe6a8337f6af2fcd83159c5e5533b408c4f3b7953878915ffe3c25c74e
+raw/safi/Tc p-Si.xlsx,1317225,dfb478a04bf7c4c901adbbfc3eed1bf34b65aa67ce906df481930e6e66996bab
+raw/safi/Weather data.xlsx,5477127,e58f8c1747e64578b5805493c3b023f8ae10f65c971e71c3610c6c08983146d4

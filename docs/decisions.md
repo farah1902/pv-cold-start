@@ -1,0 +1,137 @@
+# Decisions
+
+One entry per choice, numbered D01, D02, … in order; never renumbered. **[guide deviation]** marks a change to the
+plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1–D7 (guide §9) in the same order.
+
+### D01 — Data corrections accepted: inverter units, AC rating from the model name, DC from modules, first day of telemetry, errata [data, Phase 0]
+- **Request or reason:** guide §9, decision D1. Approved by the author on 18 Nov 2026.
+- **Change:** the unit of analysis is the inverter (44 units, 5-min files aggregated to 15 min). P_AC comes from the
+  inverter model name and is cross-checked against the 99.9th percentile of observed power; P_DC = number of modules ×
+  module watt-peak. Units with a metadata error keep the empirical AC limit, are left out of the DC/AC-prior test and
+  stay in the forecasting test with the g = 1 prior. The errata of guide §2 are published with the code. The start
+  date rule is refined by D08.
+- **Alternatives considered:** the metadata rated power (it is the AC rating, although the data paper calls the total
+  "2,230.8 kWp"); the metadata connection date (it differs from the first telemetry by up to 113 days, F06).
+- **Evidence:** guide §2; F06, F11. **Code:** `src/pvcold/prep` (NB1, NB2), not yet written.
+
+### D02 — The DC/AC gain prior is contribution 2; G0, G1 and G2 are tested [method, Phase 0]
+- **Request or reason:** guide §9, decision D2. Approved by the author on 18 Nov 2026.
+- **Change:** the prior ĝ = β r T (guide §3.5) is a contribution. G0 (g = 1), G1 (β r) and G2 (β r T, with the Perez
+  transposition factor) are compared on the validation units; G2 is kept only if it beats G1 there.
+- **Evidence:** the pilot figures quoted in the guide are not from this repository and are not citable (see
+  `results_summary.md`). **Code:** `src/pvcold/fleet` (NB3), not yet written.
+
+### D03 — Horizons of 2–6 h use the fleet only, with the limitation stated [scope, Phase 0]
+- **Request or reason:** guide §9, decision D3. Approved by the author on 18 Nov 2026 ("ok").
+- **Change:** no weather-forecast or satellite input enters the main model at any horizon. The paper states that 2–6 h
+  skill is bounded by what the fleet's own history can predict. The optional historical Open-Meteo forecast baseline
+  (guide §6, item 16) is not done.
+- **Alternatives considered:** adding a weather-forecast baseline (more downloads, and it weakens the "no external
+  input" thesis).
+
+### D04 — Execution: light notebooks locally, heavy runs on Google Colab; the local repository is the master copy [environment, Phase 0]
+- **Request or reason:** guide §9, decision D4. The author, 18 Nov 2026: "fine, Colab is ready".
+- **Change:** the agent writes all code. Data audit, preprocessing and index notebooks run locally (Python 3.12.1).
+  The LightGBM bank (NB5) and the TCN ablation (NB5b) run on Colab, from a Google Drive mirror of this repository, as
+  in the grid project. Each run is resumable and writes `summary.json` with versions and backend.
+
+### D05 — Target journal: *Solar Energy* [venue, Phase 0]
+- **Request or reason:** guide §9, decision D5. Approved by the author on 18 Nov 2026.
+- **Change:** the paper is written for *Solar Energy* (Elsevier). Its Guide for Authors (length, abstract,
+  highlights, graphical abstract, declarations) is still to be fetched and recorded in `CLAUDE.md` before writing.
+
+### D06 — Conformal cold-start intervals and the past-weather ablation are adopted [method, Phase 0]
+- **Request or reason:** guide §9, decision D6. Approved by the author on 18 Nov 2026 ("yes to both").
+- **Change:** (i) conformalised quantile regression (Romano et al. 2019, to verify at citation) calibrated on pseudo
+  cold starts, where each donor is treated as new before the event start and scored with its prior gain (guide §6,
+  item 14); (ii) an ablation adding past temperature, relative humidity and visibility (guide §6, item 15).
+
+### D07 — Morocco: Safi external case and validation kit in this paper; the virtual fleets move to the follow-up paper [scope, Phase 0] [guide deviation]
+- **Request or reason:** guide §9, decision D7, and the agent's recommendation of 17 Nov 2026. The author, 18 Nov 2026:
+  "ok, tell me what you want and I will give it to you".
+- **Change:**
+  - *In this paper:* the Safi rooftop external case (M2: transfer levels T0, T1 and T2; fleet vs the on-site reference
+    cell), the validation kit and the bridge equation (M3), and the regional PV-density areas used in the Introduction
+    and Discussion (guide §8, uses 1 and 3).
+  - *Moved to the follow-up paper:* the Benguerir virtual fleet, the regional virtual fleet, the distance-weighted local
+    fleet index and the donor-radius test, notebooks NB8b and NB8c, Figs. 11 and 12, the virtual-fleet success
+    criterion (guide §1), use 2 of the density areas, and download rows 1, 4 and 5 (guide §8).
+  - The guide of 18 Nov still lists these items; this decision overrides them.
+- **Alternatives considered:** keeping the virtual fleets in the supplement.
+- **Reason:** their inputs are not in hand (the CAMS all-sky grid and the 8 Open-Meteo cluster points); 3–5 km
+  satellite pixels cannot represent short-range cloud differences; and the paper's claims rest on real starts.
+
+### D08 — Event list: 14 scored events with observed starts, 3 sensitivity events, 2 removed [data, Phase 0]
+- **Request or reason:** review audit of 18 Nov 2026 (`docs/history/review-audit-18-nov.md`), approved by the author
+  and applied by the author to the guide (§2, Start dates and events).
+- **Change:**
+  - An event starts at the earliest production in any file, site or inverter. The start is observed only if that file
+    begins before the unit produces (a mid-month first day with a morning ramp, or a file that precedes the others).
+    A file that begins on the 1st of a month while already producing makes the start left-censored.
+  - **Scored (14):** SQ Block S, Zone A5, SQ Block R, Zone A7, Zone A6, Zone J2 (from 2021-11-13; site series as target
+    until its inverter file starts on 2021-12-08), Indoor Sports Centre, Zone D (both inverters, station level, from
+    2022-01-19, site series as target), Library, UG Hall 8, UG Hall 9, Zone A2 inverters 2–3, SQ Block P, Shaw
+    Auditorium.
+  - **Sensitivity (3), left-censored:** Wong Check She, Zone J1, Zone L2.
+  - **Removed (2):** Zone D inverter 1 (its file marks the end of an outage, not a new unit), S H Ho Sports Hall
+    (anomalous first months and a left-censored start).
+  - A donor must have started at least 14 full days before the event.
+- **Evidence:** F03, F04, F05, F06, F07, F16.
+
+### D09 — Primary horizon: 1 h, fixed before scoring [statistics, Phase 0]
+- **Request or reason:** review audit of 18 Nov 2026, approved by the author; guide §1 and §4.4.
+- **Change:** every hypothesis test runs at 1 h (one-sided exact Wilcoxon, n = 14). The other five horizons are
+  secondary, with Holm correction.
+
+### D10 — Drifted window: effect sizes, plus per-event Diebold–Mariano tests; boundary rule fixed before scoring [statistics, Phase 0]
+- **Request or reason:** review audit of 18 Nov 2026, approved by the author; guide §4.4.
+- **Change:** with about 5 drifted events no Wilcoxon test can reach significance (F12). The paper reports
+  Hodges–Lehmann differences with day-block bootstrap intervals and the number of events won. Significance comes from
+  per-event Diebold–Mariano tests at 1 h, with Holm correction across the drifted events. The drift boundary comes from
+  PELT on the daily log-ratio of measured GHI to the fleet proxy k̂ G_cs. An event is drifted if at least half of its
+  90 test days fall after the boundary. Both rules are fixed before any test event is scored.
+- **Evidence:** F12.
+
+### D11 — The 2021–2022 sensor period is called "stable", not "healthy" [wording, Phase 0]
+- **Request or reason:** agent's remark of 17 Nov 2026; review audit of 18 Nov 2026, approved by the author.
+- **Change:** "stable" vs "drifted" everywhere. In 2021–2022 the sensor reads about 0.8 of clear-sky, which is not
+  "healthy" (F09).
+
+### D12 — Daily window: issue times 06:00 to 17:55 minus the horizon; common target window 12:00–17:55; site files as an evening sensitivity check [protocol, Phase 0]
+- **Request or reason:** F01; agent's recommendation of 17 Nov 2026; review audit of 18 Nov 2026; the author, 18 Nov
+  2026: "yes, do it".
+- **Change:** forecasts are issued from 06:00 to 17:55 − h, so a 6-h forecast is issued at 11:55 at the latest.
+  Comparisons across horizons use the common target window 12:00–17:55, which every horizon reaches. Full-window scores
+  per horizon are secondary. A sensitivity run uses the site files (00:00–23:45) to measure what the missing evening
+  changes. Implemented in NB2 and NB6.
+- **Evidence:** F01.
+
+### D13 — Timestamps are parsed with an explicit two-format parser that stops on any failure [data, Phase 0]
+- **Request or reason:** F02; review audit of 18 Nov 2026.
+- **Change:** `%Y-%m-%d %H:%M:%S` and `%Y/%m/%d %H:%M` are tried explicitly. Any unparsed timestamp raises an error.
+  No automatic format inference.
+
+### D14 — CAMS is downloaded again with sky type "Observed cloud"; A9 and the HKUST satellite check depend on it [data, Phase 0]
+- **Request or reason:** F08; review audit of 18 Nov 2026; guide §8 (note of 18 Nov).
+- **Change:** rows 2 and 3 of the guide's download table are requested again with "Observed cloud" (it also returns
+  the clear-sky columns). Safi runs to 2018-12-31. If CAMS has no all-sky data for Hong Kong, baseline A9 and the
+  satellite check of the HKUST sensor are dropped. The McClear files stay as a second clear-sky model.
+
+### D15 — The project gets its own repository; data are moved into the roadmap layout and never committed [repository, Phase 0]
+- **Request or reason:** on 17 Nov 2026 `git rev-parse --show-toplevel` in `pv paper/` returned `C:/Users/Dell`, a
+  repository whose remote is an unrelated project (ESA_LandCover_Streamlit). The author, 18 Nov 2026: "ok, create the
+  repo please".
+- **Change:**
+  - `git init` in `C:\Users\Dell\Desktop\phd_ehtp\pv paper`; private GitHub repository `farah1902/pv-cold-start`.
+  - Data moved to `data/raw/` and `data/external/` (old → new paths in `data/README.md`). The data are git-ignored
+    (1,673.8 MB, above GitHub's limits). `data/MANIFEST_sha256.csv` (165 files) is committed and checked by
+    `tools/make_data_manifest.py --check`.
+  - The guide moved byte-for-byte to `docs/research_guide.md`; earlier documents went to `docs/history/`.
+  - Repo-local `core.autocrlf=false`, so working files and committed files have the same bytes.
+- **Code:** `tools/make_data_manifest.py`.
+
+### D16 — pvlib 0.16.1 and ruptures 1.1.10 are installed locally and pinned [environment, Phase 0]
+- **Request or reason:** both are in the guide's software list (§5.6) and were missing locally on 18 Nov 2026.
+- **Change:** `pip install pvlib==0.16.1 ruptures==1.1.10`. A dry run first showed that nothing else would be
+  installed or upgraded; numpy 1.26.4 and pandas 2.2.0 are unchanged. Both are pinned in `requirements.txt`, because
+  solar position, clear sky and change points feed the results directly.
