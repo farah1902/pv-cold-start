@@ -87,3 +87,16 @@ One entry per work session: what was asked, what was done, the key numbers, what
 - **Open, for the author:** Library start (F22): keep scored with a written exception, or move to the sensitivity
   set. Zone A2 inverters 2–3 can enter the DC/AC prior test (F21).
 - **Next:** NB2 (QC, 15-min panel, time-label shift, events and donor sets).
+
+## 2026-11-18 (night, cont.) — D27, D28 and NB2
+
+- **Asked:** the author moved Library to the sensitivity set (13 scored) and included Zone A2 inverters 2–3 in the
+  prior test, then asked for NB2.
+- **Done:**
+  - D27 and D28 applied to the guide (previous version in `docs/history/`), `config.py`, `CLAUDE.md`, the README and
+    the handoff.
+  - Wrote `src/pvcold/prep.py` and `tools/make_nb2.py`. The first run failed in its output cell
+    (`Series.reset_index(names=…)` does not exist in pandas 2.2.0); nothing was written. Fixed and re-run: 28 s.
+  - Findings F25–F27 and decision D29. Both draft figures (Fig. 1 timeline, time-label curves) checked by eye.
+- **Next:** NB3 (median and censored index, donor gains, DC/AC priors, the final drift boundary, tuning on the
+  validation units, then the freeze).

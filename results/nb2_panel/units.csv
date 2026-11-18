@@ -1,0 +1,45 @@
+unit,station,model,AC_kW,AC_source,DC_kWp,DC_AC,metadata_error,tilt,azimuth_brick,connection_date,p999_over_AC_model,in_prior_test,flat,first_row,rule_start,rule_minus_first_days,event_window_end
+Indoor Sports Centre_Inverter,Indoor_Sport_Center,Sunny_Tripower_STP_10_0,33.3,station rating 33.3 kW (= SE33_3K); model string STP 10.0 is wrong,43.8,1.3153153153153154,True,10deg,0/180deg,2021-12-01,3.33563922,False,False,2021-11-17,2021-11-17,0,2022-02-15
+LSK North_Inverter,LSK_North,SolarEdge_SE55K,55.0,model name,66.3,1.2054545454545453,False,10deg,10/-153deg,2021-04-30,1.0038041454545454,True,False,2021-05-04,2021-05-04,0,
+LSK South_Inverter,LSK_South,SolarEdge_SE25K,25.0,model name,28.08,1.1232,False,0deg,0deg,2021-04-30,0.99922,True,True,2021-05-01,2021-05-01,0,
+Library_Inverter_1,Library,SolarEdge SE50K,50.0,model name,57.72,1.1543999999999999,False,10deg,Mixed,2022-05-31,1.00036,True,False,2022-06-01,2022-06-01,0,2022-08-30
+Library_Inverter_2,Library,SolarEdge SE50K,50.0,model name,56.24,1.1248,False,10deg,Mixed,2022-05-31,1.000768,True,False,2022-06-01,2022-06-01,0,2022-08-30
+Library_Inverter_3,Library,SolarEdge SE50K,50.0,model name,56.24,1.1248,False,10deg,Mixed,2022-05-31,0.999294480000001,True,False,2022-06-01,2022-06-01,0,2022-08-30
+SQ1_Inverter,SQ1,SolarEdge_SE27_6K,27.6,model name,34.32,1.2434782608695651,False,0deg,0deg,2021-04-30,1.0022039492753627,True,True,2021-05-07,2021-05-07,0,
+SQ2_Inverter,SQ2,SolarEdge_SE33_3K,33.3,model name,33.54,1.0072072072072074,False,0deg,0deg,2021-04-30,0.9745121621621649,True,True,2021-05-12,2021-05-12,0,
+SQ3_Inverter,SQ3,SolarEdge_SE33_3K,33.3,model name,35.88,1.0774774774774776,False,0deg,0deg,2021-06-01,1.000249966966967,True,True,2021-05-19,2021-05-19,0,
+SQ4_Inverter,SQ4,SolarEdge_SE33_3K,33.3,model name,35.49,1.065765765765766,False,0deg,0deg,2021-04-30,1.000840840840841,True,True,2021-05-12,2021-05-12,0,
+SQ567_Inverter,SQ567,SolarEdge_SE55K,55.0,model name,47.97,0.8721818181818182,False,0deg,0deg,2021-06-01,0.8329479454545474,True,True,2021-06-02,2021-06-02,0,
+SQ Apartment13-24_Inverter,SQ_Apartment13_24,SolarEdge_SE17K,17.0,model name,21.84,1.2847058823529411,False,0deg,0deg,2021-07-07,1.0046470588235294,True,True,2021-07-11,2021-07-11,0,
+SQ Apartment1-12_Inverter,SQ_Apartment1_12,SolarEdge_SE17K,17.0,model name,21.84,1.2847058823529411,False,0deg,0deg,2021-07-07,1.003326705882355,True,True,2021-07-08,2021-07-08,0,
+SQ Apartment25-36_Inverter,SQ_Apartment25_36,SolarEdge_SE17K,17.0,model name,21.84,1.2847058823529411,False,0deg,0deg,2021-07-07,1.0031176470588237,True,True,2021-07-15,2021-07-15,0,
+SQ Apartment37-48_Inverter,SQ_Apartment37_48,SolarEdge_SE12_5K,12.5,model name,14.82,1.1856,False,0deg,0deg,2021-07-07,1.04912,True,True,2021-07-11,2021-07-11,0,
+SQ Block P_Inverter,SQ_Block_P,SolarEdge_SE33_3K,33.3,model name,37.13,1.115015015015015,False,0deg,0deg,2023-07-21,1.001073507507508,True,True,2023-06-22,2023-06-22,0,2023-09-20
+SQ Block R_Inverter,SQ_Block_R,SolarEdge_SE33_3K,33.3,model name,37.96,1.1399399399399401,False,0deg,0deg,2021-08-18,1.000890885885886,True,True,2021-10-06,2021-10-06,0,2022-01-04
+SQ Block S_Inverter,SQ_Block_S,SolarEdge_SE33_3K,33.3,model name,32.85,0.9864864864864866,False,0deg,0deg,2021-08-18,0.9503835795795832,True,True,2021-10-05,2021-10-05,0,2022-01-03
+S H Ho Sports Hall_Inverter_1,S_H_Ho_Sports_Hall,SolarEdge SE17K,17.0,model name,21.84,1.2847058823529411,False,0deg,0deg,2021-10-02,1.001235294117647,True,True,2021-11-01,2021-11-01,0,
+S H Ho Sports Hall_Inverter_2,S_H_Ho_Sports_Hall,SolarEdge SE25K,25.0,model name,27.3,1.092,False,0deg,0deg,2021-10-02,0.9975365160000002,True,True,2021-11-01,2021-11-01,0,
+Shaw Auditorium_Inverter,Shaw_Auditorium,SolarEdge_SE66_6K,66.6,model name,88.48,1.3285285285285287,False,0deg,Mixed,2023-07-29,1.0010843483483487,True,False,2023-07-09,2023-07-09,0,2023-10-07
+UG Hall2 2F_Inverter,UG_Hall2_2F,SolarEdge_SE25K,25.0,model name,23.4,0.9359999999999999,False,0deg,0deg,2021-06-01,0.7656860400000041,True,True,2021-06-03,2021-06-03,0,
+UG Hall2 RF_Inverter,UG_Hall2_RF,SolarEdge_SE8K,8.0,model name,10.14,1.2675,False,0deg,0deg,2021-04-30,1.051625,True,True,2021-06-09,2021-06-09,0,
+UG Hall3_Inverter,UG_Hall3,SolarEdge_SE25K,25.0,model name,27.3,1.092,False,0deg,0deg,2021-06-01,0.9984994800000002,True,True,2021-05-21,2021-05-21,0,
+UG Hall4_Inverter,UG_Hall4,SolarEdge_SE25K,25.0,model name,32.76,1.3104,False,0/15deg,65/-10deg,2021-06-01,1.0026000000000002,True,False,2021-05-21,2021-05-21,0,
+UG Hall6_Inverter,UG_Hall6,SolarEdge_SE25K,25.0,model name,30.42,1.2168,False,0deg,0deg,2021-04-30,1.0002,True,True,2021-05-11,2021-05-11,0,
+UG Hall7_Inverter,UG_Hall7,SolarEdge_SE25K,25.0,model name,31.98,1.2792000000000001,False,0/11deg,56/146deg,2021-06-01,1.0000570800000004,True,False,2021-05-17,2021-05-17,0,
+UG Hall8_Inverter,UG_Hall8,SolarEdge_SE25K,25.0,model name,25.74,1.0295999999999998,False,0deg,0deg,2023-03-01,0.9867899000000072,True,True,2023-01-05,2023-01-05,0,2023-04-05
+UG Hall9_Inverter,UG_Hall9,SolarEdge_SE25K,25.0,model name,26.975,1.079,False,0deg,0deg,2023-03-01,1.0008084920000002,True,True,2023-02-11,2023-02-11,0,2023-05-12
+Wong Check She Research Centre_Inverter_1,Wong_Check_She_Research_Centre,SolarEdge SE50K,50.0,model name,60.06,1.2012,False,0deg,0deg,2021-08-31,0.99928,True,True,2021-12-01,2021-12-01,0,2022-03-01
+Wong Check She Research Centre_Inverter_2,Wong_Check_She_Research_Centre,SolarEdge SE50K,50.0,model name,59.28,1.1856,False,0deg,0deg,2021-08-31,0.9989,True,True,2021-12-01,2021-12-01,0,2022-03-01
+Zone A1_Inverter,Zone_A1,SolarEdge_SE33_3K,33.3,model name,37.44,1.1243243243243244,False,0deg,0deg,2021-06-01,1.0004963393393396,True,True,2021-06-11,2021-06-11,0,
+Zone A2_Inverter_1,Zone_A2,SolarEdge_SE82_8K_,82.8,model name,111.53,1.3469806763285024,False,0deg,0deg,2023-05-31,1.0001752898550726,True,True,2021-07-01,2021-07-01,0,
+Zone A2_Inverter_2,Zone_A2,SolarEdge_SE55K_,55.0,model name,73.04,1.328,False,0deg,0deg,2023-05-31,1.0049585636363638,True,True,2023-05-16,2023-05-24,8,2023-08-14
+Zone A2_Inverter_3,Zone_A2,SolarEdge_SE50K_,50.0,model name,66.4,1.328,False,0deg,0deg,2023-05-31,1.00189342,True,True,2023-05-16,2023-05-17,1,2023-08-14
+Zone A4_Inverter,Zone_A4,SolarEdge_SE55K,55.0,model name,68.64,1.248,False,0deg,0deg,2021-06-01,0.9833105090909146,True,True,2021-06-11,2021-06-11,0,
+Zone A5_Inverter,Zone_A5,SolarEdge_SE17K,17.0,model name,20.28,1.1929411764705884,False,0deg,0deg,2021-10-02,1.000823529411765,True,True,2021-10-05,2021-10-05,0,2022-01-03
+Zone A6_Inverter,Zone_A6,SolarEdge_SE50K,50.0,model name,64.74,1.2948,False,0deg,0deg,2021-07-31,0.99978,True,True,2021-10-14,2021-10-14,0,2022-01-12
+Zone A7_Inverter,Zone_A7,SolarEdge_SE10K,10.0,model name,12.775,1.2775,False,10deg,90/-90deg,2021-11-08,1.0614989700000002,True,False,2021-10-09,2021-10-10,1,2022-01-07
+Zone D_Inverter_1,Zone_D,SolarEdge_SE33_3K,33.3,model name,68.62,2.060660660660661,True,10deg,Mixed,2021-12-01,0.9999404984984992,False,False,2022-12-03,2022-12-04,1,2022-04-19
+Zone D_Inverter_2,Zone_D,SolarEdge_SE25K,50.0,empirical: p99.9 49.9 kW (SE50K size); model string SE25K is wrong,25.74,0.5147999999999999,True,10deg,Mixed,2021-12-01,1.99624,False,False,2022-01-19,2022-01-20,1,2022-04-19
+Zone J1_Inverter,Zone_J1,SolarEdge_SE25K,25.0,model name,25.55,1.022,False,10deg,Mixed,2021-11-08,0.9983400000000024,True,False,2022-03-02,2022-03-02,0,2022-05-30
+Zone J2_Inverter,Zone_J2,SolarEdge_SE50K,50.0,model name,63.875,1.2775,False,10deg,Mixed,2021-12-01,0.9193005200000072,True,False,2021-12-08,2021-12-08,0,2022-02-11
+Zone L2_Inverter,Zone_L2,SolarEdge_SE10K,10.0,model name,12.045,1.2045,False,0deg,0deg,2022-07-30,0.9704391960000048,True,True,2022-08-02,2022-08-02,0,2022-08-30

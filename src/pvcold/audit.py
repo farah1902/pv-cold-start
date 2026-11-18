@@ -257,7 +257,8 @@ def change_points(series: pd.Series, min_size: int = 30) -> dict:
 
 
 # --- Outputs --------------------------------------------------------------------------------------
-def write_outputs(name: str, tables: dict[str, pd.DataFrame], summary: dict, figures: dict | None = None) -> Path:
+def write_outputs(name: str, tables: dict[str, pd.DataFrame], summary: dict, figures: dict | None = None,
+                  parquet: dict[str, pd.DataFrame] | None = None) -> Path:
     """Write every table, figure and summary.json to results/<name>/ all-or-nothing (temp folder, then rename)."""
     final = C.RESULTS / name
     tmp = C.RESULTS / f".tmp_{name}"
@@ -266,6 +267,8 @@ def write_outputs(name: str, tables: dict[str, pd.DataFrame], summary: dict, fig
     (tmp / "figures").mkdir(parents=True)
     for key, df in tables.items():
         df.to_csv(tmp / f"{key}.csv", index=False)
+    for key, df in (parquet or {}).items():
+        df.astype({c: "float32" for c in df.columns if df[c].dtype == "float64"}).to_parquet(tmp / f"{key}.parquet")
     for key, fig in (figures or {}).items():
         fig.savefig(tmp / "figures" / f"{key}.png", dpi=150)
         fig.savefig(tmp / "figures" / f"{key}.pdf")

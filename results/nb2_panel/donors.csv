@@ -1,0 +1,630 @@
+event,donor
+SQ Block S,LSK North_Inverter
+SQ Block S,LSK South_Inverter
+SQ Block S,SQ1_Inverter
+SQ Block S,SQ2_Inverter
+SQ Block S,SQ3_Inverter
+SQ Block S,SQ4_Inverter
+SQ Block S,SQ567_Inverter
+SQ Block S,SQ Apartment13-24_Inverter
+SQ Block S,SQ Apartment1-12_Inverter
+SQ Block S,SQ Apartment25-36_Inverter
+SQ Block S,SQ Apartment37-48_Inverter
+SQ Block S,UG Hall2 2F_Inverter
+SQ Block S,UG Hall2 RF_Inverter
+SQ Block S,UG Hall3_Inverter
+SQ Block S,UG Hall4_Inverter
+SQ Block S,UG Hall6_Inverter
+SQ Block S,UG Hall7_Inverter
+SQ Block S,Zone A1_Inverter
+SQ Block S,Zone A2_Inverter_1
+SQ Block S,Zone A4_Inverter
+Zone A5,LSK North_Inverter
+Zone A5,LSK South_Inverter
+Zone A5,SQ1_Inverter
+Zone A5,SQ2_Inverter
+Zone A5,SQ3_Inverter
+Zone A5,SQ4_Inverter
+Zone A5,SQ567_Inverter
+Zone A5,SQ Apartment13-24_Inverter
+Zone A5,SQ Apartment1-12_Inverter
+Zone A5,SQ Apartment25-36_Inverter
+Zone A5,SQ Apartment37-48_Inverter
+Zone A5,UG Hall2 2F_Inverter
+Zone A5,UG Hall2 RF_Inverter
+Zone A5,UG Hall3_Inverter
+Zone A5,UG Hall4_Inverter
+Zone A5,UG Hall6_Inverter
+Zone A5,UG Hall7_Inverter
+Zone A5,Zone A1_Inverter
+Zone A5,Zone A2_Inverter_1
+Zone A5,Zone A4_Inverter
+SQ Block R,LSK North_Inverter
+SQ Block R,LSK South_Inverter
+SQ Block R,SQ1_Inverter
+SQ Block R,SQ2_Inverter
+SQ Block R,SQ3_Inverter
+SQ Block R,SQ4_Inverter
+SQ Block R,SQ567_Inverter
+SQ Block R,SQ Apartment13-24_Inverter
+SQ Block R,SQ Apartment1-12_Inverter
+SQ Block R,SQ Apartment25-36_Inverter
+SQ Block R,SQ Apartment37-48_Inverter
+SQ Block R,UG Hall2 2F_Inverter
+SQ Block R,UG Hall2 RF_Inverter
+SQ Block R,UG Hall3_Inverter
+SQ Block R,UG Hall4_Inverter
+SQ Block R,UG Hall6_Inverter
+SQ Block R,UG Hall7_Inverter
+SQ Block R,Zone A1_Inverter
+SQ Block R,Zone A2_Inverter_1
+SQ Block R,Zone A4_Inverter
+Zone A7,LSK North_Inverter
+Zone A7,LSK South_Inverter
+Zone A7,SQ1_Inverter
+Zone A7,SQ2_Inverter
+Zone A7,SQ3_Inverter
+Zone A7,SQ4_Inverter
+Zone A7,SQ567_Inverter
+Zone A7,SQ Apartment13-24_Inverter
+Zone A7,SQ Apartment1-12_Inverter
+Zone A7,SQ Apartment25-36_Inverter
+Zone A7,SQ Apartment37-48_Inverter
+Zone A7,UG Hall2 2F_Inverter
+Zone A7,UG Hall2 RF_Inverter
+Zone A7,UG Hall3_Inverter
+Zone A7,UG Hall4_Inverter
+Zone A7,UG Hall6_Inverter
+Zone A7,UG Hall7_Inverter
+Zone A7,Zone A1_Inverter
+Zone A7,Zone A2_Inverter_1
+Zone A7,Zone A4_Inverter
+Zone A6,LSK North_Inverter
+Zone A6,LSK South_Inverter
+Zone A6,SQ1_Inverter
+Zone A6,SQ2_Inverter
+Zone A6,SQ3_Inverter
+Zone A6,SQ4_Inverter
+Zone A6,SQ567_Inverter
+Zone A6,SQ Apartment13-24_Inverter
+Zone A6,SQ Apartment1-12_Inverter
+Zone A6,SQ Apartment25-36_Inverter
+Zone A6,SQ Apartment37-48_Inverter
+Zone A6,UG Hall2 2F_Inverter
+Zone A6,UG Hall2 RF_Inverter
+Zone A6,UG Hall3_Inverter
+Zone A6,UG Hall4_Inverter
+Zone A6,UG Hall6_Inverter
+Zone A6,UG Hall7_Inverter
+Zone A6,Zone A1_Inverter
+Zone A6,Zone A2_Inverter_1
+Zone A6,Zone A4_Inverter
+Zone J2,LSK North_Inverter
+Zone J2,LSK South_Inverter
+Zone J2,SQ1_Inverter
+Zone J2,SQ2_Inverter
+Zone J2,SQ3_Inverter
+Zone J2,SQ4_Inverter
+Zone J2,SQ567_Inverter
+Zone J2,SQ Apartment13-24_Inverter
+Zone J2,SQ Apartment1-12_Inverter
+Zone J2,SQ Apartment25-36_Inverter
+Zone J2,SQ Apartment37-48_Inverter
+Zone J2,SQ Block R_Inverter
+Zone J2,SQ Block S_Inverter
+Zone J2,UG Hall2 2F_Inverter
+Zone J2,UG Hall2 RF_Inverter
+Zone J2,UG Hall3_Inverter
+Zone J2,UG Hall4_Inverter
+Zone J2,UG Hall6_Inverter
+Zone J2,UG Hall7_Inverter
+Zone J2,Zone A1_Inverter
+Zone J2,Zone A2_Inverter_1
+Zone J2,Zone A4_Inverter
+Zone J2,Zone A5_Inverter
+Zone J2,Zone A6_Inverter
+Zone J2,Zone A7_Inverter
+Indoor Sports Centre,LSK North_Inverter
+Indoor Sports Centre,LSK South_Inverter
+Indoor Sports Centre,SQ1_Inverter
+Indoor Sports Centre,SQ2_Inverter
+Indoor Sports Centre,SQ3_Inverter
+Indoor Sports Centre,SQ4_Inverter
+Indoor Sports Centre,SQ567_Inverter
+Indoor Sports Centre,SQ Apartment13-24_Inverter
+Indoor Sports Centre,SQ Apartment1-12_Inverter
+Indoor Sports Centre,SQ Apartment25-36_Inverter
+Indoor Sports Centre,SQ Apartment37-48_Inverter
+Indoor Sports Centre,SQ Block R_Inverter
+Indoor Sports Centre,SQ Block S_Inverter
+Indoor Sports Centre,S H Ho Sports Hall_Inverter_1
+Indoor Sports Centre,S H Ho Sports Hall_Inverter_2
+Indoor Sports Centre,UG Hall2 2F_Inverter
+Indoor Sports Centre,UG Hall2 RF_Inverter
+Indoor Sports Centre,UG Hall3_Inverter
+Indoor Sports Centre,UG Hall4_Inverter
+Indoor Sports Centre,UG Hall6_Inverter
+Indoor Sports Centre,UG Hall7_Inverter
+Indoor Sports Centre,Zone A1_Inverter
+Indoor Sports Centre,Zone A2_Inverter_1
+Indoor Sports Centre,Zone A4_Inverter
+Indoor Sports Centre,Zone A5_Inverter
+Indoor Sports Centre,Zone A6_Inverter
+Indoor Sports Centre,Zone A7_Inverter
+Zone D,Indoor Sports Centre_Inverter
+Zone D,LSK North_Inverter
+Zone D,LSK South_Inverter
+Zone D,SQ1_Inverter
+Zone D,SQ2_Inverter
+Zone D,SQ3_Inverter
+Zone D,SQ4_Inverter
+Zone D,SQ567_Inverter
+Zone D,SQ Apartment13-24_Inverter
+Zone D,SQ Apartment1-12_Inverter
+Zone D,SQ Apartment25-36_Inverter
+Zone D,SQ Apartment37-48_Inverter
+Zone D,SQ Block R_Inverter
+Zone D,SQ Block S_Inverter
+Zone D,S H Ho Sports Hall_Inverter_1
+Zone D,S H Ho Sports Hall_Inverter_2
+Zone D,UG Hall2 2F_Inverter
+Zone D,UG Hall2 RF_Inverter
+Zone D,UG Hall3_Inverter
+Zone D,UG Hall4_Inverter
+Zone D,UG Hall6_Inverter
+Zone D,UG Hall7_Inverter
+Zone D,Wong Check She Research Centre_Inverter_1
+Zone D,Wong Check She Research Centre_Inverter_2
+Zone D,Zone A1_Inverter
+Zone D,Zone A2_Inverter_1
+Zone D,Zone A4_Inverter
+Zone D,Zone A5_Inverter
+Zone D,Zone A6_Inverter
+Zone D,Zone A7_Inverter
+Zone D,Zone J2_Inverter
+UG Hall8,Indoor Sports Centre_Inverter
+UG Hall8,LSK North_Inverter
+UG Hall8,LSK South_Inverter
+UG Hall8,Library_Inverter_1
+UG Hall8,Library_Inverter_2
+UG Hall8,Library_Inverter_3
+UG Hall8,SQ1_Inverter
+UG Hall8,SQ2_Inverter
+UG Hall8,SQ3_Inverter
+UG Hall8,SQ4_Inverter
+UG Hall8,SQ567_Inverter
+UG Hall8,SQ Apartment13-24_Inverter
+UG Hall8,SQ Apartment1-12_Inverter
+UG Hall8,SQ Apartment25-36_Inverter
+UG Hall8,SQ Apartment37-48_Inverter
+UG Hall8,SQ Block R_Inverter
+UG Hall8,SQ Block S_Inverter
+UG Hall8,S H Ho Sports Hall_Inverter_1
+UG Hall8,S H Ho Sports Hall_Inverter_2
+UG Hall8,UG Hall2 2F_Inverter
+UG Hall8,UG Hall2 RF_Inverter
+UG Hall8,UG Hall3_Inverter
+UG Hall8,UG Hall4_Inverter
+UG Hall8,UG Hall6_Inverter
+UG Hall8,UG Hall7_Inverter
+UG Hall8,Wong Check She Research Centre_Inverter_1
+UG Hall8,Wong Check She Research Centre_Inverter_2
+UG Hall8,Zone A1_Inverter
+UG Hall8,Zone A2_Inverter_1
+UG Hall8,Zone A4_Inverter
+UG Hall8,Zone A5_Inverter
+UG Hall8,Zone A6_Inverter
+UG Hall8,Zone A7_Inverter
+UG Hall8,Zone D_Inverter_1
+UG Hall8,Zone D_Inverter_2
+UG Hall8,Zone J1_Inverter
+UG Hall8,Zone J2_Inverter
+UG Hall8,Zone L2_Inverter
+UG Hall9,Indoor Sports Centre_Inverter
+UG Hall9,LSK North_Inverter
+UG Hall9,LSK South_Inverter
+UG Hall9,Library_Inverter_1
+UG Hall9,Library_Inverter_2
+UG Hall9,Library_Inverter_3
+UG Hall9,SQ1_Inverter
+UG Hall9,SQ2_Inverter
+UG Hall9,SQ3_Inverter
+UG Hall9,SQ4_Inverter
+UG Hall9,SQ567_Inverter
+UG Hall9,SQ Apartment13-24_Inverter
+UG Hall9,SQ Apartment1-12_Inverter
+UG Hall9,SQ Apartment25-36_Inverter
+UG Hall9,SQ Apartment37-48_Inverter
+UG Hall9,SQ Block R_Inverter
+UG Hall9,SQ Block S_Inverter
+UG Hall9,S H Ho Sports Hall_Inverter_1
+UG Hall9,S H Ho Sports Hall_Inverter_2
+UG Hall9,UG Hall2 2F_Inverter
+UG Hall9,UG Hall2 RF_Inverter
+UG Hall9,UG Hall3_Inverter
+UG Hall9,UG Hall4_Inverter
+UG Hall9,UG Hall6_Inverter
+UG Hall9,UG Hall7_Inverter
+UG Hall9,UG Hall8_Inverter
+UG Hall9,Wong Check She Research Centre_Inverter_1
+UG Hall9,Wong Check She Research Centre_Inverter_2
+UG Hall9,Zone A1_Inverter
+UG Hall9,Zone A2_Inverter_1
+UG Hall9,Zone A4_Inverter
+UG Hall9,Zone A5_Inverter
+UG Hall9,Zone A6_Inverter
+UG Hall9,Zone A7_Inverter
+UG Hall9,Zone D_Inverter_1
+UG Hall9,Zone D_Inverter_2
+UG Hall9,Zone J1_Inverter
+UG Hall9,Zone J2_Inverter
+UG Hall9,Zone L2_Inverter
+Zone A2 inverters 2-3,Indoor Sports Centre_Inverter
+Zone A2 inverters 2-3,LSK North_Inverter
+Zone A2 inverters 2-3,LSK South_Inverter
+Zone A2 inverters 2-3,Library_Inverter_1
+Zone A2 inverters 2-3,Library_Inverter_2
+Zone A2 inverters 2-3,Library_Inverter_3
+Zone A2 inverters 2-3,SQ1_Inverter
+Zone A2 inverters 2-3,SQ2_Inverter
+Zone A2 inverters 2-3,SQ3_Inverter
+Zone A2 inverters 2-3,SQ4_Inverter
+Zone A2 inverters 2-3,SQ567_Inverter
+Zone A2 inverters 2-3,SQ Apartment13-24_Inverter
+Zone A2 inverters 2-3,SQ Apartment1-12_Inverter
+Zone A2 inverters 2-3,SQ Apartment25-36_Inverter
+Zone A2 inverters 2-3,SQ Apartment37-48_Inverter
+Zone A2 inverters 2-3,SQ Block R_Inverter
+Zone A2 inverters 2-3,SQ Block S_Inverter
+Zone A2 inverters 2-3,S H Ho Sports Hall_Inverter_1
+Zone A2 inverters 2-3,S H Ho Sports Hall_Inverter_2
+Zone A2 inverters 2-3,UG Hall2 2F_Inverter
+Zone A2 inverters 2-3,UG Hall2 RF_Inverter
+Zone A2 inverters 2-3,UG Hall3_Inverter
+Zone A2 inverters 2-3,UG Hall4_Inverter
+Zone A2 inverters 2-3,UG Hall6_Inverter
+Zone A2 inverters 2-3,UG Hall7_Inverter
+Zone A2 inverters 2-3,UG Hall8_Inverter
+Zone A2 inverters 2-3,UG Hall9_Inverter
+Zone A2 inverters 2-3,Wong Check She Research Centre_Inverter_1
+Zone A2 inverters 2-3,Wong Check She Research Centre_Inverter_2
+Zone A2 inverters 2-3,Zone A1_Inverter
+Zone A2 inverters 2-3,Zone A2_Inverter_1
+Zone A2 inverters 2-3,Zone A4_Inverter
+Zone A2 inverters 2-3,Zone A5_Inverter
+Zone A2 inverters 2-3,Zone A6_Inverter
+Zone A2 inverters 2-3,Zone D_Inverter_1
+Zone A2 inverters 2-3,Zone D_Inverter_2
+Zone A2 inverters 2-3,Zone J2_Inverter
+Zone A2 inverters 2-3,Zone L2_Inverter
+SQ Block P,Indoor Sports Centre_Inverter
+SQ Block P,LSK North_Inverter
+SQ Block P,LSK South_Inverter
+SQ Block P,Library_Inverter_1
+SQ Block P,Library_Inverter_2
+SQ Block P,Library_Inverter_3
+SQ Block P,SQ1_Inverter
+SQ Block P,SQ2_Inverter
+SQ Block P,SQ3_Inverter
+SQ Block P,SQ4_Inverter
+SQ Block P,SQ567_Inverter
+SQ Block P,SQ Apartment13-24_Inverter
+SQ Block P,SQ Apartment1-12_Inverter
+SQ Block P,SQ Apartment25-36_Inverter
+SQ Block P,SQ Apartment37-48_Inverter
+SQ Block P,SQ Block R_Inverter
+SQ Block P,SQ Block S_Inverter
+SQ Block P,S H Ho Sports Hall_Inverter_1
+SQ Block P,S H Ho Sports Hall_Inverter_2
+SQ Block P,UG Hall2 2F_Inverter
+SQ Block P,UG Hall2 RF_Inverter
+SQ Block P,UG Hall3_Inverter
+SQ Block P,UG Hall4_Inverter
+SQ Block P,UG Hall6_Inverter
+SQ Block P,UG Hall7_Inverter
+SQ Block P,UG Hall8_Inverter
+SQ Block P,UG Hall9_Inverter
+SQ Block P,Wong Check She Research Centre_Inverter_1
+SQ Block P,Wong Check She Research Centre_Inverter_2
+SQ Block P,Zone A1_Inverter
+SQ Block P,Zone A2_Inverter_1
+SQ Block P,Zone A2_Inverter_2
+SQ Block P,Zone A2_Inverter_3
+SQ Block P,Zone A4_Inverter
+SQ Block P,Zone A5_Inverter
+SQ Block P,Zone A6_Inverter
+SQ Block P,Zone D_Inverter_1
+SQ Block P,Zone D_Inverter_2
+SQ Block P,Zone J2_Inverter
+SQ Block P,Zone L2_Inverter
+Shaw Auditorium,Indoor Sports Centre_Inverter
+Shaw Auditorium,LSK North_Inverter
+Shaw Auditorium,LSK South_Inverter
+Shaw Auditorium,Library_Inverter_1
+Shaw Auditorium,Library_Inverter_2
+Shaw Auditorium,Library_Inverter_3
+Shaw Auditorium,SQ1_Inverter
+Shaw Auditorium,SQ2_Inverter
+Shaw Auditorium,SQ3_Inverter
+Shaw Auditorium,SQ4_Inverter
+Shaw Auditorium,SQ567_Inverter
+Shaw Auditorium,SQ Apartment13-24_Inverter
+Shaw Auditorium,SQ Apartment1-12_Inverter
+Shaw Auditorium,SQ Apartment25-36_Inverter
+Shaw Auditorium,SQ Apartment37-48_Inverter
+Shaw Auditorium,SQ Block P_Inverter
+Shaw Auditorium,SQ Block R_Inverter
+Shaw Auditorium,SQ Block S_Inverter
+Shaw Auditorium,S H Ho Sports Hall_Inverter_1
+Shaw Auditorium,S H Ho Sports Hall_Inverter_2
+Shaw Auditorium,UG Hall2 2F_Inverter
+Shaw Auditorium,UG Hall2 RF_Inverter
+Shaw Auditorium,UG Hall3_Inverter
+Shaw Auditorium,UG Hall4_Inverter
+Shaw Auditorium,UG Hall6_Inverter
+Shaw Auditorium,UG Hall7_Inverter
+Shaw Auditorium,UG Hall8_Inverter
+Shaw Auditorium,UG Hall9_Inverter
+Shaw Auditorium,Wong Check She Research Centre_Inverter_1
+Shaw Auditorium,Wong Check She Research Centre_Inverter_2
+Shaw Auditorium,Zone A1_Inverter
+Shaw Auditorium,Zone A2_Inverter_1
+Shaw Auditorium,Zone A2_Inverter_2
+Shaw Auditorium,Zone A2_Inverter_3
+Shaw Auditorium,Zone A4_Inverter
+Shaw Auditorium,Zone A5_Inverter
+Shaw Auditorium,Zone A6_Inverter
+Shaw Auditorium,Zone A7_Inverter
+Shaw Auditorium,Zone D_Inverter_1
+Shaw Auditorium,Zone D_Inverter_2
+Shaw Auditorium,Zone J1_Inverter
+Shaw Auditorium,Zone J2_Inverter
+Shaw Auditorium,Zone L2_Inverter
+Library,Indoor Sports Centre_Inverter
+Library,LSK North_Inverter
+Library,LSK South_Inverter
+Library,SQ1_Inverter
+Library,SQ2_Inverter
+Library,SQ3_Inverter
+Library,SQ4_Inverter
+Library,SQ567_Inverter
+Library,SQ Apartment13-24_Inverter
+Library,SQ Apartment1-12_Inverter
+Library,SQ Apartment25-36_Inverter
+Library,SQ Apartment37-48_Inverter
+Library,SQ Block R_Inverter
+Library,SQ Block S_Inverter
+Library,S H Ho Sports Hall_Inverter_1
+Library,S H Ho Sports Hall_Inverter_2
+Library,UG Hall2 2F_Inverter
+Library,UG Hall2 RF_Inverter
+Library,UG Hall3_Inverter
+Library,UG Hall4_Inverter
+Library,UG Hall6_Inverter
+Library,UG Hall7_Inverter
+Library,Wong Check She Research Centre_Inverter_1
+Library,Wong Check She Research Centre_Inverter_2
+Library,Zone A1_Inverter
+Library,Zone A2_Inverter_1
+Library,Zone A4_Inverter
+Library,Zone A5_Inverter
+Library,Zone A6_Inverter
+Library,Zone A7_Inverter
+Library,Zone D_Inverter_2
+Library,Zone J1_Inverter
+Library,Zone J2_Inverter
+Wong Check She,Indoor Sports Centre_Inverter
+Wong Check She,LSK North_Inverter
+Wong Check She,LSK South_Inverter
+Wong Check She,SQ1_Inverter
+Wong Check She,SQ2_Inverter
+Wong Check She,SQ3_Inverter
+Wong Check She,SQ4_Inverter
+Wong Check She,SQ567_Inverter
+Wong Check She,SQ Apartment13-24_Inverter
+Wong Check She,SQ Apartment1-12_Inverter
+Wong Check She,SQ Apartment25-36_Inverter
+Wong Check She,SQ Apartment37-48_Inverter
+Wong Check She,SQ Block R_Inverter
+Wong Check She,SQ Block S_Inverter
+Wong Check She,S H Ho Sports Hall_Inverter_1
+Wong Check She,S H Ho Sports Hall_Inverter_2
+Wong Check She,UG Hall2 2F_Inverter
+Wong Check She,UG Hall2 RF_Inverter
+Wong Check She,UG Hall3_Inverter
+Wong Check She,UG Hall4_Inverter
+Wong Check She,UG Hall6_Inverter
+Wong Check She,UG Hall7_Inverter
+Wong Check She,Zone A1_Inverter
+Wong Check She,Zone A2_Inverter_1
+Wong Check She,Zone A4_Inverter
+Wong Check She,Zone A5_Inverter
+Wong Check She,Zone A6_Inverter
+Wong Check She,Zone A7_Inverter
+Zone J1,Indoor Sports Centre_Inverter
+Zone J1,LSK North_Inverter
+Zone J1,LSK South_Inverter
+Zone J1,SQ1_Inverter
+Zone J1,SQ2_Inverter
+Zone J1,SQ3_Inverter
+Zone J1,SQ4_Inverter
+Zone J1,SQ567_Inverter
+Zone J1,SQ Apartment13-24_Inverter
+Zone J1,SQ Apartment1-12_Inverter
+Zone J1,SQ Apartment25-36_Inverter
+Zone J1,SQ Apartment37-48_Inverter
+Zone J1,SQ Block R_Inverter
+Zone J1,SQ Block S_Inverter
+Zone J1,S H Ho Sports Hall_Inverter_1
+Zone J1,S H Ho Sports Hall_Inverter_2
+Zone J1,UG Hall2 2F_Inverter
+Zone J1,UG Hall2 RF_Inverter
+Zone J1,UG Hall3_Inverter
+Zone J1,UG Hall4_Inverter
+Zone J1,UG Hall6_Inverter
+Zone J1,UG Hall7_Inverter
+Zone J1,Wong Check She Research Centre_Inverter_1
+Zone J1,Wong Check She Research Centre_Inverter_2
+Zone J1,Zone A1_Inverter
+Zone J1,Zone A2_Inverter_1
+Zone J1,Zone A4_Inverter
+Zone J1,Zone A5_Inverter
+Zone J1,Zone A6_Inverter
+Zone J1,Zone A7_Inverter
+Zone J1,Zone D_Inverter_2
+Zone J1,Zone J2_Inverter
+Zone L2,Indoor Sports Centre_Inverter
+Zone L2,LSK North_Inverter
+Zone L2,LSK South_Inverter
+Zone L2,SQ1_Inverter
+Zone L2,SQ2_Inverter
+Zone L2,SQ3_Inverter
+Zone L2,SQ4_Inverter
+Zone L2,SQ567_Inverter
+Zone L2,SQ Apartment13-24_Inverter
+Zone L2,SQ Apartment1-12_Inverter
+Zone L2,SQ Apartment25-36_Inverter
+Zone L2,SQ Apartment37-48_Inverter
+Zone L2,SQ Block R_Inverter
+Zone L2,SQ Block S_Inverter
+Zone L2,S H Ho Sports Hall_Inverter_1
+Zone L2,S H Ho Sports Hall_Inverter_2
+Zone L2,UG Hall2 2F_Inverter
+Zone L2,UG Hall2 RF_Inverter
+Zone L2,UG Hall3_Inverter
+Zone L2,UG Hall4_Inverter
+Zone L2,UG Hall6_Inverter
+Zone L2,UG Hall7_Inverter
+Zone L2,Wong Check She Research Centre_Inverter_1
+Zone L2,Wong Check She Research Centre_Inverter_2
+Zone L2,Zone A1_Inverter
+Zone L2,Zone A2_Inverter_1
+Zone L2,Zone A4_Inverter
+Zone L2,Zone A5_Inverter
+Zone L2,Zone A6_Inverter
+Zone L2,Zone A7_Inverter
+Zone L2,Zone D_Inverter_2
+Zone L2,Zone J1_Inverter
+Zone L2,Zone J2_Inverter
+SQ567,LSK North_Inverter
+SQ567,LSK South_Inverter
+SQ567,SQ1_Inverter
+SQ567,SQ2_Inverter
+SQ567,SQ3_Inverter
+SQ567,SQ4_Inverter
+SQ567,UG Hall6_Inverter
+SQ567,UG Hall7_Inverter
+UG Hall2 2F,LSK North_Inverter
+UG Hall2 2F,LSK South_Inverter
+UG Hall2 2F,SQ1_Inverter
+UG Hall2 2F,SQ2_Inverter
+UG Hall2 2F,SQ3_Inverter
+UG Hall2 2F,SQ4_Inverter
+UG Hall2 2F,UG Hall6_Inverter
+UG Hall2 2F,UG Hall7_Inverter
+UG Hall2 RF,LSK North_Inverter
+UG Hall2 RF,LSK South_Inverter
+UG Hall2 RF,SQ1_Inverter
+UG Hall2 RF,SQ2_Inverter
+UG Hall2 RF,SQ3_Inverter
+UG Hall2 RF,SQ4_Inverter
+UG Hall2 RF,UG Hall3_Inverter
+UG Hall2 RF,UG Hall4_Inverter
+UG Hall2 RF,UG Hall6_Inverter
+UG Hall2 RF,UG Hall7_Inverter
+Zone A1,LSK North_Inverter
+Zone A1,LSK South_Inverter
+Zone A1,SQ1_Inverter
+Zone A1,SQ2_Inverter
+Zone A1,SQ3_Inverter
+Zone A1,SQ4_Inverter
+Zone A1,UG Hall3_Inverter
+Zone A1,UG Hall4_Inverter
+Zone A1,UG Hall6_Inverter
+Zone A1,UG Hall7_Inverter
+Zone A4,LSK North_Inverter
+Zone A4,LSK South_Inverter
+Zone A4,SQ1_Inverter
+Zone A4,SQ2_Inverter
+Zone A4,SQ3_Inverter
+Zone A4,SQ4_Inverter
+Zone A4,UG Hall3_Inverter
+Zone A4,UG Hall4_Inverter
+Zone A4,UG Hall6_Inverter
+Zone A4,UG Hall7_Inverter
+Zone A2 1,LSK North_Inverter
+Zone A2 1,LSK South_Inverter
+Zone A2 1,SQ1_Inverter
+Zone A2 1,SQ2_Inverter
+Zone A2 1,SQ3_Inverter
+Zone A2 1,SQ4_Inverter
+Zone A2 1,SQ567_Inverter
+Zone A2 1,UG Hall2 2F_Inverter
+Zone A2 1,UG Hall2 RF_Inverter
+Zone A2 1,UG Hall3_Inverter
+Zone A2 1,UG Hall4_Inverter
+Zone A2 1,UG Hall6_Inverter
+Zone A2 1,UG Hall7_Inverter
+Zone A2 1,Zone A1_Inverter
+Zone A2 1,Zone A4_Inverter
+SQ Apartment1-12,LSK North_Inverter
+SQ Apartment1-12,LSK South_Inverter
+SQ Apartment1-12,SQ1_Inverter
+SQ Apartment1-12,SQ2_Inverter
+SQ Apartment1-12,SQ3_Inverter
+SQ Apartment1-12,SQ4_Inverter
+SQ Apartment1-12,SQ567_Inverter
+SQ Apartment1-12,UG Hall2 2F_Inverter
+SQ Apartment1-12,UG Hall2 RF_Inverter
+SQ Apartment1-12,UG Hall3_Inverter
+SQ Apartment1-12,UG Hall4_Inverter
+SQ Apartment1-12,UG Hall6_Inverter
+SQ Apartment1-12,UG Hall7_Inverter
+SQ Apartment1-12,Zone A1_Inverter
+SQ Apartment1-12,Zone A4_Inverter
+SQ Apartment13-24,LSK North_Inverter
+SQ Apartment13-24,LSK South_Inverter
+SQ Apartment13-24,SQ1_Inverter
+SQ Apartment13-24,SQ2_Inverter
+SQ Apartment13-24,SQ3_Inverter
+SQ Apartment13-24,SQ4_Inverter
+SQ Apartment13-24,SQ567_Inverter
+SQ Apartment13-24,UG Hall2 2F_Inverter
+SQ Apartment13-24,UG Hall2 RF_Inverter
+SQ Apartment13-24,UG Hall3_Inverter
+SQ Apartment13-24,UG Hall4_Inverter
+SQ Apartment13-24,UG Hall6_Inverter
+SQ Apartment13-24,UG Hall7_Inverter
+SQ Apartment13-24,Zone A1_Inverter
+SQ Apartment13-24,Zone A4_Inverter
+SQ Apartment25-36,LSK North_Inverter
+SQ Apartment25-36,LSK South_Inverter
+SQ Apartment25-36,SQ1_Inverter
+SQ Apartment25-36,SQ2_Inverter
+SQ Apartment25-36,SQ3_Inverter
+SQ Apartment25-36,SQ4_Inverter
+SQ Apartment25-36,SQ567_Inverter
+SQ Apartment25-36,UG Hall2 2F_Inverter
+SQ Apartment25-36,UG Hall2 RF_Inverter
+SQ Apartment25-36,UG Hall3_Inverter
+SQ Apartment25-36,UG Hall4_Inverter
+SQ Apartment25-36,UG Hall6_Inverter
+SQ Apartment25-36,UG Hall7_Inverter
+SQ Apartment25-36,Zone A1_Inverter
+SQ Apartment25-36,Zone A2_Inverter_1
+SQ Apartment25-36,Zone A4_Inverter
+SQ Apartment37-48,LSK North_Inverter
+SQ Apartment37-48,LSK South_Inverter
+SQ Apartment37-48,SQ1_Inverter
+SQ Apartment37-48,SQ2_Inverter
+SQ Apartment37-48,SQ3_Inverter
+SQ Apartment37-48,SQ4_Inverter
+SQ Apartment37-48,SQ567_Inverter
+SQ Apartment37-48,UG Hall2 2F_Inverter
+SQ Apartment37-48,UG Hall2 RF_Inverter
+SQ Apartment37-48,UG Hall3_Inverter
+SQ Apartment37-48,UG Hall4_Inverter
+SQ Apartment37-48,UG Hall6_Inverter
+SQ Apartment37-48,UG Hall7_Inverter
+SQ Apartment37-48,Zone A1_Inverter
+SQ Apartment37-48,Zone A4_Inverter

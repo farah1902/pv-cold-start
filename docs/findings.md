@@ -207,6 +207,39 @@ repository). Paths are relative to `data/raw/hkust/Dataset/Time series dataset/`
 - **Evidence:** `results/nb1_audit/inventory_weather.csv`. Irradiance has 2, 3,076 and 5,930 missing 1-min rows in
   2021, 2022 and 2023, and no NA values: the gaps are absent rows, unlike the PV files, which write NA.
 
+### F25 — The station "rated power" field is mostly the DC capacity, not the AC rating — *solid*
+- **Evidence:** `results/nb1_audit/units_stations.csv` vs the module sums: the field equals the DC capacity for most
+  stations (Library 170.2, Shaw Auditorium 88.48, Zone A7 12.78, SQ Block S 32.85, …). It does not for Indoor Sports
+  Centre (33.3, against 43.8 kWp DC) or Zone D (68.62, the DC of one module block). The data paper's total of
+  2,230.8 kWp is consistent with DC; the October audit's reading of the field as AC was wrong.
+- **Reading:** AC ratings come from the inverter model names (D01), never from this field. The exception is Indoor
+  Sports Centre, where 33.3 kW agrees with the standard SE33_3K rating and the observed clip (D29).
+
+### F26 — Time labels: inverter values are interval means labelled at the interval start; site files use the same slots — *strong*
+- **Evidence:** `results/nb2_panel/label_offset_inverter.csv`, `label_offset_site.csv`. On the 30 clearest, smoothest
+  days (31 flat units), the correlation of fleet power with Ineichen clear-sky GHI peaks at a shift of +3.0 min for
+  the 5-min inverter values (correlation 0.990; theory for start-labelled means: +2.5) and at +11.0 min for the 15-min
+  site values (theory: +7.5). Site stamp to inverter slot: +3.0 min, i.e. 0 slots.
+- **Reading:** geometry is computed at stamp + 3 min (5 min) and slot + 8 min (15 min); site series need no relabelling.
+  The peak is broad, so the shift is known to about ±1–2 min. The guide's pilot "lead of about 5 min" is not
+  confirmed.
+
+### F27 — The 15-min panel is clean, and every event is eligible — *solid*
+- **Evidence:** `results/nb2_panel/qc_flag_shares.csv`, `events.csv`, `units.csv`, `testbed.csv`.
+  - Over daylight 5-min values there are no frozen, negative or night-power values. Over-limit (y > 1.05) appears
+    only in units running above their nameplate (Zone A7 1.15%, UG Hall2 RF 0.25%). Outages are a median 0.02% per
+    unit; maximum 6.0% for Indoor Sports Centre, then Zone A2 inverters 2 (2.3%) and 3 (1.3%).
+  - After each unit starts, 96.1% of daylight 15-min slots are valid; the clipped share (y ≥ 0.97) is a median
+    0.25% per unit, maximum 3.3%.
+  - The 70% start rule agrees with the first row for 39 of 44 units and lags it by 1 day for 4 units. Zone A2
+    inverter 2 lags by 8 days (first row 2023-05-16, rule start 2023-05-24): a real commissioning ramp inside a
+    scored event.
+  - All 13 scored, 4 sensitivity and 10 validation events are eligible: at least 8 donors (scored minimum 20;
+    SQ567 exactly 8) and at least 30 valid days in their first 90 (minimum 73 for the scored events; Zone L2 41).
+    With the provisional boundary (2023-02-17) the scored events split 8 stable and 5 drifted.
+  - Hidden-unit test bed: 31 units (29 stations) on 1 April 2022, 38 units (33 stations) on 1 April 2023, in 5
+    groups of 5–8 units.
+
 ### F16 — Not every site file starts on the 1st of a month — *solid*
 - **Evidence:** among the 18 site files of the first event list, Indoor Sports Centre (2021-12-02), Zone J2
   (2021-11-13), Zone D (2022-01-20) and UG Hall9 (2023-02-11) start mid-month. The audit counts 5 of the 15-min and

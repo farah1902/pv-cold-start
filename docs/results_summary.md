@@ -31,7 +31,18 @@ Source: `results/nb1_audit/summary.json` and the CSV files beside it (run of 18 
 | Maximum 1-min GHI reading | 3,608.6 W/m² (Feb 2023) | sensor_monthly.csv |
 
 ## Events (NB2)
-_empty_
+Source: `results/nb2_panel/summary.json`, `events.csv`, `units.csv`, `qc_flag_shares.csv` (run of 18 Nov 2026).
+
+| Quantity | Value | Source file |
+| --- | --- | --- |
+| Time-label shift: inverter files; site files | +3.0 min; +11.0 min (same 15-min slots) | label_offset_*.csv |
+| Valid share of daylight 15-min slots after each unit starts | 0.961 | NB2 notebook output |
+| Clipped share (y ≥ 0.97): median, max per unit | 0.0025, 0.033 | NB2 notebook output |
+| Outage share of daylight 5-min values: median, max | 0.0002, 0.0599 (Indoor Sports Centre) | qc_flag_shares.csv |
+| Events: scored / sensitivity / validation; all eligible | 13 / 4 / 10; yes | events.csv |
+| Donors at start: scored minimum; validation minimum | 20; 8 (SQ567) | events.csv |
+| Scored events by provisional sensor period | 8 stable, 5 drifted | events.csv |
+| Hidden-unit test bed units (stations) | 31 (29) on 2022-04-01; 38 (33) on 2023-04-01 | testbed.csv |
 
 ## Index, gains and prior (NB3)
 _empty_

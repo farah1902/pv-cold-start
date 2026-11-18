@@ -14,6 +14,7 @@ venv/
 *.tmp
 results/.tmp_*/
 results/.*.log
+results/**/*.parquet
 _local_archive/
 .DS_Store
 Thumbs.db

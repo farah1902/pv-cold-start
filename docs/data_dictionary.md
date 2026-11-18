@@ -41,3 +41,10 @@ created. HKUST paths are relative to `data/raw/hkust/Dataset/`.
 | `results/nb1_audit/zone_d_ratio.csv` | Zone D station / inverter 2 daily energy, monthly median |
 | `results/nb1_audit/sensor_daily.csv` | Per day: sensor, CAMS and Ineichen irradiation (Wh/m²), ratios to CAMS and to the fleet proxy |
 | `results/nb1_audit/sensor_monthly.csv` | Per month: night offset, noon p95 ratios, BSRN exceedances, maximum |
+| `results/nb2_panel/units.csv` | Per inverter: AC used and its source, DC, DC/AC, metadata_error, in_prior_test, flat, first_row, rule_start |
+| `results/nb2_panel/events.csv` | Per event (scored, sensitivity, validation): start, target source, AC, DC/AC, prior test, donors, valid days, provisional sensor period, eligibility |
+| `results/nb2_panel/donors.csv` | Event, donor (one row per pair) |
+| `results/nb2_panel/testbed.csv` | Hidden-unit test bed: date, unit, station, valid days, group |
+| `results/nb2_panel/qc_flag_shares.csv` | Per unit: share of daylight 5-min values with each QC flag |
+| `results/nb2_panel/label_offset_*.csv` | Correlation with clear-sky GHI against the time shift |
+| `results/nb2_panel/*.parquet` (git-ignored, rebuilt by NB2) | P15_kW, y15, flags15 (bitmask: 1 night, 2 negative, 4 frozen, 8 over limit, 16 outage), nvalid15, geometry15 (zenith, elevation, azimuth, hour angle, doy, G_cs, Gt), targets15_kW (per event), k_crude5 |

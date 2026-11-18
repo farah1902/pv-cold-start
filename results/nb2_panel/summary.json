@@ -1,0 +1,99 @@
+{
+  "notebook": "NB2_preprocessing_events",
+  "environment": {
+    "python": "3.12.1",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "executable": "C:\\Python312\\python.exe",
+    "run_at": "2026-11-18 23:30:02",
+    "numpy": "1.26.4",
+    "pandas": "2.2.0",
+    "scipy": "1.12.0",
+    "sklearn": "1.5.1",
+    "statsmodels": "0.15.0",
+    "lightgbm": "4.6.0",
+    "pvlib": "0.16.1",
+    "ruptures": "v1.1.10",
+    "matplotlib": "3.8.3",
+    "torch": "2.2.0+cpu",
+    "openpyxl": "3.1.5",
+    "pyarrow": "15.0.2",
+    "yaml": "6.0.1"
+  },
+  "runtime_s": 28.2,
+  "label_shift_inverter_min": 3.0,
+  "label_shift_site_min": 11.0,
+  "site_shift_slots": 0,
+  "clear_days": [
+    "2022-04-04",
+    "2022-03-08",
+    "2022-04-03",
+    "2022-03-09",
+    "2022-04-09",
+    "2021-09-08",
+    "2022-07-11",
+    "2022-04-08",
+    "2021-07-22",
+    "2022-04-05",
+    "2022-09-04",
+    "2022-07-12",
+    "2021-07-15",
+    "2022-07-08",
+    "2022-07-13",
+    "2022-05-04",
+    "2022-03-10",
+    "2022-04-10",
+    "2022-10-11",
+    "2021-07-09",
+    "2022-07-22",
+    "2021-09-05",
+    "2023-07-13",
+    "2022-09-03",
+    "2022-09-09",
+    "2022-10-25",
+    "2022-10-12",
+    "2021-10-16",
+    "2023-08-03",
+    "2022-10-21"
+  ],
+  "n_flat_units": 31,
+  "qc_flag_share_median": {
+    "night": 0.0,
+    "negative": 0.0,
+    "frozen": 0.0,
+    "over_limit": 0.0,
+    "outage": 0.00021,
+    "valid_share_daylight": 0.80232
+  },
+  "qc_flag_share_max": {
+    "night": 0.0,
+    "negative": 0.0,
+    "frozen": 0.0,
+    "over_limit": 0.01153,
+    "outage": 0.0599,
+    "valid_share_daylight": 0.96465
+  },
+  "slots_15min": 46800,
+  "provisional_boundary": "2023-02-17",
+  "events_by_set": {
+    "scored": 13,
+    "sensitivity": 4,
+    "validation": 10
+  },
+  "eligible_by_set": {
+    "scored": 13,
+    "sensitivity": 4,
+    "validation": 10
+  },
+  "scored_by_period": {
+    "stable": 8,
+    "drifted": 5
+  },
+  "testbed_units_by_date": {
+    "2022-04-01": 31,
+    "2023-04-01": 38
+  },
+  "ac_corrections": {
+    "Indoor Sports Centre_Inverter": "station rating 33.3 kW (= SE33_3K); model string STP 10.0 is wrong",
+    "Zone D_Inverter_2": "empirical: p99.9 49.9 kW (SE50K size); model string SE25K is wrong"
+  }
+}

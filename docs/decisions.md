@@ -255,6 +255,31 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
 - **Change:** the only capacity addition is tested with the prior (G1, G2), not with g = 1. Guide §4.3 and the event
   table now say so; the guide's erratum "Zone A2 has no module blocks" is replaced by the Zone D inverter-2 error.
 
+### D29 — Implementation choices of NB2 [data, Phase 2]
+- **Request or reason:** the author asked to move to NB2 (18 Nov 2026).
+- **Change:**
+  - **AC corrections:** Indoor Sports Centre 33.3 kW (station rating, standard SE33_3K, observed clip 33.4 kW).
+    Zone D inverter 2 50 kW, from its observed limit (49.9 kW). That last value uses the unit's own data, the
+    "own-peak" trap, so NB6 adds a sensitivity run without the two metadata-error events (Indoor Sports Centre,
+    Zone D). Both stay out of the DC/AC prior test (D01).
+  - **Time base:** the shift that maximises the correlation with clear sky (F26): +3.0 min for 5-min values; 15-min
+    slots at slot + 8 min; site series in the same slots.
+  - **Quality control:** flags are kept as a bitmask (night, negative, frozen ≥ 1 h, y > 1.05, outage = zero power
+    while the crude fleet index exceeds 0.3 and G̃ > 0.1). Only negative and night values are set to missing.
+  - **Aggregation:** 15-min mean of the three 5-min values, valid if at least 2; flags OR-ed.
+  - **Daylight** for the start rule and for valid days means G̃ > 0.1. A valid day has at least 70% valid daylight
+    slots.
+  - **Event starts:** the approved observed starts (D08, D27); validation units start at their first row. Donors use
+    the 70% rule start.
+  - **Event targets:** Zone J2, Zone J1 and Zone L2 use their site series until the inverter file starts. Zone D is
+    station level (site series, AC 83.3 kW). Multi-inverter events sum their inverters.
+  - **Hidden-unit test bed (D18):** pseudo-starts on 1 April 2022 and 1 April 2023, the same season in both windows.
+    Units must have been online for at least 90 days, have at least 30 valid days in the window, and not be inside
+    their own real event window. Stations go to 5 groups balanced by unit count (greedy, seed 20261118).
+  - **Outputs:** the Parquet panels (25 MB, rebuilt by NB2 in about 30 s) are git-ignored; CSV, JSON and figures are
+    committed.
+- **Evidence:** `results/nb2_panel/`; F25–F27.
+
 ### D16 — pvlib 0.16.1 and ruptures 1.1.10 are installed locally and pinned [environment, Phase 0]
 - **Request or reason:** both are in the guide's software list (§5.6) and were missing locally on 18 Nov 2026.
 - **Change:** `pip install pvlib==0.16.1 ruptures==1.1.10`. A dry run first showed that nothing else would be

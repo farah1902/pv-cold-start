@@ -155,7 +155,9 @@ python tools/make_nb0.py && python tools/make_nb1.py   # regenerate the notebook
 cd notebooks && jupyter nbconvert --to notebook --execute --inplace --ExecutePreprocessor.kernel_name=python3 --ExecutePreprocessor.timeout=1400 NB1_hkust_audit.ipynb
 ```
 
-Run times (local): NB0 12 s; NB1 about 250 s. Outputs: `results/nb0_setup/`, `results/nb1_audit/`.
+Run times (local): NB0 12 s; NB1 about 250 s; NB2 about 30 s (`python tools/make_nb2.py`, then execute
+`NB2_preprocessing_events.ipynb`). Outputs: `results/nb0_setup/`, `results/nb1_audit/`, `results/nb2_panel/`
+(its Parquet panels are git-ignored and rebuilt by NB2).
 
 ## Environment notes
 

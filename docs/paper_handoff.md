@@ -42,7 +42,7 @@ telemetry start instead of grid connection (F06); metadata errors (D01).
 - That satellite data confirm the HKUST sensor drift, unless the CAMS all-sky check is actually run (D14).
 
 ## 8. What is still missing
-Everything from NB0 on.
+Everything from NB3 on (NB0–NB2 done on 18 Nov 2026).
 
 ## 9. Writing conventions
 Roadmap Phase 10: clear academic English, short sentences, active verbs; research questions and hypotheses as one
