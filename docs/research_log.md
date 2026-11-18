@@ -61,3 +61,14 @@ One entry per work session: what was asked, what was done, the key numbers, what
   names (F20): Simeunović et al. (TSTE), SolarCrossFormer (TSTE 2025), Solar-VLM (2026); no clash for the name
   candidates. Proposed a design to the author.
 - **Open:** the author's approval of the name, the design and the selection rule; NB0/NB1.
+
+## 2026-11-18 (late) — PVSetFormer approved; guide and title revised
+
+- **Asked:** the author named the model PVSetFormer, approved R1 (with as many design rounds as needed) and R2, and
+  asked for the methodology and the title to be changed before NB0 and NB1.
+- **Done:** a web search found no model named PVSetFormer. Backed up the guide
+  (`docs/history/methodology_2026-11-18_audit.md`) and applied 42 edits by an all-or-nothing script. A first run
+  stopped on an ambiguous table-row prefix before writing anything; after the fix, all edits applied, and the guide
+  grew from 978 to 1,007 lines, still LF. New title in the guide, `CLAUDE.md` and `README.md`; D25 recorded, D24
+  approved; forbidden claims updated.
+- **Open:** NB0 and NB1.

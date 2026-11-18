@@ -27,7 +27,9 @@ One campus; 14 scored events, 5 of them drifted; low tilt diversity (0–15°); 
 telemetry start instead of grid connection (F06); metadata errors (D01).
 
 ## 7. Claims the paper must NOT make
-- "A novel architecture" (guide §6, writing rules).
+- PVSetFormer as a general-purpose forecaster: describe it only for cold-start PV fleets (guide §6, D25).
+- That PVSetFormer beats a model unless rules R1 and R2 show it at the primary horizon (D25).
+- The PVSetFormer title if rule R1 keeps LightGBM as the main model: then use the fallback title (D25).
 - Any comparison with RMSE values from other countries' papers (guide §6).
 - Cross-climate transfer in general; only Safi is measured (guide §1). No tilt-transfer claim.
 - Any difference below about 3% (guide §3.10).

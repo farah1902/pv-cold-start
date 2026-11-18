@@ -196,13 +196,32 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
   more optimized than TimeXer, with our proposed name as a novel approach … I need novelty".
 - **Change:** a new transformer for the campus index. This overrides guide §1 ("no new deep architecture") and the
   §6 writing rule against "a novel architecture". The design, name and selection rule were proposed on 18 Nov 2026
-  and **await the author's approval**:
+  and **approved the same day (D25)**:
   - **Design:** censoring-aware donor tokens, coordinate-free donor-set attention, a solar-time daylight encoder,
     horizon queries built from the known future sun geometry, and a monotone 9-quantile head.
   - **Name:** KappaFormer, HelioSet or SkyFleet.
   - **Selection rule:** built and tuned on the validation units only. It becomes the main index forecaster only if it
     beats LightGBM there at 1 h, before the protocol freeze (D21).
 - **Evidence:** F20 (closest work and the gap).
+
+### D25 — Name PVSetFormer, new working title, rules R1 and R2 approved; the research guide revised [models, writing, Phase 0] [guide deviation]
+- **Request or reason:** the author, 18 Nov 2026: name "PVSetFormer"; R1 supported ("it's important to help our model
+  many times to beat any other models, this is the real work"); R2 "strongly supported"; "the methodology must
+  change … change the methodology and the title".
+- **Change:**
+  - **Name:** PVSetFormer. No model of that name was found (F20 searches plus one more on 18 Nov; re-check before
+    submission).
+  - **Working title:** *PVSetFormer: forecasting new rooftop PV inverters from day one, without history or a
+    pyranometer.* If R1 keeps LightGBM as the main model, the fallback title is *Forecasting new rooftop PV inverters
+    from day one, without history or a pyranometer: a causal fleet index and a nameplate gain prior.*
+  - **R1:** PVSetFormer may go through as many design rounds as needed, on development data only: the 10 validation
+    units and the fleet index before the first test event (2021-10-05). Every variant tried is logged as a decision,
+    and their number is reported. All models get the same hyperparameter-search budget. PVSetFormer becomes the main
+    index forecaster only if it beats LightGBM on the validation units at 1 h, before the `protocol-freeze` tag (D21).
+  - **R2:** TimeXer gets the same per-donor series; PVSetFormer is also run on the fleet summary only (A6e).
+  - **Guide revised at the author's request:** 42 edits, applied all-or-nothing by a script, integrate D07 and
+    D17–D25. The previous version is `docs/history/methodology_2026-11-18_audit.md`; 978 → 1,007 lines.
+- **Consequence:** D24 is approved (no longer pending).
 
 ### D16 — pvlib 0.16.1 and ruptures 1.1.10 are installed locally and pinned [environment, Phase 0]
 - **Request or reason:** both are in the guide's software list (§5.6) and were missing locally on 18 Nov 2026.

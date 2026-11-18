@@ -1,6 +1,7 @@
 # CLAUDE.md — instructions for agents working in this repository
 
-Working title: *Cold-start PV forecasting without a pyranometer.* A newly installed rooftop inverter is forecast from
+Working title: *PVSetFormer: forecasting new rooftop PV inverters from day one, without history or a pyranometer*
+(D25; a fallback title applies if rule R1 keeps LightGBM). A newly installed rooftop inverter is forecast from
 its first day, with no history of its own and no irradiance sensor, from (i) a campus clear-sky index estimated causally
 from the inverters already online and (ii) a gain prior from its nameplate DC/AC ratio. Main data: the HKUST rooftop PV
 dataset (Lin et al., Dryad doi:10.5061/dryad.m37pvmd99; Scientific Data 12:63, 2025), 2021–2023. External case: the
@@ -99,6 +100,13 @@ something, record it and follow it, even if you would have chosen otherwise.
 - **The research guide belongs to the author.** Never edit `docs/research_guide.md` silently. A change of plan found
   by the work is recorded as a decision marked **[guide deviation]**. When the author sends a new version, diff it
   against the current file, log the changes, then replace it. Older versions live in `docs/history/`.
+- **PVSetFormer is the author's own model (D24, D25).** Improving it is "the real work": as many design rounds as
+  needed, but **only on development data** (the 10 validation units and the fleet index before 2021-10-05). Log every
+  variant as a decision. All models get the same hyperparameter budget. It becomes the main model only if it beats
+  LightGBM on the validation units at 1 h before the `protocol-freeze` tag (R1). TimeXer gets the same per-donor inputs,
+  and PVSetFormer also runs on the fleet summary only (R2).
+- **Guide revisions on request:** when the author asks the agent to change the guide, apply the edits by an
+  all-or-nothing script, keep the previous version in `docs/history/`, and log a decision (as in D25).
 - **Data are never committed** (about 1.7 GB). `data/MANIFEST_sha256.csv` is committed instead (D15).
 - **Morocco scope:** the Safi external case and the validation kit are in this paper; the semi-synthetic Benguerir and
   regional fleets are in the follow-up paper (D07).

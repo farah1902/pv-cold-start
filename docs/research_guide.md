@@ -1,6 +1,10 @@
-# Cold-start PV forecasting without a pyranometer — full methodology
+# PVSetFormer: cold-start PV forecasting without a pyranometer — full methodology
 
-Nov 2, 2026 · @farah
+Nov 2, 2026 · @farah · revised 18 Nov 2026
+
+**Working paper title (D25):** *PVSetFormer: forecasting new rooftop PV inverters from day one, without history or a pyranometer.* If rule R1 keeps quantile LightGBM as the main index forecaster, the fallback title is *Forecasting new rooftop PV inverters from day one, without history or a pyranometer: a causal fleet index and a nameplate gain prior.*
+
+**Revision of 18 Nov 2026 (evening):** this version integrates decisions D07 and D17–D25 of `docs/decisions.md`: Morocco scope (virtual fleets to the follow-up paper), CAMS all-sky data, the hidden-unit test bed, the satellite as a second drift reference, release additions, the protocol-freeze tag, the prior reported in days, the foundation-model and TimeXer baselines, and PVSetFormer with rules R1 and R2. The previous version is `docs/history/methodology_2026-11-18_audit.md`.
 
 ## Status
 
@@ -22,7 +26,7 @@ The DC/AC gain prior, tested on the 15 events with clean metadata, halves the ga
 
 ## 1. Global vision
 
-**Thesis.** A newly installed rooftop PV inverter can be forecast from its first day, with no history of its own and no pyranometer. Two ingredients do it: a campus clear-sky index estimated causally from the inverters already online, and a gain prior taken from the new inverter's nameplate DC/AC ratio.
+**Thesis.** A newly installed rooftop PV inverter can be forecast from its first day, with no history of its own and no pyranometer. Two ingredients do it: a campus clear-sky index estimated causally from the inverters already online and forecast by PVSetFormer, a censoring-aware set transformer over the peer inverters (or by quantile LightGBM if rule R1 says so), and a gain prior taken from the new inverter's nameplate DC/AC ratio.
 
 ### The problem
 
@@ -32,7 +36,7 @@ Most cold-start papers also simulate the cold start by hiding a station that was
 
 ### Three contributions (no more)
 
-1. **A causal fleet-factor forecaster.** The campus clear-sky index k(t) is estimated from peers up to the issue time only, with clipping treated as censoring, then forecast probabilistically for 15 min to 6 h. The new inverter needs no history and no irradiance sensor. A distance-weighted local index extends the idea from a campus to a region (Section 8).
+1. **A causal fleet-factor forecaster with PVSetFormer.** The campus clear-sky index k(t) is estimated from peers up to the issue time only, with clipping treated as censoring, then forecast probabilistically for 15 min to 6 h by PVSetFormer: a transformer that reads the peer inverters as a set (no coordinates), treats clipped readings as censored, and asks one question per horizon from the known future sun geometry (Section 5.4). The new inverter needs no history, no coordinates and no irradiance sensor.
 2. **A physical gain prior.** Each inverter's gain is predicted from its DC/AC ratio, with uncertainty from the donor fleet, then updated by Bayesian shrinkage as its own data arrive. This tells an operator when to retire the cold-start model.
 3. **An honest evaluation protocol.** Real telemetry start dates, a formal information set, an exact error budget (index vs gain vs residual), and a sensor ablation showing that irradiance-based transfer works while the sensor is stable and fails after its step drift, even after recalibration (to be confirmed by A4b). An external case study on a Moroccan rooftop in Safi then measures how much adaptation a new country needs.
 
@@ -48,16 +52,19 @@ Read from abstracts and earlier notes; every cell is verified in the full texts 
 | Bottieau et al. 2022, cross-learning | No | Weather and clear-sky irradiance | Yes | Simulated | To verify |
 | AutoPV (Meisenbacher et al. 2022) | No, peak power only | Weather forecasts | Yes | Simulated | No |
 | PhysTrans (IJCAI 2026) | No | Satellite cloud information | Yes | Simulated | To verify |
-| **This paper** | **No** | **None; DC/AC from nameplate** | **Yes** | **Yes, 14 events** | **Yes** |
+| Simeunović et al. 2022, graph transformer over PV systems ([doi](https://doi.org/10.1109/TSTE.2021.3125200)) | To verify | No (production data only); graph construction to verify | Yes | No | No |
+| SolarCrossFormer (Schubnel et al. 2025): irradiance, not PV power ([doi](https://doi.org/10.1109/TSTE.2025.3624044)) | No: unseen sites from coordinates | Satellite images and ground stations | Yes | No | Yes |
+| Longarini et al. 2026, foundation models with synthetic histories ([arXiv](https://arxiv.org/abs/2606.07457)) | No: synthetic history from metadata | ERA5 irradiance with perfect foresight; daily target | No (oracle future covariates) | No | To verify |
+| **This paper (PVSetFormer)** | **No** | **None: DC/AC from nameplate, no coordinates** | **Yes** | **Yes, 14 events** | **Yes** |
 
 The sentence that must survive a reviewer who knows Engerer: *we take the PV clear-sky index used for same-time upscaling and turn it into a causal, probabilistic cold-start forecast that needs no local pyranometer, then test it on real start dates, including the year the sensor drifted.*
 
 ### Scope limits, stated up front
 
-- Main statistical claims on one campus (about 60 ha), one humid subtropical climate, tilts of 0–15°. Morocco adds one real external case (Safi, 3 inverters) and two semi-synthetic fleets.
+- Main statistical claims on one campus (about 60 ha), one humid subtropical climate, tilts of 0–15°. Morocco adds one real external case (Safi, 3 inverters); the semi-synthetic Moroccan fleets belong to the follow-up paper (D07).
 - All 15-min units are mono-Si; thin-film appears only in the hourly track.
 - Horizons of 15 min to 6 h, issued in daylight. Day-ahead is out of scope. The inverter files cover 06:00–17:55 only, so forecasts are issued between 06:00 and 17:55 minus the horizon.
-- Cross-climate transfer is measured only on Safi and the semi-synthetic Moroccan fleets, never claimed in general. No tilt-transfer claim and no new deep architecture.
+- Cross-climate transfer is measured only on Safi, never claimed in general. No tilt-transfer claim. PVSetFormer is a new architecture for this problem (D24), not a general-purpose forecaster: no claim beyond PV fleets.
 
 ### Pre-registered success criteria
 
@@ -65,7 +72,9 @@ The sentence that must survive a reviewer who knows Engerer: *we take the PV cle
 - In the drifted window (about 5 events, too few for a significant Wilcoxon test), it beats A4 and A4b by effect size, with per-event Diebold–Mariano tests at 1 h. In the stable window it stays within 5% of A4b.
 - The 80% interval covers 75–85% of observations (PICP).
 - If the main model only ties A1, the paper becomes the sensor-correction note instead.
-- The virtual Moroccan fleets are used in the main results only if the simulation, run at Safi with CAMS irradiance, reproduces Safi's measured daily energy within ±10% and its 15-min power with a correlation of at least 0.9. Otherwise they move to the supplement.
+- **Model selection, rule R1 (D24, D25):** PVSetFormer becomes the main index forecaster only if it beats quantile LightGBM on the validation units at 1 h, before the protocol freeze (D21). Otherwise LightGBM stays the main model and PVSetFormer is reported as a row. No switch after any test event is scored.
+- **Fair comparison, rule R2 (D24, D25):** TimeXer receives the same per-donor series as PVSetFormer, and PVSetFormer is also run on the fleet summary only, to separate information from design.
+- The hidden-unit test bed (D18) repeats the main and sensor comparisons with about 35 units.
 
 ## 2. Data and methodology of work
 
@@ -81,10 +90,10 @@ The unit of analysis is the inverter (44 units, 5-min telemetry aggregated to 15
 | Weather station | GHI, temperature, RH, rain, pressure, visibility, wind | 1 min | Sensor baselines A4 and A4b; optional past-weather ablation |
 | Brick metadata (.ttl) | Inverter and module models, module counts, tilt, azimuth, connection dates | Static | AC rating, DC/AC ratio, tilt class, start-date checks |
 | Safi rooftop (Mendeley b2s4ycc2gz) | 3 inverters: AC and DC power, reference cell, GHI, temperatures | 5 min, 2016–2018 | Real Moroccan case; validates the virtual fleets |
-| CAMS solar radiation (time series and 0.1° grid) | All-sky and clear-sky GHI at HKUST, at Safi and over Marrakesh-Safi | 1 to 15 min | Independent check of the HKUST sensor; baseline A9; irradiance for the virtual fleets |
-| Open-Meteo archive (ERA5) | Air temperature, wind and rain at 9 Moroccan points | 1 h | Cell temperature and soiling resets in the simulation |
-| Benguerir building footprints | 29,225 buildings with area and confidence | Static | Roofs for the town-scale virtual fleet |
-| PV density grid and province areas (regional PV maps) | 19,760 cells of relative PV density; 1.39 km² of detected PV | Static, 0.01° | Where the regional virtual fleet goes, and its total size |
+| CAMS radiation time series v4.6 (all-sky and clear-sky) | GHI, BHI, DHI at HKUST (2021–2023) and Safi (2016-06 to 2018-12) | 1 min | Independent check of the HKUST sensor and second drift reference (D19); baselines A9 and A9n; satellite reference at Safi |
+| Open-Meteo archive (ERA5) | Air temperature, wind and rain at Benguerir | 1 h | Follow-up paper only (D07) |
+| Benguerir building footprints | 29,225 buildings with area and confidence | Static | Follow-up paper only (D07) |
+| PV density grid and province areas (regional PV maps) | 19,760 cells of relative PV density; 1.39 km² of detected PV | Static, 0.01° | Introduction and Discussion only (D07) |
 
 ### Units, capacities and errata
 
@@ -260,7 +269,7 @@ After n days, the local gain ĝ\_loc(n) is the same Huber fit on the new unit's 
 
 Equivalently, ĝ(n) = (w0 ĝ\_prior + n\_eff ĝ\_loc) / (w0 + n\_eff), with w0 = s\_1² / σ\_p² in days.
 
-- **Empirical Bayes, not a guess:** σ\_p² is the robust (MAD-based) variance of the leave-one-out prior errors among donors, and s\_1² is the variance of one-day local gain estimates among donors. Both come from donor data before s\_e, so w0 is computed, not chosen.
+- **Empirical Bayes, not a guess:** σ\_p² is the robust (MAD-based) variance of the leave-one-out prior errors among donors, and s\_1² is the variance of one-day local gain estimates among donors. Both come from donor data before s\_e, so w0 is computed, not chosen. It is reported as a headline: the nameplate prior is worth about w0 days of the inverter's own data (D22).
 - n\_eff = the number of valid days with at least 8 unclipped slots where G̃ > 0.2.
 - **Retirement day n\*** per event: the first day on which a local-only model (smart persistence or LightGBM on the unit's own history) has a 7-day rolling nRMSE at or below the cold-start model's. The day when the prior's weight w0/(w0 + n\_eff) falls under 0.1 is reported beside it.
 
@@ -287,6 +296,8 @@ where z is the solar zenith, α the solar azimuth and ω the hour angle. Direct 
 ```
 
 The 9 outputs are sorted so quantiles never cross (monotone rearrangement, Chernozhukov et al. 2010). Forecasts are issued in daylight (G̃(t) > 0.05, n\_t ≥ 8) and scored when G̃(t + h) > 0.02. Horizons that cross the night are not issued. Because the files stop at 17:55, issue times run from 06:00 to 17:55 minus the horizon: a 6-h forecast is issued no later than 11:55, so each horizon covers a different part of the day. Comparisons across horizons therefore use the common target window 12:00–17:55, which every horizon reaches; full-window scores per horizon are secondary.
+
+**Two forecasters share this interface (rule R1).** The quantile LightGBM bank above, and PVSetFormer (Section 5.4), which reads the donors' implied indices κ\_d directly instead of the summary state and turns the known future geometry into one query per horizon. The validation units decide which one is the main model, before the protocol freeze.
 
 ### 3.8 From index quantiles to the power distribution
 
@@ -399,7 +410,7 @@ A4b answers the reviewer who says "just recalibrate the sensor". It uses the pyr
 4. **Monthly calibration from the previous month:** c\_(m−1) = median of G\_cs / G' over its detected clear minutes with zenith below 70°; G\_corr = c\_(m−1) G'. A same-month (non-causal) calibration is a sensitivity run.
 5. **Same learner, different index.** A4b is the main model with k\_sens = G\_corr / G\_cs in place of the fleet index, and donor gains refitted against k\_sens. This isolates the value of the index source.
 
-Two related runs complete the ablation. **A4c** gives the main model both the fleet index and the corrected sensor index. The **drift change point**, found by PELT on the daily log-ratio of measured GHI to the fleet proxy k̂ G\_cs, only defines the stable and drifted periods used in reporting; it is never an input.
+Two related runs complete the ablation. **A4c** gives the main model both the fleet index and the corrected sensor index. The **drift change point**, found by PELT on the daily log-ratio of measured GHI to the fleet proxy k̂ G\_cs, only defines the stable and drifted periods used in reporting; it is never an input. A second PELT run on the daily log-ratio of measured GHI to CAMS all-sky GHI gives an independent date; the agreement of the two dates is reported, and the same comparison tests whether the 2021–2022 level of about 0.8 comes from the sensor or from the clear-sky model (D19).
 
 The open question that A4b settles: can a one-month calibration lag follow a step change, or does the fleet remain better even against a recalibrated sensor?
 
@@ -424,6 +435,8 @@ The open question that A4b settles: can a one-month calibration lag follow a ste
 - **Hierarchical bootstrap for campus-level claims:** resample events, then days within each event, for the 95% interval of the median skill.
 - **Diebold–Mariano test per event:** squared loss, Newey–West variance with lag h − 1, Harvey–Leybourne–Newbold small-sample correction, reported for every event at 1 h.
 - **Power check before writing claims:** the minimum detectable difference is simulated from the pilot's event-wise spread. No claim is made below it.
+- **Hidden-unit test bed (D18):** about 35 long-running inverters, in 5 station groups, are forecast as if new at one stable-window and one drifted-window date, with the index built without their group. It repeats the main and sensor comparisons with more units (inference by day-block bootstrap, since all units share one sky) and compares real starts with hidden-unit starts on the same days.
+- **Protocol freeze (D21):** the git tag `protocol-freeze`, with the frozen configuration hash, is pushed before any test event is scored.
 
 ### 4.5 Release: code, event table and sensor flags
 
@@ -433,21 +446,22 @@ The open question that A4b settles: can a one-month calibration lag follow a ste
 | Frozen configuration | Hyperparameters and thresholds as YAML, with the hash of the validation run that fixed them |
 | Event table | event\_id, station, units, AC\_kW, DC\_kWp, dcac, tilt\_class, connection\_date, first\_telemetry, first\_site\_row, gap\_days, n\_donors, valid\_days\_90, sensor\_period, exclusion\_flag, note |
 | Unit table and errata | AC from the model name, DC from modules, observed peak, the four metadata errors |
-| Sensor package | QC flags, night offset, corrected GHI (A4b), drift change points |
+| Sensor package | QC flags, night offset, corrected GHI (A4b), drift change points (fleet- and satellite-based), a daily drift flag and the fleet-derived GHI proxy k̂ G\_cs at 15 min (D20) |
 | Environment | Pinned package versions and random seeds |
-| Moroccan package | Safi audit, CAMS processing, the virtual-fleet generator with all its assumptions, the 8 PV clusters |
+| Moroccan package | Safi audit and CAMS processing (the virtual-fleet generator moves to the follow-up paper, D07) |
 
 Licences: MIT for the code and CC BY 4.0 for the derived data. The original Dryad licence (reported as CC0) is confirmed before release.
 
 ## 5. Models
 
-The main model is quantile LightGBM on the fleet state (9 quantiles × 6 horizons = 54 models per training origin), with the censored index and the DC/AC prior. Every other model removes exactly one claim, so each row of the results table tests one sentence of the paper.
+The main model is the censored index and the DC/AC prior with one of two index forecasters, chosen on the validation units by rule R1 before the freeze: PVSetFormer (Section 5.4) or quantile LightGBM on the fleet state (9 quantiles × 6 horizons = 54 models per training origin). Every other model removes exactly one claim, so each row of the results table tests one sentence of the paper.
 
 ### 5.1 All models
 
 | ID | Model | Claim it tests |
 | --- | --- | --- |
-| **Main** | Censored index + DC/AC prior + quantile LightGBM | The full method |
+| **Main** | Censored index + DC/AC prior + PVSetFormer (or quantile LightGBM, rule R1) | The full method |
+| LGB | The main pipeline with the quantile LightGBM bank, when PVSetFormer is main | A set transformer beats boosting on the same task |
 | A0 | Climatological index (slot median over the last 60 days) × prior gain; probabilistic version from the same 60 days | Cloud dynamics matter |
 | A1 | Persisted fleet index × prior gain; PeEn ensemble for probabilistic scores | Learning beats persistence |
 | CLIPER | Optimal convex combination of A0 and A1 (Yang 2019) | Learning beats the strongest simple reference |
@@ -457,11 +471,16 @@ The main model is quantile LightGBM on the fleet state (9 quantiles × 6 horizon
 | A4b | Same learner on the corrected pyranometer index | The fleet beats even a recalibrated sensor |
 | A4c | Main model plus the corrected sensor index | Adding the sensor helps or hurts |
 | A5 | k-nearest-neighbour analogs in the fleet-state space (K = 50), quantiles of their future index | Boosting beats analog forecasting (a cross-learning style baseline) |
-| A6 | TCN on the same inputs | A neural model adds nothing (or something) |
+| A6a | Chronos-2, zero-shot, past fleet state as past covariates and u(t + h) as known future covariates | A pre-trained foundation model does not replace campus-trained forecasting |
+| A6b | TimesFM 2.5, zero-shot, same covariates | Same, second foundation model |
+| A6c | TabPFN-TS, zero-shot, same covariates | Same, tabular foundation model |
+| A6d | TimeXer, trained, same per-donor series, u(t + h) through its future-exogenous variant, pinball loss | PVSetFormer's design beats a state-of-the-art exogenous transformer given the same information (rule R2) |
+| A6e | PVSetFormer on the fleet summary only (no donor set) | The gain comes from the design, not only from more information (rule R2) |
 | A7 | Same-time fleet index (oracle, labelled as not a forecast) | Upper bound; virtual metering |
 | A8 | Same-roof scaling (capacity additions only) | Beats what an operator would do |
 | L1, L2 | Smart persistence and LightGBM on the unit's own history (90-day curve only) | When to retire the cold-start model |
 | A9 | Satellite (CAMS) clear-sky index persisted forward × prior gain | The fleet beats satellite irradiance without a local sensor (optimistic about data latency) |
+| A9n | Same-time satellite clear-sky index (oracle, labelled as not a forecast) | 40 inverters vs one satellite pixel as a virtual pyranometer (D19) |
 
 &#91;embedded content: model family · 3 parts of the main model, 15 swaps\]
 
@@ -493,17 +512,22 @@ The values above are starting points. They are tuned once on a small grid (num\_
 4. Size: 17 events (14 scored, 3 sensitivity) × 3 origins × 54 models = 2,754 LightGBM fits. Each takes seconds, so the full run should fit in a few hours on a laptop (estimate).
 5. Stability ablation: a single origin at s\_e, with no refit.
 
-### 5.4 TCN ablation
+### 5.4 PVSetFormer: a censoring-aware fleet-set transformer (D24)
 
-- **Input:** the last 32 steps (8 h) of \[k, σ, c, n, G̃, cos z\], night steps masked, plus the future geometry u\_(t+h) for each of the 6 horizons.
-- **Encoder:** 3 residual blocks of causal dilated 1-D convolutions, kernel 3, dilations 1, 2 and 4, 32 channels, dropout 0.1, weight normalization.
-- **Head:** the encoder's last step concatenated with u\_(t+h), then an MLP of 64 units to 54 outputs (6 horizons × 9 quantiles), sorted per horizon.
-- **Training:** mean pinball loss, Adam (learning rate 1e-3), batch 256, early stopping (patience 10) on a time-ordered validation split, same rolling origins as LightGBM. Five seeds; mean and standard deviation reported.
-- **Rule:** if it does not beat LightGBM on the validation events, it appears once in the ablation table and nowhere in the title or abstract.
+PVSetFormer forecasts the 9 quantiles of k(t + h) for the six horizons at once, from the individual donors rather than from the summary state. It keeps the interface of Section 3.7, so it composes with the gain prior exactly like the LightGBM bank.
 
-&#91;embedded content: forecaster architectures · LightGBM bank (main) and TCN (ablation)\]
+- **Donor tokens.** For each online donor d: its implied index κ\_d over the last L daylight steps, a clipping flag (a clipped reading means κ\_d is at least the observed value, so clipping is never read as cloud), and static features (ĝ\_d, r\_d, tilt class). Offline donors are masked, so the donor count can change from one issue time to the next.
+- **Donor-set attention, no coordinates.** At each time patch, self-attention across donors, then attention pooling into a few sky-state tokens. The block is permutation-invariant, and new donors need no graph.
+- **Solar-time encoder.** Daylight-only patches; positions encoded by solar zenith, azimuth, hour angle and day of year instead of clock time; causal self-attention over the sky-state tokens.
+- **Geometry-query decoder.** One query per horizon, built from the known future geometry u(t + h) and k(t + h − 96), cross-attends to the encoded past.
+- **Monotone quantile head.** The median plus softplus increments gives 9 quantiles that cannot cross, bounded to [0, 1.5].
+- **Training.** Pinball loss over 9 quantiles and 6 horizons, AdamW, early stopping on a time-ordered split, the same rolling origins as LightGBM, 5 seeds (mean and s.d. reported). Small by design (about 0.2–0.5 M parameters). Donor dropout (random donor subsets per sample) is part of the design space.
+- **Development, rule R1.** All design work uses development data only: the 10 validation units and the fleet index before the first test event (May to September 2021). The model may go through as many design rounds as needed; every variant is logged as a decision, and the number of variants is reported. Hyperparameter search uses the same budget as LightGBM and TimeXer.
+- **Ablations, one component at a time.** Without the donor set (A6e), without the clipping flags, with clock-time positions, with the future geometry concatenated instead of used as queries, and with sorted instead of monotone quantiles.
 
-Because both forecasters share inputs, outputs and training windows, the TCN ablation measures only the value of a learned sequence encoder.
+**Baselines with the same interface (D23).** Chronos-2, TimesFM 2.5 and TabPFN-TS run zero-shot, with the past fleet state as past covariates and u(t + h) as known future covariates. TimeXer is trained like PVSetFormer, on the same per-donor series, with u(t + h) through its future-exogenous variant (rule R2). Packages and licences are checked at NB0, and inference stays local.
+
+Because all forecasters share inputs, outputs and training windows, each row isolates one design choice.
 
 ### 5.5 Results tables the models feed
 
@@ -519,11 +543,11 @@ Metrics and tests are defined once, in Sections 3.9 and 4.4.
 
 ### 5.6 Software
 
-Python 3.11 with pandas, pvlib, lightgbm, PyTorch (TCN only), ruptures (change points), scipy and statsmodels (tests). The final runs go on your computer or Google Colab, because my workspace cannot install pvlib or LightGBM.
+Python 3.12 locally with pandas, pvlib 0.16.1, lightgbm 4.6.0, ruptures 1.1.10, scipy and statsmodels. PyTorch for PVSetFormer and TimeXer, and the packages of Chronos-2, TimesFM 2.5 and TabPFN-TS, on Google Colab (D04, D23).
 
 ### 5.7 Notebooks
 
-The study runs in 13 notebooks backed by one small Python package (`pvcold/`) that holds every function. Each notebook stays short, reads the previous notebooks' saved outputs (parquet files) and writes its own, so any notebook can be rerun alone. Nothing after NB3 may change the frozen configuration.
+The study runs in 12 notebooks backed by one small Python package (`pvcold/`) that holds every function. Each notebook stays short, reads the previous notebooks' saved outputs (parquet files) and writes its own, so any notebook can be rerun alone. Nothing after NB3 may change the frozen configuration.
 
 | Notebook | What it does | Main outputs | Paper exhibits |
 | --- | --- | --- | --- |
@@ -533,12 +557,12 @@ The study runs in 13 notebooks backed by one small Python package (`pvcold/`) th
 | NB3\_index\_gains\_prior | Median vs censored index, donor gains, DC/AC priors G0/G1/G2, tuning on validation events, then the freeze | Index series per event, gains, frozen config hash | Figs. 3–4, prior and estimator tables |
 | NB4\_sensor\_baselines | Sensor QC, night offset, monthly recalibration for A4, A4b, A4c | Corrected sensor index | Sensor table inputs |
 | NB5\_forecasting | Main LightGBM bank plus A0, A1, CLIPER, A2, A3, A5, A7, A8; rolling origin; 200-member composition | Forecast store (event × model × horizon) | — |
-| NB5b\_tcn\_ablation | TCN, 5 seeds, on a GPU or Colab | TCN forecasts | Ablation row |
+| NB5b\_foundation\_models | Chronos-2, TimesFM 2.5 and TabPFN-TS, zero-shot (Colab) | Foundation-model forecasts | Rows A6a–A6c |
+| NB5c\_pvsetformer | PVSetFormer and TimeXer: development on the validation units, the R1 selection, then rolling origins with 5 seeds (Colab GPU) | Transformer forecasts, R1 record | Main model or row; rows A6d, A6e |
 | NB6\_evaluation\_statistics | Scores, Wilcoxon with Holm, Hodges–Lehmann, bootstraps, Diebold–Mariano, error budget, conditional verification, leakage table | Score table, statistics tables | Main tables, Figs. 5–8 |
 | NB7\_secondary\_analyses | 90-day gain update and retirement day, capacity additions, fleet size, hourly track | Secondary tables | Fig. 9, Fig. S1 |
 | NB8a\_morocco\_safi | Safi audit (time base, raw files, ratings) and the T0, T1, T2 transfer experiments | Safi results | Paper §6.10 |
-| NB8b\_virtual\_fleets | Simulates the Benguerir and regional fleets from CAMS and Open-Meteo, then validates the simulation against Safi | Virtual-fleet power series, Safi validation table | Fig. 12, supplement |
-| NB8c\_regional\_radius | Local fleet index and the donor-radius test on the regional fleet | Skill vs radius and donor count | Fig. 11, paper §6.11 |
+| NB8b, NB8c | Moved to the follow-up paper (D07) | — | — |
 | NB9\_final\_figures\_tables | Every figure and table, drawn only from saved outputs in one style | PDF and SVG figures, LaTeX tables | All |
 
 The released kit (Section 8) is the same package with NB2 to NB6 run on a new site's files.
@@ -600,6 +624,7 @@ Q1 reviewers in solar forecasting reject on protocol before they reject on accur
 | 2 | Sensor drift, two independent checks | The pyranometer is not a stable reference |
 | 3 | Fleet index vs sensor index vs clear-sky on a variable day | The fleet tracks clouds; clipping is handled |
 | 4 | Gain vs DC/AC ratio | The prior is physical and predictive |
+| 4b | PVSetFormer architecture | How the model reads the fleet |
 | 5 | Skill vs horizon for main, A1, CLIPER and A4b, with intervals | Where learning pays off |
 | 6 | Event-wise nRMSE, one dot per event | The gain is consistent, not driven by one event |
 | 7 | Error budget by horizon | Gain dominates short horizons, clouds long ones |
@@ -607,8 +632,8 @@ Q1 reviewers in solar forecasting reject on protocol before they reject on accur
 | 9 | 90-day gain-update curve with the retirement day | When to retire the cold-start model |
 | S1 | Fleet-size sensitivity (supplement) | How many reference inverters a campus needs |
 | 10 | Safi transfer results for T0, T1 and T2 | How much adaptation a Moroccan site needs |
-| 11 | Skill vs donor radius in Marrakesh-Safi | How dense a reference network must be |
-| 12 | Map of the Moroccan tests: Benguerir roofs, the 8 PV clusters, Safi | Where each Moroccan test sits |
+| 11 | Hidden-unit vs real starts, and the sensor comparison with about 35 units (D18) | Real starts are (or are not) harder than hidden stations |
+| — | Former Fig. 12 (map of the virtual Moroccan fleets) | Follow-up paper (D07) |
 
 ### Venue
 
@@ -616,7 +641,7 @@ Check each journal's current quartile and scope page before submitting.
 
 | Venue | Fit | What it needs from us |
 | --- | --- | --- |
-| Solar Energy (Elsevier, ISES) | Best fit: PV forecasting, method and protocol | The plan as written |
+| Solar Energy (Elsevier, ISES) | **Chosen (D05).** Best fit: PV forecasting, method and protocol | The plan as written |
 | Renewable Energy (Elsevier) | Good alternative | The same paper, broader framing |
 | IEEE Transactions on Sustainable Energy | Possible if the operator angle is strong | Items 9–13 above, grid-operation framing, IEEE format and length limits |
 | Applied Energy | Stretch for a single campus | A wider energy-system impact story |
@@ -624,7 +649,7 @@ Check each journal's current quartile and scope page before submitting.
 
 ### Writing rules
 
-- Never "a novel architecture". The method is a causal reformulation of the PV clear-sky index plus a physical prior and a protocol.
+- Describe PVSetFormer by what it does for this problem (a censoring-aware set transformer over peer inverters for cold-start PV forecasting), never as a general-purpose architecture. The method stays a causal reformulation of the PV clear-sky index, a physical prior and a protocol.
 - Every number comes with its interval and its event count.
 - No comparison with RMSE values from other countries' papers.
 - Highlights (5 lines of at most 85 characters each) and a graphical abstract follow the journal's guide.
@@ -637,7 +662,7 @@ Each section of the paper has one job, a fixed list of subsections, and named ex
 
 If a results subsection cannot be traced back to one contribution, it moves to the supplement.
 
-**Order of work.** Code and write Data and Method first, then freeze the Protocol before any test event is scored, then Results. Related work, Discussion, Future work and the Introduction come next, and the Abstract last. The code is one package with five parts: prep (QC, units, events, clear-sky), fleet (index, gains, prior), forecast (LightGBM, TCN, baselines, composition), evaluate (metrics, statistics, error budget) and report (tables, figures).
+**Order of work.** Code and write Data and Method first, then freeze the Protocol before any test event is scored, then Results. Related work, Discussion, Future work and the Introduction come next, and the Abstract last. The code is one package with five parts: prep (QC, units, events, clear-sky), fleet (index, gains, prior), forecast (PVSetFormer, LightGBM, foundation models, TimeXer, baselines, composition), evaluate (metrics, statistics, error budget) and report (tables, figures).
 
 ### Paper §2 — Related work (state of the art)
 
@@ -678,7 +703,7 @@ Job: one equation per idea, each tied to a physical reason. Text follows Section
 | 4.3 Donor gains | Alternating leave-one-out fit | — |
 | 4.4 DC/AC gain prior | β, transposition factor, uncertainty set | Equation box |
 | 4.5 Gain update | Empirical-Bayes shrinkage, retirement day | — |
-| 4.6 Index forecaster | State, geometry, quantile LightGBM, rearrangement | Forecaster architecture diagram |
+| 4.6 Index forecasters | PVSetFormer (donor tokens, set attention, solar-time encoder, geometry queries, monotone head) and the quantile LightGBM bank; rule R1 | Fig. 4b PVSetFormer architecture |
 | 4.7 Probabilistic composition | 200 members, point summaries | — |
 
 ### Paper §5 — Experimental protocol
@@ -689,7 +714,7 @@ Job: make leakage impossible and comparisons fair. This section is frozen before
 | --- | --- | --- |
 | 5.1 Information set | What is allowed at issue time | Information-set table |
 | 5.2 Events, validation and rolling origin | Leave-unit-out, origins at 0, 30 and 60 days | Analysis-flow diagram |
-| 5.3 Baselines and ablations | A0 to A8, CLIPER, local models | Model-family diagram and table |
+| 5.3 Baselines and ablations | A0 to A9n, CLIPER, foundation models, TimeXer, local models | Model-family diagram and table |
 | 5.4 Metrics | Deterministic, probabilistic, conditional | Equations |
 | 5.5 Statistics | Wilcoxon with Holm, Hodges–Lehmann, bootstraps, Diebold–Mariano | — |
 | 5.6 Implementation | Software, frozen configuration, run time | Computation-cost table |
@@ -710,7 +735,7 @@ Job: answer one question per subsection, in the order of the contributions. The 
 | 6.8 Fleet size | How many reference inverters are needed? | Fig. S1 | To be measured |
 | 6.9 Hourly track | Does it hold at 1 h, with thin-film? | Hourly table | To be measured |
 | 6.10 External case: Safi, Morocco | Does it transfer to a Moroccan roof? | Safi table and figure (Section 8 of this document) | To be measured |
-| 6.11 Regional reference network (Morocco, virtual) | How far away can reference inverters be? | Skill vs donor radius and donor count | To be measured |
+| 6.11 Hidden-unit cold starts (D18) | Are real starts harder than hidden stations, and does the sensor result hold with about 35 units? | Fig. 11 | To be measured |
 
 ### Paper §7 — Discussion
 
@@ -727,7 +752,7 @@ Job: answer one question per subsection, in the order of the contributions. The 
 4. **Systems without nameplate data,** sized from aerial or satellite imagery.
 5. **Online gains:** detecting soiling, faults and degradation from the gain drift.
 6. **Hierarchical forecasts,** reconciled from inverter to station to feeder.
-7. **Coverage guarantees** with conformal prediction, and time-series foundation models as index forecasters.
+7. **Fine-tuned foundation models** as index forecasters (the zero-shot ones are baselines here, D23).
 
 ## 8. Morocco: how it enters the story
 
@@ -848,6 +873,8 @@ No Moroccan systems were found in PVOutput's public listings. The next step that
 
 ### Moroccan test plan without contacting anyone (decided 13 November 2026)
 
+**Update of 18 November 2026 (D07):** the Benguerir and regional virtual fleets, the local fleet index and the donor-radius test below move to the follow-up paper. This paper keeps the Safi case and the kit.
+
 The Moroccan test has two parts: the real Safi rooftop, and a virtual fleet on real Benguerir rooftops, which is also in the Marrakesh-Safi region (Rehamna province). Alice Springs (DKASC) is not used now; it stays in reserve in case reviewers ask for a second real fleet.
 
 **Building the Benguerir virtual fleet (semi-synthetic: real weather, simulated inverters):**
@@ -954,13 +981,15 @@ Gate 1 decides the paper: if the main model does not beat the persisted fleet in
 
 ### Decisions for you
 
-- [ ] **D1.** Accept the data corrections: inverter units, AC rating from the model name, "first day of telemetry", and the errata.
-- [ ] **D2.** Accept the DC/AC prior as contribution 2, and test the transposition variant G2.
-- [ ] **D3.** For 2–6 h horizons: fleet-only with the limitation stated, or add a historical Open-Meteo forecast baseline (you download it; I provide the script).
-- [ ] **D4.** Final runs on your computer or Google Colab, with code I write and you run.
-- [ ] **D5.** Journal: *Solar Energy* (recommended), or *IEEE Transactions on Sustainable Energy* with a stronger operator framing.
-- [ ] **D6.** Optional upgrades: conformal intervals (item 14) and the past-weather ablation (item 15).
-- [ ] **D7.** Morocco: M2 + M3, the Safi external case study plus the validation kit (recommended), M1 only, or M4 (Section 8).
+**All seven were decided on 18 November 2026: see `docs/decisions.md`, D01–D07.**
+
+- [x] **D1.** Accept the data corrections: inverter units, AC rating from the model name, "first day of telemetry", and the errata.
+- [x] **D2.** Accept the DC/AC prior as contribution 2, and test the transposition variant G2.
+- [x] **D3.** For 2–6 h horizons: fleet-only with the limitation stated, or add a historical Open-Meteo forecast baseline (you download it; I provide the script).
+- [x] **D4.** Final runs on your computer or Google Colab, with code I write and you run.
+- [x] **D5.** Journal: *Solar Energy* (recommended), or *IEEE Transactions on Sustainable Energy* with a stronger operator framing.
+- [x] **D6.** Optional upgrades: conformal intervals (item 14) and the past-weather ablation (item 15).
+- [x] **D7.** Morocco: M2 + M3, the Safi external case study plus the validation kit (recommended), M1 only, or M4 (Section 8).
 
 Once D1–D4 are settled, the first step is the data pipeline (NB0 to NB2), written as a small package you run in one command.
 
@@ -973,6 +1002,6 @@ The HKUST work (NB0 to NB7) can start as soon as D1, D2 and D4 are settled; the 
 | HKUST rooftop PV (Dryad) | In hand, audited |
 | Benguerir building footprints | In hand, checked |
 | PV density grid and province areas | In hand; the source paper still has to be named and cited |
-| Safi rooftop (Mendeley) | Waiting for your upload |
-| CAMS: Marrakesh-Safi grid, Safi 1-min, HKUST 1-min | Re-download with sky type "Observed cloud": the first files were McClear only, and Safi stopped in August 2018 |
-| Open-Meteo, 9 Moroccan points | To download (link in Section 8) |
+| Safi rooftop (Mendeley) | In hand: raw files and the Data in Brief article |
+| CAMS all-sky 1-min, HKUST and Safi | In hand (18 Nov 2026, D17); the Marrakesh-Safi grid is not needed (D07) |
+| Open-Meteo, 9 Moroccan points | Not needed (D07); the Benguerir point is in hand |
