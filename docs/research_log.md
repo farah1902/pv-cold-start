@@ -38,3 +38,17 @@ One entry per work session: what was asked, what was done, the key numbers, what
   PDF was a duplicate of the HKUST data paper and was deleted (identical SHA-256). Manifest: 168 files, 2,012.7 MB,
   `--check` 0 differences. Proposed improvements to the author (not yet decided).
 - **Open:** the SETA 2021 article (Safi inverter details); the author's answer on the proposed improvements; NB0/NB1.
+
+## 2026-11-18 (evening) — Improvements approved; model search for the deep-learning rows
+
+- **Asked:** the author approved proposals 1, 2, 3, 5 and 6 (now D18–D22) and asked for a foundation model plus "the
+  latest most advanced" trained model instead of the TCN.
+- **Done:**
+  - Filed the SETA screenshot (255 Wp confirmed; inverter details cut off; F18).
+  - Searched the literature and opened the primary pages: the Chronos-2 model card; the TimeXer full text (exogenous
+    inputs over the look-back only in the core setup, L2 loss, a future-exogenous variant in its Appendix H.1); the
+    TiDE full text (covariates over look-back and horizon, MSE loss); Za'ter and Hodge (2026, arXiv:2604.22077), a
+    power-system benchmark that includes TimeXer, TFT and foundation models; and Longarini et al. (2026), the closest
+    competitor (F19).
+  - Manifest regenerated (169 files).
+- **Open:** the author's choice of models for the deep-learning rows; then NB0/NB1.

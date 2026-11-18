@@ -138,6 +138,46 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
   SHA-256) was deleted from the folder root. The Safi companion article to request is SETA 43 (2021) 100915, not the
   guide's "Energy Reports 2020" (F18).
 
+### D18 — Hidden-unit cold starts form a second test bed, fixed before scoring [protocol, Phase 0]
+- **Request or reason:** agent's proposal 1 of 18 Nov 2026; the author: "yes to 1".
+- **Change:**
+  - Long-running inverters (about 35, counted in NB2) are split into 5 groups by station, with all inverters of a
+    station in the same group.
+  - For each group and each pseudo-start date, the index is built without the group and donor gains are fitted
+    before the date. Each unit of the group is forecast from its DC/AC prior, with the same code and frozen
+    configuration as the real events.
+  - One pseudo-start date in the stable window and one in the drifted window, chosen in NB2 before scoring.
+  - Two uses: (i) statistical power for the sensor comparison after the drift (about 35 units instead of 5);
+    (ii) real starts vs hidden-unit starts on the same days, which measures how much the usual "hide a station"
+    protocol flatters results (contribution 3).
+  - All units share one sky, so the inference resamples days (block bootstrap), not units.
+- **Alternatives considered:** leave-one-unit-out (about 35 times more model fits for little gain).
+
+### D19 — The satellite is used twice: a second drift reference and a same-time satellite row [protocol, Phase 0]
+- **Request or reason:** agent's proposal 2 of 18 Nov 2026; the author: "yes to 2". Possible because of D17.
+- **Change:**
+  - PELT also runs on the daily log-ratio of measured GHI to CAMS all-sky GHI. The fleet-based boundary of D10
+    still defines the windows; the agreement of the two dates is reported. The same comparison tests whether the
+    2021–2022 level of about 0.8 comes from the sensor or from the clear-sky model.
+  - A same-time satellite clear-sky index row sits next to the fleet oracle A7: "40 inverters or one satellite
+    pixel as a virtual pyranometer".
+  - CAMS steps with reliability < 1 are flagged.
+
+### D20 — The release adds a drift flag and a fleet-derived irradiance series for the HKUST dataset [release, Phase 0]
+- **Request or reason:** agent's proposal 3 of 18 Nov 2026; the author: "yes to 3".
+- **Change:** the sensor package of guide §4.5 gains (i) a daily flag of the drift periods and (ii) the fleet-derived
+  GHI proxy k̂ G_cs at 15 min, so that other users of the dataset can avoid the drifting pyranometer.
+
+### D21 — A git tag freezes the protocol before any test event is scored [protocol, Phase 0]
+- **Request or reason:** agent's proposal 5 of 18 Nov 2026; the author: "yes to 5".
+- **Change:** once the validation runs fix the configuration, the tag `protocol-freeze` is pushed with the frozen
+  configuration hash; the paper cites its commit and date.
+
+### D22 — The prior's empirical-Bayes weight is reported in days [reporting, Phase 0]
+- **Request or reason:** agent's proposal 6 of 18 Nov 2026; the author: "yes to 6".
+- **Change:** w0 = s1²/σp² (guide §3.6) is reported as "the nameplate prior is worth about w0 days of the inverter's
+  own data", with its spread across events.
+
 ### D16 — pvlib 0.16.1 and ruptures 1.1.10 are installed locally and pinned [environment, Phase 0]
 - **Request or reason:** both are in the guide's software list (§5.6) and were missing locally on 18 Nov 2026.
 - **Change:** `pip install pvlib==0.16.1 ruptures==1.1.10`. A dry run first showed that nothing else would be

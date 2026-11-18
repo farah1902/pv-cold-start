@@ -9,7 +9,8 @@ _To write from the evidence. The planned thesis is in `research_guide.md` §1._
 _Empty._
 
 ## 3. Corrections to the guide
-See `decisions.md`, entries marked **[guide deviation]**: D07 (Morocco scope).
+See `decisions.md`, entries marked **[guide deviation]**: D07 (Morocco scope). Also: the positioning table (guide §1)
+must add Longarini et al. (2026) (F19). Additions approved on 18 Nov: D18–D22.
 
 ## 4. Status of each contribution
 | Contribution | Status |

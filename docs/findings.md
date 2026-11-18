@@ -116,10 +116,25 @@ repository). Paths are relative to `data/raw/hkust/Dataset/Time series dataset/`
   - Gaps: grid cut-offs stop the acquisition; when an inverter fails, its records are set to 0 until it is fixed;
     burned fuses give null or wrong values.
   - Preprocessed data: m-Si and a-Si from 18 June 2016 to 15 July 2018, p-Si from 25 May to 30 December 2018.
+  - Screenshot of the SETA article page (`data/raw/safi/`, 18 Nov 2026): "eight mono-crystalline (m-Si) panels of
+    255 Wp each connected in series cumulating a maximum power of 2.04 kWp"; the inverter details are cut off.
+    Safi therefore uses the empirical AC limit (D01 rule).
 - **Reading:** zeros are not trusted as production in the Safi QC. If the raw files follow the preprocessed dates, all
   three inverters overlap only from 25 May to 15 July 2018 (about 7 weeks). Most of the period has a one-donor fleet,
   and p-Si has donors only in that overlap. Safi is therefore a 1–2-donor case, to be compared with the HKUST
   fleet-size curve at 1–2 donors.
+
+### F19 — The closest competitor: Longarini et al. (2026), cold-start PV forecasting with foundation models — *strong* (read via the arXiv HTML on 18 Nov 2026; re-read in full before citing)
+- **Evidence:** arXiv:2606.07457, "Time series Foundation Models based on Physics-Informed Synthetic Histories for
+  Cold-Start Photovoltaic Forecasting", to appear at the 2nd ICML Workshop on Foundation Models for Structured Data.
+  A synthetic production history from plant metadata (physics model, pvlib solar position) and ERA5 covariates (via
+  Open-Meteo) is given as context to five foundation models (Chronos-2, Moirai 2.0, TimesFM 2.5, TiRex, TabPFN-TS).
+  The target is daily specific yield; horizon covariates are observations with perfect foresight, which the authors
+  call optimistic. There are 440 sites (Ausgrid, DKASC, UK-PV, PVDAQ), with the most recent year held out; no real
+  commissioning dates and no code link.
+- **Reading:** it must enter the positioning table (guide §1) and the related work. Our differences: intraday 15 min
+  to 6 h instead of daily; no weather input at all, where theirs needs irradiance with perfect foresight; causal
+  information set; real start dates.
 
 ### F16 — Not every site file starts on the 1st of a month — *solid* (4 checked); *provisional* (full count)
 - **Evidence:** among the 18 site files of the first event list, Indoor Sports Centre (2021-12-02), Zone J2
