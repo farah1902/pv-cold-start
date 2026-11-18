@@ -96,6 +96,31 @@ repository). Paths are relative to `data/raw/hkust/Dataset/Time series dataset/`
 - **Reading:** pvlib measures azimuth clockwise (east = 90°), so the transposition factor of prior G2 needs
   az_pvlib = (360° − az_Brick) mod 360°. The values themselves are checked in NB1.
 
+### F17 — CAMS all-sky irradiance exists for HKUST and Safi — *solid*
+- **Evidence:** `data/external/cams/observed/`: "CAMS Radiation Service v4.6 all-sky irradiation (derived from
+  satellite data)". HKUST: 2021-01-01 to 2023-12-31, 1,576,800 rows (1,095 days × 1,440 minutes), CAMS altitude 144 m;
+  daytime rows (TOA > 0) with reliability < 1: 64,134 of 788,774 (8.13%). Safi: 2016-06-01 to 2018-12-31, 1,359,360
+  rows (944 days × 1,440), altitude 0 m as requested. Columns: TOA, clear-sky GHI/BHI/DHI/BNI, all-sky
+  GHI/BHI/DHI/BNI, reliability; Wh/m² per 1-min step; UT.
+- **Reading:** baseline A9 and the satellite check of the HKUST sensor stay (D17). Steps with reliability < 1 are
+  flagged in any satellite-based score.
+
+### F18 — Safi: module ratings are in W, the companion article is SETA 2021, zeros can be failures, and the three series barely overlap — *solid* (article); *provisional* (dates, to check on the raw files)
+- **Evidence:** Id Omar et al., *Data in Brief* 34 (2021) 106756 (`data/raw/safi/`):
+  - m-Si and p-Si subarrays of 8 modules of "255 kWp" each, a-Si of two strings of 6 modules of "155 kWp", total
+    5.94 kWp. 8 × 255 + 8 × 255 + 12 × 155 = 5,940 W, so the ratings are W (the article's "kWp" is a typo).
+  - Tilt 32°, south; three identical inverters; plane-of-array irradiance from a calibrated crystalline-silicon
+    reference cell (uncertainty < 2.3%); Pt100 ambient and module back-side temperatures (±0.1 °C); 5 min, 24 h a day.
+  - The plant details are in Table 2 of Id Omar et al., *Sustainable Energy Technologies and Assessments* 43 (2021)
+    100915. The research guide's "Energy Reports 2020" is wrong.
+  - Gaps: grid cut-offs stop the acquisition; when an inverter fails, its records are set to 0 until it is fixed;
+    burned fuses give null or wrong values.
+  - Preprocessed data: m-Si and a-Si from 18 June 2016 to 15 July 2018, p-Si from 25 May to 30 December 2018.
+- **Reading:** zeros are not trusted as production in the Safi QC. If the raw files follow the preprocessed dates, all
+  three inverters overlap only from 25 May to 15 July 2018 (about 7 weeks). Most of the period has a one-donor fleet,
+  and p-Si has donors only in that overlap. Safi is therefore a 1–2-donor case, to be compared with the HKUST
+  fleet-size curve at 1–2 donors.
+
 ### F16 — Not every site file starts on the 1st of a month — *solid* (4 checked); *provisional* (full count)
 - **Evidence:** among the 18 site files of the first event list, Indoor Sports Centre (2021-12-02), Zone J2
   (2021-11-13), Zone D (2022-01-20) and UG Hall9 (2023-02-11) start mid-month. The audit counts 5 of the 15-min and

@@ -130,6 +130,14 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
   - Repo-local `core.autocrlf=false`, so working files and committed files have the same bytes.
 - **Code:** `tools/make_data_manifest.py`.
 
+### D17 — CAMS all-sky files received: baseline A9 and the satellite check of the HKUST sensor stay [data, Phase 0]
+- **Request or reason:** D14's condition is met: the author downloaded the "Observed cloud" files on 18 Nov 2026 and
+  they cover Hong Kong (F17).
+- **Change:** `data/external/cams/observed/` is the satellite source for A9 and for the independent check of the
+  sensor drift. The McClear files stay as a second clear-sky model. A duplicate copy of the HKUST data paper (same
+  SHA-256) was deleted from the folder root. The Safi companion article to request is SETA 43 (2021) 100915, not the
+  guide's "Energy Reports 2020" (F18).
+
 ### D16 — pvlib 0.16.1 and ruptures 1.1.10 are installed locally and pinned [environment, Phase 0]
 - **Request or reason:** both are in the guide's software list (§5.6) and were missing locally on 18 Nov 2026.
 - **Change:** `pip install pvlib==0.16.1 ruptures==1.1.10`. A dry run first showed that nothing else would be

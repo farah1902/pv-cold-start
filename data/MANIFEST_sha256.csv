@@ -1,6 +1,8 @@
 path,bytes,sha256
 external/cams/mcclear/HKUSTcsv.csv,126018424,3338245c10db7491d5b797a8464664a345eb362a149fc12d34d56e471387d2bd
 external/cams/mcclear/safi-2016-2018csv.csv,94681750,8b50b2308dadcb0b55ab5dbb45d454131288f5136fd3357bdb986c5601d43cbf
+external/cams/observed/cams-HKUST-21-23.csv,181602854,25ff3dbf3aec274f250bec3ed1cb818eb8068c791891c01ed36f8a11c740bc8b
+external/cams/observed/cams-safi-16-18.csv,156991085,868616ae9614395bec81969d95481d0dc73a78948aa00ffc8e0f608415032ff5
 external/open-meteo/open-meteo-32.23N7.95W467m.csv,712993,c1a971b317e0107050a85bb477dab7be3a9f032cde2e910a8459cfe440598cd8
 external/pv_density/digitization/figure12_source_image.jpg,270634,f51db81c78aba9fc9a2a41526853a4aa47a163f88e489795178ec070519d2e64
 external/pv_density/digitization/metadata.json,578,2ec56768b082a61a8735d9b09eb3ced0798e2a2df67096b3d5e6b8a75fe3ba45
@@ -156,6 +158,7 @@ raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations without 
 raw/hkust/Dataset/Time series dataset/PV generation dataset/PV stations without panel level optimizer/Site level dataset/Zone L1(Station 2).csv,819309,8124572f2e8e43a1144e3379afdf3074c96e8674677cd761e34fdd2399fa7592
 raw/hkust/README.md,6057,079d7bc7e444c21114189981ceb235388ac7a4770cf21d8dd6848eed37660cd0
 raw/hkust/s41597-025-04397-y.pdf,4644651,d1dda0d945d01b18decfa901b55d9b79b2c8dd58cd89a1226ea6f02edb94b393
+raw/safi/1-s2.0-S2352340921000408-main.pdf,308727,01d1ec2a5b1e705da13f8e65db3fdaf07861d5167321f16b025b87e8c36f7c62
 raw/safi/Electric a-Si.xlsx,7156220,927188320943c1ffb1406c6769a7c8f4a8e7a31006cb12cfbc219fcd33d04b31
 raw/safi/Electric m-Si.xlsx,20142337,4f2c2246c99b148fe060c9398fed8f8d7c7163a26b97b88a4951c5777ef530c8
 raw/safi/Electric p-Si.xlsx,5203149,d42722929a969b5479e2c14914fe2bd47db58e1d28d9e94ffb8e1950717eb33a

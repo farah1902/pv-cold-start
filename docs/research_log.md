@@ -29,3 +29,12 @@ One entry per work session: what was asked, what was done, the key numbers, what
     Initialised the repository and pushed it to the private GitHub repository `farah1902/pv-cold-start`.
 - **Open:** CAMS "Observed cloud" downloads (D14); the Safi companion papers (inverter AC ratings); the *Solar Energy*
   Guide for Authors (D05); next build step NB0 (environment, config, Drive mirror) and NB1 (HKUST audit).
+
+## 2026-11-18 (afternoon) — CAMS all-sky and the Safi article
+
+- **Asked:** the author downloaded the CAMS files and two PDFs, and asked for low-effort improvements before the
+  notebooks.
+- **Done:** checked and filed the CAMS all-sky files (F17, D17) and the Safi *Data in Brief* article (F18); the second
+  PDF was a duplicate of the HKUST data paper and was deleted (identical SHA-256). Manifest: 168 files, 2,012.7 MB,
+  `--check` 0 differences. Proposed improvements to the author (not yet decided).
+- **Open:** the SETA 2021 article (Safi inverter details); the author's answer on the proposed improvements; NB0/NB1.

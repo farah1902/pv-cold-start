@@ -11,6 +11,8 @@ and SHA-256 checksum, as they were on 18 November 2026 (165 files, 1,673.8 MB). 
 | `raw/hkust/s41597-025-04397-y.pdf` | Data descriptor: Lin et al., *Scientific Data* 12:63 (2025), doi:10.1038/s41597-025-04397-y | Springer Nature | Article under CC BY-NC-ND 4.0 (stated on its p. 13) |
 | `raw/safi/` | Safi rooftop raw files: `Electric {a-Si, m-Si, p-Si}.xlsx`, `Tc {a-Si, m-Si, p-Si}.xlsx`, `Weather data.xlsx`, `Preprocessed Data.xlsx` (**never used**: filtered by its authors, research guide §8) | Mendeley Data b2s4ycc2gz, v1; article Id Omar et al., *Data in Brief* 34 (2021) 106756 | CC BY 4.0 per the research guide — **to confirm** |
 | `raw/archives/` | `Dataset.zip` (the Dryad download), `b2s4ycc2gz-1.zip` (the Mendeley download) | as above | as above |
+| `raw/safi/1-s2.0-S2352340921000408-main.pdf` | Safi data article: Id Omar et al., *Data in Brief* 34 (2021) 106756, doi:10.1016/j.dib.2021.106756 | Elsevier | Article under CC BY 4.0 (stated on its p. 1) |
+| `external/cams/observed/` | `cams-HKUST-21-23.csv` (22.3363 N, 114.2634 E, CAMS altitude 144 m, 2021-01-01 to 2023-12-31, 1,576,800 rows) and `cams-safi-16-18.csv` (32.3265 N, 9.2634 W, altitude 0 m as requested, 2016-06-01 to 2018-12-31, 1,359,360 rows): CAMS Radiation Service v4.6 **all-sky**, with clear-sky columns and a reliability column; UT; Wh/m² per 1-min step | CAMS radiation service (soda-pro), downloaded by the author on 18 Nov 2026 | **to confirm** |
 | `external/cams/mcclear/` | `HKUSTcsv.csv` (22.3363 N, 114.2634 E, CAMS altitude 144 m, 2021-01-01 to 2023-12-31) and `safi-2016-2018csv.csv` (32.3265 N, 9.2634 W, 2016-06-01 to 2018-08-31): CAMS McClear v3.6, **clear-sky only**, UT, Wh/m² per 1-min step | CAMS radiation service (soda-pro) | **to confirm** |
 | `external/open-meteo/` | `open-meteo-32.23N7.95W467m.csv`: Benguerir, hourly temperature, wind and precipitation, 2016-06-01 to 2018-12-31 (follow-up paper, D07) | Open-Meteo archive (ERA5) | **to confirm** |
 | `external/pv_density/` | `isprs-archives-XLVIII-4-W17-2025-317-2026.pdf` (source paper of the regional PV map), `digitization/` (grid digitised from its figure by `tools/reconstruct_pv_density.py` on 13 Nov 2026; a visual reconstruction, not the authors' polygons), `pv_clusters_map.png`, `work/` (intermediate images) | ISPRS Archives | **to confirm**; the source paper must be named and cited |
@@ -28,11 +30,13 @@ and SHA-256 checksum, as they were on 18 November 2026 (165 files, 1,673.8 MB). 
 | `output/isprs-…pdf`, `output/pv_density_digitization/`, `pv_clusters_map.png`, `tmp/pdfs/*` | `data/external/pv_density/` (`digitization/`, `work/`) |
 | `tmp/reconstruct_pv_density.py` | `tools/reconstruct_pv_density.py` (paths are arguments) |
 
-## Still to download (D07, D14)
+## Still to get
 
-1. CAMS radiation time series with sky type **"Observed cloud"** for Safi, 2016-06-01 to 2018-12-31 → `external/cams/observed/`.
-2. The same for HKUST, 2021-01-01 to 2023-12-31, if the service covers Hong Kong; otherwise baseline A9 and the
-   satellite check of the HKUST sensor are dropped (D14).
+1. The Safi companion article with the inverter details (its Table 2): Id Omar et al., *Sustainable Energy
+   Technologies and Assessments* 43 (2021) 100915, doi:10.1016/j.seta.2020.100915 → `raw/safi/`. Not blocking: the
+   three inverters are identical, so the empirical AC limit can stand in (F18).
+
+The CAMS "Observed cloud" files of D14 arrived on 18 Nov 2026 (`external/cams/observed/`, D17).
 
 ## Colab
 
