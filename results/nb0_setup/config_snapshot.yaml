@@ -1,0 +1,125 @@
+CAMS_HKUST: C:\Users\Dell\Desktop\phd_ehtp\pv paper\data\external\cams\observed\cams-HKUST-21-23.csv
+CAMS_SAFI: C:\Users\Dell\Desktop\phd_ehtp\pv paper\data\external\cams\observed\cams-safi-16-18.csv
+CAMS_WH_PER_STEP_TO_W: 60.0
+CLIP_THRESHOLD: 0.97
+COMMON_TARGET_WINDOW:
+- '12:00'
+- '17:55'
+CONNECTION_GAP_FLAG_DAYS: 30
+DATA: C:\Users\Dell\Desktop\phd_ehtp\pv paper\data
+DONOR_MIN_FULL_DAYS: 14
+DRIFT_PROVISIONAL_BOUNDARY: '2022-11-01'
+FIRST_TEST_DAY: '2021-10-05'
+FROZEN_MINUTES: 60
+GAIN_BOUNDS:
+- 0.3
+- 1.5
+GAIN_FIT_MIN_GTILDE: 0.2
+GAIN_FIT_MIN_K: 0.5
+HORIZONS:
+- 1
+- 2
+- 4
+- 8
+- 16
+- 24
+HUBER_DELTA: 0.05
+INVERTER_FIRST_SLOT: 06:00
+INVERTER_LAST_SLOT: '17:55'
+INV_DIR: C:\Users\Dell\Desktop\phd_ehtp\pv paper\data\raw\hkust\Dataset\Time series
+  dataset\PV generation dataset\PV stations with panel level optimizer\Inverter level
+  dataset
+ISSUE_MIN_DONORS: 8
+ISSUE_MIN_GTILDE: 0.05
+K_BOUNDS:
+- 0.0
+- 1.5
+MCCLEAR_HKUST: C:\Users\Dell\Desktop\phd_ehtp\pv paper\data\external\cams\mcclear\HKUSTcsv.csv
+MET_DIR: C:\Users\Dell\Desktop\phd_ehtp\pv paper\data\raw\hkust\Dataset\Time series
+  dataset\Meteorological dataset
+MIN_DONORS: 8
+MIN_VALID_DAYS_IN_90: 30
+N_LAGS: 16
+N_MEMBERS: 200
+OUTAGE_INDEX: 0.3
+OVER_LIMIT: 1.05
+PRIMARY_HORIZON: 4
+PV_DIR: C:\Users\Dell\Desktop\phd_ehtp\pv paper\data\raw\hkust\Dataset\Time series
+  dataset\PV generation dataset
+QUANTILES:
+- 0.1
+- 0.2
+- 0.3
+- 0.4
+- 0.5
+- 0.6
+- 0.7
+- 0.8
+- 0.9
+RAW_HKUST: C:\Users\Dell\Desktop\phd_ehtp\pv paper\data\raw\hkust\Dataset
+REMOVED_EVENTS:
+- Zone D inverter 1
+- S H Ho Sports Hall
+RESULTS: C:\Users\Dell\Desktop\phd_ehtp\pv paper\results
+ROOT: C:\Users\Dell\Desktop\phd_ehtp\pv paper
+SCORED_EVENTS:
+- - SQ Block S
+  - '2021-10-05'
+- - Zone A5
+  - '2021-10-05'
+- - SQ Block R
+  - '2021-10-06'
+- - Zone A7
+  - '2021-10-09'
+- - Zone A6
+  - '2021-10-14'
+- - Zone J2
+  - '2021-11-13'
+- - Indoor Sports Centre
+  - '2021-11-17'
+- - Zone D
+  - '2022-01-19'
+- - Library
+  - '2022-06-01'
+- - UG Hall8
+  - '2023-01-05'
+- - UG Hall9
+  - '2023-02-11'
+- - Zone A2 inverters 2-3
+  - '2023-05-16'
+- - SQ Block P
+  - '2023-06-22'
+- - Shaw Auditorium
+  - '2023-07-09'
+SCORE_MIN_GTILDE: 0.02
+SEED: 20261118
+SENSITIVITY_EVENTS:
+- Wong Check She Research Centre
+- Zone J1
+- Zone L2
+SITE15_DIR: C:\Users\Dell\Desktop\phd_ehtp\pv paper\data\raw\hkust\Dataset\Time series
+  dataset\PV generation dataset\PV stations with panel level optimizer\Site level
+  dataset
+SITE1H_DIR: C:\Users\Dell\Desktop\phd_ehtp\pv paper\data\raw\hkust\Dataset\Time series
+  dataset\PV generation dataset\PV stations without panel level optimizer\Site level
+  dataset
+SITE_LAT: 22.3363
+SITE_LON: 114.2634
+START_DAYLIGHT_SHARE: 0.7
+TS_DIR: C:\Users\Dell\Desktop\phd_ehtp\pv paper\data\raw\hkust\Dataset\Time series
+  dataset
+TTL_PATH: C:\Users\Dell\Desktop\phd_ehtp\pv paper\data\raw\hkust\Dataset\Metadata\PV
+  generation system metadata.ttl
+TZ: Asia/Hong_Kong
+VALIDATION_UNITS:
+- SQ567_Inverter
+- UG Hall2 2F_Inverter
+- UG Hall2 RF_Inverter
+- Zone A1_Inverter
+- Zone A4_Inverter
+- Zone A2_Inverter_1
+- SQ Apartment1-12_Inverter
+- SQ Apartment13-24_Inverter
+- SQ Apartment25-36_Inverter
+- SQ Apartment37-48_Inverter
+VALID_POWER_FRAC: 0.02

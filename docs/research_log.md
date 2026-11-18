@@ -72,3 +72,18 @@ One entry per work session: what was asked, what was done, the key numbers, what
   grew from 978 to 1,007 lines, still LF. New title in the guide, `CLAUDE.md` and `README.md`; D25 recorded, D24
   approved; forbidden claims updated.
 - **Open:** NB0 and NB1.
+
+## 2026-11-18 (night) — NB0 and NB1 built and executed
+
+- **Done:**
+  - Wrote `src/pvcold/{config,io_hkust,audit}.py` and `tools/make_nb0.py`, `tools/make_nb1.py`.
+  - The parser's assertions caught three issues before any result was produced: a model string missing from the AC
+    table (SE82_8K_), six inverters without a model name, and the Indoor_Sport_Center spelling. All 104 data files
+    now map one-to-one to the metadata.
+  - NB0: data manifest check passes; Python 3.12.1, lightgbm 4.6.0, pvlib 0.16.1; 12 s.
+  - NB1: 252 s. It reproduces F01, F02, F05, F06 and F16 from code; adds F21–F24 and D26.
+  - Draft figures were checked by eye. The 30-day medians first bridged the dead-sensor gap and two legends overlapped
+    the data; both were fixed (time-based windows on a daily index, legends moved) and NB1 was re-run.
+- **Open, for the author:** Library start (F22): keep scored with a written exception, or move to the sensitivity
+  set. Zone A2 inverters 2–3 can enter the DC/AC prior test (F21).
+- **Next:** NB2 (QC, 15-min panel, time-label shift, events and donor sets).

@@ -12,6 +12,8 @@ venv/
 
 # Scratch and local archives
 *.tmp
+results/.tmp_*/
+results/.*.log
 _local_archive/
 .DS_Store
 Thumbs.db

@@ -4,18 +4,19 @@ One entry per empirical result, numbered F01, F02, … and never renumbered. Con
 or in the primary source), *strong*, *provisional* (reported in an audit, still to be reproduced by code in this
 repository). Paths are relative to `data/raw/hkust/Dataset/Time series dataset/` unless stated.
 
-### F01 — Inverter files cover 06:00–17:55 only (144 rows a day); site files cover 00:00–23:45 — *solid* (window); *provisional* (energy shares)
+### F01 — Inverter files cover 06:00–17:55 only (144 rows a day); site files cover 00:00–23:45 — *solid*
 - **Evidence:** all 44 inverter files end at 17:55 on 2023-12-31. Zone A5 has 117,780 rows: 817 days of 144 rows and
   its first day of 132 rows (it starts at 07:00). On 2022-06-21, Zone A5's site file still shows 598 W at 18:00,
   285 W at 18:15, 51 W at 18:30 and zero from 18:45. The review audit of 18 Nov reports evening energy after 18:00 at
   a median 0.17% of the total, at most 0.5% in June (to be reproduced in NB1).
+- **NB1 (18 Nov 2026):** all 44 inverter files have 144 rows a day as their mode, slots 06:00–17:55. Energy after 18:00 (15-min site files, `results/nb1_audit/evening_share.csv`): the median calendar-month share across stations peaks in June at 0.54%; per station over the whole period the median is 0.19% (max 0.27%), close to the audit's 0.17%; the median over 949 station-months is 0.06% (definitions differ).
 - **Reading:** the fleet index cannot be computed after 17:55, and a 6-h forecast can only be issued until 11:55.
 - **Paper:** Data §3.5; protocol (D12); threats to validity.
 
-### F02 — Two timestamp formats — *solid* (inverter files, weather files); *provisional* (site-file count)
+### F02 — Two timestamp formats — *solid*
 - **Evidence:** 13 inverter files write `2021/6/2 6:00` (SQ567, Zone A7, SQ Apartment 1-12, 25-36 and 37-48, UG Hall2
   RF, UG Hall3, UG Hall4, UG Hall7, Zone J1, Zone J2, Zone L2, LSK South); the other 31 write `2021-05-07 07:00:00`.
-  The weather files write `2022/1/1 0:00`. The audit counts 10 site files in year/month/day form.
+  The weather files write `2022/1/1 0:00`. NB1: 3 of the 37 15-min site files and 7 of the 23 hourly files use year/month/day (10, as in the audit); the 2021 rainfall file holds Excel date-times. No file mixes formats.
 - **Paper:** not in the text; D13 (code).
 
 ### F03 — Zone J2 produced for 25 days before its inverter file begins — *solid*
@@ -28,9 +29,9 @@ repository). Paths are relative to `data/raw/hkust/Dataset/Time series dataset/`
   file begins on 2022-08-02. Metadata connection date: 2022-07-30.
 - **Reading:** an operator had site-level history before the inverter file; moved to the sensitivity set (D08).
 
-### F05 — Zone D inverter 1 is not a capacity addition — *provisional*
+### F05 — Zone D inverter 1 is not a capacity addition — *solid*
 - **Evidence:** the review audit of 18 Nov reports that the Zone D station total ran at 1.6–1.7 × inverter 2 from
-  January to October 2022, so inverter 1 was producing before its file starts on 2022-12-03 (to be reproduced in NB1).
+  January to October 2022, so inverter 1 was producing before its file starts on 2022-12-03. NB1 reproduces it (`results/nb1_audit/zone_d_ratio.csv`, daily energy 06:00–17:55, monthly medians): 1.67–1.73 from January to October 2022, 1.03 in November 2022 (inverter 1 down), 1.69–1.86 from December 2022, when its file exists.
 - **Reading:** Zone D is scored as one station-level event from 2022-01-19 (D08).
 
 ### F06 — Telemetry starts and connection dates disagree, in both directions — *solid* (checked rows); *provisional* (audit counts)
@@ -39,6 +40,7 @@ repository). Paths are relative to `data/raw/hkust/Dataset/Time series dataset/`
   2023-06-22), Shaw Auditorium 2023-07-29 (telemetry 2023-07-09), Zone J2 2021-12-01, Zone L2 2022-07-30. The audit
   reports that every inverter file already produces on its first day, and connection 113 days before telemetry for
   Zone J1 and 92 days for Wong Check She.
+- **NB1:** 43 of 44 inverter files produce on their first day; the exception is Zone A2 inverter 2 (first row 2023-05-16 11:35, zero output that day), an observed commissioning. Full table in `results/nb1_audit/start_dates.csv` (F22).
 - **Reading:** neither the connection date nor the first inverter row proves commissioning; hence the observed-start
   rule (D08).
 
@@ -56,7 +58,7 @@ repository). Paths are relative to `data/raw/hkust/Dataset/Time series dataset/`
 - **Reading:** no all-sky irradiance, so no satellite check of the sensor and no baseline A9 yet; Safi misses
   September–December 2018 (D14).
 
-### F09 — The pyranometer is a LI-COR LI-200R (±3% typical, ±5% maximum) — *solid* (sensor); *provisional* (drift size)
+### F09 — The pyranometer is a LI-COR LI-200R (±3% typical, ±5% maximum) — *solid* (drift reproduced in F23)
 - **Evidence:** data paper, Table 3 (400–1100 nm). The audit of 31 Oct (`docs/history/hkust-data-audit.md`) reports
   measured / clear-sky GHI at noon (p95) of about 0.8 in 2021–2022 and 1.35 in 2023, a night offset rising to about
   30 W/m², and spikes up to 3,600 W/m² (to be reproduced in NB1).
@@ -153,7 +155,59 @@ repository). Paths are relative to `data/raw/hkust/Dataset/Time series dataset/`
   weather input. None treats inverter clipping as censoring, or composes an index forecast with a nameplate gain
   prior. That is the room for the author's model (D24).
 
-### F16 — Not every site file starts on the 1st of a month — *solid* (4 checked); *provisional* (full count)
+### F21 — Metadata: AC ratings, errata and two corrections to the guide — *solid*
+- **Evidence:** `results/nb1_audit/units_inverters.csv`, `metadata_check.csv`. 60 stations, 67 inverters, 74 module
+  blocks; 23 inverter model strings mapped to AC ratings by an explicit table. The observed 99.9th percentile of 5-min
+  power is within 2% of the AC rating for 33 of 44 inverters (as in the guide). The 11 others:
+  - two metadata errors: Zone D inverter 2 is listed as SE25K but peaks at 49.9 kW (about 50 kW), and Indoor Sports
+    Centre is listed as STP 10.0 but clips at 33.4 kW;
+  - six never reach their limit: UG Hall2 2F (0.77 of AC, DC/AC 0.94), SQ567 (0.83, DC/AC 0.87), Zone J2 (0.92,
+    DC/AC 1.28, mixed orientation), SQ Block S (0.95), Zone L2 (0.97), SQ2 (0.975);
+  - three exceed the nameplate: SQ Apartment37-48 (1.049), UG Hall2 RF (1.052), Zone A7 (1.061).
+- **Corrections to the guide:**
+  - Zone A2 inverters 2 and 3 have complete metadata: SE55K and SE50K with JKM410N modules, DC/AC 1.33 each, both
+    within 2% of their rating. The guide's "metadata missing" and "Zone A2 has no module blocks" are wrong, so the
+    DC/AC prior can be tested on the only capacity addition.
+  - Zone A2 inverter 1 is an SE82_8K (82.8 kW, two module blocks).
+  - Six hourly-track SMA inverters (SQ8, SQ11, SQ12, SQ14, SQ15, SQ19) have no model name; the station rating stands in.
+  - The metadata spell Indoor Sports Centre as `Indoor_Sport_Center`.
+  - DC/AC over the 44 inverter-file units runs from 0.87 to 4.38 (median 1.20); the extremes are metadata errors.
+
+### F22 — The observed-start rule applied to every optimizer station — *solid*
+- **Evidence:** `results/nb1_audit/start_dates.csv`. The rule of D08 (earliest file begins on the 1st of a month while
+  already producing) flags LSK South, Zone A2 (its first inverter, 2021), S H Ho Sports Hall, Wong Check She, Zone J1,
+  Library and Zone L2. Earliest production precedes the metadata connection date by up to 59 days (Zone L2) and
+  follows it by up to 113 days (Zone J1); UG Hall8 produced 55 days before its connection date. The Zone A2 connection
+  date (2023-05-31) is that of the 2023 addition.
+- **Reading:** the flags agree with D08 for every event except **Library**: both of its files begin on 2022-06-01 and
+  produce that day, so the written rule calls it left-censored, while D08 scores it ("connected the day before").
+  The author must decide (open question of 18 Nov 2026).
+
+### F23 — The sensor drift is a step in mid-February 2023, found by two independent references — *solid*
+- **Evidence:** `results/nb1_audit/sensor_daily.csv`, `sensor_monthly.csv`, `summary.json`.
+  - One-break segmentation of the daily log-ratios (dead-sensor days excluded): sensor / CAMS all-sky steps on
+    2023-02-14 from 0.756 to 1.166; sensor / fleet proxy steps on 2023-02-17 from 0.901 to 1.531. CAMS / fleet shows
+    only a small step, on 2023-03-14, from 1.171 to 1.265.
+  - Yearly medians of sensor / CAMS: 0.721 (2021), 0.762 (2022), 1.126 (2023).
+  - Noon 95th percentile of GHI over Ineichen clear sky (campus altitude 124 m, the median station altitude): sensor
+    0.82–0.96 from May 2021 to January 2023, then 1.22–1.59; CAMS 0.93–1.08 in every month. The 2021–2022 level of
+    about 0.8–0.9 therefore comes from the sensor, not from the clear-sky model (answers D19).
+  - The sensor was dead (sensor / CAMS below 0.3) on 77 days between 2021-03-02 and 2022-05-23, mostly March and
+    April 2021 (maximum 32 W/m² in April 2021). Neither the data paper nor the earlier audits mention it.
+  - Night offset (monthly median at solar elevation below −6°): 0.7–5.3 W/m² in 2021, 8–20 W/m² from May 2022 to
+    January 2023, 25–30 W/m² from April to August 2023, 0 in November–December 2023.
+  - Readings above the BSRN "extremely rare" limit appear from February 2023 (26), peak in July and September 2023
+    (734 and 1,096); the maximum is 3,608.6 W/m² (February 2023).
+  - PELT with the penalty 2σ² log n finds 17–19 breaks, mostly seasonal structure, so the final boundary rule of D10
+    needs a calibrated penalty or a one-break segmentation, fixed in NB3 before scoring.
+- **Reading:** with this boundary, UG Hall8 (2023-01-05) has 48 of its 90 test days after mid-February and stays in
+  the drifted window, so the drifted window keeps its five events. The final boundary comes from NB3.
+
+### F24 — Weather files: missing rows, not NA values — *solid*
+- **Evidence:** `results/nb1_audit/inventory_weather.csv`. Irradiance has 2, 3,076 and 5,930 missing 1-min rows in
+  2021, 2022 and 2023, and no NA values: the gaps are absent rows, unlike the PV files, which write NA.
+
+### F16 — Not every site file starts on the 1st of a month — *solid*
 - **Evidence:** among the 18 site files of the first event list, Indoor Sports Centre (2021-12-02), Zone J2
   (2021-11-13), Zone D (2022-01-20) and UG Hall9 (2023-02-11) start mid-month. The audit counts 5 of the 15-min and
-  23 of the hourly site files.
+  23 of the hourly site files. NB1 reproduces both counts: 5 of 37 and 23 of 23.

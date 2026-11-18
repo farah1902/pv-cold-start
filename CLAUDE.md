@@ -150,7 +150,12 @@ results/                one folder per stage, each with summary.json (versions, 
 python tools/make_data_manifest.py --check   # verify the data on disk against the committed manifest
 ```
 
-Notebooks: none yet. The next step is NB0 (environment and config) and NB1 (HKUST audit).
+```bash
+python tools/make_nb0.py && python tools/make_nb1.py   # regenerate the notebooks
+cd notebooks && jupyter nbconvert --to notebook --execute --inplace --ExecutePreprocessor.kernel_name=python3 --ExecutePreprocessor.timeout=1400 NB1_hkust_audit.ipynb
+```
+
+Run times (local): NB0 12 s; NB1 about 250 s. Outputs: `results/nb0_setup/`, `results/nb1_audit/`.
 
 ## Environment notes
 

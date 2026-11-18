@@ -1,0 +1,113 @@
+{
+  "notebook": "NB1_hkust_audit",
+  "environment": {
+    "python": "3.12.1",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "executable": "C:\\Python312\\python.exe",
+    "run_at": "2026-11-18 23:11:15",
+    "numpy": "1.26.4",
+    "pandas": "2.2.0",
+    "scipy": "1.12.0",
+    "sklearn": "1.5.1",
+    "statsmodels": "0.15.0",
+    "lightgbm": "4.6.0",
+    "pvlib": "0.16.1",
+    "ruptures": "v1.1.10",
+    "matplotlib": "3.8.3",
+    "torch": "2.2.0+cpu",
+    "openpyxl": "3.1.5",
+    "pyarrow": "15.0.2",
+    "yaml": "6.0.1"
+  },
+  "runtime_s": 245.8,
+  "n_stations": 60,
+  "n_inverters_metadata": 67,
+  "n_inverter_files": 44,
+  "inverter_time_formats": {
+    "iso": 31,
+    "ymd": 13
+  },
+  "site_time_formats_15min": {
+    "iso": 34,
+    "ymd": 3
+  },
+  "site_time_formats_1h": {
+    "iso": 16,
+    "ymd": 7
+  },
+  "inverter_rows_per_day_mode": {
+    "144": 44
+  },
+  "inverter_slots": [
+    "06:00",
+    "17:55"
+  ],
+  "inverter_na_share_median": 0.06189129591012944,
+  "inverter_na_share_max": 0.1289243789243789,
+  "not_producing_first_day": [
+    "Zone A2_Inverter_2"
+  ],
+  "ac_within_2pct": 33,
+  "ac_checked": 44,
+  "site15_not_on_1st": 5,
+  "site1h_not_on_1st": 23,
+  "evening_share": {
+    "median_share_all_station_months": 0.0006050695272655476,
+    "max_calendar_month_median": 0.005419358180094465,
+    "argmax_calendar_month": 6,
+    "max_station_month": 0.007410147262369156,
+    "n_station_months": 949,
+    "median_share_per_station_whole_period": 0.0018812474843108555,
+    "max_share_per_station_whole_period": 0.0026777248644496814
+  },
+  "campus_altitude_m": 124.0,
+  "dead_sensor_days": 77,
+  "dead_sensor_first": "2021-03-02",
+  "dead_sensor_last": "2022-05-23",
+  "sensor_change_points_audit": {
+    "ratio_sensor_cams": {
+      "date": "2023-02-14",
+      "before": 0.7564794907568262,
+      "after": 1.1661471912043553,
+      "n_days": 1012
+    },
+    "ratio_sensor_fleet": {
+      "date": "2023-02-17",
+      "before": 0.9010259269441839,
+      "after": 1.5311351938136668,
+      "n_days": 948
+    },
+    "ratio_cams_fleet": {
+      "date": "2023-03-14",
+      "before": 1.1709522952573417,
+      "after": 1.2647298620238339,
+      "n_days": 948
+    }
+  },
+  "sensor_ratio_yearly_median": {
+    "ratio_sensor_cams": {
+      "2021": 0.7209,
+      "2022": 0.7624,
+      "2023": 1.1255
+    },
+    "ratio_sensor_fleet": {
+      "2021": 0.8743,
+      "2022": 0.9161,
+      "2023": 1.5042
+    },
+    "ratio_cams_fleet": {
+      "2021": 1.1762,
+      "2022": 1.1707,
+      "2023": 1.2402
+    }
+  },
+  "left_censored_by_rule": [
+    "LSK_South",
+    "Zone_A2",
+    "S_H_Ho_Sports_Hall",
+    "Wong_Check_She_Research_Centre",
+    "Zone_J1",
+    "Library",
+    "Zone_L2"
+  ]
+}

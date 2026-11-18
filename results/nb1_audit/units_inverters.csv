@@ -1,0 +1,68 @@
+station,inverter,inverter_model,inverter_brand,inverter_count,AC_kW,module_models,module_types,n_modules,DC_kWp,n_module_blocks,DC_AC,file
+CYT__Station_1_,CYT__Station_1__Inverter,Sunny_Tripower_25000TL_JP_30,SMA,1.0,25.0,JKM395M_6RL3_V,Si_mono_Model,77.0,30.415,1,1.2166,
+CYT__Station_2_,CYT__Station_2__Inverter,Sunny_Tripower_25000TL_JP_30,SMA,1.0,25.0,JKM395M_6RL3_V,Si_mono_Model,77.0,30.415,1,1.2166,
+Indoor_Sport_Center,Indoor_Sport_Center_Inverter,Sunny_Tripower_STP_10_0,SMA,1.0,10.0,JKM365N_6TL3,Si_mono_Model,120.0,43.8,1,4.38,Indoor Sports Centre_Inverter
+LSK_North,LSK_North_Inverter,SolarEdge_SE55K,SolarEdge,1.0,55.0,JKM390M_6RL3_TV,Si_mono_Model,170.0,66.3,1,1.2054545454545453,LSK North_Inverter
+LSK_South,LSK_South_Inverter,SolarEdge_SE25K,SolarEdge,1.0,25.0,JKM390M_6RL3_TV,Si_mono_Model,72.0,28.08,1,1.1232,LSK South_Inverter
+Library,Library_Inverter_1,SolarEdge SE50K,SolarEdge,1.0,50.0,JKM370N_6TL3,Si_mono_Model,156.0,57.72,1,1.1543999999999999,Library_Inverter_1
+Library,Library_Inverter_2,SolarEdge SE50K,SolarEdge,1.0,50.0,JKM370N_6TL3,Si_mono_Model,152.0,56.24,1,1.1248,Library_Inverter_2
+Library,Library_Inverter_3,SolarEdge SE50K,SolarEdge,1.0,50.0,JKM370N_6TL3,Si_mono_Model,152.0,56.24,1,1.1248,Library_Inverter_3
+SQ1,SQ1_Inverter,SolarEdge_SE27_6K,SolarEdge,1.0,27.6,JKM390M_6RL3_TV,Si_mono_Model,88.0,34.32,1,1.2434782608695651,SQ1_Inverter
+SQ10,SQ10_Inverter,Sunny_Tripower_Core1_STP_50_40_,SMA,1.0,50.0,JKM390M_6RL3_TV,Si_mono_Model,78.0,30.42,1,0.6084,
+SQ11,UST_SQ11_Inverter,,SMA,1.0,,JKM390M_6RL3_TV+SMF310M_6X10UW,Si_mono_Model+Thin_film_Model,85.0,32.51,2,,
+SQ12,UST_SQ12_Inverter,,SMA,1.0,,JKM390M_6RL3_TV+SMF310M_6X10UW,Si_mono_Model+Thin_film_Model,84.0,32.12,2,,
+SQ13,SQ13_Inverter,Sunny_Tripower_Core1_STP_50_40_,SMA,1.0,50.0,JKM390M_6RL3_TV,Si_mono_Model,73.0,28.47,1,0.5694,
+SQ14,UST_SQ14_Inverter,,SMA,1.0,,JKM390M_6RL3_TV+SMF310M_6X10UW,Si_mono_Model+Thin_film_Model,86.0,32.9,2,,
+SQ15,UST_SQ15_Inverter,,SMA,1.0,,JKM390M_6RL3_TV+SMF310M_6X10UW,Si_mono_Model+Thin_film_Model,87.0,33.29,2,,
+SQ16,SQ16_Inverter,Sunny_Tripower_Core1_STP_50_40_,SMA,1.0,50.0,JKM390M_6RL3_TV,Si_mono_Model,85.0,33.15,1,0.6629999999999999,
+SQ17,SQ17_Inverter,Sunny_Tripower_Core1_STP_50_40_,SMA,1.0,50.0,JKM390M_6RL3_TV,Si_mono_Model,95.0,37.05,1,0.741,
+SQ18,SQ18_Inverter,Sunny_Tripower_Core1_STP_50_40_,SMA,1.0,50.0,JKM390M_6RL3_TV,Si_mono_Model,87.0,33.93,1,0.6786,
+SQ19,UST_SQ19_Inverter,,SMA,1.0,,JKM390M_6RL3_TV+SMF310M_6X10UW,Si_mono_Model+Thin_film_Model,87.0,33.29,2,,
+SQ2,SQ2_Inverter,SolarEdge_SE33_3K,SolarEdge,1.0,33.3,JKM390M_6RL3_TV,Si_mono_Model,86.0,33.54,1,1.0072072072072074,SQ2_Inverter
+SQ3,SQ3_Inverter,SolarEdge_SE33_3K,SolarEdge,1.0,33.3,JKM390M_6RL3_TV,Si_mono_Model,92.0,35.88,1,1.0774774774774776,SQ3_Inverter
+SQ4,SQ4_Inverter,SolarEdge_SE33_3K,SolarEdge,1.0,33.3,JKM390M_6RL3_TV,Si_mono_Model,91.0,35.49,1,1.065765765765766,SQ4_Inverter
+SQ567,SQ567_Inverter,SolarEdge_SE55K,SolarEdge,1.0,55.0,JKM390M_6RL3_TV,Si_mono_Model,123.0,47.97,1,0.8721818181818182,SQ567_Inverter
+SQ567_Flexible_PV,SQ567_Flexible_PV_Inverter,Sunny_Tripower_STP_10_0,SMA,1.0,10.0,SMF310M_6X10UW,Thin_film_Model,36.0,11.16,1,1.116,
+SQ8,UST_SQ8_Inverter,,SMA,1.0,,JKM390M_6RL3_TV+SMF310M_6X10UW,Si_mono_Model+Thin_film_Model,85.0,32.51,2,,
+SQ9,SQ9_Inverter,Sunny_Tripower_Core1_STP_50_40_,SMA,1.0,50.0,JKM390M_6RL3_TV,Si_mono_Model,79.0,30.81,1,0.6162,
+SQ_Apartment13_24,SQ_Apartment13_24_Inverter,SolarEdge_SE17K,SolarEdge,1.0,17.0,JKM390M_6RL3_TV,Si_mono_Model,56.0,21.84,1,1.2847058823529411,SQ Apartment13-24_Inverter
+SQ_Apartment1_12,SQ_Apartment1_12_Inverter,SolarEdge_SE17K,SolarEdge,1.0,17.0,JKM390M_6RL3_TV,Si_mono_Model,56.0,21.84,1,1.2847058823529411,SQ Apartment1-12_Inverter
+SQ_Apartment25_36,SQ_Apartment25_36_Inverter,SolarEdge_SE17K,SolarEdge,1.0,17.0,JKM390M_6RL3_TV,Si_mono_Model,56.0,21.84,1,1.2847058823529411,SQ Apartment25-36_Inverter
+SQ_Apartment37_48,SQ_Apartment37_48_Inverter,SolarEdge_SE12_5K,SolarEdge,1.0,12.5,JKM390M_6RL3_TV,Si_mono_Model,38.0,14.82,1,1.1856,SQ Apartment37-48_Inverter
+SQ_Apartment37_48_Flexible_PV,SQ_Apartment37_48_Flexible_PV_Inverter,Sunny_Tripower_STP5_0_3AV_40,SMA,1.0,5.0,SMF310M_6X10UW,Si_mono_Model,12.0,3.72,1,0.744,
+SQ_Block_P,SQ_Block_P_Inverter,SolarEdge_SE33_3K,SolarEdge,1.0,33.3,JKM395M_6RL3_V,Si_mono_Model,94.0,37.13,1,1.115015015015015,SQ Block P_Inverter
+SQ_Block_Q,SQ_Block_Q_Inverter,Sunny_Tripower_20000TL_30,SMA,1.0,20.0,JKM365N_6TL3_V,Si_mono_Model,72.0,26.28,1,1.314,
+SQ_Block_Q__Phrase_2_,SQ_Block_Q__Phrase_2__Inverter,Sunny_Tripower_STP_10_0,SMA,1.0,10.0,JKM365N_6TL3_V,Si_mono_Model,28.0,10.22,1,1.022,
+SQ_Block_R,SQ_Block_R_Inverter,SolarEdge_SE33_3K,SolarEdge,1.0,33.3,JKM365N_6TL3_V,Si_mono_Model,104.0,37.96,1,1.1399399399399401,SQ Block R_Inverter
+SQ_Block_S,SQ_Block_S_Inverter,SolarEdge_SE33_3K,SolarEdge,1.0,33.3,JKM365N_6TL3_V,Si_mono_Model,90.0,32.85,1,0.9864864864864866,SQ Block S_Inverter
+S_H_Ho_Sports_Hall,S_H_Ho_Sports_Hall_Inverter_1,SolarEdge SE17K,SolarEdge,1.0,17.0,JKM390M_6RL3_TV,Si_mono_Model,56.0,21.84,1,1.2847058823529411,S H Ho Sports Hall_Inverter_1
+S_H_Ho_Sports_Hall,S_H_Ho_Sports_Hall_Inverter_2,SolarEdge SE25K,SolarEdge,1.0,25.0,JKM390M_6RL3_TV,Si_mono_Model,70.0,27.3,1,1.092,S H Ho Sports Hall_Inverter_2
+Shaw_Auditorium,Shaw_Auditorium_Inverter,SolarEdge_SE66_6K,SolarEdge,1.0,66.6,JKM395M_6RL3_V,Si_mono_Model,224.0,88.48,1,1.3285285285285287,Shaw Auditorium_Inverter
+Tower_A,Tower_A_Inverter,Sunny_Tripower_Core1_STP_50_40_,SMA,1.0,50.0,JKM395M_6RL3_V,Si_mono_Model,102.0,40.29,1,0.8058,
+UG_Hall2_2F,UG_Hall2_2F_Inverter,SolarEdge_SE25K,SolarEdge,1.0,25.0,JKM390M_6RL3_TV,Si_mono_Model,60.0,23.4,1,0.9359999999999999,UG Hall2 2F_Inverter
+UG_Hall2_RF,UG_Hall2_RF_Inverter,SolarEdge_SE8K,SolarEdge,1.0,8.0,JKM390M_6RL3_TV,Si_mono_Model,26.0,10.14,1,1.2675,UG Hall2 RF_Inverter
+UG_Hall3,UG_Hall3_Inverter,SolarEdge_SE25K,SolarEdge,1.0,25.0,JKM390M_6RL3_TV,Si_mono_Model,70.0,27.3,1,1.092,UG Hall3_Inverter
+UG_Hall4,UG_Hall4_Inverter,SolarEdge_SE25K,SolarEdge,1.0,25.0,JKM390M_6RL3_TV,Si_mono_Model,84.0,32.76,1,1.3104,UG Hall4_Inverter
+UG_Hall4_Flexible_PV,UG_Hall4_Flexible_PV_Inverter,Sunny_Tripower_15000TL_30,SMA,1.0,15.0,SMF310M_6X10UW,Thin_film_Model,64.0,19.84,1,1.3226666666666667,
+UG_Hall6,UG_Hall6_Inverter,SolarEdge_SE25K,SolarEdge,1.0,25.0,JKM390M_6RL3_TV,Si_mono_Model,78.0,30.42,1,1.2168,UG Hall6_Inverter
+UG_Hall7,UG_Hall7_Inverter,SolarEdge_SE25K,SolarEdge,1.0,25.0,JKM390M_6RL3_TV,Si_mono_Model,82.0,31.98,1,1.2792000000000001,UG Hall7_Inverter
+UG_Hall7_Flexible_PV,UG_Hall7_Flexible_PV_Inverter,Sunny_Tripower_STP5_0_3AV_40,SMA,1.0,5.0,SMF310M_6X10UW,Thin_film_Model,18.0,5.58,1,1.116,
+UG_Hall8,UG_Hall8_Inverter,SolarEdge_SE25K,SolarEdge,1.0,25.0,JKM390M_6RL3_TV,Si_mono_Model,66.0,25.74,1,1.0295999999999998,UG Hall8_Inverter
+UG_Hall9,UG_Hall9_Inverter,SolarEdge_SE25K,SolarEdge,1.0,25.0,JKM415N_6RL3_V,Si_mono_Model,65.0,26.975,1,1.079,UG Hall9_Inverter
+Wong_Check_She_Research_Centre,Wong_Check_She_Research_Centre_Inverter_1,SolarEdge SE50K,SolarEdge,1.0,50.0,JKM390M_6RL3_TV,Si_mono_Model,154.0,60.06,1,1.2012,Wong Check She Research Centre_Inverter_1
+Wong_Check_She_Research_Centre,Wong_Check_She_Research_Centre_Inverter_2,SolarEdge SE50K,SolarEdge,1.0,50.0,JKM390M_6RL3_TV,Si_mono_Model,152.0,59.28,1,1.1856,Wong Check She Research Centre_Inverter_2
+Zone_A1,Zone_A1_Inverter,SolarEdge_SE33_3K,SolarEdge,1.0,33.3,JKM390M_6RL3_TV,Si_mono_Model,96.0,37.44,1,1.1243243243243244,Zone A1_Inverter
+Zone_A2,Zone_A2_Inverter_1,SolarEdge_SE82_8K_,SolarEdge,1.0,82.8,JKM410N_6RL3+JKM390M_6RL3_TV,Si_mono_Model+Si_mono_Model,282.0,111.53,2,1.3469806763285024,Zone A2_Inverter_1
+Zone_A2,Zone_A2_Inverter_2,SolarEdge_SE55K_,SolarEdge,1.0,55.0,JKM410N_6RL3,Si_mono_Model,176.0,73.04,1,1.328,Zone A2_Inverter_2
+Zone_A2,Zone_A2_Inverter_3,SolarEdge_SE50K_,SolarEdge,1.0,50.0,JKM410N_6RL3,Si_mono_Model,160.0,66.4,1,1.328,Zone A2_Inverter_3
+Zone_A4,Zone_A4_Inverter,SolarEdge_SE55K,SolarEdge,1.0,55.0,JKM390M_6RL3_TV,Si_mono_Model,176.0,68.64,1,1.248,Zone A4_Inverter
+Zone_A5,Zone_A5_Inverter,SolarEdge_SE17K,SolarEdge,1.0,17.0,JKM390M_6RL3_TV,Si_mono_Model,52.0,20.28,1,1.1929411764705884,Zone A5_Inverter
+Zone_A6,Zone_A6_Inverter,SolarEdge_SE50K,SolarEdge,1.0,50.0,JKM390M_6RL3_TV,Si_mono_Model,166.0,64.74,1,1.2948,Zone A6_Inverter
+Zone_A7,Zone_A7_Inverter,SolarEdge_SE10K,SolarEdge,1.0,10.0,JKM365N_6TL3_V,Si_mono_Model,35.0,12.775,1,1.2775,Zone A7_Inverter
+Zone_D,Zone_D_Inverter_1,SolarEdge_SE33_3K,SolarEdge,1.0,33.3,JKM365N_6TL3_V,Si_mono_Model,188.0,68.62,1,2.060660660660661,Zone D_Inverter_1
+Zone_D,Zone_D_Inverter_2,SolarEdge_SE25K,SolarEdge,1.0,25.0,JKM390M_6RL3_TV,Si_mono_Model,66.0,25.74,1,1.0295999999999998,Zone D_Inverter_2
+Zone_J1,Zone_J1_Inverter,SolarEdge_SE25K,SolarEdge,1.0,25.0,JKM365N_6TL3_V,Si_mono_Model,70.0,25.55,1,1.022,Zone J1_Inverter
+Zone_J2,Zone_J2_Inverter,SolarEdge_SE50K,SolarEdge,1.0,50.0,JKM365N_6TL3_V,Si_mono_Model,175.0,63.875,1,1.2775,Zone J2_Inverter
+Zone_L1__Station_1_,Zone_L1__Station_1__Inverter,Sunny_Tripower_25000TL_30,SMA,1.0,25.0,JKM395M_6RL3_V,Si_mono_Model,75.0,29.625,1,1.185,
+Zone_L1__Station_2_,Zone_L1__Station_2__Inverter,Sunny_Tripower_25000TL_30,SMA,1.0,25.0,JKM395M_6RL3_V,Si_mono_Model,75.0,29.625,1,1.185,
+Zone_L2,Zone_L2_Inverter,SolarEdge_SE10K,SolarEdge,1.0,10.0,JKM365N_6TL3,Si_mono_Model,33.0,12.045,1,1.2045,Zone L2_Inverter

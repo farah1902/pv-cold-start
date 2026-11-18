@@ -26,4 +26,18 @@ created. HKUST paths are relative to `data/raw/hkust/Dataset/`.
 | `data/external/pv_density/digitization/` | Digitised density grid: `pv_density_visual_grid.{csv,geojson,shp}`, georeferenced rasters, `metadata.json`, `README.md` | Visual reconstruction from the ISPRS paper's figure |
 
 ## Outputs
-_None yet._
+
+| Folder / file | Content |
+| --- | --- |
+| `results/nb0_setup/summary.json`, `config_snapshot.yaml` | Versions, manifest check, every constant of `config.py` |
+| `results/nb1_audit/units_inverters.csv` | One row per inverter in the metadata: station, model, AC_kW (from the model name), module models, n_modules, DC_kWp, DC_AC, file stem |
+| `results/nb1_audit/units_stations.csv` | One row per station: metadata rating, connection date, contractor, altitude, tilt, azimuth (Brick and pvlib), file stems |
+| `results/nb1_audit/inventory_inverters.csv` | Per inverter file: format, rows, first/last, rows per day, slots, NA share, p99.9 and max power, producing on day 1 |
+| `results/nb1_audit/inventory_sites_15min.csv`, `_1h.csv` | Per site file: format, rows, first/last, starts on the 1st, first power, first-day energy, NA share |
+| `results/nb1_audit/inventory_weather.csv` | Per weather variable and year: rows, missing rows, NA values, range |
+| `results/nb1_audit/metadata_check.csv` | AC rating vs observed p99.9 (within 2% flag) |
+| `results/nb1_audit/start_dates.csv` | Per optimizer station: connection date, first inverter day, site-file start, earliest production, D08 left-censoring flag |
+| `results/nb1_audit/evening_share.csv` | Share of energy after 18:00 per station and month |
+| `results/nb1_audit/zone_d_ratio.csv` | Zone D station / inverter 2 daily energy, monthly median |
+| `results/nb1_audit/sensor_daily.csv` | Per day: sensor, CAMS and Ineichen irradiation (Wh/m²), ratios to CAMS and to the fleet proxy |
+| `results/nb1_audit/sensor_monthly.csv` | Per month: night offset, noon p95 ratios, BSRN exceedances, maximum |
