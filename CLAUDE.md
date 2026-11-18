@@ -67,7 +67,7 @@ something, record it and follow it, even if you would have chosen otherwise.
 7. **Keep each finding's confidence level** (*solid*, *strong*, *provisional*). Do not overclaim. Keep a list of the
    claims the paper must not make, and check every draft against it.
 8. **Never tune on test data.** Once the test seeds or test datasets have been looked at, they are spent: no design
-   change may be based on them *(this project: the 14 scored and 3 sensitivity events; tuning uses only the 10
+   change may be based on them *(this project: the 13 scored and 4 sensitivity events; tuning uses only the 10
    validation units of June–July 2021)*.
 9. **The author's explicit instructions override the defaults.** Examples: "don't push yet", "never commit the public
    repo", "8,000–8,100 words". Record each such instruction in `CLAUDE.md` and follow it in every later session.

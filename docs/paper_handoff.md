@@ -23,7 +23,7 @@ must add Longarini et al. (2026) (F19). Additions approved on 18 Nov: D18–D22.
 _Empty._
 
 ## 6. Threats to validity
-One campus; 14 scored events, 5 of them drifted; low tilt diversity (0–15°); inverter files stop at 17:55 (F01);
+One campus; 13 scored events, 5 of them drifted; low tilt diversity (0–15°); inverter files stop at 17:55 (F01);
 telemetry start instead of grid connection (F06); metadata errors (D01).
 
 ## 7. Claims the paper must NOT make
@@ -34,8 +34,8 @@ telemetry start instead of grid connection (F06); metadata errors (D01).
 - Cross-climate transfer in general; only Safi is measured (guide §1). No tilt-transfer claim.
 - Any difference below about 3% (guide §3.10).
 - A significant Wilcoxon result in the drifted window (D10, F12).
-- "19 real start events" or "two capacity additions": there are 14 scored events and one addition (D08).
-- "Real start dates" for the three sensitivity events, whose starts are left-censored (D08).
+- "19 real start events" or "two capacity additions": there are 13 scored events and one addition (D08, D27).
+- "Real start dates" for the four sensitivity events, whose starts are left-censored (D08, D27).
 - "Healthy sensor" for 2021–2022 (D11).
 - Any pilot number from the guide (`results_summary.md`).
 - Any result on virtual Moroccan fleets (D07).

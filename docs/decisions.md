@@ -240,6 +240,21 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
     over-segments (F23), so the final boundary rule of D10 is fixed in NB3, before scoring.
 - **Evidence:** `results/nb0_setup/`, `results/nb1_audit/`; F21–F24.
 
+### D27 — Library moves to the sensitivity set: 13 scored events, 4 sensitivity events [data, Phase 2]
+- **Request or reason:** F22. Both Library files begin on 2022-06-01 and already produce that day, so the written D08
+  rule calls the start left-censored. The connection date (one day earlier) cannot prove the start, because units
+  produced before their connection date elsewhere on campus (UG Hall8: 55 days). The agent recommended the move; the
+  author, 18 Nov 2026: "ok move Library to the sensitivity set, leaving 13 scored events".
+- **Change:** scored events: 13 (8 stable, 5 drifted). Sensitivity events: Library, Wong Check She, Zone J1, Zone L2.
+  The model-fit count is unchanged (17 events). Primary test: n = 13; the smallest one-sided exact p is
+  1/8192 = 1.2 × 10⁻⁴. Updated in the guide, `config.py`, `CLAUDE.md`, `README.md` and the handoff.
+
+### D28 — Zone A2 inverters 2 and 3 enter the DC/AC prior test [method, Phase 2] [guide deviation]
+- **Request or reason:** F21. Their metadata are complete (SE55K and SE50K with JKM410N modules, DC/AC 1.33), and
+  both peak within 2% of their AC rating. The agent recommended it; the author, 18 Nov 2026: "include them".
+- **Change:** the only capacity addition is tested with the prior (G1, G2), not with g = 1. Guide §4.3 and the event
+  table now say so; the guide's erratum "Zone A2 has no module blocks" is replaced by the Zone D inverter-2 error.
+
 ### D16 — pvlib 0.16.1 and ruptures 1.1.10 are installed locally and pinned [environment, Phase 0]
 - **Request or reason:** both are in the guide's software list (§5.6) and were missing locally on 18 Nov 2026.
 - **Change:** `pip install pvlib==0.16.1 ruptures==1.1.10`. A dry run first showed that nothing else would be

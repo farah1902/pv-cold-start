@@ -32,7 +32,7 @@ The DC/AC gain prior, tested on the 15 events with clean metadata, halves the ga
 
 Rooftop PV is installed faster than forecasting models can be trained for it. A new system has no power history, so learned forecasters cannot be fitted for weeks or months. The usual fix transfers an irradiance-to-power model, which assumes a trustworthy irradiance input. On rooftops that assumption often fails: the HKUST pyranometer reads about 0.8 of clear-sky in 2021–2022 and about 1.35 in 2023. It is a LI-COR LI-200R with ±5% maximum error, so this step is a fault, not scatter.
 
-Most cold-start papers also simulate the cold start by hiding a station that was already running. HKUST offers something rarer: 14 telemetry start events with an observed start at 15-min resolution, one of them a capacity addition, plus a documented sensor failure.
+Most cold-start papers also simulate the cold start by hiding a station that was already running. HKUST offers something rarer: 13 telemetry start events with an observed start at 15-min resolution, one of them a capacity addition, plus a documented sensor failure.
 
 ### Three contributions (no more)
 
@@ -55,7 +55,7 @@ Read from abstracts and earlier notes; every cell is verified in the full texts 
 | Simeunović et al. 2022, graph transformer over PV systems ([doi](https://doi.org/10.1109/TSTE.2021.3125200)) | To verify | No (production data only); graph construction to verify | Yes | No | No |
 | SolarCrossFormer (Schubnel et al. 2025): irradiance, not PV power ([doi](https://doi.org/10.1109/TSTE.2025.3624044)) | No: unseen sites from coordinates | Satellite images and ground stations | Yes | No | Yes |
 | Longarini et al. 2026, foundation models with synthetic histories ([arXiv](https://arxiv.org/abs/2606.07457)) | No: synthetic history from metadata | ERA5 irradiance with perfect foresight; daily target | No (oracle future covariates) | No | To verify |
-| **This paper (PVSetFormer)** | **No** | **None: DC/AC from nameplate, no coordinates** | **Yes** | **Yes, 14 events** | **Yes** |
+| **This paper (PVSetFormer)** | **No** | **None: DC/AC from nameplate, no coordinates** | **Yes** | **Yes, 13 events** | **Yes** |
 
 The sentence that must survive a reviewer who knows Engerer: *we take the PV clear-sky index used for same-time upscaling and turn it into a causal, probabilistic cold-start forecast that needs no local pyranometer, then test it on real start dates, including the year the sensor drifted.*
 
@@ -68,7 +68,7 @@ The sentence that must survive a reviewer who knows Engerer: *we take the PV cle
 
 ### Pre-registered success criteria
 
-- The main model beats A1 on median event-wise nRMSE at the primary horizon of 1 h, chosen before scoring (one-sided Wilcoxon, n = 14, p < 0.05). Other horizons are secondary, with Holm correction.
+- The main model beats A1 on median event-wise nRMSE at the primary horizon of 1 h, chosen before scoring (one-sided Wilcoxon, n = 13, p < 0.05). Other horizons are secondary, with Holm correction.
 - In the drifted window (about 5 events, too few for a significant Wilcoxon test), it beats A4 and A4b by effect size, with per-event Diebold–Mariano tests at 1 h. In the stable window it stays within 5% of A4b.
 - The 80% interval covers 75–85% of observations (PICP).
 - If the main model only ties A1, the paper becomes the sensor-correction note instead.
@@ -99,7 +99,7 @@ The unit of analysis is the inverter (44 units, 5-min telemetry aggregated to 15
 
 - **AC rating** P\_AC,u comes from the inverter model name (SE25K = 25 kW, SE82\_8K = 82.8 kW). It is cross-checked against the 99.9th percentile of observed power, which matches within 2% for 33 of 44 inverters. Of the other 11, two are metadata errors, several never reach their limit because their DC capacity is below or close to the AC rating (SQ567, UG Hall 2 2F, SQ Block S), and three exceed the nameplate by 5–6% (Zone A7, UG Hall 2 RF, SQ Apartment37-48).
 - **DC rating** P\_DC,u = number of modules × module watt-peak (JKM390M = 390 Wp), from the module block linked to each inverter.
-- **Errata to publish:** Indoor Sports Centre is listed as STP 10.0 but clips at 33.4 kW; the Zone D module blocks are swapped between its two inverters; Zone A2 has no module blocks; SQ Apartment37-48 Flexible PV is rated 3.72 kW but peaks at 6.7 kW (hourly track).
+- **Errata to publish:** Indoor Sports Centre is listed as STP 10.0 but clips at 33.4 kW; the Zone D module blocks are swapped between its two inverters; Zone D inverter 2 is listed as SE25K but peaks at 49.9 kW; SQ Apartment37-48 Flexible PV is rated 3.72 kW but peaks at 6.7 kW (hourly track).
 - Units with a metadata error keep the empirical AC limit and are left out of the DC/AC-prior test, but stay in the forecasting test with the g = 1 prior.
 
 ### Start dates and events
@@ -110,7 +110,7 @@ Three dates exist per unit: the metadata connection date, the first inverter tel
 
 An **event** is one unit, or several units of the same station starting within 7 days. An event is eligible if at least 8 donor units have 14 days or more of history at its start, it has 30 or more valid daylight days in its first 90 days, and its AC rating is known.
 
-**Test events (14 scored at 15 min).** "Stable" and "drifted" use a provisional sensor boundary of November 2022. The final boundary comes from change-point detection on the daily ratio of sensor to fleet index.
+**Test events (13 scored at 15 min).** "Stable" and "drifted" use a provisional sensor boundary of November 2022. The final boundary comes from change-point detection on the daily ratio of sensor to fleet index.
 
 | # | Event | Observed start | AC (kW) | DC/AC | Type and notes | Sensor period |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -122,14 +122,13 @@ An **event** is one unit, or several units of the same station starting within 7
 | 6 | Zone J2 | 2021-11-13 | 50.0 | 1.39 | New station, mixed orientation; re-dated from the site file, which serves as target until the inverter file starts on 2021-12-08 | Stable |
 | 7 | Indoor Sports Centre | 2021-11-17 | 33.3 | 1.31 | New station; inverter model in metadata wrong | Stable |
 | 8 | Zone D (both inverters, station level) | 2022-01-19 | About 83 (observed peaks) | Metadata error | New station; site series as target, because inverter 1's file is missing until December 2022 | Stable |
-| 9 | Library (3 inverters) | 2022-06-01 | 150.0 | 1.13 | New station; connected the day before | Stable |
-| 10 | UG Hall 8 | 2023-01-05 | 25.0 | 1.04 | New station | Drifted |
-| 11 | UG Hall 9 | 2023-02-11 | 25.0 | 1.08 | New station | Drifted |
-| 12 | Zone A2 inverters 2 and 3 | 2023-05-16 | 105.0 | Metadata missing | Capacity addition, confirmed by the station total | Drifted |
-| 13 | SQ Block P | 2023-06-22 | 33.3 | 1.12 | New station | Drifted |
-| 14 | Shaw Auditorium | 2023-07-09 | 66.6 | 1.33 | New station, mixed orientation | Drifted |
+| 9 | UG Hall 8 | 2023-01-05 | 25.0 | 1.04 | New station | Drifted |
+| 10 | UG Hall 9 | 2023-02-11 | 25.0 | 1.08 | New station | Drifted |
+| 11 | Zone A2 inverters 2 and 3 | 2023-05-16 | 105.0 | 1.33 | Capacity addition, confirmed by the station total; metadata complete (F21), in the DC/AC prior test (D28) | Drifted |
+| 12 | SQ Block P | 2023-06-22 | 33.3 | 1.12 | New station | Drifted |
+| 13 | Shaw Auditorium | 2023-07-09 | 66.6 | 1.33 | New station, mixed orientation | Drifted |
 
-**Sensitivity set, left-censored starts (3):** Wong Check She (both files start on 2021-12-01, already producing; connected 92 days earlier), Zone J1 (site file starts on 2022-03-01, already producing; connected 113 days earlier), Zone L2 (site file starts on 2022-06-01, already producing, with 405 kWh before its inverter file begins on 2022-08-02).
+**Sensitivity set, left-censored starts (4):** Library (both files start on 2022-06-01, already producing; connected the day before; moved here by D27), Wong Check She (both files start on 2021-12-01, already producing; connected 92 days earlier), Zone J1 (site file starts on 2022-03-01, already producing; connected 113 days earlier), Zone L2 (site file starts on 2022-06-01, already producing, with 405 kWh before its inverter file begins on 2022-08-02).
 
 **Removed (2):** Zone D inverter 1, because the station total ran at 1.6–1.7 × inverter 2 from January to October 2022, so its file starting on 2022-12-03 marks the end of an outage, not a new unit. S H Ho Sports Hall, because its first months are anomalous and its start is also left-censored.
 
@@ -359,7 +358,7 @@ The interval score (Winkler) is proper and rewards narrow intervals only when th
 | Ambiguous start dates | Wrong event start | Three dates compared | First-telemetry definition |
 | Capacity expansions | Wrong normalization | Inverter units | One event per added inverter group |
 | Missing data and outages | Biased scores | QC flags | Outage-excluded sensitivity |
-| Only 14 scored events, 5 of them drifted | Low power for small gains | Not applicable | Event-wise tests, effect sizes, no claims under about 3% |
+| Only 13 scored events, 5 of them drifted | Low power for small gains | Not applicable | Event-wise tests, effect sizes, no claims under about 3% |
 | Leakage traps | Inflated skill | Information set | Leakage-inflation table (Section 6) |
 | Daily window 06:00–17:55 in the inverter files | Evening energy missing (at most 0.5% in June); each horizon covers a different part of the day | File inspection; site files run 00:00–23:45 | Issue window 06:00 to 17:55 minus the horizon; common target window 12:00–17:55 |
 | Left-censored starts | False cold starts | Site vs inverter files, connection dates | Observed-start rule; 3 events moved to the sensitivity set |
@@ -421,12 +420,12 @@ The open question that A4b settles: can a one-month calibration lag follow a ste
 - The existing inverter on the same roof stays in the donor set. A sensitivity run without same-roof donors shows that results are not flattered by the nearest neighbour.
 - **Operator baseline A8, same-roof scaling:** the new inverters are forecast with the existing inverter's normalized forecast. This is what an operator would do without our method.
 - **Station-level view:** during the expansion month, the station forecast is the old inverter's own-history forecast plus the cold-start forecast of the new ones. It is compared with scaling the old forecast by the capacity ratio.
-- Zone A2 has no module metadata, so the DC/AC prior cannot be tested on it. It uses G0 and is flagged in the event table.
+- Zone A2 inverters 2 and 3 have complete metadata (SE55K and SE50K with JKM410N modules, DC/AC 1.33; F21), so the DC/AC prior is tested on them (D28).
 
 ### 4.4 Statistics
 
 - **Primary horizon, fixed before scoring: 1 h.** Every hypothesis test is run at 1 h; the other five horizons are secondary, with Holm correction.
-- **Primary test:** a one-sided Wilcoxon signed-rank test on event-wise differences Δ\_e = nRMSE\_main − nRMSE\_ref at 1 h, with n = 14 scored events and exact p-values.
+- **Primary test:** a one-sided Wilcoxon signed-rank test on event-wise differences Δ\_e = nRMSE\_main − nRMSE\_ref at 1 h, with n = 13 scored events and exact p-values.
 - **Effect size:** the Hodges–Lehmann median difference with its 95% confidence interval, plus the share of events won. Wording in the paper follows effect sizes, not only p-values.
 - **Comparisons:** main model vs A1 (primary), vs CLIPER, and vs A4 and A4b split by sensor period.
 - **Drifted window: effect sizes only.** It holds about 5 events, so the smallest one-sided exact Wilcoxon p is 1/32 ≈ 0.031 (1/16 if only 4 remain), and no Holm-corrected test can reach significance. The paper reports Hodges–Lehmann differences with day-block bootstrap intervals and the number of events won. Significance comes from per-event Diebold–Mariano tests at 1 h, with Holm across the drifted events.
@@ -509,7 +508,7 @@ The values above are starting points. They are tuned once on a small grid (num\_
 1. For event e, the index series k^(−e) is built only from its donor set D\_e, so it never contains the event's own units.
 2. Origins are o ∈ {s\_e, s\_e + 30 days, s\_e + 60 days}. At each origin the model is trained on every pair (t, t + h) with t + h < o, from the fleet's start (15 May 2021): an expanding window. It forecasts \[o, o + 30 days).
 3. Gains and the prior stay fixed at s\_e in cold-start mode. They change only in the 90-day update curve.
-4. Size: 17 events (14 scored, 3 sensitivity) × 3 origins × 54 models = 2,754 LightGBM fits. Each takes seconds, so the full run should fit in a few hours on a laptop (estimate).
+4. Size: 17 events (13 scored, 4 sensitivity) × 3 origins × 54 models = 2,754 LightGBM fits. Each takes seconds, so the full run should fit in a few hours on a laptop (estimate).
 5. Stability ablation: a single origin at s\_e, with no refit.
 
 ### 5.4 PVSetFormer: a censoring-aware fleet-set transformer (D24)
@@ -581,7 +580,7 @@ Q1 reviewers in solar forecasting reject on protocol before they reject on accur
 2. **Leakage-inflation table.** Rerun the main model under four leaky protocols: same-time peers, random site hold-out, gains fitted on windows that include the test period, and normalization by the unit's own future peak. Report how much each inflates skill. It is cheap, it makes the protocol a contribution, and it is the table other authors will cite.
 3. **Strong references only.** Skill is reported against CLIPER and PeEn, not only against climatology. Point forecasts use the right summary for each score (mean for RMSE, median for MAE).
 4. **Event-wise evidence.** A dot per event in every main figure, Hodges–Lehmann effect sizes, Holm-corrected Wilcoxon tests and hierarchical bootstrap intervals.
-5. **A threats-to-validity paragraph:** one campus, 14 scored events, low tilt diversity, telemetry start vs grid connection, metadata errors.
+5. **A threats-to-validity paragraph:** one campus, 13 scored events, low tilt diversity, telemetry start vs grid connection, metadata errors.
 
 ### Make the physics visible
 
@@ -620,7 +619,7 @@ Q1 reviewers in solar forecasting reject on protocol before they reject on accur
 
 | # | Figure | Message |
 | --- | --- | --- |
-| 1 | Timeline of inverter start dates over the sensor periods | 14 observed starts span the sensor drift |
+| 1 | Timeline of inverter start dates over the sensor periods | 13 observed starts span the sensor drift |
 | 2 | Sensor drift, two independent checks | The pyranometer is not a stable reference |
 | 3 | Fleet index vs sensor index vs clear-sky on a variable day | The fleet tracks clouds; clipping is handled |
 | 4 | Gain vs DC/AC ratio | The prior is physical and predictive |
@@ -687,7 +686,7 @@ Job: make the reader trust the units, the events and the sensor diagnosis before
 | --- | --- | --- | --- |
 | 3.1 Site and fleet | Campus, 60 stations, 44 inverters, 2021–2023, climate | Fleet summary table | prep |
 | 3.2 Inverter units and metadata | AC from the model name, DC from modules, DC/AC ratios, the four errata | Unit table (appendix), errata list | prep |
-| 3.3 Telemetry start events | Observed-start rule, 14 scored and 3 sensitivity events, validation events | Event table; Fig. 1 timeline of starts over the sensor periods | prep |
+| 3.3 Telemetry start events | Observed-start rule, 13 scored and 4 sensitivity events, validation events | Event table; Fig. 1 timeline of starts over the sensor periods | prep |
 | 3.4 Weather station and sensor audit | Drift, offset and spikes; change point | Fig. 2 sensor drift, two checks | prep |
 | 3.5 Preprocessing and quality control | Time base, QC rules, aggregation, clear-sky, normalization, clipping | Data-processing diagram (Section 2 of this document) | prep |
 | 3.6 Moroccan data | Safi rooftop, CAMS, Open-Meteo, Benguerir footprints, PV density grid | Fig. 12 map, Moroccan data table | prep (NB8a, NB8b) |
@@ -741,7 +740,7 @@ Job: answer one question per subsection, in the order of the contributions. The 
 
 - **Operator guidance:** minimum donor count, retirement day, what nameplate data to collect at commissioning.
 - **Why the fleet beats the sensor:** a shared index averages many roofs, and a single instrument has no redundancy.
-- **Limitations:** one campus, low tilt diversity, 14 scored events, telemetry start instead of grid connection.
+- **Limitations:** one campus, low tilt diversity, 13 scored events, telemetry start instead of grid connection.
 - **Threats to validity and the leakage lesson:** how much leaky protocols inflate skill.
 
 ### Paper §8 — Future work
@@ -756,7 +755,7 @@ Job: answer one question per subsection, in the order of the contributions. The 
 
 ## 8. Morocco: how it enters the story
 
-Morocco can enter this paper with real data. A public rooftop dataset from Safi, inside your Marrakesh-Safi region, can serve as an external case study, while the full Moroccan study becomes a follow-up paper. The main claims stay on HKUST, where the 14 scored events give statistical power.
+Morocco can enter this paper with real data. A public rooftop dataset from Safi, inside your Marrakesh-Safi region, can serve as an external case study, while the full Moroccan study becomes a follow-up paper. The main claims stay on HKUST, where the 13 scored events give statistical power.
 
 ### Why Morocco needs exactly this method
 

@@ -8,7 +8,7 @@ from its first day, with no power history of its own and no irradiance sensor:
   transformer over the peer inverters (or by quantile LightGBM, whichever wins on the validation units);
 - a **gain prior** for the new inverter comes from its nameplate DC/AC ratio and is updated by shrinkage as its own
   data arrive;
-- the evaluation uses **real telemetry start dates** on the HKUST campus (14 scored events, 2021–2023), a frozen
+- the evaluation uses **real telemetry start dates** on the HKUST campus (13 scored events, 2021–2023), a frozen
   configuration, an exact error budget and a sensor ablation across the 2023 pyranometer drift, plus an external case
   on a rooftop in Safi, Morocco.
 

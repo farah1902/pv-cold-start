@@ -51,14 +51,17 @@ VALIDATION_UNITS = [  # guide §2: the 10 units started 2 June - 15 July 2021 (F
     "Zone A2_Inverter_1", "SQ Apartment1-12_Inverter", "SQ Apartment13-24_Inverter",
     "SQ Apartment25-36_Inverter", "SQ Apartment37-48_Inverter",
 ]
-SCORED_EVENTS = [  # D08: (event name, observed start, units or station)
+SCORED_EVENTS = [  # D08, D27: (event name, observed start); 13 events
     ("SQ Block S", "2021-10-05"), ("Zone A5", "2021-10-05"), ("SQ Block R", "2021-10-06"),
     ("Zone A7", "2021-10-09"), ("Zone A6", "2021-10-14"), ("Zone J2", "2021-11-13"),
-    ("Indoor Sports Centre", "2021-11-17"), ("Zone D", "2022-01-19"), ("Library", "2022-06-01"),
+    ("Indoor Sports Centre", "2021-11-17"), ("Zone D", "2022-01-19"),
     ("UG Hall8", "2023-01-05"), ("UG Hall9", "2023-02-11"), ("Zone A2 inverters 2-3", "2023-05-16"),
     ("SQ Block P", "2023-06-22"), ("Shaw Auditorium", "2023-07-09"),
 ]
-SENSITIVITY_EVENTS = ["Wong Check She Research Centre", "Zone J1", "Zone L2"]
+SENSITIVITY_EVENTS = [  # D08, D27: left-censored starts
+    ("Library", "2022-06-01"), ("Wong Check She Research Centre", "2021-12-01"), ("Zone J1", "2022-03-01"),
+    ("Zone L2", "2022-06-01"),
+]
 REMOVED_EVENTS = ["Zone D inverter 1", "S H Ho Sports Hall"]
 FIRST_TEST_DAY = "2021-10-05"  # development data end the day before (D25, rule R1)
 
