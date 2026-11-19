@@ -17,7 +17,7 @@ must add Longarini et al. (2026) (F19). Additions approved on 18 Nov: D18–D22.
 | --- | --- |
 | 1. Causal fleet-factor forecaster | Planned |
 | 2. DC/AC gain prior with shrinkage update | Planned (D02) |
-| 3. Evaluation protocol: real starts, information set, error budget, sensor ablation; Safi external case | Planned |
+| 3. Evaluation protocol: real starts, information set, error budget, sensor ablation; Safi external case | Events and drift boundary fixed (NB2, NB3); sensor and satellite index sources built, same-time evidence only (NB4, F35) |
 
 ## 5. Evidence for each research question and hypothesis
 _Empty._
@@ -36,6 +36,11 @@ telemetry start instead of grid connection (F06); metadata errors (D01).
 - Cross-climate transfer in general; only Safi is measured (guide §1). No tilt-transfer claim.
 - Any difference below about 3% (guide §3.10).
 - A significant Wilcoxon result in the drifted window (D10, F12).
+- That the pyranometer was replaced or recalibrated in February 2023: the data show a step on 14–15 February,
+  not its cause (F37).
+- That the fleet beats the pyranometer at forecast horizons before NB6: so far the evidence is same-time, on
+  the validation units (F35).
+- That monthly recalibration improves a stable sensor: on the validation units it does not (F35).
 - "19 real start events" or "two capacity additions": there are 13 scored events and one addition (D08, D27).
 - "Real start dates" for the four sensitivity events, whose starts are left-censored (D08, D27).
 - "Healthy sensor" for 2021–2022 (D11).
@@ -44,7 +49,7 @@ telemetry start instead of grid connection (F06); metadata errors (D01).
 - That satellite data confirm the HKUST sensor drift, unless the CAMS all-sky check is actually run (D14).
 
 ## 8. What is still missing
-Everything from NB4 on (NB0–NB3 done by 19 Nov 2026).
+Everything from NB5 on (NB0–NB4 done by 19 Nov 2026).
 
 ## 9. Writing conventions
 Roadmap Phase 10: clear academic English, short sentences, active verbs; research questions and hypotheses as one

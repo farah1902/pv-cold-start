@@ -1,0 +1,45 @@
+bsrn:
+  lower_W_m2: -2.0
+  lower_on: raw reading
+  upper: 1.2 S0 cos(z)^1.2 + 50
+  upper_on: calibrated value
+builds_on_frozen_part1: cb671b7f67138e7e82eeece27241e60a37284fd124946ac72d42e9a2daa80252
+calibration:
+  applied: latest valid earlier month
+  bounds:
+  - 0.5
+  - 2.0
+  max_zenith_deg: 70.0
+  min_clear_minutes: 120
+  sensitivity: same month
+cams:
+  clear_sky_reference: Ineichen (as the fleet index)
+  reliability_min: 1.0
+clear_sky_detection: pvlib detect_clearsky defaults, one calendar month per call
+dead_day:
+  kt_below: 0.03
+  min_minutes_elevation_10: 300
+external_gains:
+  G0: median donor gain
+  grid:
+  - 0.3
+  - 3.0
+  - 0.005
+  k_min: 0.3
+  prior_variant: G2
+  renormalised: false
+night_offset:
+  elevation_below_deg: -6.0
+  min_minutes: 360
+  window_days: 7
+slots:
+  issue_min_gtilde: 0.05
+  k_bounds_except_raw:
+  - 0.0
+  - 1.5
+  min_minutes: 10
+time_base:
+  cams_lag_min: -5
+  method: peak correlation of within-day 5-min changes with the NB2 fleet index, all
+    days, whole minutes
+  sensor_lag_min: -3

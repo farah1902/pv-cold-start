@@ -202,6 +202,8 @@ repository). Paths are relative to `data/raw/hkust/Dataset/Time series dataset/`
     needs a calibrated penalty or a one-break segmentation, fixed in NB3 before scoring.
 - **Reading:** with this boundary, UG Hall8 (2023-01-05) has 48 of its 90 test days after mid-February and stays in
   the drifted window, so the drifted window keeps its five events. The final boundary comes from NB3.
+- **Update (NB4):** the failure itself runs from early March to about 15 May 2021; four of the 77 CAMS-based
+  dead days are overcast days (F34).
 
 ### F24 — Weather files: missing rows, not NA values — *solid*
 - **Evidence:** `results/nb1_audit/inventory_weather.csv`. Irradiance has 2, 3,076 and 5,930 missing 1-min rows in
@@ -278,6 +280,68 @@ repository). Paths are relative to `data/raw/hkust/Dataset/Time series dataset/`
   gains range from 0.30 to 1.23 across all events.
 - **Reading:** beta is the fleet's effective performance ratio on the index scale, as the guide expected (about 0.94 in
   the pilot; 0.85-0.89 here).
+
+### F33 — The pyranometer's clock runs about 3 min behind the inverters; CAMS about 5 min — *strong*
+- **Evidence:** `results/nb4_sensor/lag_peaks.csv`, `lag_scan_sensor.csv`, `lag_scan_cams.csv`, `clear_day_scan.csv`.
+  The correlation of within-day 5-min changes of the clear-sky index with those of the NB2 fleet index peaks at a
+  lag of −3.32 min for the sensor (peak correlation 0.393; quarterly peaks −3.88 to −2.67) and −5.02 min for CAMS
+  (0.166; quarterly peaks −5.71 to −0.74, larger in the wet seasons). The guide's clear-day method has no interior
+  peak within ±6 min: the correlation rises monotonically (2022: 0.9725 to 0.9833).
+- **Reading:** a sensor value labelled t belongs to about t + 3 min on the inverter clock; NB4 aligns it by 3 min
+  (D32). The sensor lag drifts by about 1 min over 2.5 years, so whole-minute alignment is good to ±1 min. The
+  CAMS lag changes with the season; satellite scan time and cloud parallax could explain it (not tested).
+  Unaligned, a 15-min sensor value would be shifted by a fifth of a slot against the fleet.
+
+### F34 — Monthly calibration: 29 of 36 months valid, none in June–August 2023 — *solid*
+- **Evidence:** `results/nb4_sensor/calibration_monthly.csv`, `qc_monthly.csv`, `dead_days.csv`, `summary.json`.
+  - Valid factors: 1.187–1.285 before the boundary (the sensor reads about 0.8 of Ineichen clear sky) and
+    0.730–0.885 from March 2023.
+  - Rejected months: March–June 2021 (dead sensor and recovery; the detector's rescaling locked onto dead or
+    overcast stretches: c = 44.9, none, 2.34, 2.56) and June–August 2023 (60, 0 and 11 clear minutes). June–August
+    2023 therefore apply May 2023's factor (0.730), and July 2021 applies February 2021's (1.187).
+  - February 2023 gives 0.785, the post-step level, so the causal correction catches up on 1 March 2023: the lag is
+    the rest of the boundary month (about two weeks).
+  - Readings above the BSRN upper limit: 2,341 raw readings (2,305 in May–October 2023) against 1,214 calibrated
+    values (1,120 in February 2023, the lag month).
+  - Dead days by the sensor-only rule: 53, that is 52 from 3 March to 13 May 2021 and 8 October 2021, a very dark
+    day (CAMS clear-sky index 0.068) that no sensor-only rule can tell from a failure. The partly dead edges
+    (14–15 May 2021, and part-days in March 2021) pass the rule. The corrected sensor has no value on
+    8 October 2021, inside the windows of SQ Block S, Zone A5 and SQ Block R.
+- **Reading:** recalibration against a clear-sky model needs clear minutes, and Hong Kong's 2023 wet season gave
+  three months with almost none. The failure ended on about 15 May 2021, months before the first test event. This
+  refines F23: the CAMS-based count of 77 dead days includes four overcast days of 2021–2022 on which CAMS reads high.
+
+### F35 — On the validation units the fleet reconstructs a new inverter better than any irradiance source — *strong*
+- **Evidence:** `results/nb4_sensor/validation_sources.csv` (development data, same time, h = 0, common slots,
+  median 3,849 slots per unit). Median nRMSE with the oracle 90-day gain: fleet 0.0794, raw sensor 0.1051,
+  corrected sensor 0.1080, same-month correction 0.1046, CAMS 0.1352. With the cold-start prior gain: 0.0869,
+  0.1217, 0.1306, 0.1280, 0.1391. The fleet is lowest on all 10 units with either gain; the corrected sensor is worse
+  than the raw sensor on all 10.
+- **Reading:** in the stable period, 40 inverters are a better virtual pyranometer than the campus pyranometer (by
+  about a quarter of the same-time error) or one satellite pixel. Monthly recalibration does not help while the
+  sensor is stable: its factor changes from month to month (1.187 in July 2021, 1.285 in August), and a single
+  gain cannot absorb these steps. Same-time evidence on development data only; the sensor table comes from the
+  forecasts (NB5, NB6).
+
+### F36 — After the step, the corrected sensor agrees with CAMS; the raw sensor reads about 1.7 times higher and keeps changing — *strong*
+- **Evidence:** `results/nb4_sensor/daily_sensor.csv`, `agreement_events.csv`, `fig_sensor_correction`. Daily
+  irradiation over fleet yield, scaled to 1 at its stable-period median; median after the boundary: raw 1.70,
+  corrected 1.07, same-month 1.09, CAMS 1.09. The raw ratio's 30-day median peaks at 1.90 (10 April 2023) and falls
+  to 1.50 by mid-December 2023. Input agreement in the windows of the scored and sensitivity events (median over
+  events; each source against the event's fleet index; no target used): ratio raw 0.90 stable vs 1.61 drifted,
+  corrected 1.09 vs 1.14, CAMS 1.20 vs 1.27; correlation corrected 0.925 vs 0.905, CAMS 0.869 vs 0.728.
+- **Reading:** the causal recalibration removes the step after its two-week lag. The remaining rise of about 7–9% is
+  shared by two independent references (corrected sensor and CAMS), so it points to the fleet proxy producing less
+  per unit of irradiance in 2023 (as the CAMS / fleet step of F23), not to the sensor. The raw sensor kept changing
+  through 2023, so a single correction factor would not have fixed it either.
+
+### F37 — The step happens on 14–15 February 2023; the frozen boundary is 2–3 days late, without effect on the event split — *solid*
+- **Evidence:** `results/nb4_sensor/daily_sensor.csv`, `results/nb3_index/event_periods.csv`. Daily ratio of sensor
+  irradiation to fleet yield (stable median = 1): 0.85–0.88 on the overcast days of 9–12 February, 0.52 on
+  13 February, 1.34 on 14 February, 1.73 on 15 February, then about 1.6–1.8. With 14 February as the boundary,
+  UG Hall8 would have 50 instead of 47 days after it; no event changes period.
+- **Reading:** the anomalous 13 February and the part-day of 14 February fit an intervention on the sensor, but no
+  source in hand documents one; the paper describes the step, not its cause. The frozen boundary stays (D31).
 
 ### F16 — Not every site file starts on the 1st of a month — *solid*
 - **Evidence:** among the 18 site files of the first event list, Indoor Sports Centre (2021-12-02), Zone J2

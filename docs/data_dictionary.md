@@ -53,4 +53,16 @@ created. HKUST paths are relative to `data/raw/hkust/Dataset/`.
 | `results/nb3_index/priors.csv` | Per event: prior used and its gain, G0/G1/G2, beta, r, T, uncertainty-set quantiles, sigma_p^2, s1^2, w0 (days) |
 | `results/nb3_index/frozen_config_part1.yaml` | Frozen configuration, part 1 (hash in summary.json) |
 | `results/nb3_index/*.parquet` (git-ignored, rebuilt by NB3) | Per event (columns) and 15-min slot: k_med, k_cens, sigma (IQR of the implied indices), c (clipped share), n (unclipped donors) |
+| `results/nb4_sensor/lag_scan_sensor.csv`, `lag_scan_cams.csv`, `lag_peaks.csv` | Correlation of within-day 5-min index changes with the fleet index by lag and quarter; peak lags |
+| `results/nb4_sensor/clear_day_scan.csv` | The guide's clear-day time-label method applied to the sensor, by year and shift |
+| `results/nb4_sensor/calibration_monthly.csv` | Per month: clear minutes used, factor, detector alpha and status, valid, factor applied (causal) and its month, same-month factor |
+| `results/nb4_sensor/qc_monthly.csv` | Per month: minutes missing, below the lower limit, above the upper limit (calibrated), on dead days, raw readings above the limit, valid daylight minutes, night offset |
+| `results/nb4_sensor/night_offset_daily.csv`, `dead_days.csv` | Daily night offset (window value, carried flag); dead days with their sensor clear-sky index |
+| `results/nb4_sensor/coverage.csv` | Share of daylight slots with a value, per source and year |
+| `results/nb4_sensor/gains_external.csv`, `priors_external.csv` | Donor gains refitted against each source (event, source, donor, gain, points); priors per event and source |
+| `results/nb4_sensor/validation_sources.csv` | Validation units only: oracle gain, prior gain and same-time nRMSE per index source |
+| `results/nb4_sensor/agreement_events.csv` | Per event and source: median ratio and correlation with the event's fleet index in its window (no target) |
+| `results/nb4_sensor/daily_sensor.csv` | Per day: irradiation per source over the panel slots, ratios to the NB1 fleet yield, sensor clear-sky index, dead flag, night offset, drifted flag |
+| `results/nb4_sensor/sensor_config.yaml` | Sensor settings (hash in summary.json); part of the frozen configuration part 2 |
+| `results/nb4_sensor/*.parquet` (git-ignored, rebuilt by NB4) | index15: k and G per source (sensor_raw, sensor_corr, sensor_same, cams) and minute counts at the 15-min slots; sensor1min: raw, corrected and same-month GHI, flag bits (1 missing, 2 below, 4 above, 8 dead day), clear minute, CAMS GHI |
 | `results/nb2_panel/*.parquet` (git-ignored, rebuilt by NB2) | P15_kW, y15, flags15 (bitmask: 1 night, 2 negative, 4 frozen, 8 over limit, 16 outage), nvalid15, geometry15 (zenith, elevation, azimuth, hour angle, doy, G_cs, Gt), targets15_kW (per event), k_crude5 |

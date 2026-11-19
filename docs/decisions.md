@@ -313,6 +313,45 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
   `results/nb3_index/frozen_config_part1.yaml`, sha256 `cb671b7f67138e7e82eeece27241e60a37284fd124946ac72d42e9a2daa80252`.
 - **Evidence:** F28-F31.
 
+### D32 — Implementation choices of NB4: sensor and satellite index sources [method, Phase 4] [guide deviation]
+- **Request or reason:** the author asked for NB4 (19 Nov 2026).
+- **Change:**
+  - **Time base (addition).** The pyranometer and CAMS are aligned to the panel clock by the whole-minute lag that
+    maximises the correlation of the within-day 5-min changes of their clear-sky index with those of the NB2 fleet
+    index: pyranometer 3 min (its value labelled t belongs to panel time t + 3), CAMS 5 min. The guide's clear-day
+    method (§2 step 1) has no interior peak for one sensor (F33). Aligning a baseline can only help it.
+  - **Physical limits [guide deviation].** The lower limit (−2 W/m²) applies to the raw reading, as in the guide. The
+    BSRN upper limit applies to the calibrated value: on raw readings it would remove about 2,300 real minutes in
+    May–October 2023, when the sensor reads about 1.35 times too high; after calibration 12 remain in those months
+    (F34). Spikes (up to 3,600 W/m²) are removed by this limit; no separate spike filter (guide §2 step 8 lists one,
+    §3.10 assigns spikes to the BSRN limits).
+  - **Night offset.** Night minutes within the BSRN band (−2 to 50 W/m²) over the 7 days before the day; at least 360
+    minutes, otherwise the last offset is kept.
+  - **Dead days (addition).** A day whose sensor irradiation is below 3% of clear sky (elevation above 10°, at least
+    300 minutes) gets no corrected value and no calibration weight. The rule uses the sensor only, because A4b may
+    not use the fleet or the satellite.
+  - **Clear-sky detection.** pvlib `detect_clearsky` with its defaults, one calendar month per call, so its
+    rescaling factor is fitted per month and uses no later data.
+  - **Calibration guards (addition).** A month's factor is valid with at least 120 clear minutes (zenith below 70°)
+    and 0.5 ≤ c ≤ 2; month m applies the latest valid earlier month. Without the guards the detector's rescaling
+    locks onto dead-sensor or overcast stretches (c = 44.9 in March 2021, 2.56 in June 2021; F34).
+  - **15-min values.** At least 10 valid minutes; k = G / G_cs at the panel slot (the Ineichen clear sky of the
+    fleet index); missing where G̃ ≤ 0.05; bounded to [0, 1.5] except the raw sensor (A4).
+  - **Gains (guide §4.2 step 5).** Donor gains are refitted against each source with the frozen part-1 gain-fit rule
+    (k_min 0.3, QC-clean slots, G̃ > 0.2, from the donor's rule start to the event start), on a 0.3–3.0 grid and
+    without renormalisation, because the gain carries the source's calibration. The prior is the frozen G2; for the
+    metadata-error targets, G0 = the median donor gain, the analogue of the fleet's g = 1. The fit sums the loss by
+    day, so all events reuse one pass per donor; on the first scored event it equals `fleet.fit_gain` for all 20
+    donors.
+  - **Satellite index.** NB4 also builds the CAMS index for A9 and A9n (reliability 1 only, same clear-sky
+    denominator, lag 5 min) with its refitted gains: the same kind of index swap.
+  - **Not here.** The fleet-derived GHI proxy of D20 is a release item, assembled at NB9 from the NB3 index. The
+    hidden-unit test bed (D18) gets its gains with its runs in NB5 (`sensor.external_gains` takes any donors and
+    dates).
+  - The settings are in `results/nb4_sensor/sensor_config.yaml` (sha256 `4c47bfac9fa359fe…`); they enter the frozen
+    configuration part 2 and the `protocol-freeze` tag (D21).
+- **Evidence:** `results/nb4_sensor/`; F33–F37.
+
 ### D16 — pvlib 0.16.1 and ruptures 1.1.10 are installed locally and pinned [environment, Phase 0]
 - **Request or reason:** both are in the guide's software list (§5.6) and were missing locally on 18 Nov 2026.
 - **Change:** `pip install pvlib==0.16.1 ruptures==1.1.10`. A dry run first showed that nothing else would be

@@ -158,7 +158,9 @@ cd notebooks && jupyter nbconvert --to notebook --execute --inplace --ExecutePre
 Run times (local): NB0 12 s; NB1 about 250 s; NB2 about 30 s (`python tools/make_nb2.py`, then execute
 `NB2_preprocessing_events.ipynb`). Outputs: `results/nb0_setup/`, `results/nb1_audit/`, `results/nb2_panel/`
 (its Parquet panels are git-ignored and rebuilt by NB2); NB3 about 11 min (`results/nb3_index/`, Parquet indices
-git-ignored). The frozen configuration part 1 is `results/nb3_index/frozen_config_part1.yaml` (D31).
+git-ignored); NB4 about 2.5 min (`results/nb4_sensor/`, Parquet series git-ignored). The frozen configuration
+part 1 is `results/nb3_index/frozen_config_part1.yaml` (D31); the sensor settings are
+`results/nb4_sensor/sensor_config.yaml` (D32).
 
 ## Environment notes
 

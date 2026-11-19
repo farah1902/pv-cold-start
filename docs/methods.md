@@ -3,7 +3,7 @@
 This file describes the method exactly as the code implements it, in paper-ready form. It is written step by step as
 each notebook is built; until then the plan is in `research_guide.md` §2–§5, as corrected by `decisions.md`.
 
-**Status (18 Nov 2026):** the data audit (NB1) is implemented.
+**Status (19 Nov 2026):** NB1 to NB4 are implemented (audit, preprocessing, fleet index and priors, sensor and satellite index sources).
 
 **Data audit.** Timestamps are kept as recorded (Hong Kong time) and parsed with two explicit formats; any failure stops the run. AC ratings come from the inverter model names (an explicit table), DC ratings from module counts and watt-peak. The pyranometer is compared at 1-min resolution with CAMS all-sky GHI (steps with reliability below 1 excluded) on minutes with solar elevation above 10°, and with pvlib's Ineichen clear sky at the campus coordinate (altitude 124 m). A fleet proxy, the median normalised daily yield of the 10 units online before 22 May 2021, gives a third reference. Drift dates come from a one-break binary segmentation of the daily log-ratios, after removing days with a dead sensor.
 
@@ -27,3 +27,16 @@ the median of g / (r T) over clean-metadata donors and T a clear-sky Perez trans
 against the unit's own data is w0 = s1^2 / sigma_p^2 days, from the donors' leave-one-out prior errors and one-day
 gain estimates. The k_min threshold, the estimator and the prior variant were chosen on the 10 validation units by
 rules fixed in advance.
+
+**Sensor and satellite index sources (baselines only).** The pyranometer and the satellite enter only the baselines.
+Both are first aligned to the inverter clock by the lag that maximises the correlation of their within-day 5-min
+changes with those of the fleet index (3 min for the pyranometer, 5 min for CAMS). The pyranometer is then cleaned
+and recalibrated with information available at the time. Readings below −2 W/m² are removed. A night offset, the
+median reading at solar elevation below −6° over the previous 7 days, is subtracted. Days with less than 3% of
+clear-sky irradiation count as sensor failures. Clear minutes are detected each month with the method of Reno and
+Hansen (pvlib), and the median ratio of clear-sky to measured irradiance over the clear minutes with zenith below 70°
+of the latest valid earlier month (at least 120 minutes, factor between 0.5 and 2) rescales the current month. The
+BSRN upper limit is applied to the calibrated value. Each source gives a 15-min clear-sky index at the panel slots (the
+mean of at least 10 minutes over the same Ineichen clear sky as the fleet index). Donor gains are refitted against
+each source with the fleet's gain-fit rule, without renormalisation, and the new unit's prior follows from them as
+for the fleet.

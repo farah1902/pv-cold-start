@@ -59,6 +59,26 @@ Source: `results/nb3_index/summary.json` and the CSV files beside it (validation
 | w0 (days): scored median (range); validation median | 0.43 (0.24-1.14); 0.29 | priors.csv |
 | Frozen configuration part 1, sha256 | `cb671b7f67138e7e…` | frozen_config_part1.yaml |
 
+## Sensor and satellite index sources (NB4)
+Source: `results/nb4_sensor/summary.json` and the CSV files beside it (run of 19 Nov 2026).
+
+| Quantity | Value | Source file |
+| --- | --- | --- |
+| Lag behind the inverter clock: sensor; CAMS (peak, whole minutes) | 3.32 min, 3; 5.02 min, 5 | lag_peaks.csv |
+| Quarterly lag range: sensor; CAMS | 2.67–3.88 min; 0.74–5.71 min | lag_peaks.csv |
+| Clear-day method, correlation over ±6 min (2022) | 0.9725 to 0.9833, no interior peak | clear_day_scan.csv |
+| Dead days (sensor-only rule) | 53: 52 from 2021-03-03 to 2021-05-13, plus 2021-10-08 | dead_days.csv |
+| Night offset, range of monthly medians 2021 (from May) / 2022 / 2023 | 0.8–6.1 / 0.9–19.8 / 0.0–29.7 W/m² | qc_monthly.csv |
+| Calibration months valid; rejected | 29 of 36; 2021-03 to 2021-06, 2023-06 to 2023-08 | calibration_monthly.csv |
+| Valid factor c before / after the boundary month | 1.187–1.285 / 0.730–0.885 | summary.json |
+| Minutes above the BSRN upper limit: raw readings / calibrated values | 2,341 / 1,214 | summary.json |
+| Daylight slots with a value 2021 / 2022 / 2023: raw; corrected; CAMS | 1.000 / 0.996 / 0.988; 0.940 / 0.996 / 0.983; 0.970 / 0.961 / 0.965 | coverage.csv |
+| Validation nRMSE, h = 0, oracle gain: fleet / raw / corrected / same-month / CAMS | 0.0794 / 0.1051 / 0.1080 / 0.1046 / 0.1352 | validation_sources.csv |
+| Same, cold-start prior gain | 0.0869 / 0.1217 / 0.1306 / 0.1280 / 0.1391 | validation_sources.csv |
+| Daily ratio to fleet yield after the boundary (stable median = 1): raw / corrected / same-month / CAMS | 1.70 / 1.07 / 1.09 / 1.09 | summary.json |
+| Input ratio to the event's fleet index, stable vs drifted (median over 17 events): raw; corrected; CAMS | 0.90 vs 1.61; 1.09 vs 1.14; 1.20 vs 1.27 | agreement_events.csv |
+| Sensor configuration sha256 | `4c47bfac9fa359fe…` | sensor_config.yaml |
+
 ## Forecast skill and statistics (NB5, NB6)
 _empty_
 

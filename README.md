@@ -12,7 +12,9 @@ from its first day, with no power history of its own and no irradiance sensor:
   configuration, an exact error budget and a sensor ablation across the 2023 pyranometer drift, plus an external case
   on a rooftop in Safi, Morocco.
 
-Status: repository set up on 18 November 2026; no results yet. The plan is in `docs/research_guide.md`.
+Status (19 November 2026): notebooks NB0–NB4 are done (audit, preprocessing, fleet index and priors with part 1 of the
+frozen configuration, sensor and satellite index sources); no forecast has been scored yet. The plan is in
+`docs/research_guide.md`; the numbers are in `docs/results_summary.md`.
 
 ## Data
 

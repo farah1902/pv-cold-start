@@ -123,3 +123,22 @@ One entry per work session: what was asked, what was done, the key numbers, what
 - **For the author:** F30 (the prior is worth less than a day of own data) changes the D22 headline. F28 (the censored
   index wins on only 4 of 10 validation units) limits what the paper can claim for censoring.
 - **Next:** NB4 (sensor baselines A4, A4b, A4c: QC, night offset, monthly recalibration).
+
+## 2026-11-19 — NB4: sensor and satellite index sources
+
+- **Asked:** the author approved starting NB4.
+- **Done:**
+  - Prototyped each step of guide §4.2 on the 1-min data before writing code. Three problems came out: the guide's
+    clear-day time-label method has no peak for one sensor (a cloud-transition lag against the fleet replaced it);
+    the clear-sky detector's rescaling fails in months with few clear minutes (guards added); the raw BSRN upper
+    limit would remove real readings after the drift (moved after calibration). All are in D32.
+  - Wrote `src/pvcold/sensor.py` and `tools/make_nb4.py`. The gain fit sums its loss by day, so each donor is fitted
+    once for all events (2,516 fits in 68 s); a check in the notebook shows it equals `fleet.fit_gain`.
+  - NB4 ran once, without error (nbconvert exit code 0, 149 s); outputs newer than the code, no CR byte, the
+    sensor-config hash matches its file, and the NB3 validation numbers are reproduced from the stored index.
+  - Findings F33–F37 and decision D32. The draft figure (`fig_sensor_correction`) was checked by eye; it showed a
+    dip before the step, which a daily check traced to one anomalous day (13 Feb 2023; F37).
+- **For the author:** F35 (the fleet beats every irradiance source at h = 0 on all 10 validation units, and monthly
+  recalibration does not help a stable sensor) and F37 (the step is on 14–15 Feb; the frozen boundary of 17 Feb is
+  2–3 days late but changes no event's period).
+- **Next:** NB5 (LightGBM bank, simple baselines, the hidden-unit test bed), then the development of PVSetFormer.
