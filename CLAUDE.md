@@ -157,7 +157,8 @@ cd notebooks && jupyter nbconvert --to notebook --execute --inplace --ExecutePre
 
 Run times (local): NB0 12 s; NB1 about 250 s; NB2 about 30 s (`python tools/make_nb2.py`, then execute
 `NB2_preprocessing_events.ipynb`). Outputs: `results/nb0_setup/`, `results/nb1_audit/`, `results/nb2_panel/`
-(its Parquet panels are git-ignored and rebuilt by NB2).
+(its Parquet panels are git-ignored and rebuilt by NB2); NB3 about 11 min (`results/nb3_index/`, Parquet indices
+git-ignored). The frozen configuration part 1 is `results/nb3_index/frozen_config_part1.yaml` (D31).
 
 ## Environment notes
 
@@ -165,6 +166,9 @@ Run times (local): NB0 12 s; NB1 about 250 s; NB2 about 30 s (`python tools/make
   pandas 2.2.0, scipy 1.12.0, scikit-learn 1.5.1, statsmodels 0.15.0, matplotlib 3.8.3, lightgbm 4.6.0, pvlib 0.16.1,
   ruptures 1.1.10, openpyxl 3.1.5, pyarrow 15.0.2, torch 2.2.0+cpu (checked 18 Nov 2026).
 - LightGBM stays at 4.6.0: 4.7.0 crashed on this machine in the grid project. Every run records its versions.
+- Never patch code with backslash-containing bash heredocs (roadmap Part 10): use the editor or a script file.
+  Never judge a notebook run by a pipeline's exit code (`| tail` hides failures): check nbconvert's own exit code,
+  the output timestamps and, for frozen files, the hash.
 - Colab: the Drive mirror path is set at NB0. End every Colab run with `drive.flush_and_unmount()` and Ctrl+S; the
   local repository is the master copy.
 

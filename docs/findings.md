@@ -240,6 +240,45 @@ repository). Paths are relative to `data/raw/hkust/Dataset/Time series dataset/`
   - Hidden-unit test bed: 31 units (29 stations) on 1 April 2022, 38 units (33 stations) on 1 April 2023, in 5
     groups of 5–8 units.
 
+### F28 — On the validation units the censored index beats the median index only narrowly — *strong*
+- **Evidence:** `results/nb3_index/validation_estimator.csv`. Same-time reconstruction error (oracle 90-day gain,
+  fraction of AC), median over the 10 validation units: censored 0.0797, median 0.0813; the censored
+  index is lower for 4 of 10 units. Clipping is rare in 2021: the mean clipped donor share over a
+  validation window is at most 1.4%.
+- **Reading:** rule 2 keeps the censored estimator, but the evidence is weak; the median-index ablation (A2) on the test
+  events decides whether the paper can say more. The gain-fit threshold barely matters: k_min 0.3 / 0.5 / 0.7 give
+  0.08127 / 0.08135 / 0.08149.
+
+### F29 — The DC/AC prior cuts the gain error by more than half on the validation units — *strong*
+- **Evidence:** `results/nb3_index/validation_priors.csv`. Median absolute error against the oracle gain: G0
+  0.1125, G1 0.0438, G2 0.0401. Same-time reconstruction error with the prior gain: G0 0.0909,
+  G1 0.0868, G2 0.0870. The transposition factor is close to 1 for almost every unit (tilts of 0-15°, most
+  flat or "Mixed"), so G2 and G1 differ little.
+- **Reading:** contribution 2 holds on development data. G2 is kept by rule 3 on gain error, although its reconstruction
+  error is not lower than G1's.
+
+### F30 — The nameplate prior is worth less than one day of the inverter's own data — *provisional*
+- **Evidence:** `results/nb3_index/priors.csv`. w0 = s1^2 / sigma_p^2 (D22): scored events median 0.43 days
+  (range 0.24-1.14); validation units median 0.29 days. One-day gain estimates
+  of mature donors (last 60 days) scatter less (s1^2 about 0.001-0.006) than the prior misses (sigma_p^2 about 0.003-0.028).
+- **Reading:** after about one clear day of its own data a new inverter's gain is better known locally than from its
+  nameplate, so the prior mainly serves the first day. This weakens the planned headline of D22 and moves the
+  weight of contribution 2 to day-one accuracy. Provisional: s1^2 comes from mature donors, and new units in their
+  first days (commissioning ramps, F27) may scatter more; NB7 measures it on the events after the freeze.
+
+### F31 — Final drift boundary: 2023-02-17 — *solid*
+- **Evidence:** `results/nb3_index/summary.json`, `event_periods.csv`. PELT with the penalty raised until one change point
+  remains: sensor / fleet proxy 2023-02-17 (0.901 to 1.531); sensor / CAMS 2023-02-14
+  (0.756 to 1.166). With the 45-of-90-days rule the scored events split 8 stable and 5
+  drifted (UG Hall8, UG Hall9, Zone A2 inverters 2-3, SQ Block P, Shaw Auditorium).
+
+### F32 — Donor gains follow the DC/AC ratio — *strong*
+- **Evidence:** `results/nb3_index/gains.csv`, Fig. 4 draft. Over the clean-metadata donors of the last scored event
+  (Shaw Auditorium, 43 donors), corr(r, gain) = 0.635 and the median ratio gain / r is 0.86 (beta of G1). The donor
+  gains range from 0.30 to 1.23 across all events.
+- **Reading:** beta is the fleet's effective performance ratio on the index scale, as the guide expected (about 0.94 in
+  the pilot; 0.85-0.89 here).
+
 ### F16 — Not every site file starts on the 1st of a month — *solid*
 - **Evidence:** among the 18 site files of the first event list, Indoor Sports Centre (2021-12-02), Zone J2
   (2021-11-13), Zone D (2022-01-20) and UG Hall9 (2023-02-11) start mid-month. The audit counts 5 of the 15-min and

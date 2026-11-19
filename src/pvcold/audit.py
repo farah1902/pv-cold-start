@@ -258,7 +258,7 @@ def change_points(series: pd.Series, min_size: int = 30) -> dict:
 
 # --- Outputs --------------------------------------------------------------------------------------
 def write_outputs(name: str, tables: dict[str, pd.DataFrame], summary: dict, figures: dict | None = None,
-                  parquet: dict[str, pd.DataFrame] | None = None) -> Path:
+                  parquet: dict[str, pd.DataFrame] | None = None, texts: dict[str, str] | None = None) -> Path:
     """Write every table, figure and summary.json to results/<name>/ all-or-nothing (temp folder, then rename)."""
     final = C.RESULTS / name
     tmp = C.RESULTS / f".tmp_{name}"
@@ -266,13 +266,15 @@ def write_outputs(name: str, tables: dict[str, pd.DataFrame], summary: dict, fig
         shutil.rmtree(tmp)
     (tmp / "figures").mkdir(parents=True)
     for key, df in tables.items():
-        df.to_csv(tmp / f"{key}.csv", index=False)
+        df.to_csv(tmp / f"{key}.csv", index=False, lineterminator="\n")  # LF on every OS (hashes match)
     for key, df in (parquet or {}).items():
         df.astype({c: "float32" for c in df.columns if df[c].dtype == "float64"}).to_parquet(tmp / f"{key}.parquet")
     for key, fig in (figures or {}).items():
         fig.savefig(tmp / "figures" / f"{key}.png", dpi=150)
         fig.savefig(tmp / "figures" / f"{key}.pdf")
-    (tmp / "summary.json").write_text(json.dumps(summary, indent=2, default=str), encoding="utf-8")
+    for key, txt in (texts or {}).items():
+        (tmp / key).write_bytes(txt.encode("utf-8"))  # no newline translation on Windows
+    (tmp / "summary.json").write_bytes(json.dumps(summary, indent=2, default=str).encode("utf-8"))
     if final.exists():
         shutil.rmtree(final)
     tmp.rename(final)

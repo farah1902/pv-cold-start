@@ -45,7 +45,19 @@ Source: `results/nb2_panel/summary.json`, `events.csv`, `units.csv`, `qc_flag_sh
 | Hidden-unit test bed units (stations) | 31 (29) on 2022-04-01; 38 (33) on 2023-04-01 | testbed.csv |
 
 ## Index, gains and prior (NB3)
-_empty_
+Source: `results/nb3_index/summary.json` and the CSV files beside it (validation units only for every selection).
+
+| Quantity | Value | Source file |
+| --- | --- | --- |
+| Validation nRMSE (same time, oracle gain) by k_min 0.3 / 0.5 / 0.7 | 0.08127 / 0.08135 / 0.08149 | validation_kmin.csv |
+| Validation nRMSE, censored vs median index; censored wins | 0.0797 vs 0.0813; 4 of 10 | validation_estimator.csv |
+| Validation median abs. gain error G0 / G1 / G2 | 0.1125 / 0.0438 / 0.0401 | validation_priors.csv |
+| Validation nRMSE with prior gain G0 / G1 / G2 | 0.0909 / 0.0868 / 0.0870 | validation_priors.csv |
+| Selected: k_min, estimator, prior | 0.3, censored, G2 | summary.json |
+| Drift boundary: fleet; CAMS | 2023-02-17; 2023-02-14 | summary.json |
+| Scored events stable / drifted | 8 / 5 | event_periods.csv |
+| w0 (days): scored median (range); validation median | 0.43 (0.24-1.14); 0.29 | priors.csv |
+| Frozen configuration part 1, sha256 | `cb671b7f67138e7e…` | frozen_config_part1.yaml |
 
 ## Forecast skill and statistics (NB5, NB6)
 _empty_

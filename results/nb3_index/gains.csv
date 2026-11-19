@@ -1,0 +1,630 @@
+event,donor,gain
+SQ Block S,LSK North_Inverter,1.0673316708229428
+SQ Block S,LSK South_Inverter,1.0374064837905237
+SQ Block S,SQ1_Inverter,1.0473815461346634
+SQ Block S,SQ2_Inverter,0.8329177057356607
+SQ Block S,SQ3_Inverter,0.9476309226932669
+SQ Block S,SQ4_Inverter,0.9725685785536159
+SQ Block S,SQ567_Inverter,0.7780548628428927
+SQ Block S,SQ Apartment13-24_Inverter,1.1022443890274314
+SQ Block S,SQ Apartment1-12_Inverter,1.112219451371571
+SQ Block S,SQ Apartment25-36_Inverter,1.1072319201995013
+SQ Block S,SQ Apartment37-48_Inverter,1.0124688279301746
+SQ Block S,UG Hall2 2F_Inverter,0.5236907730673315
+SQ Block S,UG Hall2 RF_Inverter,1.0374064837905237
+SQ Block S,UG Hall3_Inverter,0.9576059850374066
+SQ Block S,UG Hall4_Inverter,1.087281795511222
+SQ Block S,UG Hall6_Inverter,1.0324189526184537
+SQ Block S,UG Hall7_Inverter,0.9875311720698254
+SQ Block S,Zone A1_Inverter,0.9226932668329176
+SQ Block S,Zone A2_Inverter_1,0.882793017456359
+SQ Block S,Zone A4_Inverter,0.9725685785536159
+Zone A5,LSK North_Inverter,1.0673316708229428
+Zone A5,LSK South_Inverter,1.0374064837905237
+Zone A5,SQ1_Inverter,1.0473815461346634
+Zone A5,SQ2_Inverter,0.8329177057356607
+Zone A5,SQ3_Inverter,0.9476309226932669
+Zone A5,SQ4_Inverter,0.9725685785536159
+Zone A5,SQ567_Inverter,0.7780548628428927
+Zone A5,SQ Apartment13-24_Inverter,1.1022443890274314
+Zone A5,SQ Apartment1-12_Inverter,1.112219451371571
+Zone A5,SQ Apartment25-36_Inverter,1.1072319201995013
+Zone A5,SQ Apartment37-48_Inverter,1.0124688279301746
+Zone A5,UG Hall2 2F_Inverter,0.5236907730673315
+Zone A5,UG Hall2 RF_Inverter,1.0374064837905237
+Zone A5,UG Hall3_Inverter,0.9576059850374066
+Zone A5,UG Hall4_Inverter,1.087281795511222
+Zone A5,UG Hall6_Inverter,1.0324189526184537
+Zone A5,UG Hall7_Inverter,0.9875311720698254
+Zone A5,Zone A1_Inverter,0.9226932668329176
+Zone A5,Zone A2_Inverter_1,0.882793017456359
+Zone A5,Zone A4_Inverter,0.9725685785536159
+SQ Block R,LSK North_Inverter,1.0700000000000003
+SQ Block R,LSK South_Inverter,1.0400000000000003
+SQ Block R,SQ1_Inverter,1.0500000000000003
+SQ Block R,SQ2_Inverter,0.8350000000000001
+SQ Block R,SQ3_Inverter,0.9500000000000002
+SQ Block R,SQ4_Inverter,0.9700000000000002
+SQ Block R,SQ567_Inverter,0.7800000000000001
+SQ Block R,SQ Apartment13-24_Inverter,1.1050000000000002
+SQ Block R,SQ Apartment1-12_Inverter,1.1150000000000002
+SQ Block R,SQ Apartment25-36_Inverter,1.1100000000000003
+SQ Block R,SQ Apartment37-48_Inverter,1.0150000000000001
+SQ Block R,UG Hall2 2F_Inverter,0.5249999999999999
+SQ Block R,UG Hall2 RF_Inverter,1.0400000000000003
+SQ Block R,UG Hall3_Inverter,0.9600000000000002
+SQ Block R,UG Hall4_Inverter,1.0900000000000003
+SQ Block R,UG Hall6_Inverter,1.0350000000000001
+SQ Block R,UG Hall7_Inverter,0.9850000000000001
+SQ Block R,Zone A1_Inverter,0.9200000000000002
+SQ Block R,Zone A2_Inverter_1,0.885
+SQ Block R,Zone A4_Inverter,0.9750000000000001
+Zone A7,LSK North_Inverter,1.0700000000000003
+Zone A7,LSK South_Inverter,1.0400000000000003
+Zone A7,SQ1_Inverter,1.0500000000000003
+Zone A7,SQ2_Inverter,0.8350000000000001
+Zone A7,SQ3_Inverter,0.9500000000000002
+Zone A7,SQ4_Inverter,0.9750000000000001
+Zone A7,SQ567_Inverter,0.7800000000000001
+Zone A7,SQ Apartment13-24_Inverter,1.1050000000000002
+Zone A7,SQ Apartment1-12_Inverter,1.1150000000000002
+Zone A7,SQ Apartment25-36_Inverter,1.1150000000000002
+Zone A7,SQ Apartment37-48_Inverter,1.0150000000000001
+Zone A7,UG Hall2 2F_Inverter,0.5249999999999999
+Zone A7,UG Hall2 RF_Inverter,1.0400000000000003
+Zone A7,UG Hall3_Inverter,0.9600000000000002
+Zone A7,UG Hall4_Inverter,1.0900000000000003
+Zone A7,UG Hall6_Inverter,1.0350000000000001
+Zone A7,UG Hall7_Inverter,0.9850000000000001
+Zone A7,Zone A1_Inverter,0.9200000000000002
+Zone A7,Zone A2_Inverter_1,0.885
+Zone A7,Zone A4_Inverter,0.9750000000000001
+Zone A6,LSK North_Inverter,1.0700000000000003
+Zone A6,LSK South_Inverter,1.0450000000000002
+Zone A6,SQ1_Inverter,1.0500000000000003
+Zone A6,SQ2_Inverter,0.8400000000000002
+Zone A6,SQ3_Inverter,0.9550000000000001
+Zone A6,SQ4_Inverter,0.9750000000000001
+Zone A6,SQ567_Inverter,0.7800000000000001
+Zone A6,SQ Apartment13-24_Inverter,1.1050000000000002
+Zone A6,SQ Apartment1-12_Inverter,1.1150000000000002
+Zone A6,SQ Apartment25-36_Inverter,1.1150000000000002
+Zone A6,SQ Apartment37-48_Inverter,1.0150000000000001
+Zone A6,UG Hall2 2F_Inverter,0.52
+Zone A6,UG Hall2 RF_Inverter,1.0450000000000002
+Zone A6,UG Hall3_Inverter,0.9600000000000002
+Zone A6,UG Hall4_Inverter,1.0900000000000003
+Zone A6,UG Hall6_Inverter,1.0400000000000003
+Zone A6,UG Hall7_Inverter,0.9850000000000001
+Zone A6,Zone A1_Inverter,0.9200000000000002
+Zone A6,Zone A2_Inverter_1,0.8900000000000001
+Zone A6,Zone A4_Inverter,0.9750000000000001
+Zone J2,LSK North_Inverter,1.025
+Zone J2,LSK South_Inverter,1.005
+Zone J2,SQ1_Inverter,1.0
+Zone J2,SQ2_Inverter,0.8049999999999998
+Zone J2,SQ3_Inverter,0.9149999999999999
+Zone J2,SQ4_Inverter,0.9299999999999999
+Zone J2,SQ567_Inverter,0.75
+Zone J2,SQ Apartment13-24_Inverter,1.075
+Zone J2,SQ Apartment1-12_Inverter,1.085
+Zone J2,SQ Apartment25-36_Inverter,1.085
+Zone J2,SQ Apartment37-48_Inverter,0.9749999999999999
+Zone J2,SQ Block R_Inverter,1.015
+Zone J2,SQ Block S_Inverter,0.8249999999999998
+Zone J2,UG Hall2 2F_Inverter,0.4799999999999998
+Zone J2,UG Hall2 RF_Inverter,1.005
+Zone J2,UG Hall3_Inverter,0.9249999999999998
+Zone J2,UG Hall4_Inverter,1.05
+Zone J2,UG Hall6_Inverter,1.0
+Zone J2,UG Hall7_Inverter,0.9349999999999998
+Zone J2,Zone A1_Inverter,0.8749999999999999
+Zone J2,Zone A2_Inverter_1,0.85
+Zone J2,Zone A4_Inverter,0.9199999999999999
+Zone J2,Zone A5_Inverter,1.02
+Zone J2,Zone A6_Inverter,1.1600000000000001
+Zone J2,Zone A7_Inverter,1.135
+Indoor Sports Centre,LSK North_Inverter,1.055
+Indoor Sports Centre,LSK South_Inverter,1.035
+Indoor Sports Centre,SQ1_Inverter,1.03
+Indoor Sports Centre,SQ2_Inverter,0.83
+Indoor Sports Centre,SQ3_Inverter,0.94
+Indoor Sports Centre,SQ4_Inverter,0.9549999999999998
+Indoor Sports Centre,SQ567_Inverter,0.7749999999999998
+Indoor Sports Centre,SQ Apartment13-24_Inverter,1.11
+Indoor Sports Centre,SQ Apartment1-12_Inverter,1.12
+Indoor Sports Centre,SQ Apartment25-36_Inverter,1.115
+Indoor Sports Centre,SQ Apartment37-48_Inverter,1.0
+Indoor Sports Centre,SQ Block R_Inverter,1.05
+Indoor Sports Centre,SQ Block S_Inverter,0.85
+Indoor Sports Centre,S H Ho Sports Hall_Inverter_1,0.4199999999999998
+Indoor Sports Centre,S H Ho Sports Hall_Inverter_2,0.29999999999999977
+Indoor Sports Centre,UG Hall2 2F_Inverter,0.4899999999999998
+Indoor Sports Centre,UG Hall2 RF_Inverter,1.035
+Indoor Sports Centre,UG Hall3_Inverter,0.9549999999999998
+Indoor Sports Centre,UG Hall4_Inverter,1.08
+Indoor Sports Centre,UG Hall6_Inverter,1.03
+Indoor Sports Centre,UG Hall7_Inverter,0.9549999999999998
+Indoor Sports Centre,Zone A1_Inverter,0.9
+Indoor Sports Centre,Zone A2_Inverter_1,0.87
+Indoor Sports Centre,Zone A4_Inverter,0.9449999999999998
+Indoor Sports Centre,Zone A5_Inverter,1.045
+Indoor Sports Centre,Zone A6_Inverter,1.2
+Indoor Sports Centre,Zone A7_Inverter,1.17
+Zone D,Indoor Sports Centre_Inverter,1.1600000000000001
+Zone D,LSK North_Inverter,1.035
+Zone D,LSK South_Inverter,1.005
+Zone D,SQ1_Inverter,1.0
+Zone D,SQ2_Inverter,0.82
+Zone D,SQ3_Inverter,0.9
+Zone D,SQ4_Inverter,0.9249999999999998
+Zone D,SQ567_Inverter,0.7599999999999999
+Zone D,SQ Apartment13-24_Inverter,1.125
+Zone D,SQ Apartment1-12_Inverter,1.1300000000000001
+Zone D,SQ Apartment25-36_Inverter,1.1300000000000001
+Zone D,SQ Apartment37-48_Inverter,0.98
+Zone D,SQ Block R_Inverter,1.045
+Zone D,SQ Block S_Inverter,0.82
+Zone D,S H Ho Sports Hall_Inverter_1,0.3899999999999998
+Zone D,S H Ho Sports Hall_Inverter_2,0.29999999999999977
+Zone D,UG Hall2 2F_Inverter,0.45499999999999985
+Zone D,UG Hall2 RF_Inverter,1.02
+Zone D,UG Hall3_Inverter,0.9449999999999998
+Zone D,UG Hall4_Inverter,1.07
+Zone D,UG Hall6_Inverter,1.015
+Zone D,UG Hall7_Inverter,0.8949999999999999
+Zone D,Wong Check She Research Centre_Inverter_1,1.1300000000000001
+Zone D,Wong Check She Research Centre_Inverter_2,1.04
+Zone D,Zone A1_Inverter,0.8649999999999999
+Zone D,Zone A2_Inverter_1,0.8349999999999999
+Zone D,Zone A4_Inverter,0.8849999999999999
+Zone D,Zone A5_Inverter,1.025
+Zone D,Zone A6_Inverter,1.2249999999999999
+Zone D,Zone A7_Inverter,1.165
+Zone D,Zone J2_Inverter,0.6049999999999998
+UG Hall8,Indoor Sports Centre_Inverter,1.2200000000000004
+UG Hall8,LSK North_Inverter,1.0950000000000002
+UG Hall8,LSK South_Inverter,1.0800000000000003
+UG Hall8,Library_Inverter_1,0.7700000000000001
+UG Hall8,Library_Inverter_2,1.0450000000000002
+UG Hall8,Library_Inverter_3,0.8600000000000002
+UG Hall8,SQ1_Inverter,1.0800000000000003
+UG Hall8,SQ2_Inverter,0.875
+UG Hall8,SQ3_Inverter,0.935
+UG Hall8,SQ4_Inverter,0.9950000000000001
+UG Hall8,SQ567_Inverter,0.805
+UG Hall8,SQ Apartment13-24_Inverter,1.1800000000000004
+UG Hall8,SQ Apartment1-12_Inverter,1.1850000000000003
+UG Hall8,SQ Apartment25-36_Inverter,1.1800000000000004
+UG Hall8,SQ Apartment37-48_Inverter,1.0450000000000002
+UG Hall8,SQ Block R_Inverter,1.0850000000000002
+UG Hall8,SQ Block S_Inverter,0.8900000000000001
+UG Hall8,S H Ho Sports Hall_Inverter_1,0.875
+UG Hall8,S H Ho Sports Hall_Inverter_2,0.66
+UG Hall8,UG Hall2 2F_Inverter,0.4649999999999999
+UG Hall8,UG Hall2 RF_Inverter,1.0850000000000002
+UG Hall8,UG Hall3_Inverter,1.0050000000000001
+UG Hall8,UG Hall4_Inverter,1.1350000000000002
+UG Hall8,UG Hall6_Inverter,1.0750000000000002
+UG Hall8,UG Hall7_Inverter,0.9800000000000002
+UG Hall8,Wong Check She Research Centre_Inverter_1,1.1350000000000002
+UG Hall8,Wong Check She Research Centre_Inverter_2,1.0850000000000002
+UG Hall8,Zone A1_Inverter,0.9300000000000002
+UG Hall8,Zone A2_Inverter_1,0.9000000000000001
+UG Hall8,Zone A4_Inverter,0.9700000000000002
+UG Hall8,Zone A5_Inverter,0.9900000000000002
+UG Hall8,Zone A6_Inverter,1.2250000000000003
+UG Hall8,Zone A7_Inverter,1.1750000000000003
+UG Hall8,Zone D_Inverter_1,1.0800000000000003
+UG Hall8,Zone D_Inverter_2,0.755
+UG Hall8,Zone J1_Inverter,0.9750000000000001
+UG Hall8,Zone J2_Inverter,0.9900000000000002
+UG Hall8,Zone L2_Inverter,0.915
+UG Hall9,Indoor Sports Centre_Inverter,1.2160804020100504
+UG Hall9,LSK North_Inverter,1.0904522613065326
+UG Hall9,LSK South_Inverter,1.0753768844221108
+UG Hall9,Library_Inverter_1,0.7839195979899498
+UG Hall9,Library_Inverter_2,1.0402010050251256
+UG Hall9,Library_Inverter_3,0.8341708542713568
+UG Hall9,SQ1_Inverter,1.0753768844221108
+UG Hall9,SQ2_Inverter,0.8743718592964825
+UG Hall9,SQ3_Inverter,0.9346733668341709
+UG Hall9,SQ4_Inverter,0.9899497487437185
+UG Hall9,SQ567_Inverter,0.8040201005025126
+UG Hall9,SQ Apartment13-24_Inverter,1.1809045226130654
+UG Hall9,SQ Apartment1-12_Inverter,1.1859296482412063
+UG Hall9,SQ Apartment25-36_Inverter,1.1809045226130654
+UG Hall9,SQ Apartment37-48_Inverter,1.0402010050251256
+UG Hall9,SQ Block R_Inverter,1.0804020100502514
+UG Hall9,SQ Block S_Inverter,0.8844221105527639
+UG Hall9,S H Ho Sports Hall_Inverter_1,0.8643216080402011
+UG Hall9,S H Ho Sports Hall_Inverter_2,0.6432160804020101
+UG Hall9,UG Hall2 2F_Inverter,0.4623115577889446
+UG Hall9,UG Hall2 RF_Inverter,1.0753768844221108
+UG Hall9,UG Hall3_Inverter,1.0050251256281408
+UG Hall9,UG Hall4_Inverter,1.1306532663316584
+UG Hall9,UG Hall6_Inverter,1.0753768844221108
+UG Hall9,UG Hall7_Inverter,0.9748743718592966
+UG Hall9,UG Hall8_Inverter,1.0
+UG Hall9,Wong Check She Research Centre_Inverter_1,1.1356783919597992
+UG Hall9,Wong Check She Research Centre_Inverter_2,1.085427135678392
+UG Hall9,Zone A1_Inverter,0.9246231155778896
+UG Hall9,Zone A2_Inverter_1,0.8944723618090453
+UG Hall9,Zone A4_Inverter,0.9648241206030151
+UG Hall9,Zone A5_Inverter,0.9899497487437185
+UG Hall9,Zone A6_Inverter,1.221105527638191
+UG Hall9,Zone A7_Inverter,1.170854271356784
+UG Hall9,Zone D_Inverter_1,1.0603015075376885
+UG Hall9,Zone D_Inverter_2,0.7587939698492462
+UG Hall9,Zone J1_Inverter,0.9798994974874372
+UG Hall9,Zone J2_Inverter,0.9949748743718594
+UG Hall9,Zone L2_Inverter,0.9246231155778896
+Zone A2 inverters 2-3,Indoor Sports Centre_Inverter,1.2169576059850375
+Zone A2 inverters 2-3,LSK North_Inverter,1.087281795511222
+Zone A2 inverters 2-3,LSK South_Inverter,1.0723192019950125
+Zone A2 inverters 2-3,Library_Inverter_1,0.8329177057356607
+Zone A2 inverters 2-3,Library_Inverter_2,1.0423940149625934
+Zone A2 inverters 2-3,Library_Inverter_3,0.8079800498753117
+Zone A2 inverters 2-3,SQ1_Inverter,1.0673316708229428
+Zone A2 inverters 2-3,SQ2_Inverter,0.8728179551122194
+Zone A2 inverters 2-3,SQ3_Inverter,0.9426433915211969
+Zone A2 inverters 2-3,SQ4_Inverter,0.9875311720698254
+Zone A2 inverters 2-3,SQ567_Inverter,0.8029925187032417
+Zone A2 inverters 2-3,SQ Apartment13-24_Inverter,1.177057356608479
+Zone A2 inverters 2-3,SQ Apartment1-12_Inverter,1.1870324189526185
+Zone A2 inverters 2-3,SQ Apartment25-36_Inverter,1.177057356608479
+Zone A2 inverters 2-3,SQ Apartment37-48_Inverter,1.0423940149625934
+Zone A2 inverters 2-3,SQ Block R_Inverter,1.0773067331670825
+Zone A2 inverters 2-3,SQ Block S_Inverter,0.882793017456359
+Zone A2 inverters 2-3,S H Ho Sports Hall_Inverter_1,0.8628428927680797
+Zone A2 inverters 2-3,S H Ho Sports Hall_Inverter_2,0.6433915211970074
+Zone A2 inverters 2-3,UG Hall2 2F_Inverter,0.4588528678304238
+Zone A2 inverters 2-3,UG Hall2 RF_Inverter,1.0623441396508728
+Zone A2 inverters 2-3,UG Hall3_Inverter,1.0024937655860349
+Zone A2 inverters 2-3,UG Hall4_Inverter,1.1321695760598502
+Zone A2 inverters 2-3,UG Hall6_Inverter,1.0773067331670825
+Zone A2 inverters 2-3,UG Hall7_Inverter,0.9725685785536159
+Zone A2 inverters 2-3,UG Hall8_Inverter,0.9625935162094762
+Zone A2 inverters 2-3,UG Hall9_Inverter,1.0324189526184537
+Zone A2 inverters 2-3,Wong Check She Research Centre_Inverter_1,1.1221945137157108
+Zone A2 inverters 2-3,Wong Check She Research Centre_Inverter_2,1.082294264339152
+Zone A2 inverters 2-3,Zone A1_Inverter,0.9226932668329176
+Zone A2 inverters 2-3,Zone A2_Inverter_1,0.8977556109725686
+Zone A2 inverters 2-3,Zone A4_Inverter,0.9625935162094762
+Zone A2 inverters 2-3,Zone A5_Inverter,0.9975062344139651
+Zone A2 inverters 2-3,Zone A6_Inverter,1.2169576059850375
+Zone A2 inverters 2-3,Zone D_Inverter_1,1.0324189526184537
+Zone A2 inverters 2-3,Zone D_Inverter_2,0.7780548628428927
+Zone A2 inverters 2-3,Zone J2_Inverter,0.9925187032418952
+Zone A2 inverters 2-3,Zone L2_Inverter,0.9177057356608479
+SQ Block P,Indoor Sports Centre_Inverter,1.2030075187969926
+SQ Block P,LSK North_Inverter,1.0776942355889725
+SQ Block P,LSK South_Inverter,1.0576441102756893
+SQ Block P,Library_Inverter_1,0.8471177944862155
+SQ Block P,Library_Inverter_2,1.0275689223057645
+SQ Block P,Library_Inverter_3,0.8170426065162906
+SQ Block P,SQ1_Inverter,1.0576441102756893
+SQ Block P,SQ2_Inverter,0.8571428571428571
+SQ Block P,SQ3_Inverter,0.9323308270676692
+SQ Block P,SQ4_Inverter,0.9774436090225563
+SQ Block P,SQ567_Inverter,0.7919799498746867
+SQ Block P,SQ Apartment13-24_Inverter,1.1629072681704262
+SQ Block P,SQ Apartment1-12_Inverter,1.167919799498747
+SQ Block P,SQ Apartment25-36_Inverter,1.1578947368421053
+SQ Block P,SQ Apartment37-48_Inverter,1.0275689223057645
+SQ Block P,SQ Block R_Inverter,1.0576441102756893
+SQ Block P,SQ Block S_Inverter,0.8721804511278196
+SQ Block P,S H Ho Sports Hall_Inverter_1,0.8671679197994987
+SQ Block P,S H Ho Sports Hall_Inverter_2,0.6616541353383458
+SQ Block P,UG Hall2 2F_Inverter,0.45614035087719285
+SQ Block P,UG Hall2 RF_Inverter,1.0476190476190477
+SQ Block P,UG Hall3_Inverter,0.9874686716791979
+SQ Block P,UG Hall4_Inverter,1.117794486215539
+SQ Block P,UG Hall6_Inverter,1.0626566416040102
+SQ Block P,UG Hall7_Inverter,0.9573934837092731
+SQ Block P,UG Hall8_Inverter,0.9423558897243108
+SQ Block P,UG Hall9_Inverter,1.0175438596491229
+SQ Block P,Wong Check She Research Centre_Inverter_1,1.1027568922305766
+SQ Block P,Wong Check She Research Centre_Inverter_2,1.0676691729323309
+SQ Block P,Zone A1_Inverter,0.912280701754386
+SQ Block P,Zone A2_Inverter_1,0.8922305764411028
+SQ Block P,Zone A2_Inverter_2,1.137844611528822
+SQ Block P,Zone A2_Inverter_3,1.1578947368421053
+SQ Block P,Zone A4_Inverter,0.9573934837092731
+SQ Block P,Zone A5_Inverter,0.9824561403508772
+SQ Block P,Zone A6_Inverter,1.1979949874686717
+SQ Block P,Zone D_Inverter_1,1.0125313283208022
+SQ Block P,Zone D_Inverter_2,0.7769423558897242
+SQ Block P,Zone J2_Inverter,0.9674185463659147
+SQ Block P,Zone L2_Inverter,0.9022556390977444
+Shaw Auditorium,Indoor Sports Centre_Inverter,1.1849999999999998
+Shaw Auditorium,LSK North_Inverter,1.06
+Shaw Auditorium,LSK South_Inverter,1.045
+Shaw Auditorium,Library_Inverter_1,0.85
+Shaw Auditorium,Library_Inverter_2,1.015
+Shaw Auditorium,Library_Inverter_3,0.82
+Shaw Auditorium,SQ1_Inverter,1.045
+Shaw Auditorium,SQ2_Inverter,0.85
+Shaw Auditorium,SQ3_Inverter,0.9199999999999999
+Shaw Auditorium,SQ4_Inverter,0.9649999999999999
+Shaw Auditorium,SQ567_Inverter,0.7799999999999999
+Shaw Auditorium,SQ Apartment13-24_Inverter,1.145
+Shaw Auditorium,SQ Apartment1-12_Inverter,1.1500000000000001
+Shaw Auditorium,SQ Apartment25-36_Inverter,1.1400000000000001
+Shaw Auditorium,SQ Apartment37-48_Inverter,1.015
+Shaw Auditorium,SQ Block P_Inverter,1.005
+Shaw Auditorium,SQ Block R_Inverter,1.045
+Shaw Auditorium,SQ Block S_Inverter,0.86
+Shaw Auditorium,S H Ho Sports Hall_Inverter_1,0.86
+Shaw Auditorium,S H Ho Sports Hall_Inverter_2,0.6649999999999998
+Shaw Auditorium,UG Hall2 2F_Inverter,0.44999999999999984
+Shaw Auditorium,UG Hall2 RF_Inverter,1.03
+Shaw Auditorium,UG Hall3_Inverter,0.9749999999999999
+Shaw Auditorium,UG Hall4_Inverter,1.1
+Shaw Auditorium,UG Hall6_Inverter,1.045
+Shaw Auditorium,UG Hall7_Inverter,0.9449999999999998
+Shaw Auditorium,UG Hall8_Inverter,0.9349999999999998
+Shaw Auditorium,UG Hall9_Inverter,1.01
+Shaw Auditorium,Wong Check She Research Centre_Inverter_1,1.08
+Shaw Auditorium,Wong Check She Research Centre_Inverter_2,1.05
+Shaw Auditorium,Zone A1_Inverter,0.9
+Shaw Auditorium,Zone A2_Inverter_1,0.88
+Shaw Auditorium,Zone A2_Inverter_2,1.1300000000000001
+Shaw Auditorium,Zone A2_Inverter_3,1.145
+Shaw Auditorium,Zone A4_Inverter,0.9449999999999998
+Shaw Auditorium,Zone A5_Inverter,0.97
+Shaw Auditorium,Zone A6_Inverter,1.1749999999999998
+Shaw Auditorium,Zone A7_Inverter,1.12
+Shaw Auditorium,Zone D_Inverter_1,1.0
+Shaw Auditorium,Zone D_Inverter_2,0.7699999999999999
+Shaw Auditorium,Zone J1_Inverter,0.95
+Shaw Auditorium,Zone J2_Inverter,0.95
+Shaw Auditorium,Zone L2_Inverter,0.8849999999999999
+Library,Indoor Sports Centre_Inverter,1.165
+Library,LSK North_Inverter,1.045
+Library,LSK South_Inverter,1.015
+Library,SQ1_Inverter,1.02
+Library,SQ2_Inverter,0.8349999999999999
+Library,SQ3_Inverter,0.8249999999999998
+Library,SQ4_Inverter,0.9449999999999998
+Library,SQ567_Inverter,0.7649999999999998
+Library,SQ Apartment13-24_Inverter,1.1300000000000001
+Library,SQ Apartment1-12_Inverter,1.135
+Library,SQ Apartment25-36_Inverter,1.135
+Library,SQ Apartment37-48_Inverter,1.0
+Library,SQ Block R_Inverter,1.035
+Library,SQ Block S_Inverter,0.8449999999999999
+Library,S H Ho Sports Hall_Inverter_1,0.7799999999999999
+Library,S H Ho Sports Hall_Inverter_2,0.5399999999999999
+Library,UG Hall2 2F_Inverter,0.4599999999999998
+Library,UG Hall2 RF_Inverter,1.03
+Library,UG Hall3_Inverter,0.9549999999999998
+Library,UG Hall4_Inverter,1.085
+Library,UG Hall6_Inverter,1.03
+Library,UG Hall7_Inverter,0.9299999999999999
+Library,Wong Check She Research Centre_Inverter_1,1.095
+Library,Wong Check She Research Centre_Inverter_2,1.025
+Library,Zone A1_Inverter,0.8849999999999999
+Library,Zone A2_Inverter_1,0.8549999999999999
+Library,Zone A4_Inverter,0.9199999999999999
+Library,Zone A5_Inverter,1.0
+Library,Zone A6_Inverter,1.1849999999999998
+Library,Zone A7_Inverter,1.145
+Library,Zone D_Inverter_2,0.71
+Library,Zone J1_Inverter,0.9149999999999999
+Library,Zone J2_Inverter,0.9299999999999999
+Wong Check She,Indoor Sports Centre_Inverter,1.1400000000000001
+Wong Check She,LSK North_Inverter,1.04
+Wong Check She,LSK South_Inverter,1.02
+Wong Check She,SQ1_Inverter,1.01
+Wong Check She,SQ2_Inverter,0.82
+Wong Check She,SQ3_Inverter,0.9249999999999998
+Wong Check She,SQ4_Inverter,0.9449999999999998
+Wong Check She,SQ567_Inverter,0.7649999999999998
+Wong Check She,SQ Apartment13-24_Inverter,1.105
+Wong Check She,SQ Apartment1-12_Inverter,1.115
+Wong Check She,SQ Apartment25-36_Inverter,1.11
+Wong Check She,SQ Apartment37-48_Inverter,0.99
+Wong Check She,SQ Block R_Inverter,1.045
+Wong Check She,SQ Block S_Inverter,0.84
+Wong Check She,S H Ho Sports Hall_Inverter_1,0.3499999999999998
+Wong Check She,S H Ho Sports Hall_Inverter_2,0.29999999999999977
+Wong Check She,UG Hall2 2F_Inverter,0.4749999999999998
+Wong Check She,UG Hall2 RF_Inverter,1.025
+Wong Check She,UG Hall3_Inverter,0.9449999999999998
+Wong Check She,UG Hall4_Inverter,1.07
+Wong Check She,UG Hall6_Inverter,1.02
+Wong Check She,UG Hall7_Inverter,0.9299999999999999
+Wong Check She,Zone A1_Inverter,0.88
+Wong Check She,Zone A2_Inverter_1,0.85
+Wong Check She,Zone A4_Inverter,0.9199999999999999
+Wong Check She,Zone A5_Inverter,1.035
+Wong Check She,Zone A6_Inverter,1.2049999999999998
+Wong Check She,Zone A7_Inverter,1.165
+Zone J1,Indoor Sports Centre_Inverter,1.165
+Zone J1,LSK North_Inverter,1.04
+Zone J1,LSK South_Inverter,1.01
+Zone J1,SQ1_Inverter,1.01
+Zone J1,SQ2_Inverter,0.8249999999999998
+Zone J1,SQ3_Inverter,0.89
+Zone J1,SQ4_Inverter,0.9349999999999998
+Zone J1,SQ567_Inverter,0.7649999999999998
+Zone J1,SQ Apartment13-24_Inverter,1.1400000000000001
+Zone J1,SQ Apartment1-12_Inverter,1.145
+Zone J1,SQ Apartment25-36_Inverter,1.1400000000000001
+Zone J1,SQ Apartment37-48_Inverter,0.99
+Zone J1,SQ Block R_Inverter,1.05
+Zone J1,SQ Block S_Inverter,0.83
+Zone J1,S H Ho Sports Hall_Inverter_1,0.5049999999999998
+Zone J1,S H Ho Sports Hall_Inverter_2,0.29999999999999977
+Zone J1,UG Hall2 2F_Inverter,0.45499999999999985
+Zone J1,UG Hall2 RF_Inverter,1.03
+Zone J1,UG Hall3_Inverter,0.9549999999999998
+Zone J1,UG Hall4_Inverter,1.08
+Zone J1,UG Hall6_Inverter,1.025
+Zone J1,UG Hall7_Inverter,0.9049999999999999
+Zone J1,Wong Check She Research Centre_Inverter_1,1.125
+Zone J1,Wong Check She Research Centre_Inverter_2,1.025
+Zone J1,Zone A1_Inverter,0.87
+Zone J1,Zone A2_Inverter_1,0.84
+Zone J1,Zone A4_Inverter,0.8949999999999999
+Zone J1,Zone A5_Inverter,1.03
+Zone J1,Zone A6_Inverter,1.2149999999999999
+Zone J1,Zone A7_Inverter,1.165
+Zone J1,Zone D_Inverter_2,0.6749999999999998
+Zone J1,Zone J2_Inverter,0.7699999999999999
+Zone L2,Indoor Sports Centre_Inverter,1.165
+Zone L2,LSK North_Inverter,1.045
+Zone L2,LSK South_Inverter,1.015
+Zone L2,SQ1_Inverter,1.02
+Zone L2,SQ2_Inverter,0.8349999999999999
+Zone L2,SQ3_Inverter,0.8249999999999998
+Zone L2,SQ4_Inverter,0.9449999999999998
+Zone L2,SQ567_Inverter,0.7649999999999998
+Zone L2,SQ Apartment13-24_Inverter,1.1300000000000001
+Zone L2,SQ Apartment1-12_Inverter,1.135
+Zone L2,SQ Apartment25-36_Inverter,1.135
+Zone L2,SQ Apartment37-48_Inverter,1.0
+Zone L2,SQ Block R_Inverter,1.035
+Zone L2,SQ Block S_Inverter,0.8449999999999999
+Zone L2,S H Ho Sports Hall_Inverter_1,0.7799999999999999
+Zone L2,S H Ho Sports Hall_Inverter_2,0.5399999999999999
+Zone L2,UG Hall2 2F_Inverter,0.4599999999999998
+Zone L2,UG Hall2 RF_Inverter,1.03
+Zone L2,UG Hall3_Inverter,0.9549999999999998
+Zone L2,UG Hall4_Inverter,1.085
+Zone L2,UG Hall6_Inverter,1.03
+Zone L2,UG Hall7_Inverter,0.9299999999999999
+Zone L2,Wong Check She Research Centre_Inverter_1,1.095
+Zone L2,Wong Check She Research Centre_Inverter_2,1.025
+Zone L2,Zone A1_Inverter,0.8849999999999999
+Zone L2,Zone A2_Inverter_1,0.8549999999999999
+Zone L2,Zone A4_Inverter,0.9199999999999999
+Zone L2,Zone A5_Inverter,1.0
+Zone L2,Zone A6_Inverter,1.1849999999999998
+Zone L2,Zone A7_Inverter,1.145
+Zone L2,Zone D_Inverter_2,0.71
+Zone L2,Zone J1_Inverter,0.9149999999999999
+Zone L2,Zone J2_Inverter,0.9299999999999999
+SQ567,LSK North_Inverter,1.1492537313432836
+SQ567,LSK South_Inverter,1.1343283582089554
+SQ567,SQ1_Inverter,0.9850746268656717
+SQ567,SQ2_Inverter,0.855721393034826
+SQ567,SQ3_Inverter,0.9900497512437811
+SQ567,SQ4_Inverter,1.0099502487562189
+SQ567,UG Hall6_Inverter,1.0398009950248757
+SQ567,UG Hall7_Inverter,0.9850746268656717
+UG Hall2 2F,LSK North_Inverter,1.14713216957606
+UG Hall2 2F,LSK South_Inverter,1.1321695760598502
+UG Hall2 2F,SQ1_Inverter,0.9925187032418952
+UG Hall2 2F,SQ2_Inverter,0.85785536159601
+UG Hall2 2F,SQ3_Inverter,0.9875311720698254
+UG Hall2 2F,SQ4_Inverter,1.0074812967581048
+UG Hall2 2F,UG Hall6_Inverter,1.0423940149625934
+UG Hall2 2F,UG Hall7_Inverter,0.9875311720698254
+UG Hall2 RF,LSK North_Inverter,1.112219451371571
+UG Hall2 RF,LSK South_Inverter,1.087281795511222
+UG Hall2 RF,SQ1_Inverter,1.0174563591022445
+UG Hall2 RF,SQ2_Inverter,0.8478802992518704
+UG Hall2 RF,SQ3_Inverter,0.9576059850374066
+UG Hall2 RF,SQ4_Inverter,0.9825436408977556
+UG Hall2 RF,UG Hall3_Inverter,0.9675810473815462
+UG Hall2 RF,UG Hall4_Inverter,1.112219451371571
+UG Hall2 RF,UG Hall6_Inverter,1.0374064837905237
+UG Hall2 RF,UG Hall7_Inverter,0.9675810473815462
+Zone A1,LSK North_Inverter,1.099502487562189
+Zone A1,LSK South_Inverter,1.074626865671642
+Zone A1,SQ1_Inverter,1.0199004975124377
+Zone A1,SQ2_Inverter,0.845771144278607
+Zone A1,SQ3_Inverter,0.9502487562189055
+Zone A1,SQ4_Inverter,0.9800995024875622
+Zone A1,UG Hall3_Inverter,0.9651741293532339
+Zone A1,UG Hall4_Inverter,1.109452736318408
+Zone A1,UG Hall6_Inverter,1.0348258706467663
+Zone A1,UG Hall7_Inverter,0.9701492537313433
+Zone A4,LSK North_Inverter,1.099502487562189
+Zone A4,LSK South_Inverter,1.074626865671642
+Zone A4,SQ1_Inverter,1.0199004975124377
+Zone A4,SQ2_Inverter,0.845771144278607
+Zone A4,SQ3_Inverter,0.9502487562189055
+Zone A4,SQ4_Inverter,0.9800995024875622
+Zone A4,UG Hall3_Inverter,0.9651741293532339
+Zone A4,UG Hall4_Inverter,1.109452736318408
+Zone A4,UG Hall6_Inverter,1.0348258706467663
+Zone A4,UG Hall7_Inverter,0.9701492537313433
+Zone A2 1,LSK North_Inverter,1.135
+Zone A2 1,LSK South_Inverter,1.1
+Zone A2 1,SQ1_Inverter,1.065
+Zone A2 1,SQ2_Inverter,0.8649999999999999
+Zone A2 1,SQ3_Inverter,0.97
+Zone A2 1,SQ4_Inverter,1.0
+Zone A2 1,SQ567_Inverter,0.8099999999999999
+Zone A2 1,UG Hall2 2F_Inverter,0.5999999999999999
+Zone A2 1,UG Hall2 RF_Inverter,1.065
+Zone A2 1,UG Hall3_Inverter,0.99
+Zone A2 1,UG Hall4_Inverter,1.145
+Zone A2 1,UG Hall6_Inverter,1.07
+Zone A2 1,UG Hall7_Inverter,1.01
+Zone A2 1,Zone A1_Inverter,0.94
+Zone A2 1,Zone A4_Inverter,0.99
+SQ Apartment1-12,LSK North_Inverter,1.1300000000000001
+SQ Apartment1-12,LSK South_Inverter,1.095
+SQ Apartment1-12,SQ1_Inverter,1.065
+SQ Apartment1-12,SQ2_Inverter,0.8649999999999999
+SQ Apartment1-12,SQ3_Inverter,0.97
+SQ Apartment1-12,SQ4_Inverter,1.0
+SQ Apartment1-12,SQ567_Inverter,0.8049999999999998
+SQ Apartment1-12,UG Hall2 2F_Inverter,0.6149999999999998
+SQ Apartment1-12,UG Hall2 RF_Inverter,1.07
+SQ Apartment1-12,UG Hall3_Inverter,0.99
+SQ Apartment1-12,UG Hall4_Inverter,1.145
+SQ Apartment1-12,UG Hall6_Inverter,1.07
+SQ Apartment1-12,UG Hall7_Inverter,1.015
+SQ Apartment1-12,Zone A1_Inverter,0.95
+SQ Apartment1-12,Zone A4_Inverter,0.9849999999999999
+SQ Apartment13-24,LSK North_Inverter,1.119402985074627
+SQ Apartment13-24,LSK South_Inverter,1.0845771144278609
+SQ Apartment13-24,SQ1_Inverter,1.0696517412935325
+SQ Apartment13-24,SQ2_Inverter,0.855721393034826
+SQ Apartment13-24,SQ3_Inverter,0.9651741293532339
+SQ Apartment13-24,SQ4_Inverter,1.0
+SQ Apartment13-24,SQ567_Inverter,0.8009950248756218
+SQ Apartment13-24,UG Hall2 2F_Inverter,0.6119402985074626
+SQ Apartment13-24,UG Hall2 RF_Inverter,1.0796019900497513
+SQ Apartment13-24,UG Hall3_Inverter,0.9850746268656717
+SQ Apartment13-24,UG Hall4_Inverter,1.1343283582089554
+SQ Apartment13-24,UG Hall6_Inverter,1.064676616915423
+SQ Apartment13-24,UG Hall7_Inverter,1.0099502487562189
+SQ Apartment13-24,Zone A1_Inverter,0.9502487562189055
+SQ Apartment13-24,Zone A4_Inverter,0.9900497512437811
+SQ Apartment25-36,LSK North_Inverter,1.119402985074627
+SQ Apartment25-36,LSK South_Inverter,1.0845771144278609
+SQ Apartment25-36,SQ1_Inverter,1.074626865671642
+SQ Apartment25-36,SQ2_Inverter,0.855721393034826
+SQ Apartment25-36,SQ3_Inverter,0.9651741293532339
+SQ Apartment25-36,SQ4_Inverter,1.0
+SQ Apartment25-36,SQ567_Inverter,0.8009950248756218
+SQ Apartment25-36,UG Hall2 2F_Inverter,0.6119402985074626
+SQ Apartment25-36,UG Hall2 RF_Inverter,1.0796019900497513
+SQ Apartment25-36,UG Hall3_Inverter,0.9850746268656717
+SQ Apartment25-36,UG Hall4_Inverter,1.1243781094527365
+SQ Apartment25-36,UG Hall6_Inverter,1.0597014925373134
+SQ Apartment25-36,UG Hall7_Inverter,1.0049751243781095
+SQ Apartment25-36,Zone A1_Inverter,0.955223880597015
+SQ Apartment25-36,Zone A2_Inverter_1,0.8955223880597015
+SQ Apartment25-36,Zone A4_Inverter,1.0
+SQ Apartment37-48,LSK North_Inverter,1.119402985074627
+SQ Apartment37-48,LSK South_Inverter,1.0845771144278609
+SQ Apartment37-48,SQ1_Inverter,1.0696517412935325
+SQ Apartment37-48,SQ2_Inverter,0.855721393034826
+SQ Apartment37-48,SQ3_Inverter,0.9651741293532339
+SQ Apartment37-48,SQ4_Inverter,1.0
+SQ Apartment37-48,SQ567_Inverter,0.8009950248756218
+SQ Apartment37-48,UG Hall2 2F_Inverter,0.6119402985074626
+SQ Apartment37-48,UG Hall2 RF_Inverter,1.0796019900497513
+SQ Apartment37-48,UG Hall3_Inverter,0.9850746268656717
+SQ Apartment37-48,UG Hall4_Inverter,1.1343283582089554
+SQ Apartment37-48,UG Hall6_Inverter,1.064676616915423
+SQ Apartment37-48,UG Hall7_Inverter,1.0099502487562189
+SQ Apartment37-48,Zone A1_Inverter,0.9502487562189055
+SQ Apartment37-48,Zone A4_Inverter,0.9900497512437811

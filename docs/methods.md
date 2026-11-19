@@ -16,3 +16,14 @@ hour or more in daylight, normalised power above 1.05 and outages (zero power wh
 two metadata errors. A unit starts on the first day d with valid power (above 2% of AC) in at least 70% of daylight
 slots on d and d+1. Events start on their approved observed start; donors are units started at least 14 full days
 earlier and online in the week before.
+
+**Fleet index, gains and priors.** For each event, a donor's implied index is its normalised power divided by its gain
+and the normalised clear-sky irradiance; flagged slots are excluded. The median index is the median over unclipped
+donors. The censored index minimises a Huber loss (delta = 0.05) of the donors' power against the inverter-limited
+model min(1, g k G̃) over all online donors, so a clipped donor bounds the index from below. Donor gains are fitted
+by the same loss against a leave-one-out median index, on slots with G̃ > 0.2 and index above 0.3. The fit
+alternates five times, renormalising to a median gain of 1. The prior gain of a new unit is beta r T, where beta is
+the median of g / (r T) over clean-metadata donors and T a clear-sky Perez transposition factor. The prior's weight
+against the unit's own data is w0 = s1^2 / sigma_p^2 days, from the donors' leave-one-out prior errors and one-day
+gain estimates. The k_min threshold, the estimator and the prior variant were chosen on the 10 validation units by
+rules fixed in advance.

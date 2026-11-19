@@ -1,0 +1,32 @@
+censored_grid:
+  coarse_step: 0.005
+  local_step: 0.0005
+clip_threshold: 0.97
+drift_boundary: '2023-02-17'
+drift_rule: '>= 45 of 90 days after the boundary'
+eb_weights:
+  daily_window_days: 60
+  min_unclipped_slots_per_day: 8
+gain_fit:
+  bounds:
+  - 0.3
+  - 1.5
+  flagged_slots: excluded
+  iterations: 5
+  k_min: 0.3
+  loo_index: median
+  min_gtilde: 0.2
+  window: unit rule start to event start
+huber_delta: 0.05
+index_estimator: censored
+issue_min_gtilde: 0.05
+k_bounds:
+- 0.0
+- 1.5
+part: 1
+prior_metadata_error_targets: G0
+prior_variant: G2
+transposition:
+  albedo: 0.2
+  model: perez
+  window: event 90-day window, clear sky

@@ -29,6 +29,8 @@ telemetry start instead of grid connection (F06); metadata errors (D01).
 ## 7. Claims the paper must NOT make
 - PVSetFormer as a general-purpose forecaster: describe it only for cold-start PV fleets (guide §6, D25).
 - That PVSetFormer beats a model unless rules R1 and R2 show it at the primary horizon (D25).
+- That censoring clearly improves the index: on validation it won on 4 of 10 units (F28); wait for ablation A2.
+- That the nameplate prior is worth many days of data: w0 is below one day (F30).
 - The PVSetFormer title if rule R1 keeps LightGBM as the main model: then use the fallback title (D25).
 - Any comparison with RMSE values from other countries' papers (guide §6).
 - Cross-climate transfer in general; only Safi is measured (guide §1). No tilt-transfer claim.
@@ -42,7 +44,7 @@ telemetry start instead of grid connection (F06); metadata errors (D01).
 - That satellite data confirm the HKUST sensor drift, unless the CAMS all-sky check is actually run (D14).
 
 ## 8. What is still missing
-Everything from NB3 on (NB0–NB2 done on 18 Nov 2026).
+Everything from NB4 on (NB0–NB3 done by 19 Nov 2026).
 
 ## 9. Writing conventions
 Roadmap Phase 10: clear academic English, short sentences, active verbs; research questions and hypotheses as one

@@ -47,4 +47,10 @@ created. HKUST paths are relative to `data/raw/hkust/Dataset/`.
 | `results/nb2_panel/testbed.csv` | Hidden-unit test bed: date, unit, station, valid days, group |
 | `results/nb2_panel/qc_flag_shares.csv` | Per unit: share of daylight 5-min values with each QC flag |
 | `results/nb2_panel/label_offset_*.csv` | Correlation with clear-sky GHI against the time shift |
+| `results/nb3_index/validation_kmin.csv`, `validation_estimator.csv`, `validation_priors.csv` | Validation units only: oracle gain and same-time nRMSE per k_min, per estimator; prior gains and errors per variant |
+| `results/nb3_index/event_periods.csv` | Per event: days after the final drift boundary, sensor period |
+| `results/nb3_index/gains.csv` | Event, donor, gain (fitted before the event start, median 1) |
+| `results/nb3_index/priors.csv` | Per event: prior used and its gain, G0/G1/G2, beta, r, T, uncertainty-set quantiles, sigma_p^2, s1^2, w0 (days) |
+| `results/nb3_index/frozen_config_part1.yaml` | Frozen configuration, part 1 (hash in summary.json) |
+| `results/nb3_index/*.parquet` (git-ignored, rebuilt by NB3) | Per event (columns) and 15-min slot: k_med, k_cens, sigma (IQR of the implied indices), c (clipped share), n (unclipped donors) |
 | `results/nb2_panel/*.parquet` (git-ignored, rebuilt by NB2) | P15_kW, y15, flags15 (bitmask: 1 night, 2 negative, 4 frozen, 8 over limit, 16 outage), nvalid15, geometry15 (zenith, elevation, azimuth, hour angle, doy, G_cs, Gt), targets15_kW (per event), k_crude5 |

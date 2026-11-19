@@ -100,3 +100,26 @@ One entry per work session: what was asked, what was done, the key numbers, what
   - Findings F25–F27 and decision D29. Both draft figures (Fig. 1 timeline, time-label curves) checked by eye.
 - **Next:** NB3 (median and censored index, donor gains, DC/AC priors, the final drift boundary, tuning on the
   validation units, then the freeze).
+
+## 2026-11-19 — NB3: index, gains, priors, drift boundary, freeze part 1
+
+- **Asked:** the author asked for NB3.
+- **Done:**
+  - Wrote `src/pvcold/fleet.py` and `tools/make_nb3.py`. A vectorised leave-one-out median replaced `nanmedian`
+    (identical results, 24 times faster); the gain fit for the largest donor set fell from 73 s.
+  - The first run was stopped by the agent: the generator still wrote the frozen YAML after the all-or-nothing
+    rename (a failed edit). After the fix, a second run completed.
+  - Looking at its figures showed that Fig. 3 was unreadable (sensor and CAMS indices at dawn divided by a clear sky
+    near zero), and that the freeze hash included the writing time. Both were fixed and NB3 re-run; the selections and
+    every table were reproduced.
+  - A hash check then showed that the summary's hash did not match the YAML file: Windows text mode had turned
+    its line endings into CRLF. The writer now writes LF everywhere. The first attempt at that fix was applied
+    through a bash heredoc that turned the two characters of a newline escape into a real line break, so `audit.py`
+    no longer compiled. The next run failed on import, yet reported exit code 0 because the last command of the
+    pipeline was `tail`. Both were caught by checking file timestamps and bytes. The line was fixed with the editor,
+    every module compiled, a writer self-test gave no CR byte, and NB3 was run once more with its own exit code.
+  - Selections: k_min 0.3, censored index, prior G2, boundary 2023-02-17. Part 1 frozen
+    (sha256 `cb671b7f67138e7e…`). F28-F32, D30, D31.
+- **For the author:** F30 (the prior is worth less than a day of own data) changes the D22 headline. F28 (the censored
+  index wins on only 4 of 10 validation units) limits what the paper can claim for censoring.
+- **Next:** NB4 (sensor baselines A4, A4b, A4c: QC, night offset, monthly recalibration).

@@ -1,0 +1,28 @@
+event,set,start,days_after_boundary,sensor_period
+SQ Block S,scored,2021-10-05,0,stable
+Zone A5,scored,2021-10-05,0,stable
+SQ Block R,scored,2021-10-06,0,stable
+Zone A7,scored,2021-10-09,0,stable
+Zone A6,scored,2021-10-14,0,stable
+Zone J2,scored,2021-11-13,0,stable
+Indoor Sports Centre,scored,2021-11-17,0,stable
+Zone D,scored,2022-01-19,0,stable
+UG Hall8,scored,2023-01-05,47,drifted
+UG Hall9,scored,2023-02-11,84,drifted
+Zone A2 inverters 2-3,scored,2023-05-16,90,drifted
+SQ Block P,scored,2023-06-22,90,drifted
+Shaw Auditorium,scored,2023-07-09,90,drifted
+Library,sensitivity,2022-06-01,0,stable
+Wong Check She,sensitivity,2021-12-01,0,stable
+Zone J1,sensitivity,2022-03-01,0,stable
+Zone L2,sensitivity,2022-06-01,0,stable
+SQ567,validation,2021-06-02,0,stable
+UG Hall2 2F,validation,2021-06-03,0,stable
+UG Hall2 RF,validation,2021-06-09,0,stable
+Zone A1,validation,2021-06-11,0,stable
+Zone A4,validation,2021-06-11,0,stable
+Zone A2 1,validation,2021-07-01,0,stable
+SQ Apartment1-12,validation,2021-07-08,0,stable
+SQ Apartment13-24,validation,2021-07-11,0,stable
+SQ Apartment25-36,validation,2021-07-15,0,stable
+SQ Apartment37-48,validation,2021-07-11,0,stable

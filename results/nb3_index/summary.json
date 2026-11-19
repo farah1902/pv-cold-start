@@ -1,0 +1,69 @@
+{
+  "notebook": "NB3_index_gains_prior",
+  "environment": {
+    "python": "3.12.1",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "executable": "C:\\Python312\\python.exe",
+    "run_at": "2026-11-19 21:15:01",
+    "numpy": "1.26.4",
+    "pandas": "2.2.0",
+    "scipy": "1.12.0",
+    "sklearn": "1.5.1",
+    "statsmodels": "0.15.0",
+    "lightgbm": "4.6.0",
+    "pvlib": "0.16.1",
+    "ruptures": "v1.1.10",
+    "matplotlib": "3.8.3",
+    "torch": "2.2.0+cpu",
+    "openpyxl": "3.1.5",
+    "pyarrow": "15.0.2",
+    "yaml": "6.0.1"
+  },
+  "runtime_s": 330.7,
+  "frozen1_written": "2026-11-19 21:15:04",
+  "k_min": 0.3,
+  "estimator": "censored",
+  "prior": "G2",
+  "frozen1_sha256": "cb671b7f67138e7e82eeece27241e60a37284fd124946ac72d42e9a2daa80252",
+  "validation_nrmse0_by_kmin": {
+    "0.3": 0.081267,
+    "0.5": 0.081351,
+    "0.7": 0.081485
+  },
+  "validation_nrmse0_by_estimator": {
+    "k_cens": 0.079697,
+    "k_med": 0.081267
+  },
+  "censored_wins": 4,
+  "validation_prior_median_abs_err": {
+    "G0": 0.1125,
+    "G1": 0.043789,
+    "G2": 0.04007
+  },
+  "validation_prior_median_nrmse0": {
+    "G0": 0.090861,
+    "G1": 0.086848,
+    "G2": 0.087032
+  },
+  "drift_boundary_fleet": {
+    "date": "2023-02-17",
+    "penalty": 1.645291803527946,
+    "before": 0.901025926944184,
+    "after": 1.5311351938136668,
+    "n_days": 948
+  },
+  "drift_boundary_cams": {
+    "date": "2023-02-14",
+    "penalty": 2.0871567936393403,
+    "before": 0.7564794907568262,
+    "after": 1.1661471912043553,
+    "n_days": 1012
+  },
+  "scored_by_period": {
+    "stable": 8,
+    "drifted": 5
+  },
+  "w0_days_median_scored": 0.42869909196784484,
+  "fig3_day": "2021-08-29",
+  "fig4_event": "Shaw Auditorium"
+}

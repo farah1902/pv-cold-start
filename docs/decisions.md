@@ -280,6 +280,39 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
     committed.
 - **Evidence:** `results/nb2_panel/`; F25–F27.
 
+### D30 — Implementation choices of NB3 [method, Phase 4]
+- **Request or reason:** the author asked for NB3 (19 Nov 2026).
+- **Change:**
+  - Donor slots with any QC flag are left out of the index and of the gain fits.
+  - The censored index is minimised on a 0.005 grid, then a local 0.0005 grid. This stands in for the guide's
+    golden-section refinement, with the same precision.
+  - In the alternating gain fit, the leave-one-out index is the median index for both estimators, so both share
+    the donor gains and differ only at the index step. An exact vectorised leave-one-out median was checked against
+    `nanmedian` (identical to machine precision, 24 times faster).
+  - Gains are fitted from the unit's rule start to the event start and fixed there (cold-start mode).
+  - Transposition (G2): clear-sky Perez, albedo 0.2, over the event's 90-day window, with equal module shares for
+    slash orientations; T = 1 for flat and "Mixed".
+  - Empirical-Bayes weights: one-day gains of the donors over the last 60 days, against the leave-one-out index.
+  - Drift boundary (D10): PELT on the daily log-ratio of the sensor to the NB1 fleet proxy (10 fixed long-running
+    units), dead-sensor days removed, penalty raised geometrically until one change point remains. A free PELT
+    over-segments this series (F23).
+  - **The freeze has two parts.** Part 1 (this notebook) fixes the index, gains, prior and drift boundary. Part 2
+    fixes the forecasters after the LightGBM and PVSetFormer development on validation data. The `protocol-freeze`
+    tag (D21) comes after part 2, before any test event is scored.
+  - The frozen YAML excludes its writing time, so its hash depends on content only.
+  - All outputs are written with LF line endings (CSV, YAML, JSON), so hashes match on every OS. Earlier runs
+    wrote CRLF on Windows, and the frozen-config hash did not match its own file; NB1 and NB2 outputs keep CRLF
+    until their next run.
+  - Guard: `fleet.validation_scores` refuses to read any target that is not a validation unit.
+- **Evidence:** `results/nb3_index/`; F28-F32.
+
+### D31 — Selections under the pre-registered rules, and part 1 of the frozen configuration [method, Phase 4]
+- **Request or reason:** NB3 rules 1-4, written in the notebook before any number was computed.
+- **Change:** k_min = 0.3; index estimator = censored; prior = G2, with G0 for the two
+  metadata-error targets; drift boundary = 2023-02-17. Frozen configuration part 1:
+  `results/nb3_index/frozen_config_part1.yaml`, sha256 `cb671b7f67138e7e82eeece27241e60a37284fd124946ac72d42e9a2daa80252`.
+- **Evidence:** F28-F31.
+
 ### D16 — pvlib 0.16.1 and ruptures 1.1.10 are installed locally and pinned [environment, Phase 0]
 - **Request or reason:** both are in the guide's software list (§5.6) and were missing locally on 18 Nov 2026.
 - **Change:** `pip install pvlib==0.16.1 ruptures==1.1.10`. A dry run first showed that nothing else would be

@@ -10,6 +10,8 @@ Every figure and table, the code that draws it and its role in the paper. The pl
 | `results/nb1_audit/figures/sensor_drift.{png,pdf}` | Sensor vs CAMS, sensor and CAMS vs fleet, noon clear-sky ratios | `audit.fig_sensor` (NB1) | Draft of Fig. 2 |
 | `results/nb2_panel/figures/fig1_timeline.{png,pdf}` | Starts and 90-day windows of all events, drifted window shaded (provisional boundary) | NB2 | Draft of Fig. 1 |
 | `results/nb2_panel/figures/label_offset.{png,pdf}` | Correlation with clear sky against the time shift | NB2 | Supplement |
+| `results/nb3_index/figures/fig3_index_day.{png,pdf}` | Median and censored fleet index, pyranometer and CAMS indices, and the clipped share on a variable development day | NB3 | Draft of Fig. 3 |
+| `results/nb3_index/figures/fig4_gain_dcac.{png,pdf}` | Donor gain vs DC/AC ratio with the beta line (donor set of Shaw Auditorium; two metadata-error donors fall outside the axis range) | NB3 | Draft of Fig. 4 |
 | `results/nb1_audit/figures/quirks.{png,pdf}` | 17:55 cut (Zone A5), Zone J2 before its inverter file, Zone D station / inverter 2 | `audit.fig_quirks` (NB1) | Data section or supplement |
 
 Changes to the planned list:
