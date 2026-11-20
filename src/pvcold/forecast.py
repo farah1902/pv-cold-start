@@ -99,22 +99,27 @@ def design(S: pd.DataFrame, st: pd.DataFrame, h: int) -> dict:
 
 
 # --- Quantile LightGBM bank (guide §5.2) --------------------------------------------------------------------------
-def fit_bank(X: np.ndarray, y: np.ndarray, params: dict) -> tuple[list, list]:
+def fit_bank(X: np.ndarray, y: np.ndarray, params: dict, return_cal: bool = False):
     """Nine quantile models: early stopping on the last 20% of the window (by time), then a refit on the whole window
-    with the best number of rounds (D33)."""
+    with the best number of rounds (D33). With return_cal, also the early-stopped models' predictions on that last
+    20% (out of sample for them) and the index of its first row: the conformal calibration set (D35)."""
     import lightgbm as lgb
 
     cut = int(round(len(y) * (1 - VALID_FRAC)))
     dtr = lgb.Dataset(X[:cut], y[:cut], free_raw_data=False)
     dva = lgb.Dataset(X[cut:], y[cut:], reference=dtr, free_raw_data=False)
     dall = lgb.Dataset(X, y, free_raw_data=False)
-    models, best = [], []
+    models, best, cal = [], [], []
     for tau in TAUS:
         p = {**LGB_FIXED, **params, "alpha": float(tau)}
         b = lgb.train(p, dtr, MAX_ROUNDS, valid_sets=[dva], callbacks=[lgb.early_stopping(EARLY_STOP, verbose=False)])
         it = int(b.best_iteration) if b.best_iteration else MAX_ROUNDS
+        if return_cal:
+            cal.append(b.predict(X[cut:], num_iteration=it))
         models.append(lgb.train(p, dall, it))
         best.append(it)
+    if return_cal:
+        return models, best, np.column_stack(cal), cut
     return models, best
 
 
@@ -331,15 +336,15 @@ def member_levels(seed: int = C.SEED) -> tuple[np.ndarray, np.ndarray]:
     return lv, np.random.default_rng(seed).permutation(lv)
 
 
-def index_members(Q: np.ndarray, levels: np.ndarray) -> np.ndarray:
-    """Quantile function linear between the 9 quantiles, with linear tails, bounded to [0, 1.5]: (N x M)."""
+def index_members(Q: np.ndarray, levels: np.ndarray, bounds: tuple = C.K_BOUNDS) -> np.ndarray:
+    """Quantile function linear between the 9 quantiles, with linear tails, bounded (index: [0, 1.5]): (N x M)."""
     lo = Q[:, [0]] + (levels[None, :] - TAUS[0]) * (Q[:, [1]] - Q[:, [0]]) / (TAUS[1] - TAUS[0])
     hi = Q[:, [-1]] + (levels[None, :] - TAUS[-1]) * (Q[:, [-1]] - Q[:, [-2]]) / (TAUS[-1] - TAUS[-2])
     j = np.clip(np.searchsorted(TAUS, levels) - 1, 0, len(TAUS) - 2)
     w = (levels - TAUS[j]) / (TAUS[j + 1] - TAUS[j])
     mid = Q[:, j] * (1 - w)[None, :] + Q[:, j + 1] * w[None, :]
     out = np.where(levels[None, :] < TAUS[0], lo, np.where(levels[None, :] > TAUS[-1], hi, mid))
-    return np.clip(out, *C.K_BOUNDS)
+    return np.clip(out, *bounds)
 
 
 def gain_members(prior: float, B_rel: np.ndarray, gain_levels: np.ndarray) -> np.ndarray:
@@ -359,11 +364,130 @@ def scores(Y: np.ndarray, y: np.ndarray) -> dict:
     if n == 0:
         return {"n": 0}
     mean, med = Y.mean(1), np.median(Y, axis=1)
-    Ys = np.sort(Y, axis=1)
-    crps = np.abs(Y - y[:, None]).mean(1) - (Ys * (2 * np.arange(1, m + 1) - m - 1)[None, :]).sum(1) / m ** 2
+    crps = crps_members(Y, y)
     lo, hi = np.quantile(Y, 0.1, axis=1), np.quantile(Y, 0.9, axis=1)
     a = 0.2
     iscore = (hi - lo) + 2 / a * (lo - y) * (y < lo) + 2 / a * (y - hi) * (y > hi)
     return {"n": int(n), "nRMSE": float(np.sqrt(np.mean((y - mean) ** 2))), "nMAE": float(np.mean(np.abs(y - med))),
             "nMBE": float(np.mean(y - mean)), "CRPS": float(crps.mean()), "PICP80": float(np.mean((y >= lo) & (y <= hi))),
             "PINAW": float(np.mean(hi - lo)), "IS80": float(iscore.mean())}
+
+
+def crps_members(Y: np.ndarray, y: np.ndarray) -> np.ndarray:
+    """CRPS of an ensemble per row: mean |x - y| - (1 / 2M^2) sum |x_i - x_j|, via the sorted members."""
+    m = Y.shape[1]
+    Ys = np.sort(Y, axis=1)
+    return np.abs(Y - y[:, None]).mean(1) - (Ys * (2 * np.arange(1, m + 1) - m - 1)[None, :]).sum(1) / m ** 2
+
+
+# --- Conformal calibration on pseudo cold starts (D06, guide §6 item 14, D35) ----------------------------------------
+PAIRS = [(0, 8), (1, 7), (2, 6), (3, 5)]          # q0.1-q0.9 (80%), q0.2-q0.8 (60%), q0.3-q0.7 (40%), q0.4-q0.6 (20%)
+PAIR_ALPHA = np.array([0.2, 0.4, 0.6, 0.8])
+PAIR_NAMES = ["80", "60", "40", "20"]
+MIN_CAL = 50                                       # fewer conformity scores: no correction (D35)
+POWER_BOUNDS = (0.0, C.OVER_LIMIT)                 # normalised power can exceed 1 slightly (QC over-limit 1.05)
+
+
+def lgb_with_cal(S: pd.DataFrame, origin: pd.Timestamp, end: pd.Timestamp, params: dict) -> tuple:
+    """The LightGBM forecasts of run_origin (same rows and values), plus the calibration set: the early-stopped models'
+    index quantiles on the last 20% of each horizon's training pairs (targets before the origin)."""
+    st = state(S)
+    k = S["k"].to_numpy()
+    t = S.index
+    cols = [f"q{tau:.1f}" for tau in TAUS]
+    rows, cal = [], []
+
+    def frame(model, h, times, Q):
+        f = pd.DataFrame(Q, columns=cols)
+        f.insert(0, "t", times); f.insert(0, "h", h); f.insert(0, "model", model)
+        return f
+
+    for h in H:
+        D = design(S, st, h)
+        X = D["X"].to_numpy(dtype=float)
+        tgt_time = t + pd.Timedelta(minutes=15 * h)
+        tr = D["ok"] & np.isfinite(D["y"]) & (t >= TRAIN_START) & (tgt_time < origin)
+        fc = D["ok"] & (t >= origin) & (t < end)
+        if fc.sum() == 0 or tr.sum() < 50:
+            continue
+        models, _, qcal, cut = fit_bank(X[tr], D["y"][tr] - k[tr], params, return_cal=True)
+        rows.append(frame("LGB", h, t[fc], predict_bank(models, X[fc], anchor=k[fc])))
+        pos = np.where(tr)[0][cut:]
+        cal.append(frame("LGB_cal", h, t[pos], np.clip(np.sort(qcal + k[pos][:, None], axis=1), *C.K_BOUNDS)))
+    cat = lambda x: pd.concat(x, ignore_index=True) if x else pd.DataFrame()   # noqa: E731
+    return cat(rows), cat(cal)
+
+
+def cal_task(name: str, S: pd.DataFrame, origin: pd.Timestamp, end: pd.Timestamp, params: dict) -> tuple:
+    rows, cal = lgb_with_cal(S, origin, end, params)
+    for f in (rows, cal):
+        if len(f):
+            f.insert(0, "origin", origin)
+            f.insert(0, "event", name)
+    return name, origin, rows, cal
+
+
+def pseudo_priors(g_don: pd.Series, r_don: pd.Series, T_don: pd.Series, meta_ok: pd.Series, variant: str) -> dict:
+    """Each donor treated as new: its prior and relative uncertainty set from the other donors only (leave-one-out),
+    for the event's prior variant. G2 / G1: clean-metadata donors, beta from the others times r T (T = 1 for G1).
+    G0 (metadata-error targets): the median of the other donors' gains, all donors with a gain."""
+    out = {}
+    if variant == "G0":
+        g = g_don.dropna()
+        for d in g.index:
+            o = g.drop(d).to_numpy()
+            out[d] = (float(np.median(o)), o / np.median(o))
+        return out
+    rT = r_don * (T_don if variant == "G2" else 1.0)
+    ok = meta_ok & g_don.notna() & r_don.notna()
+    b = (g_don / rT)[ok]
+    for d in b.index:
+        o = b.drop(d).to_numpy()
+        out[d] = (float(np.median(o) * rT[d]), o / np.median(o))
+    return out
+
+
+def power_quantiles(Y: np.ndarray) -> np.ndarray:
+    """The 9 quantiles (q0.1-q0.9) of the power members: (N x 9)."""
+    return np.quantile(Y, TAUS, axis=1).T
+
+
+def conformity(Qp: np.ndarray, y: np.ndarray, gt: np.ndarray) -> np.ndarray:
+    """CQR scores (Romano et al. 2019) for the four central intervals, normalised by Gt(t + h): (N x 4)."""
+    lo = Qp[:, [a for a, _ in PAIRS]]
+    hi = Qp[:, [b for _, b in PAIRS]]
+    return np.maximum(lo - y[:, None], y[:, None] - hi) / gt[:, None]
+
+
+def conformal_correction(E: np.ndarray) -> np.ndarray:
+    """Per interval: the ceil((1 - alpha)(n + 1))-th smallest score (split-conformal quantile); 0 under MIN_CAL."""
+    n = len(E)
+    if n < MIN_CAL:
+        return np.zeros(len(PAIRS))
+    k = np.minimum(np.ceil((1 - PAIR_ALPHA) * (n + 1)).astype(int), n)
+    Es = np.sort(E, axis=0)
+    return Es[k - 1, np.arange(len(PAIRS))]
+
+
+def apply_conformal(Qp: np.ndarray, gt: np.ndarray, corr: np.ndarray) -> np.ndarray:
+    """Widen (or narrow) each central interval by corr x Gt(t + h); the median is unchanged; sorted and bounded."""
+    Q = Qp.copy()
+    for j, (a, b) in enumerate(PAIRS):
+        Q[:, a] -= corr[j] * gt
+        Q[:, b] += corr[j] * gt
+    return np.clip(np.sort(Q, axis=1), *POWER_BOUNDS)
+
+
+def quantile_scores(Qp: np.ndarray, y: np.ndarray, levels: np.ndarray) -> dict:
+    """Probabilistic scores of a 9-quantile power forecast: coverage of the four central intervals, PINAW and IS of
+    the 80% interval, and the CRPS of the distribution rebuilt from the 9 quantiles (as for the index, D33)."""
+    if len(y) == 0:
+        return {"n": 0}
+    out = {"n": int(len(y))}
+    for j, (a, b) in enumerate(PAIRS):
+        out[f"cover{PAIR_NAMES[j]}"] = float(np.mean((y >= Qp[:, a]) & (y <= Qp[:, b])))
+    lo, hi, al = Qp[:, 0], Qp[:, 8], 0.2
+    out["PINAW"] = float(np.mean(hi - lo))
+    out["IS80"] = float(np.mean((hi - lo) + 2 / al * (lo - y) * (y < lo) + 2 / al * (y - hi) * (y > hi)))
+    out["CRPS_q"] = float(crps_members(index_members(Qp, levels, POWER_BOUNDS), y).mean())
+    return out

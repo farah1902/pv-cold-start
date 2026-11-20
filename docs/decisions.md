@@ -409,6 +409,31 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
     `results/nb5a_variants/`.
 - **Evidence:** `results/nb5a_variants/`, `results/nb5a_dev/`; F39.
 
+### D35 — Conformal calibration on pseudo cold starts (D06 implemented) [method, Phase 5]
+- **Request or reason:** NB5a's 80% intervals covered only 0.63–0.71 (F40); the author asked to continue with the
+  conformal calibration (20 Nov 2026).
+- **Change:**
+  - **Calibration set.** For each event, origin and horizon: pseudo cold starts of the event's donors (clean-metadata
+    donors for a G1/G2 target, all donors for a G0 target), each with its leave-one-out prior and uncertainty set.
+    Their index forecasts are the early-stopped LightGBM models' predictions on the last 20% of the training pairs:
+    out of sample for those models, already computed in every fit, and available even for the shortest validation
+    histories (median 12 calibration days).
+  - **Approximation, stated:** the donor is still inside the event's index; only its prior is leave-one-out. Its own
+    power weighs about 1/n in the index. The pseudo cold starts' raw 80% coverage at 1 h (0.714) equals the true
+    cold starts' raw coverage on the validation units (0.714), so the approximation does not visibly flatter the
+    calibration.
+  - **Score.** CQR (Romano et al. 2019; to verify at citation) per horizon and per central interval (80, 60, 40 and
+    20%), normalised by G̃(t + h), so the widening follows the clear-sky level. The correction is the
+    ⌈(1 − α)(n + 1)⌉-th smallest score; with fewer than 50 scores there is none (never the case on validation). The
+    median and the point forecast are unchanged; the quantiles are sorted and bounded to [0, 1.05].
+  - **Scope.** The main model gets the layer. Every trained index forecaster (PVSetFormer, TimeXer) gets its own,
+    from its own early-stopping predictions; the simple baselines stay raw.
+  - **Keep rule, fixed before the run:** kept if, on the validation units, the median PICP80 at 1 h moves closer to
+    0.80 and the median IS80 at 1 h does not rise. Met: kept.
+  - Settings in `results/nb5a_conformal/conformal_config_part2b.yaml` (sha256 `c68d5a3aa17a6806…`); they join the
+    frozen configuration part 2.
+- **Evidence:** `results/nb5a_conformal/`; F43.
+
 ### D16 — pvlib 0.16.1 and ruptures 1.1.10 are installed locally and pinned [environment, Phase 0]
 - **Request or reason:** both are in the guide's software list (§5.6) and were missing locally on 18 Nov 2026.
 - **Change:** `pip install pvlib==0.16.1 ruptures==1.1.10`. A dry run first showed that nothing else would be

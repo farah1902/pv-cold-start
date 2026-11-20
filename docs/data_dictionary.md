@@ -71,4 +71,8 @@ created. HKUST paths are relative to `data/raw/hkust/Dataset/`.
 | `results/nb5a_dev/lgb_config_part2a.yaml` | LightGBM setting, features, rules, composition and the R1 reference (hash in summary.json); joins the frozen part 2 |
 | `results/nb5a_dev/val_forecasts.parquet`, `results/nb5a_variants/variant_forecasts.parquet` (git-ignored) | Index quantiles (q0.1–q0.9) per unit, origin, model, horizon and issue time |
 | `results/nb5a_variants/variant_scores.csv`, `variant_medians.csv`, `variant_wins_1h.csv` | The four LightGBM variants of D34 and the baselines, scored on the validation units |
+| `results/nb5a_conformal/corrections.csv` | Per validation unit, origin and horizon: prior variant, donors, scores, calibration days, raw coverage of the pseudo cold starts per interval, conformal corrections (units of G̃) |
+| `results/nb5a_conformal/val_conformal_scores.csv`, `val_conformal_medians.csv` | Validation units only: raw and conformal coverage of the 80/60/40/20% intervals, PINAW, IS80 and CRPS of the 9-quantile distribution, per unit, horizon and window; medians |
+| `results/nb5a_conformal/conformal_config_part2b.yaml` | Conformal settings and keep-rule outcome (hash in summary.json); joins the frozen part 2 |
+| `results/nb5a_conformal/calibration_quantiles.parquet` (git-ignored) | Calibration-set index quantiles of the early-stopped models, per unit, origin, horizon and issue time |
 | `results/nb2_panel/*.parquet` (git-ignored, rebuilt by NB2) | P15_kW, y15, flags15 (bitmask: 1 night, 2 negative, 4 frozen, 8 over limit, 16 outage), nvalid15, geometry15 (zenith, elevation, azimuth, hour angle, doy, G_cs, Gt), targets15_kW (per event), k_crude5 |

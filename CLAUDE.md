@@ -162,7 +162,9 @@ git-ignored); NB4 about 2.5 min (`results/nb4_sensor/`, Parquet series git-ignor
 part 1 is `results/nb3_index/frozen_config_part1.yaml` (D31); the sensor settings are
 `results/nb4_sensor/sensor_config.yaml` (D32). NB5a (`python tools/make_nb5a.py`) takes about 11 min with 8
 workers (`results/nb5a_dev/`), then `NB5a_variants` about 13 min (`results/nb5a_variants/`); use an nbconvert
-timeout of 7200 s. The LightGBM setting is `results/nb5a_dev/lgb_config_part2a.yaml` (D33, D34). Pandas
+timeout of 7200 s. The LightGBM setting is `results/nb5a_dev/lgb_config_part2a.yaml` (D33, D34).
+`NB5a_conformal` (`python tools/make_nb5a_conformal.py`, after NB5a) takes about 8 min
+(`results/nb5a_conformal/`, settings `conformal_config_part2b.yaml`, D35). Pandas
 pitfall: use `x['gt']`, never `x.gt` (a DataFrame method), for any column whose name is also a method.
 
 ## Environment notes

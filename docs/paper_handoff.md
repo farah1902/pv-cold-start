@@ -42,7 +42,8 @@ telemetry start instead of grid connection (F06); metadata errors (D01).
   the validation units (F35).
 - That monthly recalibration improves a stable sensor: on the validation units it does not (F35).
 - That the forecaster beats CLIPER at 4–6 h: on the validation units it does not (F39); wait for the test run.
-- Calibrated intervals, before the conformal layer is built and scored: raw coverage is 0.63–0.71 (F40).
+- Calibrated intervals on the test events before the test run: so far only the validation units show it
+  (conformal 0.75–0.80, raw 0.63–0.71; F40, F43).
 - Any validation number as a result of the paper: NB5a is development data (D33).
 - "19 real start events" or "two capacity additions": there are 13 scored events and one addition (D08, D27).
 - "Real start dates" for the four sensitivity events, whose starts are left-censored (D08, D27).
@@ -52,9 +53,9 @@ telemetry start instead of grid connection (F06); metadata errors (D01).
 - That satellite data confirm the HKUST sensor drift, unless the CAMS all-sky check is actually run (D14).
 
 ## 8. What is still missing
-Before the freeze: the conformal layer (D06), the sensor and satellite rows' learner inputs, PVSetFormer and
+Before the freeze: the sensor and satellite rows' learner inputs, PVSetFormer and
 TimeXer (NB5c), the foundation models (NB5b), freeze part 2 and the tag. After it: the test run (NB5) and
-everything from NB6 on. NB0–NB4 and NB5a done by 20 Nov 2026.
+everything from NB6 on. NB0–NB4, NB5a and the conformal layer done by 20 Nov 2026.
 
 ## 9. Writing conventions
 Roadmap Phase 10: clear academic English, short sentences, active verbs; research questions and hypotheses as one

@@ -168,3 +168,18 @@ One entry per work session: what was asked, what was done, the key numbers, what
 - **Next, before the freeze:** the conformal layer (D06), the inputs of the sensor and satellite rows for the same
   learner, PVSetFormer and TimeXer development (NB5c, Colab), the foundation-model settings (NB5b); then freeze
   part 2, the tag and the test run.
+
+## 2026-11-20 — Conformal calibration (D06) on the validation units
+
+- **Asked:** the author: "continue with the conformal calibration".
+- **Done:**
+  - Added the calibration path to `src/pvcold/forecast.py` (the bank's early-stopping predictions as the
+    calibration set, leave-one-out pseudo priors, CQR scores, corrections, quantile scores) and
+    `tools/make_nb5a_conformal.py`. A smoke test showed the forecasts unchanged (difference 0.0).
+  - The keep rule was written in the notebook before the run. `NB5a_conformal` ran once (nbconvert exit code 0,
+    about 8 min). It reproduces NB5a's LightGBM forecasts (6e-8) and raw coverage (exactly).
+  - The layer is kept: 80% coverage 0.75–0.80 at every horizon, interval score lower everywhere. D35, F43. The
+    draft reliability figure was checked by eye.
+- **Next, before the freeze:** the inputs of the sensor and satellite rows (same learner), PVSetFormer and TimeXer
+  development (NB5c, Colab GPU) with their own conformal layers, the foundation-model settings (NB5b); then freeze
+  part 2, the tag and the test run.

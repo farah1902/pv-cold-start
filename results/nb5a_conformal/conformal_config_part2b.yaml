@@ -1,0 +1,22 @@
+calibration_set: pseudo cold starts of the event donors, early-stopped LightGBM predictions
+  on the last 20% of the training pairs
+donors: clean metadata (G1/G2 target) or all (G0 target); leave-one-out prior and
+  uncertainty set
+intervals:
+- '80'
+- '60'
+- '40'
+- '20'
+keep_rule: median PICP80 at 1 h closer to 0.80 and median IS80 at 1 h not higher (validation
+  units)
+kept: true
+lgb_config: d03bb0b86827009edcc4d37bd6ebb88de1697e1c8aac60646e988f4e9fe75abe
+median_and_point: unchanged
+method: CQR (Romano et al. 2019), split conformal
+min_scores: 50
+normalisation: Gt(t + h)
+part: 2b
+per: event, origin, horizon
+power_bounds:
+- 0.0
+- 1.05

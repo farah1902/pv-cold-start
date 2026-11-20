@@ -101,6 +101,21 @@ Source: `results/nb5a_dev/summary.json`, `val_medians.csv`, `val_skill.csv`, `cv
 | History to the first origin: validation units; scored events | 18–61 days (median 37); 143–785 days (median 186) | events.csv |
 | LightGBM configuration part 2a, sha256 | `d03bb0b86827009e…` | lgb_config_part2a.yaml |
 
+## Conformal calibration on the validation units (NB5a conformal)
+Source: `results/nb5a_conformal/summary.json`, `val_conformal_medians.csv`, `corrections.csv` (development data;
+run of 20 Nov 2026).
+
+| Quantity | Value | Source file |
+| --- | --- | --- |
+| Median PICP80 at 15 min / 1 h / 2 h / 6 h, raw | 0.685 / 0.714 / 0.662 / 0.649 | val_conformal_medians.csv |
+| Same, conformal | 0.786 / 0.797 / 0.753 / 0.778 | val_conformal_medians.csv |
+| Coverage of the 60 / 40 / 20% intervals at 1 h: raw; conformal | 0.511 / 0.325 / 0.145; 0.618 / 0.398 / 0.190 | val_conformal_medians.csv |
+| Median IS80 at 1 h: raw; conformal (units improved) | 0.5739; 0.5716 (8 of 10) | val_conformal_medians.csv |
+| Median CRPS (9 quantiles) at 1 h: raw; conformal | 0.0940; 0.0932 | val_conformal_medians.csv |
+| Raw PICP80 of the donors' pseudo cold starts at 1 h | 0.714 | corrections.csv |
+| Median correction at 1 h, 80 / 60 / 40 / 20% (units of G̃) | 0.047 / 0.032 / 0.019 / 0.011 | corrections.csv |
+| Keep rule met; conformal configuration part 2b, sha256 | yes; `c68d5a3aa17a6806…` | conformal_config_part2b.yaml |
+
 ## Forecast skill and statistics (NB5, NB6)
 _empty_
 

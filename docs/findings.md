@@ -386,6 +386,21 @@ repository). Paths are relative to `data/raw/hkust/Dataset/Time series dataset/`
 - **Reading:** the persistence anchor changes the 1-h error by 5% (F39); the whole grid changes the pinball loss by
   0.4%. Development time is better spent on the formulation and the calibration than on the grid.
 
+### F43 — Conformal calibration on pseudo cold starts brings the intervals to their nominal coverage — *strong*
+- **Evidence:** `results/nb5a_conformal/val_conformal_medians.csv`, `corrections.csv` (development data; the 10
+  validation units are true cold starts, never in their own donor set).
+  - Median PICP80, raw → conformal: 0.685 → 0.786 (15 min), 0.714 → 0.797 (1 h), 0.649 → 0.778 (6 h); all horizons
+    0.753–0.803 after calibration.
+  - At 1 h, the 60, 40 and 20% intervals cover 0.618, 0.398 and 0.190 (raw 0.511, 0.325, 0.145).
+  - IS80 falls at every horizon (1 h: 0.5739 → 0.5716, lower on 8 of 10 units; 6 h: 0.7024 → 0.6664). The CRPS of the
+    9-quantile distribution is lower from 30 min on (1 h: 0.0940 → 0.0932) and unchanged at 15 min (0.0619 vs 0.0620).
+  - The donors' pseudo cold starts under-cover like the true cold starts (raw 80% coverage 0.714 vs 0.714 at 1 h,
+    0.722 vs 0.685 at 15 min). Median
+    corrections at 1 h: 0.047 (80%), 0.032 (60%), 0.019 (40%), 0.011 (20%), in units of G̃.
+- **Reading:** the composition misses the target roof's own deviation from the fleet; the pseudo cold starts measure
+  it, and the calibration closes the gap at every level, not only at 80%. The pre-registered coverage target
+  (75–85%) is met on development data; the test run decides.
+
 ### F16 — Not every site file starts on the 1st of a month — *solid*
 - **Evidence:** among the 18 site files of the first event list, Indoor Sports Centre (2021-12-02), Zone J2
   (2021-11-13), Zone D (2022-01-20) and UG Hall9 (2023-02-11) start mid-month. The audit counts 5 of the 15-min and

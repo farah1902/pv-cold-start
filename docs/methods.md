@@ -53,3 +53,11 @@ development index from 2021. The index quantiles are turned into 200 power membe
 levels with gain draws from the prior's uncertainty set, capped at the inverter limit. The baselines (climatology,
 persistence, their optimal convex combination, nearest-neighbour analogs and a probabilistic persistence ensemble)
 go through the same composition.
+
+**Calibrated intervals.** The composition carries the uncertainty of the index forecast and of the gain, but not the
+new roof's own deviation from the fleet, so its raw intervals are too narrow. They are recalibrated by split
+conformal quantile regression on pseudo cold starts: before each forecast origin, every donor is treated as a new
+unit, with a prior and uncertainty set built from the other donors, and its power is forecast from out-of-sample
+index forecasts over the most recent part of the training window. For each horizon and each central interval (80,
+60, 40 and 20%), the conformity scores of these pseudo forecasts, divided by the normalised clear-sky irradiance,
+give the widening applied to the new unit's interval. The median and the point forecast are unchanged.
