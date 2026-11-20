@@ -352,6 +352,63 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
     configuration part 2 and the `protocol-freeze` tag (D21).
 - **Evidence:** `results/nb4_sensor/`; F33–F37.
 
+### D33 — Implementation choices of NB5a: forecasting development before the freeze [method, Phase 5] [guide deviation]
+- **Request or reason:** the author asked for NB5 (19 Nov 2026).
+- **Change:**
+  - **NB5 is split [guide deviation].** NB5a develops the forecasting pipeline on the 10 validation units: the
+    LightGBM setting (guide §5.2), every simple baseline, the composition with the prior, the scores and the R1
+    reference. The test run of guide NB5 (all models on the 17 events and the hidden-unit test bed) comes after the
+    `protocol-freeze` tag: R1 compares PVSetFormer with LightGBM on validation before the freeze (D25), and no test
+    event may be scored before it (D21).
+  - **Tuning index.** The censored index of the validation unit with the most donors (SQ Apartment25-36, 16
+    donors), data before 2021-10-05. Folds: targets in July, August and September 2021, expanding training from
+    15 May 2021. Ties are broken toward the guide's starting values (31, 0.03, 100), parameter by parameter, then
+    toward fewer leaves. This completes rule 1, which only covered a tie with the starting point, after
+    num_leaves 31 and 63 tied exactly (identical models, F42); the validation scores are the same either way.
+  - **Features (guide §3.7).** Computed on the full 15-min grid with the night left empty, so no lag crosses the
+    night: 16 lags, 1-h and 2-h means (at least 2 and 4 values), 1-h standard deviation (at least 3), last change,
+    sigma, c, n, the index at the target slot one day earlier, and the 8 terms of the future geometry: 32 features.
+  - **Pairs.** Training pairs obey the issue rule (G̃ > 0.05, n ≥ 8 unclipped donors, index present) and the target
+    rule (target slot at most 17:45, G̃ > 0.02), from 15 May 2021, with targets before the origin. Each origin
+    forecasts the issue times in [origin, min(origin + 30 days, start + 90 days)).
+  - **LightGBM.** Early stopping on the last 20% of the window (by time), then a refit on the whole window with the
+    best number of rounds: the guide does not say whether to refit, and the refit keeps the latest days, which
+    matter most in a cold start. One thread per fit, deterministic, fixed seed; fits run in parallel with joblib,
+    which is installed with scikit-learn (no new package).
+  - **Baselines.** Every model yields 9 index quantiles and is composed the same way; point forecasts are point
+    masses. A0 and PeEn: empirical quantiles of the index at the target slot over the previous 60 and 20 days (at
+    least 10 days). CLIPER: least-squares persistence weight on the training pairs, bounded to [0, 1], with A0's
+    median as climatology. A5: 50 nearest training states over the 32 standardised features, missing values at the
+    training mean. A7: the same-time index (oracle).
+  - **Composition (guide §3.8).** Stratified index levels; the gain draws use the same levels in a fixed random
+    order (seed 20261118), so index and gain draws are independent and both stratified. Gain members = prior × the
+    empirical quantile of B / median(B); for the metadata-error targets (prior G0) the donor gains are used.
+  - **Scoring.** Slots where every model has a forecast and the observation exists; QC-flagged slots are kept (guide
+    §2); full window and common window 12:00–17:55 (D12).
+  - **R1 metric, fixed before the run:** the median over the 10 validation units of the nRMSE at 1 h (full window,
+    member mean, common slots). PVSetFormer must be lower.
+  - The LightGBM setting is written to `results/nb5a_dev/lgb_config_part2a.yaml` (sha256 `d03bb0b86827009e…`). It
+    joins the frozen configuration part 2 at the tag.
+- **Evidence:** `results/nb5a_dev/`; F38–F42.
+
+### D34 — LightGBM forecasts the change of the index from persistence [method, Phase 5] [guide deviation]
+- **Request or reason:** the first NB5a run, with the bank of guide §5.2 forecasting the index level, barely beat
+  persistence and lost to CLIPER on the validation units. The four LightGBM variants below were then compared on the
+  same units (`NB5a_variants`, development data only).
+- **Change:**
+  - Each LightGBM model forecasts k(t + h) − k(t), and k(t) is added back. This stays inside the guide's
+    formula f(s_t, u_{t+h}), since k(t) is part of the state; trees represent "persistence plus a correction" far
+    better than the level when the history is short.
+  - Variants at 1 h, validation median nRMSE (units beating CLIPER): level 0.1913 (2 of 10), **change 0.1815
+    (9 of 10)**, change with pooled horizons 0.1873 (3 of 10), level with pooled horizons 0.2032 (2 of 10). Pooling
+    hurts, so one model per horizon and quantile stays.
+  - Rule 1 was re-run for the adopted target; it chose num_leaves 31, learning rate 0.05, min_data_in_leaf 200.
+  - Four LightGBM development rounds are counted (level, change, level pooled, change pooled). The anchor belongs
+    to the shared forecasting interface and is recommended for PVSetFormer and TimeXer.
+  - The first run's outputs were replaced; its validation numbers are reproduced by the `level` variant in
+    `results/nb5a_variants/`.
+- **Evidence:** `results/nb5a_variants/`, `results/nb5a_dev/`; F39.
+
 ### D16 — pvlib 0.16.1 and ruptures 1.1.10 are installed locally and pinned [environment, Phase 0]
 - **Request or reason:** both are in the guide's software list (§5.6) and were missing locally on 18 Nov 2026.
 - **Change:** `pip install pvlib==0.16.1 ruptures==1.1.10`. A dry run first showed that nothing else would be

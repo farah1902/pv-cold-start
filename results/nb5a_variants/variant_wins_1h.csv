@@ -1,0 +1,5 @@
+model,A1,CLIPER,A5,LGB_level
+LGB_change,10,9,8,9
+LGB_change_pooled,10,3,7,6
+LGB_level,7,2,5,0
+LGB_level_pooled,5,2,2,3

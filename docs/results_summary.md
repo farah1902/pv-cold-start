@@ -79,6 +79,28 @@ Source: `results/nb4_sensor/summary.json` and the CSV files beside it (run of 19
 | Input ratio to the event's fleet index, stable vs drifted (median over 17 events): raw; corrected; CAMS | 0.90 vs 1.61; 1.09 vs 1.14; 1.20 vs 1.27 | agreement_events.csv |
 | Sensor configuration sha256 | `4c47bfac9fa359fe…` | sensor_config.yaml |
 
+## Forecasting development on the validation units (NB5a)
+Source: `results/nb5a_dev/summary.json`, `val_medians.csv`, `val_skill.csv`, `cv_summary.csv`, and
+`results/nb5a_variants/` (development data only; run of 20 Nov 2026).
+
+| Quantity | Value | Source file |
+| --- | --- | --- |
+| LightGBM setting (rule 1, change target): num_leaves, learning rate, min_data_in_leaf | 31, 0.05, 200 | summary.json |
+| CV mean pinball: chosen; guide starting point | 0.068554; 0.068835 | cv_summary.csv |
+| **R1 bar: LightGBM median validation nRMSE at 1 h** | **0.18098** | summary.json |
+| Median nRMSE at 15 min / 1 h / 2 h / 6 h: LightGBM | 0.1292 / 0.1810 / 0.2106 / 0.2183 | val_medians.csv |
+| Same: CLIPER | 0.1318 / 0.1857 / 0.2127 / 0.2106 | val_medians.csv |
+| Same: persistence (A1) | 0.1338 / 0.1962 / 0.2352 / 0.2392 | val_medians.csv |
+| Same: analogs (A5) | 0.1533 / 0.1909 / 0.2215 / 0.2250 | val_medians.csv |
+| Same: climatology (A0) | 0.2342 / 0.2422 / 0.2523 / 0.2313 | val_medians.csv |
+| Same: same-time index (oracle A7) | 0.0879 / 0.0909 / 0.0933 / 0.0831 | val_medians.csv |
+| Skill of LightGBM at 1 h vs persistence / CLIPER / A5 (units won of 10) | 0.078 (10) / 0.022 (8) / 0.057 (9) | val_skill.csv |
+| CRPS skill vs PeEn at 15 min / 1 h / 6 h | 0.501 / 0.313 / 0.082 | summary.json |
+| PICP80 of LightGBM, range over horizons | 0.629–0.714 | val_medians.csv |
+| Variants at 1 h (pinned setting 15, 0.03, 200): level / change / change pooled / level pooled | 0.1913 / 0.1815 / 0.1873 / 0.2032 | nb5a_variants/variant_medians.csv |
+| History to the first origin: validation units; scored events | 18–61 days (median 37); 143–785 days (median 186) | events.csv |
+| LightGBM configuration part 2a, sha256 | `d03bb0b86827009e…` | lgb_config_part2a.yaml |
+
 ## Forecast skill and statistics (NB5, NB6)
 _empty_
 

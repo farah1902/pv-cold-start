@@ -65,4 +65,10 @@ created. HKUST paths are relative to `data/raw/hkust/Dataset/`.
 | `results/nb4_sensor/daily_sensor.csv` | Per day: irradiation per source over the panel slots, ratios to the NB1 fleet yield, sensor clear-sky index, dead flag, night offset, drifted flag |
 | `results/nb4_sensor/sensor_config.yaml` | Sensor settings (hash in summary.json); part of the frozen configuration part 2 |
 | `results/nb4_sensor/*.parquet` (git-ignored, rebuilt by NB4) | index15: k and G per source (sensor_raw, sensor_corr, sensor_same, cams) and minute counts at the 15-min slots; sensor1min: raw, corrected and same-month GHI, flag bits (1 missing, 2 below, 4 above, 8 dead day), clear minute, CAMS GHI |
+| `results/nb5a_dev/cv_grid.csv`, `cv_summary.csv` | LightGBM grid: pinball per setting, fold and horizon (mean rounds, share of one-round models); mean per setting |
+| `results/nb5a_dev/val_scores.csv`, `val_medians.csv`, `val_skill.csv` | Validation units only: scores per unit, model, horizon and window (nRMSE, nMAE, nMBE, CRPS, PICP80, PINAW, IS80, n); medians; LightGBM skill per unit and horizon |
+| `results/nb5a_dev/val_diag.csv`, `val_priors.csv` | Per unit, origin and horizon: training and forecast pairs, CLIPER weight, LightGBM rounds; prior and gain-member spread per unit |
+| `results/nb5a_dev/lgb_config_part2a.yaml` | LightGBM setting, features, rules, composition and the R1 reference (hash in summary.json); joins the frozen part 2 |
+| `results/nb5a_dev/val_forecasts.parquet`, `results/nb5a_variants/variant_forecasts.parquet` (git-ignored) | Index quantiles (q0.1–q0.9) per unit, origin, model, horizon and issue time |
+| `results/nb5a_variants/variant_scores.csv`, `variant_medians.csv`, `variant_wins_1h.csv` | The four LightGBM variants of D34 and the baselines, scored on the validation units |
 | `results/nb2_panel/*.parquet` (git-ignored, rebuilt by NB2) | P15_kW, y15, flags15 (bitmask: 1 night, 2 negative, 4 frozen, 8 over limit, 16 outage), nvalid15, geometry15 (zenith, elevation, azimuth, hour angle, doy, G_cs, Gt), targets15_kW (per event), k_crude5 |

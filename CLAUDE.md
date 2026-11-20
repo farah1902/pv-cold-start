@@ -160,7 +160,10 @@ Run times (local): NB0 12 s; NB1 about 250 s; NB2 about 30 s (`python tools/make
 (its Parquet panels are git-ignored and rebuilt by NB2); NB3 about 11 min (`results/nb3_index/`, Parquet indices
 git-ignored); NB4 about 2.5 min (`results/nb4_sensor/`, Parquet series git-ignored). The frozen configuration
 part 1 is `results/nb3_index/frozen_config_part1.yaml` (D31); the sensor settings are
-`results/nb4_sensor/sensor_config.yaml` (D32).
+`results/nb4_sensor/sensor_config.yaml` (D32). NB5a (`python tools/make_nb5a.py`) takes about 11 min with 8
+workers (`results/nb5a_dev/`), then `NB5a_variants` about 13 min (`results/nb5a_variants/`); use an nbconvert
+timeout of 7200 s. The LightGBM setting is `results/nb5a_dev/lgb_config_part2a.yaml` (D33, D34). Pandas
+pitfall: use `x['gt']`, never `x.gt` (a DataFrame method), for any column whose name is also a method.
 
 ## Environment notes
 

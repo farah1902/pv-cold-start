@@ -3,7 +3,7 @@
 This file describes the method exactly as the code implements it, in paper-ready form. It is written step by step as
 each notebook is built; until then the plan is in `research_guide.md` §2–§5, as corrected by `decisions.md`.
 
-**Status (19 Nov 2026):** NB1 to NB4 are implemented (audit, preprocessing, fleet index and priors, sensor and satellite index sources).
+**Status (20 Nov 2026):** NB1 to NB4 and the forecasting development NB5a are implemented (audit, preprocessing, fleet index and priors, sensor and satellite index sources, index forecasting on the validation units).
 
 **Data audit.** Timestamps are kept as recorded (Hong Kong time) and parsed with two explicit formats; any failure stops the run. AC ratings come from the inverter model names (an explicit table), DC ratings from module counts and watt-peak. The pyranometer is compared at 1-min resolution with CAMS all-sky GHI (steps with reliability below 1 excluded) on minutes with solar elevation above 10°, and with pvlib's Ineichen clear sky at the campus coordinate (altitude 124 m). A fleet proxy, the median normalised daily yield of the 10 units online before 22 May 2021, gives a third reference. Drift dates come from a one-break binary segmentation of the daily log-ratios, after removing days with a dead sensor.
 
@@ -40,3 +40,16 @@ BSRN upper limit is applied to the calibrated value. Each source gives a 15-min 
 mean of at least 10 minutes over the same Ineichen clear sky as the fleet index). Donor gains are refitted against
 each source with the fleet's gain-fit rule, without renormalisation, and the new unit's prior follows from them as
 for the fleet.
+
+**Index forecasting.** At each issue time the fleet state holds the last 16 values of the index (4 h), its 1-h and
+2-h means, its 1-h standard deviation and last change, the spread, clipped share and count of the donors, the index
+at the target slot one day earlier, and the known sun geometry at the target. Forecasts are issued in daylight when
+at least 8 unclipped donors are online, for targets on the same day up to the last slot of the inverter files. A
+quantile LightGBM model per horizon and quantile level forecasts the change of the index from its current value;
+the current value is added back, and the nine quantiles are sorted. Each model is trained on all earlier pairs from
+15 May 2021, with early stopping on the last fifth of the window followed by a refit on the whole window, and is
+refitted at the event start and 30 and 60 days later. Its setting was chosen by time-series cross-validation on a
+development index from 2021. The index quantiles are turned into 200 power members by pairing stratified index
+levels with gain draws from the prior's uncertainty set, capped at the inverter limit. The baselines (climatology,
+persistence, their optimal convex combination, nearest-neighbour analogs and a probabilistic persistence ensemble)
+go through the same composition.

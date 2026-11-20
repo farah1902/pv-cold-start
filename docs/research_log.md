@@ -142,3 +142,29 @@ One entry per work session: what was asked, what was done, the key numbers, what
   recalibration does not help a stable sensor) and F37 (the step is on 14–15 Feb; the frozen boundary of 17 Feb is
   2–3 days late but changes no event's period).
 - **Next:** NB5 (LightGBM bank, simple baselines, the hidden-unit test bed), then the development of PVSetFormer.
+
+## 2026-11-20 — NB5a: forecasting development on the validation units
+
+- **Asked:** the author approved starting NB5.
+- **Done:**
+  - Split NB5: development on the validation units now, the test run after the protocol freeze (D33).
+  - Wrote `src/pvcold/forecast.py` (state, issue rules, LightGBM bank, baselines, composition, scores) and
+    `tools/make_nb5a.py`. A smoke test of one origin ran in 56 s; fits run in parallel (8 workers).
+  - The first run failed in the scoring cell: `x.gt` returned pandas' `DataFrame.gt` method instead of the `gt`
+    column. The 15-min cross-validation had to be redone. Before re-running, the later cells were tested on a
+    two-unit stand-in that wrote to a scratch folder (deleted afterwards). Bracket access is now used for column
+    names.
+  - The second run worked, but its bank (guide §5.2, index level) only tied persistence and lost to CLIPER on the
+    validation units. Four variants were compared in `NB5a_variants`; the persistence-anchored change target won
+    clearly and was adopted (D34). Rule 1 was re-run for it.
+  - The re-run showed an exact tie (num_leaves 31 and 63 are the same model on development data), resolved by
+    sort order. Rule 1's tie-break was completed (toward the guide's values, then fewer leaves) and NB5a re-run:
+    the validation tables are identical and the setting is now 31, 0.05, 200. The variants notebook was made
+    independent of NB5a's setting (pinned) and re-run.
+  - Findings F38–F42, decisions D33 and D34.
+- **For the author:** F39 (with the anchor, LightGBM beats persistence on all 10 units and CLIPER on 8 of 10 at
+  1 h, but not at 4–6 h); F40 (intervals too narrow, the conformal layer is needed); F41 (validation histories are
+  short, which matters for R1).
+- **Next, before the freeze:** the conformal layer (D06), the inputs of the sensor and satellite rows for the same
+  learner, PVSetFormer and TimeXer development (NB5c, Colab), the foundation-model settings (NB5b); then freeze
+  part 2, the tag and the test run.

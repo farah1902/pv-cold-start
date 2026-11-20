@@ -1,0 +1,110 @@
+R1:
+  lightgbm_reference: 0.180978
+  metric: median over the 10 validation units of nRMSE at 1 h, full window, member
+    mean, common slots
+  rule: PVSetFormer is main only if lower (D25)
+baselines:
+  A0_days: 60
+  A5_k: 50
+  CLIPER: least-squares weight on training pairs, bounded to [0, 1]
+  PeEn_days: 20
+  min_history_days: 10
+builds_on_frozen_part1: cb671b7f67138e7e82eeece27241e60a37284fd124946ac72d42e9a2daa80252
+composition:
+  gain_levels: same levels, fixed permutation
+  index_levels: stratified (m - 0.5) / M
+  members: 200
+  point: member mean (RMSE), member median (MAE)
+  seed: 20261118
+  tails: linear, bounded to [0, 1.5]
+features:
+- k_lag0
+- k_lag1
+- k_lag2
+- k_lag3
+- k_lag4
+- k_lag5
+- k_lag6
+- k_lag7
+- k_lag8
+- k_lag9
+- k_lag10
+- k_lag11
+- k_lag12
+- k_lag13
+- k_lag14
+- k_lag15
+- kbar_1h
+- kbar_2h
+- sd_1h
+- dk
+- sigma
+- c
+- n
+- k_prev_day
+- Gt_f
+- cosz_f
+- sin_az_f
+- cos_az_f
+- sin_ha_f
+- cos_ha_f
+- sin_doy_f
+- cos_doy_f
+horizon_models: one per horizon and quantile (54)
+horizons:
+- 1
+- 2
+- 4
+- 8
+- 16
+- 24
+issue:
+  last_target: 17:45 slot
+  min_donors: 8
+  min_gtilde: 0.05
+  score_min_gtilde: 0.02
+lags: 16
+lgb_fixed:
+  bagging_fraction: 0.8
+  bagging_freq: 1
+  deterministic: true
+  feature_fraction: 0.8
+  force_col_wise: true
+  lambda_l2: 1.0
+  objective: quantile
+  seed: 20261118
+  verbose: -1
+lgb_params:
+  learning_rate: 0.05
+  min_data_in_leaf: 200
+  num_leaves: 31
+lgb_target: 'change from persistence: k(t + h) - k(t), k(t) added back (D34)'
+part: 2a
+quantiles:
+- 0.1
+- 0.2
+- 0.3
+- 0.4
+- 0.5
+- 0.6
+- 0.7
+- 0.8
+- 0.9
+rounds:
+  early_stopping: 100
+  max: 2000
+  refit: whole window, best rounds
+  valid_fraction_by_time: 0.2
+sensor_config: 4c47bfac9fa359fe0776925498b3d7328607c312be359b12d92f32198f49e79d
+training:
+  origins_days:
+  - 0
+  - 30
+  - 60
+  start: '2021-05-15'
+  window: expanding, targets before the origin
+tuning_budget:
+  criterion: mean pinball, 9 quantiles x 6 horizons x 3 folds
+  folds: 3
+  index: SQ Apartment25-36
+  settings: 18

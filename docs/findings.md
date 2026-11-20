@@ -343,6 +343,49 @@ repository). Paths are relative to `data/raw/hkust/Dataset/Time series dataset/`
 - **Reading:** the anomalous 13 February and the part-day of 14 February fit an intervention on the sensor, but no
   source in hand documents one; the paper describes the step, not its cause. The frozen boundary stays (D31).
 
+### F38 — On the validation units, forecasting the index, not the gain, dominates the error — *strong*
+- **Evidence:** `results/nb5a_dev/val_medians.csv` (development data, full window). Median nRMSE of the same-time index
+  with the cold-start prior (oracle A7): 0.083 to 0.095 at every horizon. LightGBM: 0.129 at 15 min, 0.181 at 1 h,
+  0.237 at 4 h.
+- **Reading:** beyond 15 min most of the error is the cloud forecast, as in the guide's pilot. The gain prior sets
+  the floor; the index forecaster sets the level.
+
+### F39 — With a persistence anchor, LightGBM beats persistence on all 10 validation units and CLIPER up to 2 h — *strong*
+- **Evidence:** `results/nb5a_dev/val_medians.csv`, `val_skill.csv` (development data; 10 units, June–October 2021).
+  - Median nRMSE at 1 h: LightGBM 0.1810, CLIPER 0.1857, A5 0.1909, persistence 0.1962, climatology 0.2422.
+  - Median skill at 1 h: vs persistence 0.078 (10 of 10 units), vs CLIPER 0.022 (8 of 10), vs A5 0.057
+    (9 of 10).
+  - At 4 h and 6 h CLIPER is better (skill −0.013 and −0.036; LightGBM better on 1 of 10 units).
+  - CRPS skill vs PeEn: 0.501 at 15 min, 0.313 at 1 h, 0.082 at 6 h; LightGBM has the lowest CRPS at every
+    horizon.
+  - Without the anchor (`results/nb5a_variants/`), the same bank gives 0.1913 at 1 h and beats CLIPER on 2 of 10
+    units.
+- **Reading:** the anchor (D34) is what makes boosting competitive when the history is short. With 1–4 months of
+  history, nothing beats CLIPER's climatology blend at 4–6 h; the test events have more history (F41). Development
+  evidence only: the test run decides.
+
+### F40 — The 80% intervals are too narrow: coverage 0.63–0.71 — *strong*
+- **Evidence:** `results/nb5a_dev/val_medians.csv`. Median PICP80 of LightGBM: 0.685 (15 min), 0.698, 0.714 (1 h),
+  0.662, 0.629, 0.649 (6 h); PeEn 0.66–0.68; climatology 0.67–0.69.
+- **Reading:** the pre-registered target (75–85%) is missed without calibration. The conformal layer of D06 must be
+  built and frozen before the tag.
+
+### F41 — The validation units have far less history than the test events — *solid*
+- **Evidence:** `results/nb2_panel/events.csv`, `results/nb5a_dev/val_diag.csv`. History from 15 May 2021 to the first
+  origin: validation units 18–61 days (median 37), at most 121 days at the third origin; scored events 143–785 days
+  (median 186). Training pairs at 1 h per validation origin: 437–4,848 (median 2,338).
+- **Reading:** R1 is decided in a data-poor regime. A data-hungry model (PVSetFormer, TimeXer) meets its hardest
+  case there, and LightGBM may gain more history on the test events than the validation shows. The rule stays as
+  approved (D25); the design of PVSetFormer should plan for short histories.
+
+### F42 — Tuning barely matters; the formulation does — *solid*
+- **Evidence:** `results/nb5a_dev/cv_summary.csv`, `cv_grid.csv`. Mean pinball of the chosen setting (31, 0.05,
+  200) 0.068554 vs the guide's starting point 0.068835 (0.4%). num_leaves 31 and 63 are the same model on the
+  development data (min_data_in_leaf 200 caps the tree size); num_leaves 15 differs by 3.8e-5. The most
+  regularised settings (min_data_in_leaf 200) lead.
+- **Reading:** the persistence anchor changes the 1-h error by 5% (F39); the whole grid changes the pinball loss by
+  0.4%. Development time is better spent on the formulation and the calibration than on the grid.
+
 ### F16 — Not every site file starts on the 1st of a month — *solid*
 - **Evidence:** among the 18 site files of the first event list, Indoor Sports Centre (2021-12-02), Zone J2
   (2021-11-13), Zone D (2022-01-20) and UG Hall9 (2023-02-11) start mid-month. The audit counts 5 of the 15-min and
