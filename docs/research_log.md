@@ -286,3 +286,5 @@ One entry per work session: what was asked, what was done, the key numbers, what
   0.11–0.16 in every volatility quartile (truth 0.04 → 0.22), and V4a's linear path carries it (F52). Option `vlin`
   (V10a, D61) added and checked; `tools/learn_window.py` (D62) written: at the third origin, the gap to LightGBM
   grows with the origin (confounded with season). Queued after CV4: the matched-history run, then V10a_5s.
+- **CV4 (21 Nov):** the D36 search on V4a's architecture chooses d 64, lr 1e-3, wd 0.5 (CV pinball 0.07059; V4a's
+  setting 10th, 0.07237). V9_5s (D60's rule) queued after V10a_5s; the matched-history run (D62) started.

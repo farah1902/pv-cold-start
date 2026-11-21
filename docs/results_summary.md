@@ -138,6 +138,7 @@ Source: `results/nb5c_r1/summary.json`, `r1_medians.csv`, `r1_units_1h.csv`, `r1
 | TimeXer (R2) 5-seed ensemble, median nRMSE at 15 min / 1 h / 6 h | 0.1301 / 0.17845 / 0.2091 | nb5c_variants/TX1_5s/scores.csv |
 | TimeXer single seeds at 1 h: range; mean (s.d.) | 0.17961–0.18208; 0.18109 (0.0011) | nb5c_variants/TX1_5s/scores.csv |
 | TimeXer search CVX: chosen d, lr, weight decay; CV pinball | 32, 3e-3, 0.01; 0.06800 | nb5c_variants/CVX/summary.json |
+| Search CV4 on V4a's architecture: chosen d, lr, weight decay; CV pinball; V4a's setting (rank of 18) | 64, 1e-3, 0.5; 0.07059; 0.07237 (10th) | nb5c_variants/CV4/summary.json, cv_summary.csv |
 | Single-seed rounds at 1 h: V5a / V5b / TX1 | 0.17950 / 0.18263 / 0.18174 | nb5c_variants/log.csv |
 | A6e (no donor tokens) vs V4a, 5-seed ensembles, median nRMSE at 15 min / 1 h / 6 h | 0.1331 / 0.17997 / 0.2069 vs 0.1329 / 0.18001 / 0.2068 | nb5c_variants/A6e_5s/scores.csv, V4a_5s/scores.csv |
 | Single-seed rounds at 1 h: V6a / V6b / V7a / V7b (V4a at the same seed 0.17949) | 0.18053 / 0.18024 / 0.17938 / 0.17927 | nb5c_variants/log.csv |

@@ -814,7 +814,11 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
   chooses V4a's setting, V4a stands, and its setting is confirmed on its own architecture. Otherwise V9 = V4a with
   the CV4 setting runs with the 5 R1 seeds and replaces V4a as the candidate if its ensemble is lower at 1 h. The
   budget stays equal across models: each final model has its setting from one search on its own architecture.
-- **Result:** pending.
+- **Result (21 Nov 2026, 85 min):** CV4 chooses d 64, lr 10⁻³, weight decay 0.5 (224,317 parameters), CV pinball
+  0.07059; then d 64 / wd 0.01 (0.07103) and d 32 / lr 3·10⁻⁴ / wd 0.5 (0.07114). V4a's setting (d 32, lr 10⁻³,
+  wd 0.5) ranks 10th of 18 (0.07237). On the development index the linear path does not lower the CV pinball:
+  CV2's best on V2 was 0.07003 (LightGBM 0.06855, TimeXer 0.06800). By the rule, V9 = V4a with the CV4 setting
+  runs with the 5 R1 seeds (V9_5s), queued after V10a_5s.
 
 ### D61 — PVSetFormer variant V10a: a volatility gate on the linear path's reversion [R1 round, Phase 5]
 - **Reason:** F52: the short-horizon drift is the linear path's reversion toward the recent mean, with the same
