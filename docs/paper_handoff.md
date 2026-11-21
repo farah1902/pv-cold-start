@@ -53,6 +53,8 @@ telemetry start instead of grid connection (F06); metadata errors (D01).
   (conformal 0.75–0.80, raw 0.63–0.71; F40, F43; PVSetFormer 0.79–0.83, F45).
 - That PVSetFormer's donor tokens or set attention improve the forecast: with 5 seeds the summary-only model
   A6e equals V4a at every horizon on validation (0.17997 vs 0.18001 at 1 h; F47). Wait for the test run.
+- That PVSetFormer learns more from additional history than LightGBM, or that its gap will change on the test
+  units with longer histories: one origin and 10 units in a matched-history diagnostic (F53).
 - Any validation number as a result of the paper: NB5a is development data (D33).
 - "19 real start events" or "two capacity additions": there are 13 scored events and one addition (D08, D27).
 - "Real start dates" for the four sensitivity events, whose starts are left-censored (D08, D27).

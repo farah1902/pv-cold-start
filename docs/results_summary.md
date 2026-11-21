@@ -150,6 +150,14 @@ Source: `results/nb5c_r1/summary.json`, `r1_medians.csv`, `r1_units_1h.csv`, `r1
 | Slope of the 15-min median change on (4-h mean − k(t)), calmest → most volatile quartile: truth; LightGBM; TimeXer; V4a | 0.039 → 0.217; 0.026 → 0.098; 0.078 → 0.138; 0.112 → 0.158 | nb5c_diag/drift/reversion.csv |
 | Same at 30 min: truth; LightGBM; V4a | 0.112 → 0.364; 0.065 → 0.177; 0.192 → 0.279 | nb5c_diag/drift/reversion.csv |
 | V4a decomposition (3 tasks, 1 seed), 15-min slope by quartile: linear path; transformer head | 0.147 → 0.197; −0.011 to −0.031 | nb5c_diag/drift/decomposition.csv |
+| V10a 5-seed ensemble vs V4a_5s, median nRMSE at 15 min / 30 min / 1 h / 2 h / 4 h / 6 h | 0.13242 / 0.15694 / 0.18011 / 0.21032 / 0.23336 / 0.20637 vs 0.13294 / 0.15661 / 0.18001 / 0.20926 / 0.23336 / 0.20679 | nb5c_variants/V10a_5s/scores.csv, V4a_5s/scores.csv |
+| V10a single seeds at 1 h: range; mean (s.d.) | 0.17908–0.18331; 0.18114 (0.0018) | nb5c_variants/V10a_5s/scores.csv |
+| V10a 15-min reversion slope, calmest → most volatile quartile; 30 min | 0.094 / 0.099 / 0.134 / 0.183; 0.152 → 0.320 | nb5c_diag/drift_V10a/reversion.csv |
+| V10a vs LightGBM, 15-min pinball in the calmest quartile; clear-spell bias at 15 min (V4a_5s) | +39.3% (+40.1%); −0.028 (−0.029) | nb5c_diag/V10a_5s, V4a_5s/summary.json, calm_by_level.csv |
+| Index-level pinball gap to LightGBM by origin (s, s + 30 d, s + 60 d) at 1 h: V4a_5s; TX1_5s | −1.6 / +2.4 / +6.5%; −1.2 / +2.0 / +3.5% | nb5c_diag/learning_window/by_origin.csv |
+| Same for V4a_5s at 15 min; 6 h | +7.5 / +8.2 / +8.1%; −6.9 / −8.9 / −2.7% | nb5c_diag/learning_window/by_origin.csv |
+| Third origin, matched history (18–61 d): gap to LightGBM at 15 min / 1 h / 6 h, PVSetFormer; TimeXer | +11.6 / +7.5 / +7.2%; +2.6 / +2.6 / +6.3% | nb5c_diag/learning_window/medians.csv |
+| Third origin, full vs matched history, own pinball at 15 min / 1 h / 6 h: LightGBM; PVSetFormer; TimeXer | −3.1 / −3.5 / +2.4%; −6.2 / −4.4 / −4.5%; −0.4 / −2.4 / −3.2% | nb5c_diag/learning_window/medians.csv |
 
 ## Conformal calibration of PVSetFormer (NB5c conformal)
 Source: `results/nb5c_conformal/summary.json`, `val_conformal_medians.csv`, `corrections.csv` (development data;

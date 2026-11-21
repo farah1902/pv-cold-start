@@ -288,3 +288,8 @@ One entry per work session: what was asked, what was done, the key numbers, what
   grows with the origin (confounded with season). Queued after CV4: the matched-history run, then V10a_5s.
 - **CV4 (21 Nov):** the D36 search on V4a's architecture chooses d 64, lr 1e-3, wd 0.5 (CV pinball 0.07059; V4a's
   setting 10th, 0.07237). V9_5s (D60's rule) queued after V10a_5s; the matched-history run (D62) started.
+- **Matched history and V10a (21 Nov):** `learn_window.py` (39 min): at the third origin, with the first origin's
+  amount of history, PVSetFormer trails LightGBM by 7.5% at 1 h; the late-origin gap is the period, not the data
+  size; the extra 60 days help PVSetFormer most (F53, D62). V10a_5s (92 min): +0.06% at 1 h against V4a_5s, not kept
+  (D61); its reversion slopes follow volatility but the calm-state gap stays. `pvsf_drift_diag.py` gains `--out` and
+  a split of the decomposition by level (`decomposition_level`). V9_5s running since 15:16.

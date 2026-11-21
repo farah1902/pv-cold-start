@@ -40,6 +40,7 @@ favours the model that had more rounds (PVSetFormer; LightGBM had 4, D34). The t
 | V8b | 2026-11-21 | V4a + donor identity and donor deviation together (V7a + V7b, D58) | 62,365 | 1 | 0.18000 | 4 of 10 | 0.1337 / 0.2060 | Rejected: within ±0.8% of V4a at every horizon; no better than V7a or V7b alone. The donor tokens still add nothing measurable (F47). 29 min |
 | V8a_5s | 2026-11-21 | V8a with the 5 R1 seeds (D37) | 60,454 | 5 | 0.18061 (ensemble; single seeds 0.17935–0.18482, mean 0.18215, s.d. 0.0025) | 4 of 10 vs LightGBM; 2 of 10 vs V4a_5s | 0.1309 / 0.2090 | Not kept: against V4a_5s, 15 min −1.6% (7 of 10 units, p 0.28) but 30 min +1.2% (1 of 10), 1 h +0.3%, 6 h +1.1%. The 15-min drift is removed but moves to 30 min (F50). 96 min |
 | CV4 | 2026-11-21 | The D36 search (18 settings × 3 folds, development index) on V4a's own architecture (D60) | 224,317 (chosen) | 1 | — | — | — | Chose d 64, lr 1e-3, wd 0.5: CV pinball 0.07059; V4a's setting 10th of 18 (0.07237). The linear path does not lower the CV pinball (CV2 on V2: 0.07003). V9 = V4a with this setting runs with 5 seeds. 85 min |
+| V10a_5s | 2026-11-21 | V4a + a volatility gate exp(u · vol + b) per horizon on the median coefficients of the linear path's change terms (D61), 5 R1 seeds | 60,199 | 5 | 0.18011 (ensemble; single seeds 0.17908–0.18331, mean 0.18114, s.d. 0.0018) | 4 of 10 vs LightGBM; 7 of 10 vs V4a_5s | 0.1324 / 0.2064 | Not kept (rule: lower at 1 h): +0.06% at 1 h, −0.4% at 15 min, +0.5% at 2 h, every p ≥ 0.27. The reversion now follows volatility (15-min slope 0.094 → 0.183), but the calm-state pinball gap (39%) and the clear-spell bias (−0.028) stay: the reversion is not the cause. 92 min |
 
 **R1 decision (21 Nov 2026, D45):** `notebooks/NB5c_R1_decision.ipynb` compared the 5-seed ensembles at 1 h:
 PVSetFormer (V4a) 0.18001, LightGBM 0.18130. PVSetFormer becomes the main index forecaster, with 6 variants tried
@@ -94,3 +95,10 @@ data's rises steeply with volatility. Refitting V4a on three tasks and splitting
 linear path carries this reversion, not the transformer. V10a (D61) lets a volatility gate scale the linear path's
 median coefficients on the change terms; it runs directly with 5 seeds after CV4 and the matched-history
 diagnostic (D62).
+
+**V10a and the matched-history check (21 Nov 2026).** V10a (D61) makes the linear path's reversion follow
+volatility as the data's does, yet its scores equal V4a's and the calm-state deficit stays: the reversion toward the
+4-h mean is not what costs the short horizons. The matched-history check (D62, F53) shows that PVSetFormer's growing
+gap at later origins comes from the period, not from the amount of history, and that the extra history helps it
+more than LightGBM. Next: where the level-dependent calm-state bias comes from (head or linear path), with V9_5s
+(the CV4 setting) running.

@@ -587,6 +587,29 @@ repository). Paths are relative to `data/raw/hkust/Dataset/Time series dataset/`
   describe the conditional mean, not the median, so they are an upper guide, not a target. Provisional: the
   decomposition covers three tasks and one seed.
 
+### F53 — The growing gap to LightGBM at later origins comes from the period, not from the amount of history; the extra history helps PVSetFormer more than LightGBM — *provisional*
+- **Evidence:** `results/nb5c_diag/learning_window/medians.csv`, `by_origin.csv`, `plan.csv`, `summary.json`
+  (`python tools/learn_window.py`, D62; development data: the 10 validation units, 5-seed ensembles, index-level
+  pinball against k(t + h), median over units of the ratio to LightGBM's at the same history).
+  - **By origin** (full-history rounds V4a_5s, TX1_5s, LGB_seeds): PVSetFormer's gap to LightGBM at the first,
+    second and third origins is +7.5 / +8.2 / +8.1% at 15 min, −1.6 / +2.4 / +6.5% at 1 h and −6.9 / −8.9 / −2.7% at
+    6 h; TimeXer's at 1 h −1.2 / +2.0 / +3.5%.
+  - **At the third origin with matched history** (18–61 days ending at the origin, the unit's history at its first
+    origin), at 15 min / 30 min / 1 h / 2 h / 4 h / 6 h: PVSetFormer +11.6 / +8.4 / +7.5 / +6.9 / +7.8 / +7.2%
+    against LightGBM (full history: +8.1 / +7.9 / +6.5 / +4.8 / +0.1 / −2.7%); TimeXer +2.6 / +1.2 / +2.6 / +1.8 /
+    +3.9 / +6.3% (full: +4.7 / +4.1 / +3.5 / +1.4 / −2.6 / −1.9%).
+  - **Full against matched history, each model against itself** (the full history adds the 60 days from 2021-05-15):
+    LightGBM −3.1 / −3.7 / −3.5 / −2.8 / +0.9 / +2.4%; PVSetFormer −6.2 / −4.3 / −4.4 / −3.5 / −4.0 / −4.5%; TimeXer
+    −0.4 / −0.3 / −2.4 / −3.7 / −4.6 / −3.2%.
+- **Reading:** with as much history as at the first origin, PVSetFormer still trails LightGBM by 7.5% at 1 h at the
+  third origin (−1.6% at the first). The gap that opens across origins therefore comes from the period forecast
+  (August to October 2021), not from the larger training set. The extra 60 days lower PVSetFormer's loss at every
+  horizon, LightGBM's only up to 2 h (it rises at 4–6 h), and TimeXer's mainly from 1 h on. The validation units have
+  0.5–4 months of history and the test units 5–26 months, so validation tests PVSetFormer where it has the least
+  data. Provisional: one origin, 10 units, and the extra history is also earlier in the season, so "more data" and
+  "more varied data" are not separated. The paper must not claim from this that PVSetFormer learns more from history
+  or that its gap will change at the test.
+
 ### F16 — Not every site file starts on the 1st of a month — *solid*
 - **Evidence:** among the 18 site files of the first event list, Indoor Sports Centre (2021-12-02), Zone J2
   (2021-11-13), Zone D (2022-01-20) and UG Hall9 (2023-02-11) start mid-month. The audit counts 5 of the 15-min and

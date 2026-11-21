@@ -836,7 +836,16 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
   below about 2% (F50). **Rule, fixed before the result:** V10a replaces V4a as the candidate if its ensemble's
   median nRMSE is lower at 1 h and no more than 1% higher at any other horizon. The drift diagnosis (F52) is
   repeated on it.
-- **Result:** pending.
+- **Result (21 Nov 2026, 92 min):** not kept; V4a stays the candidate. Ensemble median nRMSE at 15 min / 30 min /
+  1 h / 2 h / 4 h / 6 h: 0.13242 / 0.15694 / 0.18011 / 0.21032 / 0.23336 / 0.20637, against V4a_5s's 0.13294 /
+  0.15661 / 0.18001 / 0.20926 / 0.23336 / 0.20679 (−0.39, +0.21, +0.06, +0.51, 0.00, −0.20%; better at 1 h on
+  7 of 10 units; Wilcoxon p ≥ 0.27 at every horizon). Single seeds at 1 h: 0.17908–0.18331, mean 0.18114 (s.d.
+  0.0018). The gate does change the mechanism F52 found: the 15-min reversion slope, calmest → most volatile
+  quartile, becomes 0.094 / 0.099 / 0.134 / 0.183 (V4a 0.112 / 0.101 / 0.127 / 0.158; truth 0.039 → 0.217), and
+  at 30 min 0.152 → 0.320 (V4a 0.192 → 0.279; truth 0.112 → 0.364). But the calmest quartile's 15-min pinball gap
+  to LightGBM hardly moves (39.3% against 40.1%), nor does the clear-spell bias (calmest quartile, k(t) > 0.9:
+  −0.028 against −0.029). The reversion toward the 4-h mean is therefore not what keeps the calm-state median
+  off persistence (`results/nb5c_diag/drift_V10a/`, `nb5c_diag/V10a_5s/`).
 
 ### D62 — Matched-history diagnostic: is the late-origin gap data or season? [diagnostic, Phase 5]
 - **Reason:** on the validation units PVSetFormer's and TimeXer's index-level pinball gaps to LightGBM at 1 h grow
@@ -849,7 +858,10 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
   history as the unit had at its first origin, ending at the origin. History is hidden by setting the index, σ, c
   and n to missing before the window. Forecast rows must equal the full-history rounds' (asserted). Index-level
   pinball and median MAE. Development data only; no rule or setting of the protocol changes with the result.
-- **Result:** pending.
+- **Result (21 Nov 2026, 39 min, 150 fits):** the windows hold 18–61 days (all start on 2021-07-14, 60 days after
+  the fleet's start), against 78–121 days of full history; 656–2,704 training issue times. With matched history,
+  PVSetFormer is still behind LightGBM at the third origin (1 h: +7.5%), so the late-origin gap is not a matter
+  of the amount of history; the extra 60 days help PVSetFormer more than LightGBM. Numbers and reading: F53.
 
 ### D16 — pvlib 0.16.1 and ruptures 1.1.10 are installed locally and pinned [environment, Phase 0]
 - **Request or reason:** both are in the guide's software list (§5.6) and were missing locally on 18 Nov 2026.
