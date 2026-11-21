@@ -21,6 +21,9 @@ F_PATCH, F_STATIC, F_GEO, F_Q, F_FLEET = 3 * PATCH, 6, 7, 11, 2 * PATCH + 3
 KAPPA_MAX = 2.0                              # implied indices above 2 (dawn, tiny clear sky) are capped
 F_CLIM = 6                                   # V13: index at the target's time of day over the past 7 and 28 days
 CLIM_DAYS = ((7, 3), (28, 7))                # (days, least valid days); appended to q after its F_Q base columns
+F_FM = 10                                    # V15 (D70): Chronos-2's 9 index quantiles at t + h and their flag, after V13's
+FM_RUNS = C.RESULTS / "nb5e_runs"            # NB5e_colab parts: Chronos-2 (A6a's part-2d setting) at every issue time
+FM_GLOB = "chronos2_c1344_full__e*.parquet"
 F_LIN = 2 * L + 3 + F_Q                      # linear path: index lags (as change from k_t) and flags, sigma, c, n, queries
 F_VOL = 6                                    # V5: log s.d. over 1 h and 2 h, log |last change|, each with its flag
 VOL_EPS, VOL_REF = 0.01, 0.1                 # log((x + VOL_EPS) / VOL_REF): finite at zero, near 0 for typical values
@@ -45,6 +48,7 @@ DEFAULTS = {"d": 64, "heads": 4, "n_sky": 4, "n_enc": 2, "n_dec": 2, "dropout": 
             "vmed": 0,                        # V11 option: volatility gate on the whole median change (head + linear)
             "vmed_n": 0,                      # V12 option: that gate on the first n horizons only (0 = all)
             "clim": 0,                        # V13 option: 7- and 28-day index at the target's time of day -> linear path
+            "fm": 0,                          # V15 option (D70): Chronos-2's quantiles at t + h -> linear path
             "arch": "pvsf"}                   # "timexer": TimeXer with the same inputs (rule R2, timexer.py)
 
 
@@ -85,6 +89,33 @@ def event_arrays(name: str, p: dict, S: pd.DataFrame, gains: pd.Series) -> dict:
             "valid": valid.astype(np.float32), "started": started, "static": static.astype(np.float32), "S": S}
 
 
+def fm_array(name: str, S: pd.DataFrame, runs=FM_RUNS) -> tuple[np.ndarray, dict]:
+    """V15 (D70): Chronos-2's index quantiles issued at each grid time of event `name` (NB5e_colab parts), as an array
+    (T, 6, 9) on S's grid, NaN where Chronos-2 has no forecast (targets after the issue day); and the parts' sha256.
+    Chronos-2's forecast issued at t uses data up to t only, so it is an input like the lags."""
+    import hashlib
+    import json
+    parts = sorted(runs.glob(FM_GLOB))
+    assert parts, f"no Chronos-2 parts in {runs}: run NB5e_colab, then tools/fetch_drive_runs.py --set nb5e"
+    qc = [f"q{t:.1f}" for t in FC.TAUS]
+    out = np.full((len(S), len(FC.H), 9), np.nan, np.float32)
+    shas, n = {}, 0
+    for f in parts:
+        if name not in (json.loads(f.with_suffix(".json").read_text()).get("events") or []):
+            continue
+        fr = pd.read_parquet(f)
+        fr = fr[fr.event == name]
+        i = S.index.get_indexer(pd.DatetimeIndex(fr["t"]))
+        j = pd.Index(FC.H).get_indexer(fr["h"])
+        assert (i >= 0).all() and (j >= 0).all(), f"{name}: Chronos-2 rows off the grid"
+        assert not np.isfinite(out[i, j]).any(), f"{name}: Chronos-2 rows repeated"
+        out[i, j] = fr[qc].to_numpy(np.float32)
+        shas[f.name] = hashlib.sha256(f.read_bytes()).hexdigest()
+        n += len(fr)
+    assert n > 0, f"{name}: no Chronos-2 rows in {runs}"
+    return out, shas
+
+
 def samples(A: dict, pos: np.ndarray) -> dict:
     """Model inputs for the issue times at grid positions `pos` (pos >= L - 1)."""
     S = A["S"]
@@ -97,7 +128,12 @@ def samples(A: dict, pos: np.ndarray) -> dict:
     G = np.nan_to_num(S[geo_cols].to_numpy(dtype=float))
     geo = G[win[:, PATCH - 1::PATCH]]                                     # geometry at each patch's last step
     k = S["k"].to_numpy()
-    q = np.zeros((len(pos), len(FC.H), F_Q + F_CLIM))
+    q = np.zeros((len(pos), len(FC.H), F_Q + F_CLIM + F_FM))
+    if "fm" in A:                                  # V15 (read only with fm=1): Chronos-2 at t + h, issued at t
+        fq = A["fm"][pos]                                                     # (B, 6, 9), NaN where not forecast
+        ok = np.isfinite(fq).all(-1)
+        q[..., F_Q + F_CLIM:F_Q + F_CLIM + 9] = np.where(ok[..., None], fq, 0.0)
+        q[..., F_Q + F_CLIM + 9] = ok
     Gf = np.nan_to_num(S[["Gt"] + geo_cols].to_numpy(dtype=float))
     for j, h in enumerate(FC.H):
         tp = np.minimum(pos + h, len(k) - 1)
@@ -180,7 +216,7 @@ def build_model(cfg: dict):
     class PVSetFormer(nn.Module):
         def __init__(self, d, heads, n_sky, n_enc, n_dec, dropout, fleet_token, lin=0, aux=0.0, summary_only=0,
                      vol=0, vgate=0, hmask=0, hhead=0, donor_id=0, donor_rel=0, ext=0, hhead_n=0, vlin=0, vmed=0,
-                     vmed_n=0, clim=0):
+                     vmed_n=0, clim=0, fm=0):
             super().__init__()
             # A6e (rule R2): the fleet summary only, no donor tokens; needs the fleet token, excludes the donor loss
             self.summary_only = bool(summary_only)
@@ -207,9 +243,11 @@ def build_model(cfg: dict):
                 self.fleet_in = nn.Linear(F_FLEET, d)
             self.lin, self.aux = bool(lin), aux > 0          # V4 options, created after everything else
             self.clim = bool(clim)                           # V13: F_CLIM more rows of the (zero-start) linear map
-            assert not self.clim or self.lin, "clim needs the linear path"
+            self.fm = bool(fm)                               # V15: F_FM more rows (Chronos-2's quantiles and flag)
+            assert not (self.clim or self.fm) or self.lin, "clim and fm need the linear path"
             if self.lin:                                     # per-horizon linear map to the 9 head outputs, zero start
-                self.lin_w = nn.Parameter(torch.zeros(len(FC.H), F_LIN + (F_CLIM if self.clim else 0), 9))
+                n_in = F_LIN + (F_CLIM if self.clim else 0) + (F_FM if self.fm else 0)
+                self.lin_w = nn.Parameter(torch.zeros(len(FC.H), n_in, 9))
             if self.aux:                                     # donor offset from the aggregate median, per horizon
                 self.aux_in = nn.Linear(2 * d, d)
                 self.aux_out = nn.Linear(d, 1)
@@ -269,6 +307,10 @@ def build_model(cfg: dict):
                 for c0 in range(0, F_CLIM, 3):
                     c[..., c0] = (c[..., c0] - anchor[:, None]) * c[..., c0 + 2]
                 parts.append(c)
+            if self.fm:                                      # V15: Chronos-2's quantiles as changes from k_t, flag
+                f0 = F_Q + F_CLIM
+                ok = q[..., f0 + 9:f0 + 10]
+                parts += [(q[..., f0:f0 + 9] - anchor[:, None, None]) * ok, ok]
             return torch.cat(parts, -1)
 
         def vol_features(self, fleet):
@@ -361,7 +403,7 @@ def build_model(cfg: dict):
                        cfg.get("vol", 0), cfg.get("vgate", 0), cfg.get("hmask", 0), cfg.get("hhead", 0),
                        cfg.get("donor_id", 0), cfg.get("donor_rel", 0), bool(cfg.get("ext", "")),
                        cfg.get("hhead_n", 0), cfg.get("vlin", 0), cfg.get("vmed", 0), cfg.get("vmed_n", 0),
-                       cfg.get("clim", 0))
+                       cfg.get("clim", 0), cfg.get("fm", 0))
 
 
 def n_params(cfg: dict) -> int:

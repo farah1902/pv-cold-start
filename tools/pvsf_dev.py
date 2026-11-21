@@ -68,7 +68,7 @@ def main():
     fc5 = pd.read_parquet(C.RESULTS / "nb5a_dev" / "val_forecasts.parquet")
     lgb_sc = pd.read_csv(C.RESULTS / "nb5a_dev" / "val_scores.csv").query("model == 'LGB'")
 
-    arrays, tasks = {}, []
+    arrays, tasks, fm_src = {}, [], {}
     for v in VAL:
         s = E.loc[v, "start"]
         S = FC.event_series(v, idx, geo15)
@@ -76,6 +76,13 @@ def main():
             S["k_ext"] = pd.read_parquet(C.RESULTS / "nb4_sensor" / "index15.parquet").set_index("time")[
                 "k_" + cfg["ext"]].reindex(S.index).astype(float).to_numpy()
         arrays[v] = SF.event_arrays(v, p, S, gains3[gains3.event == v].set_index("donor")["gain"])
+        if cfg.get("fm"):                             # V15 (D70): Chronos-2 at every issue time, from NB5e_colab
+            arrays[v]["fm"], sh = SF.fm_array(v, S)
+            fm_src.update(sh)
+            iss, _, Mv = SF.targets(arrays[v])
+            pv = np.where(iss & Mv.any(1) & (np.arange(len(S)) >= SF.L - 1))[0]
+            cov = np.isfinite(arrays[v]["fm"][pv]).all(-1)[Mv[pv]].mean()
+            print(f"{v}: Chronos-2 present for {100 * cov:.2f}% of the defined targets", flush=True)
         for d in FC.ORIGIN_DAYS:
             o = s + pd.Timedelta(days=d)
             for seed in range(1, args.seeds + 1):
@@ -135,6 +142,8 @@ def main():
                "median_CRPS_by_h": {"ensemble": ensm["CRPS"].round(5).to_dict(), "lgb": lgbm["CRPS"].round(5).to_dict()},
                "median_PICP80_by_h": {"ensemble": ensm["PICP80"].round(4).to_dict(), "lgb": lgbm["PICP80"].round(4).to_dict()},
                "mean_best_epoch": float(meta["best_epoch"].mean()), "mean_task_runtime_s": float(meta["runtime_s"].mean())}
+    if fm_src:
+        summary["fm_sources_sha256"] = fm_src         # V15 (D70): the Chronos-2 parts read
     (C.RESULTS / "nb5c_variants").mkdir(exist_ok=True)
     out = A_.write_outputs(f"nb5c_variants/{args.name}", {"scores": sc, "tasks": meta}, summary,
                            parquet={"forecasts": fc, "calibration": cal})

@@ -1070,6 +1070,12 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
 - **Fairness:** before the paper credits PVSetFormer, TimeXer and LightGBM receive the same input (ablation rows), and
   PVSetFormer without it stays a row. At the test, Chronos-2 runs at every issue time of the test events, after the
   freeze.
+- **Checks of option `fm` (synthetic Chronos-2 part for one event, the real parts not yet run):** V12_5s reproduces
+  exactly on its shortest task (5,022 rows, max difference 0); `fm_array` places all 17,340 synthetic rows at their
+  grid time and horizon and `samples` carries them with their flag; V15 starts at V12's outputs (224,871 parameters,
+  +540); a unit weight on Chronos-2's median adds exactly (median − k(t)); the new rows get a gradient; a 2-epoch
+  run is finite and sorted. `pvsf_dev.py` loads the parts when `fm=1`, prints their coverage and records their
+  sha256 in the round's summary.
 - **Result:** pending (the author's Colab run).
 
 ### D16 — pvlib 0.16.1 and ruptures 1.1.10 are installed locally and pinned [environment, Phase 0]
