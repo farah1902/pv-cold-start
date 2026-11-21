@@ -206,3 +206,11 @@ One entry per work session: what was asked, what was done, the key numbers, what
 - **Author decision (21 Nov):** R1 compares 5-seed ensembles of both models (D37). Added `tools/r1_score.py`
   (shared scoring, reproduces V1's scores to 1e-16) and `tools/r1_lgb_seeds.py` (LightGBM refitted with 5 seeds; its
   check reproduces NB5a's forecasts to 6e-8). The LightGBM run follows the V3–V4b chain.
+- **V4a, V4b, the LightGBM bar (21 Nov):** V4a, the linear path, scored 0.1795 at 1 h, the first variant below the
+  single-seed bar. V4b, the auxiliary donor loss, scored 0.1890 and was rejected. LightGBM's 5-seed bar is 0.18130
+  (single seeds 0.18090–0.18157). The 5-seed V4a round is running.
+- **R2 models coded (21 Nov):** TimeXer (`src/pvcold/timexer.py`, written from the paper and a reading of the
+  official code's structure; that repository declares no licence, so no code was copied) and the A6e option
+  `summary_only`. D38 records them. Reading the paper showed that D23's "future-exogenous variant (Appendix H.1)" is
+  only a qualitative showcase, so D38 corrects D23. Each PVSetFormer variant now has its own decision (D39–D44).
+  Queued after V4a's 5 seeds: A6e (1 seed), TimeXer's search CVX, then its round TX1.

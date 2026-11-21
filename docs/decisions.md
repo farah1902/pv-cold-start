@@ -455,7 +455,7 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
   - **Round runner** `tools/pvsf_dev.py`. One round is every validation unit and origin, for n seeds. Scores come from
     exactly the slots NB5a scored (an assertion stops the run otherwise), so the LightGBM numbers compare directly.
     Output goes to `results/nb5c_variants/<variant>/` plus one row of `log.csv`, with every variant in
-    `docs/pvsetformer_log.md`.
+    `docs/pvsetformer_log.md` and recorded as its own decision (D39 onward), as D25 asks.
   - **Search** `tools/pvsf_cv.py`. The LightGBM budget and protocol: 18 settings × 3 folds on the same development
     index (SQ Apartment25-36, masked from 2021-10-05), the same monthly folds (July, August, September 2021) and the
     same criterion (mean pinball over quantiles, horizons and folds). Grid: d ∈ {32, 64} × lr ∈ {3·10⁻⁴, 10⁻³,
@@ -495,6 +495,77 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
     6·10⁻⁸ on SQ567, origin 2 Jun 2021; float32 storage).
   - Proposed, to confirm at the freeze: the test run treats both models the same way (5-seed ensembles).
 - **Evidence:** `tools/r1_score.py`, `tools/r1_lgb_seeds.py`.
+
+### D38 — TimeXer and the summary-only ablation A6e under rule R2; correction of D23 [models, Phase 5]
+- **Request or reason:** rule R2 (D25): TimeXer gets the same per-donor series, and PVSetFormer is also run on the
+  fleet summary only (A6e).
+- **Change:**
+  - **Sources checked on 21 Nov 2026.** The TimeXer paper (Wang et al., arXiv:2402.19072 v4, doi
+    10.48550/arXiv.2402.19072, Section 3, Eqs. 2–8) and the structure of the official code (github.com/thuml/TimeXer:
+    `models/TimeXer.py`, `layers/Embed.py`, `layers/SelfAttention_Family.py`, `run.py`, the EPF script). The
+    repository declares no licence, so `src/pvcold/timexer.py` is an original implementation from these
+    descriptions; no code was copied. The NeurIPS 2024 venue was not confirmed from these pages (re-check at citation).
+  - **Kept from TimeXer:**
+    - the endogenous series in non-overlapping patches, each embedded linearly without bias, plus a fixed sinusoidal
+      position embedding;
+    - one learnable global token, and one variate token per exogenous series (a linear map of its look-back window,
+      no position embedding); time-mark channels become further variate tokens;
+    - each block: self-attention over the patches and the global token; cross-attention with the global token as the
+      only query; a feed-forward network. Each has a residual and a LayerNorm;
+    - a flatten head.
+  - **Adapted to the common interface (guide §3.7):**
+    - endogenous: the campus index over 4 h in four 1-h patches (values and validity flags);
+    - exogenous: one token per donor with PVSetFormer's per-donor inputs (implied index, clip and validity flags over
+      4 h, static features), with offline donors masked; plus σ, c, n and the 7 sun-geometry channels;
+    - output: 9 monotone quantiles per horizon on the change from persistence (D34), starting at persistence;
+    - TimeXer's instance normalisation is replaced by the persistence anchor, and there is no output dropout.
+  - **Correction of D23.** D23 said TimeXer gets the sun geometry "through its future-exogenous variant (its Appendix
+    H.1)". Appendix H.1 ("Intuitive Showcases for Exogenous Variable Utilization") is a qualitative showcase. It
+    states that the model "has access to future predicted values of the exogenous variables", but it does not
+    describe how they enter and reports no numbers. The known future (sun geometry at t + h, the index one day
+    earlier) therefore enters TimeXer through a per-horizon linear map in the head, the same horizon information
+    every learned index forecaster gets.
+  - **Training and tuning:** setformer's code path (`arch=timexer`), with the same early stopping, refit, calibration
+    predictions, donor dropout and horizon-balanced loss. The search budget is the same, 18 settings × 3 folds
+    (`tools/pvsf_cv.py --name CVX --set arch=timexer balance=1`). Fixed as for PVSetFormer: 4 heads, 2 blocks,
+    feed-forward width 2d, dropout 0.1. The paper's d_model of 128–512 and the code's 8 heads are for data sets much
+    larger than a 2-month index history.
+  - **A6e** (`summary_only=1`): the chosen PVSetFormer variant without its donor tokens, set attention and pooling,
+    so one fleet-summary token per patch (index values, validity, σ, c, n). Same hyperparameters, no separate search:
+    it removes an input, it is not a new model.
+  - **Check:** with both options present, V4a retrained on its shortest task reproduces its forecasts exactly.
+- **Evidence:** `src/pvcold/timexer.py`, `src/pvcold/setformer.py`; results in `results/nb5c_variants/CVX/`, `TX1/`,
+  `A6e/`.
+
+### D39 — PVSetFormer variant V1: the guide's design [R1 round, Phase 5]
+- **Change:** guide §5.4 as built (D36), d 64, 2 + 2 layers. **Result** (single seed, validation): nRMSE 0.1858 at 1 h
+  against LightGBM's 0.1810; at 15 min worse than persistence (0.1422 vs 0.1338). **Verdict:** base of V2.
+  Details in `docs/pvsetformer_log.md`.
+
+### D40 — PVSetFormer variant V2: fleet-summary token and horizon-balanced loss [R1 round, Phase 5]
+- **Change:** one fleet-summary token per patch, and each horizon's pinball loss divided by persistence's error there.
+  **Result:** 0.1864 at 1 h (within single-seed noise of V1); 15 min 0.1422 → 0.1395. **Verdict:** kept, as the base
+  of the search.
+
+### D41 — PVSetFormer search CV2 on V2 [R1 round, Phase 5]
+- **Change:** 18 settings × 3 folds, the LightGBM budget (D36). **Result:** d 32, lr 10⁻³, weight decay 0.5 chosen;
+  CV pinball 0.07003 against LightGBM's 0.06855, the gap at the short horizons. Weight decay barely matters.
+  **Verdict:** the setting is used from V3 on.
+
+### D42 — PVSetFormer variant V3: V2 with the CV2 setting [R1 round, Phase 5]
+- **Result:** 0.1825 at 1 h (gap 0.8%); LightGBM better on 9 of 10 units; 15 min still worse than persistence.
+  **Verdict:** kept, as the base of V4a and V4b. (V3 ran twice with identical scores; `log.csv` marks the duplicate.)
+
+### D43 — PVSetFormer variant V4a: linear path on the index lags [R1 round, Phase 5]
+- **Change:** per horizon, a linear map from the index lags (as change from k(t)), their flags, σ, c, n and the
+  horizon query to the 9 head outputs, zero start, no weight decay. **Result:** 0.1795 at 1 h, the first variant below
+  the single-seed bar (4 of 10 units; within single-seed noise); better than LightGBM in nRMSE from 1 h to 6 h,
+  behind at 15 min. **Verdict:** kept; it goes to the 5-seed R1 round (D37).
+
+### D44 — PVSetFormer variant V4b: auxiliary donor-forecast loss [R1 round, Phase 5]
+- **Change:** V3 plus a loss on each donor's own future implied index (aggregate median plus a donor offset; one-sided
+  for clipped readings), weight 0.5. **Result:** 0.1890 at 1 h, worse than V3 at every horizon. **Verdict:**
+  rejected; not combined with V4a.
 
 ### D16 — pvlib 0.16.1 and ruptures 1.1.10 are installed locally and pinned [environment, Phase 0]
 - **Request or reason:** both are in the guide's software list (§5.6) and were missing locally on 18 Nov 2026.
