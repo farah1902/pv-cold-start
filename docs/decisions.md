@@ -988,6 +988,48 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
   decided there. The diagnoses of F46, F49 and F52 are repeated on it.
 - **Result:** pending.
 
+### D68 — PVSetFormer stays the main model; the development target is to beat all four other forecasters [author decision, Phase 5]
+- **Request:** the author, 21 Nov 2026, after F56: "i want honestly to keep my model the main one and become the best
+  of all the 4 others, so please refine tuning the model and make it the best one, i can re train it in colab or
+  what ever u want but the goal of this paper is to show that PVSetFormer is the best".
+- **Change:**
+  - PVSetFormer is the main model and the title stays the PVSetFormer title (D25). This agrees with rule R1 as it
+    stands: the candidate V9 is 1.6% below LightGBM's ensemble at 1 h on the validation units (D60); R1 is still
+    rerun on the final candidate at the freeze.
+  - **Development target:** the PVSetFormer ensemble's median nRMSE below each of LightGBM's ensemble, TimeXer's
+    ensemble, Chronos-2 and TimesFM 2.5 (the part-2d settings, D59) at every horizon, 1 h first. Scoreboard:
+    `python tools/pvsf_vs_all.py <round>` (`results/nb5c_diag/vs_all/`). Each variant keeps its own keep rule, fixed
+    before its result.
+  - Development uses development data only (the 10 validation units, the index before 2021-10-05); the test events
+    stay unseen (rule 8). Heavier rounds may run on Colab (the author's offer).
+  - Fairness (D25, guide): the four other forecasters keep their frozen settings. An input added to PVSetFormer that
+    LightGBM could also read (V13's daily statistics, D69) is reported as such, and before the paper credits a gain
+    to the architecture, an ablation gives LightGBM the same input.
+- **Starting point (V9_5s, `results/nb5c_diag/vs_all/V9_5s.csv`):** lowest of the five at no horizon. Against the
+  lowest of the other four: +2.3% at 15 min (TimeXer), +0.6% at 30 min (LightGBM), +0.5% at 1 h, +2.2% at 2 h, +6.0%
+  at 4 h and +3.0% at 6 h (Chronos-2).
+- **Consequence:** the paper says PVSetFormer is the best forecaster only where the test run shows it, under the
+  guide's 3% threshold and the paired tests (rules of truth 4 and 7); until then the must-not-claim list stands.
+
+### D69 — PVSetFormer variant V13: the index at the target's time of day over the past 7 and 28 days [R1 round, Phase 5]
+- **Reason:** F56 and D68: Chronos-2 is lower than V9 from 1 h on, most at 4 h (by 5.7%), and its 28-day context beats
+  its 7-day context. PVSetFormer reads only the last 4 h and the index one day before the target time. At 4–6 h,
+  what the index usually does at that time of day is the natural prior.
+- **Change:** option `clim` (V13). For each horizon, the mean and s.d. of the index at the target's time of day over
+  the past 7 days (at least 3 valid) and 28 days (at least 7 valid), with their flags: 6 more rows of the linear
+  path (zero start, no weight decay; means as changes from k(t)). Every value lies at least 18 h before the issue
+  time. The query tensor carries them after its 11 base columns; the decoder query and TimeXer read only the base
+  columns. V9's setting (d 64, lr 10⁻³, weight decay 0.5); 224,641 parameters (+324). LightGBM's part-2a features do
+  not include them (D68: an ablation follows if V13 is kept).
+- **Checks:** V9_5s and TX1_5s reproduce exactly on their shortest tasks (5,022 rows each, max difference 0); the
+  features equal a direct pandas computation (max difference 3·10⁻⁸) and do not change when the index from 17.75 h
+  before the issue time onwards is replaced (causal); V13 starts at V9's outputs; the new rows receive a gradient;
+  a 2-epoch run is finite and sorted.
+- **Protocol:** directly with the 5 R1 seeds (V13_5s), queued after V12_5s. **Rule, fixed before the result:** V13
+  replaces V9 as the candidate if its ensemble's median nRMSE is lower at 1 h and no more than 1% higher at any
+  other horizon. If V12 (D67) and V13 both meet their rules, V14 combines them with 5 seeds.
+- **Result:** pending.
+
 ### D16 — pvlib 0.16.1 and ruptures 1.1.10 are installed locally and pinned [environment, Phase 0]
 - **Request or reason:** both are in the guide's software list (§5.6) and were missing locally on 18 Nov 2026.
 - **Change:** `pip install pvlib==0.16.1 ruptures==1.1.10`. A dry run first showed that nothing else would be

@@ -93,7 +93,7 @@ def build_timexer(cfg: dict):
             for blk in self.blocks:
                 en = blk(en, exo, pad)
             o = self.head(self.norm(en).reshape(B, -1)).reshape(B, len(FC.H), 9)
-            o = o + torch.einsum("bhf,hfo->bho", q, self.q_w)
+            o = o + torch.einsum("bhf,hfo->bho", q[..., :F_Q], self.q_w)   # base query columns (V13's are extra)
             up = Fn.softplus(o[..., 1:5]).cumsum(-1)
             dn = Fn.softplus(o[..., 5:9]).cumsum(-1)
             qs = torch.cat([o[..., :1] - dn.flip(-1), o[..., :1], o[..., :1] + up], -1)

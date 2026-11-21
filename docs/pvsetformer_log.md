@@ -120,3 +120,9 @@ variant to move the short-horizon diagnoses: 15 min −0.9% (9 of 10 units), cal
 clear-spell bias −0.029 → −0.021. It fails its rule because the long horizons become unstable (seed s.d. at 4 h ×5, up
 to +1.6%, F55). V12 (D67) keeps the gate on 15 and 30 min only, on V9's setting; rule: lower at 15 min, at most +0.5%
 at 1 h and +1% elsewhere.
+
+**The target becomes all four others (21 Nov 2026, D68).** The author keeps PVSetFormer as the main model and sets
+the goal of making it the lowest of the five forecasters. V9 is lowest at no horizon: 2.3% behind the best other at
+15 min, 0.5% at 1 h and 6% at 4 h (Chronos-2, `tools/pvsf_vs_all.py`). The first lever is the context: PVSetFormer
+reads 4 h, Chronos-2 28 days. V13 (D69) adds the index at the target's time of day over the past 7 and 28 days to
+the linear path; it runs after V12.

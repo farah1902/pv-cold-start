@@ -19,6 +19,8 @@ L, PATCH = C.N_LAGS, 4                      # 16 past steps (4 h) in 4 patches o
 NP = L // PATCH
 F_PATCH, F_STATIC, F_GEO, F_Q, F_FLEET = 3 * PATCH, 6, 7, 11, 2 * PATCH + 3
 KAPPA_MAX = 2.0                              # implied indices above 2 (dawn, tiny clear sky) are capped
+F_CLIM = 6                                   # V13: index at the target's time of day over the past 7 and 28 days
+CLIM_DAYS = ((7, 3), (28, 7))                # (days, least valid days); appended to q after its F_Q base columns
 F_LIN = 2 * L + 3 + F_Q                      # linear path: index lags (as change from k_t) and flags, sigma, c, n, queries
 F_VOL = 6                                    # V5: log s.d. over 1 h and 2 h, log |last change|, each with its flag
 VOL_EPS, VOL_REF = 0.01, 0.1                 # log((x + VOL_EPS) / VOL_REF): finite at zero, near 0 for typical values
@@ -42,6 +44,7 @@ DEFAULTS = {"d": 64, "heads": 4, "n_sky": 4, "n_enc": 2, "n_dec": 2, "dropout": 
             "vlin": 0,                        # V10 option: volatility gate on the linear path's change terms (median)
             "vmed": 0,                        # V11 option: volatility gate on the whole median change (head + linear)
             "vmed_n": 0,                      # V12 option: that gate on the first n horizons only (0 = all)
+            "clim": 0,                        # V13 option: 7- and 28-day index at the target's time of day -> linear path
             "arch": "pvsf"}                   # "timexer": TimeXer with the same inputs (rule R2, timexer.py)
 
 
@@ -94,7 +97,7 @@ def samples(A: dict, pos: np.ndarray) -> dict:
     G = np.nan_to_num(S[geo_cols].to_numpy(dtype=float))
     geo = G[win[:, PATCH - 1::PATCH]]                                     # geometry at each patch's last step
     k = S["k"].to_numpy()
-    q = np.zeros((len(pos), len(FC.H), F_Q))
+    q = np.zeros((len(pos), len(FC.H), F_Q + F_CLIM))
     Gf = np.nan_to_num(S[["Gt"] + geo_cols].to_numpy(dtype=float))
     for j, h in enumerate(FC.H):
         tp = np.minimum(pos + h, len(k) - 1)
@@ -104,6 +107,20 @@ def samples(A: dict, pos: np.ndarray) -> dict:
         q[:, j, 8] = np.nan_to_num(kp)
         q[:, j, 9] = np.isfinite(kp)
         q[:, j, 10] = h / 24.0
+        # V13 (read only with clim=1): mean and s.d. of the index at the target's time of day over the past nd days,
+        # and whether at least `need` of them are valid. Every value is at least 18 h before the issue time.
+        c0 = F_Q
+        for nd, need in CLIM_DAYS:
+            lag = (pos + h)[:, None] - FC.SPD * np.arange(1, nd + 1)[None, :]
+            vals = np.where(lag >= 0, k[np.maximum(lag, 0)], np.nan)
+            ok_v = np.isfinite(vals)
+            cnt = ok_v.sum(1)
+            v0 = np.where(ok_v, vals, 0.0)
+            mu = v0.sum(1) / np.maximum(cnt, 1)
+            sd = np.sqrt(np.maximum((np.where(ok_v, (vals - mu[:, None]) ** 2, 0.0)).sum(1) / np.maximum(cnt, 1), 0.0))
+            ok = cnt >= need
+            q[:, j, c0], q[:, j, c0 + 1], q[:, j, c0 + 2] = np.where(ok, mu, 0.0), np.where(ok, sd, 0.0), ok
+            c0 += 3
     pe = win[:, PATCH - 1::PATCH]                                         # patch ends
     kw = k[win]
     fleet = np.concatenate([np.nan_to_num(kw).reshape(len(pos), NP, PATCH),
@@ -163,7 +180,7 @@ def build_model(cfg: dict):
     class PVSetFormer(nn.Module):
         def __init__(self, d, heads, n_sky, n_enc, n_dec, dropout, fleet_token, lin=0, aux=0.0, summary_only=0,
                      vol=0, vgate=0, hmask=0, hhead=0, donor_id=0, donor_rel=0, ext=0, hhead_n=0, vlin=0, vmed=0,
-                     vmed_n=0):
+                     vmed_n=0, clim=0):
             super().__init__()
             # A6e (rule R2): the fleet summary only, no donor tokens; needs the fleet token, excludes the donor loss
             self.summary_only = bool(summary_only)
@@ -189,8 +206,10 @@ def build_model(cfg: dict):
             if self.fleet:                                   # created last: V1's initialisation is unchanged
                 self.fleet_in = nn.Linear(F_FLEET, d)
             self.lin, self.aux = bool(lin), aux > 0          # V4 options, created after everything else
+            self.clim = bool(clim)                           # V13: F_CLIM more rows of the (zero-start) linear map
+            assert not self.clim or self.lin, "clim needs the linear path"
             if self.lin:                                     # per-horizon linear map to the 9 head outputs, zero start
-                self.lin_w = nn.Parameter(torch.zeros(len(FC.H), F_LIN, 9))
+                self.lin_w = nn.Parameter(torch.zeros(len(FC.H), F_LIN + (F_CLIM if self.clim else 0), 9))
             if self.aux:                                     # donor offset from the aggregate median, per horizon
                 self.aux_in = nn.Linear(2 * d, d)
                 self.aux_out = nn.Linear(d, 1)
@@ -242,9 +261,15 @@ def build_model(cfg: dict):
             B = q.shape[0]
             kl, kv = fleet[:, :, :PATCH].reshape(B, L), fleet[:, :, PATCH:2 * PATCH].reshape(B, L)
             z = torch.cat([(kl - anchor[:, None]) * kv, kv, fleet[:, -1, 2 * PATCH:F_FLEET]], -1)
-            qq = q.clone()
+            qq = q[..., :F_Q].clone()
             qq[..., 8] = (q[..., 8] - anchor[:, None]) * q[..., 9]
-            return torch.cat([z[:, None].expand(B, q.shape[1], -1), qq], -1)
+            parts = [z[:, None].expand(B, q.shape[1], -1), qq]
+            if self.clim:                                    # V13: means as changes from k_t, s.d., flags
+                c = q[..., F_Q:F_Q + F_CLIM].clone()
+                for c0 in range(0, F_CLIM, 3):
+                    c[..., c0] = (c[..., c0] - anchor[:, None]) * c[..., c0 + 2]
+                parts.append(c)
+            return torch.cat(parts, -1)
 
         def vol_features(self, fleet):
             """(B, F_VOL): recent volatility of the index from its own lags, the scale LightGBM reads from sd_1h and dk.
@@ -292,7 +317,7 @@ def build_model(cfg: dict):
                     s = torch.cat([s, ftok[:, :, None]], dim=2)
             s = s.reshape(B, NP * self.m, -1) + ge.repeat_interleave(self.m, dim=1)
             enc = self.temporal(s, mask=self.causal)
-            dec = self.norm(self.decoder(self.q_in(q), enc,
+            dec = self.norm(self.decoder(self.q_in(q[..., :F_Q]), enc,
                                          tgt_mask=self.hmask_buf if self.hmask else None))  # (B, 6, d)
             o = self.head(dec)                                                        # (B, 6, 9)
             if self.hhead:                                   # zero rows for the horizons without a deviation
@@ -335,7 +360,8 @@ def build_model(cfg: dict):
                        cfg.get("fleet_token", 0), cfg.get("lin", 0), cfg.get("aux", 0.0), cfg.get("summary_only", 0),
                        cfg.get("vol", 0), cfg.get("vgate", 0), cfg.get("hmask", 0), cfg.get("hhead", 0),
                        cfg.get("donor_id", 0), cfg.get("donor_rel", 0), bool(cfg.get("ext", "")),
-                       cfg.get("hhead_n", 0), cfg.get("vlin", 0), cfg.get("vmed", 0), cfg.get("vmed_n", 0))
+                       cfg.get("hhead_n", 0), cfg.get("vlin", 0), cfg.get("vmed", 0), cfg.get("vmed_n", 0),
+                       cfg.get("clim", 0))
 
 
 def n_params(cfg: dict) -> int:

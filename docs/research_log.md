@@ -314,3 +314,7 @@ One entry per work session: what was asked, what was done, the key numbers, what
   `NB5b_foundation` (PVSetFormer reference now V9_5s) chose Chronos-2 with 28 days and covariates (0.1776 at 1 h)
   and TimesFM 2.5 with 28 days, no XReg (0.1790). Chronos-2 is level with V9, LightGBM and TimeXer at 1 h (−0.5 to
   −2.1%) and 2–8% lower from 2 h (F56, provisional). Question for the author on the main model and title.
+- **Author's decision (21 Nov, D68):** PVSetFormer stays the main model; the target is to beat LightGBM, TimeXer,
+  Chronos-2 and TimesFM at every horizon (development data). New scoreboard `tools/pvsf_vs_all.py`: V9 is lowest at
+  no horizon (+0.5% at 1 h, +6.0% at 4 h against Chronos-2). V13 (D69, option `clim`: 7- and 28-day index at the
+  target's time of day; checks passed, V9 and TX1 reproduce exactly) queued after V12_5s.

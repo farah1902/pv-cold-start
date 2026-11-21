@@ -114,6 +114,10 @@ something, record it and follow it, even if you would have chosen otherwise.
 - **LightGBM at the test (D64, 21 Nov 2026):** its 5-seed ensemble (`LGB_seeds`), with its conformal layer rebuilt
   from that ensemble (`tools/lgb_seeds_cal.py`, then `NB5c_conformal_lgb`).
 - **TabPFN-TS (D65, 21 Nov 2026):** wait until the author has accepted the TabPFN licence; local inference only.
+- **PVSetFormer is the main model (D68, 21 Nov 2026):** "the goal of this paper is to show that PVSetFormer is the
+  best". Develop it until it is the lowest of the five forecasters (LightGBM, TimeXer, Chronos-2, TimesFM 2.5) at
+  every horizon on the validation units (`tools/pvsf_vs_all.py`); Colab may be used. Development data only; the
+  paper claims "best" only where the test run shows it.
 - **Guide revisions on request:** when the author asks the agent to change the guide, apply the edits by an
   all-or-nothing script, keep the previous version in `docs/history/`, and log a decision (as in D25).
 - **Data are never committed** (about 1.7 GB). `data/MANIFEST_sha256.csv` is committed instead (D15).

@@ -72,8 +72,7 @@ telemetry start instead of grid connection (F06); metadata errors (D01).
 ## 8. What is still missing
 Before the freeze:
 - TabPFN-TS (A6c) waits for the author's licence (D65);
-- the author's view on F56 (a zero-shot foundation model level with or better than the trained forecasters)
-  for the main model and the title (D25, D50);
+- PVSetFormer rounds toward the target of D68 (lowest of the five forecasters on validation; V13_5s queued, D69);
 - PVSetFormer design rounds until the freeze (D50; candidate V9_5s since D60's result; V11a not kept; V12_5s
   queued, D67); at the freeze, R1 (`make_nb5c.py --final`) and PVSetFormer's conformal layer are rerun on the final
   candidate;
