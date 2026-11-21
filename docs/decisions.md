@@ -625,6 +625,20 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
   parameters (+42).
 - **Result:** pending (queued after V5a; same seed).
 
+### D49 — TimeXer's setting (search CVX) and its validation round TX1 [models, Phase 5]
+- **Request or reason:** rule R2 (D25, D38). TimeXer gets the same search budget as LightGBM and PVSetFormer.
+- **Change:**
+  - Search CVX (`tools/pvsf_cv.py --name CVX --set arch=timexer balance=1`): the same 18 settings × 3 folds on the
+    development index. It chose d 32, lr 3·10⁻³, weight decay 0.01, with CV pinball 0.06800, against LightGBM's
+    0.06855 and PVSetFormer's CV2 0.07003 (which was searched on V2, before the linear path). The chosen learning
+    rate is the largest in the shared grid; the grid is the fixed budget, so it is not extended. Runtime 17 min.
+  - Round TX1, 1 seed (the seed of V4a's single-seed round): 0.18174 at 1 h (LightGBM's single seed 0.18098, V4a
+    0.17949). Against V4a with the same seed it is better at 15 min (nRMSE −1.5%, CRPS −4.4%) and 2 h (−0.9%), level
+    at 30 min, and worse at 1, 4 and 6 h (+1.3%, +1.7%, +2.4%). 37,224 parameters; 4.5 min.
+  - TimeXer is run with the 5 R1 seeds (TX1_5s, queued after V5b), so that all three learned index forecasters are
+    compared as 5-seed ensembles (D37).
+- **Evidence:** `results/nb5c_variants/CVX/`, `results/nb5c_variants/TX1/`.
+
 ### D16 — pvlib 0.16.1 and ruptures 1.1.10 are installed locally and pinned [environment, Phase 0]
 - **Request or reason:** both are in the guide's software list (§5.6) and were missing locally on 18 Nov 2026.
 - **Change:** `pip install pvlib==0.16.1 ruptures==1.1.10`. A dry run first showed that nothing else would be

@@ -42,6 +42,8 @@ pooling: one fleet-summary token per patch. Same setting, no search.
 | Run | Date | What | Parameters | Seeds | nRMSE 1 h | Units won at 1 h | nRMSE 15 min / 6 h | Reading |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | A6e | 2026-11-21 | V4a with `summary_only=1` | 46,621 | 1 | 0.18056 | 3 of 10 vs LightGBM (0.18098); 3 of 10 vs V4a at the same seed | 0.1356 / 0.2108 | Against V4a at the same seed (20261119): worse at 5 of 6 horizons, by 0.4–1.7% in nRMSE (1 h +0.6%, 15 min +1.3%, 6 h +1.7%), level at 2 h; CRPS worse at every horizon (+0.3% to +2.5%). The donor tokens help a little, but at 1 h the gap is within one seed's spread (s.d. 0.0014). A 5-seed run (A6e_5s) is queued. 5 min |
+| CVX | 2026-11-21 | TimeXer search (D38), the shared 18 settings × 3 folds | 37,224 (chosen) | 1 | — | — | — | Chose d 32, lr 3e-3 (the grid's largest), weight decay 0.01: CV pinball 0.06800, below LightGBM's 0.06855 and PVSetFormer's CV2 0.07003 (searched on V2). 17 min |
+| TX1 | 2026-11-21 | TimeXer with the CVX setting (D49) | 37,224 | 1 | 0.18174 | 3 of 10 vs LightGBM (0.18098); 4 of 10 vs V4a at the same seed | 0.1318 / 0.2123 | Against V4a at the same seed: better at 15 min (nRMSE −1.5%, CRPS −4.4%) and 2 h, worse at 1, 4 and 6 h (+1.3% to +2.4%). Close to both learned baselines; 5 seeds queued (TX1_5s). 4.5 min |
 
 **Design round V5 (21 Nov 2026).** The volatility diagnosis F46 (`tools/pvsf_vol_diag.py`) locates the 15-min
 deficit: PVSetFormer's interval width hardly reacts to recent volatility. V5a (D47) adds the index's own volatility

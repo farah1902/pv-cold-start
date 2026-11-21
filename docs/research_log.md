@@ -230,3 +230,7 @@ One entry per work session: what was asked, what was done, the key numbers, what
   The calm quartile carries most of the 15-min deficit (F46, `tools/pvsf_vol_diag.py`). New options `vol` and
   `vgate` in `setformer.py` (zero start; V4a reproduces exactly; the features equal LightGBM's `sd_1h` and |`dk`|
   to 2e-7). V5a and V5b (D47, D48) are queued after A6e_5s.
+- **TimeXer (21 Nov):** its search CVX chose d 32, lr 3e-3, weight decay 0.01 (CV pinball 0.06800, below
+  LightGBM's 0.06855); its round TX1 scores 0.18174 at 1 h with one seed, better than V4a at 15 min and 2 h, worse at
+  1, 4 and 6 h (D49). TX1_5s (5 seeds) is queued after V5b, so that the three learned forecasters compare as
+  ensembles.
