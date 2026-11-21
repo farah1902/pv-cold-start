@@ -60,7 +60,7 @@ def build_timexer(cfg: dict):
     class TimeXer(nn.Module):
         def __init__(self, d, heads, n_enc, dropout):
             super().__init__()
-            self.lin = False                                         # flags read by setformer._train
+            self.lin = False                                         # PVSetFormer's option flag, off here
             self.patch_in = nn.Linear(2 * PATCH, d, bias=False)      # patch values and validity flags
             pe = torch.zeros(NP, d)
             pos = torch.arange(NP, dtype=torch.float32)[:, None]
@@ -99,7 +99,7 @@ def build_timexer(cfg: dict):
             qs = torch.cat([o[..., :1] - dn.flip(-1), o[..., :1], o[..., :1] + up], -1)
             return anchor[:, None, None] + qs                                              # change from persistence
 
-    for k in ("lin", "aux", "summary_only"):
+    for k in ("lin", "aux", "summary_only", "vol", "vgate"):
         assert not cfg.get(k, 0), f"option {k} is PVSetFormer's, not TimeXer's"
     assert F_FLEET == 2 * PATCH + 3
     return TimeXer(cfg["d"], cfg["heads"], cfg["n_enc"], cfg["dropout"])

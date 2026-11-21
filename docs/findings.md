@@ -441,6 +441,25 @@ repository). Paths are relative to `data/raw/hkust/Dataset/Time series dataset/`
   corrections are larger (80% at 1 h: 0.063 vs 0.047), because its calibration predictions cover the donors less
   well (0.684 vs 0.714 at 1 h). The coverage target (75–85%) is met on development data; the test run decides.
 
+### F46 — PVSetFormer's intervals barely widen with recent volatility; LightGBM's do — *strong*
+- **Evidence:** `results/nb5c_diag/V4a_5s/vol_regimes.csv`, `summary.json` (`python tools/pvsf_vol_diag.py --pvsf
+  V4a_5s`; development data: the validation units' forecast issue times, both models as 5-seed ensembles, index
+  level before composition with the gain).
+  - The issue times are split into quartiles of the index's s.d. over the last hour, known at the issue time (the
+    LightGBM feature `sd_1h`).
+  - At 15 min, the mean width of PVSetFormer's 10–90% interval goes from 0.323 (calmest quartile) to 0.366 (most
+    volatile). LightGBM's goes from 0.175 to 0.410. Coverage of that interval: PVSetFormer 0.947 → 0.676, LightGBM
+    0.847 → 0.755.
+  - In the calmest quartile at 15 min, PVSetFormer's pinball loss is 40% higher than LightGBM's (0.0243 vs 0.0173),
+    and its median is also worse (MAE 0.0529 vs 0.0400). In the other quartiles the gap is 3.8–6.3%. Over all issue
+    times: +8.4% at 15 min, +2.3% at 1 h, −6.4% at 6 h.
+  - At 1 h the same pattern is weaker: widths 0.462 → 0.522 against 0.367 → 0.587, a calm-quartile gap of 7.3%. At
+    6 h PVSetFormer is better in every quartile (−3.7% to −8.9%).
+- **Reading:** LightGBM reads the recent volatility directly (`sd_1h`, `dk`) and scales its quantiles with it.
+  PVSetFormer's quantile spread comes from softplus increments whose inputs are linear in the lags, so it cannot form
+  a scale such as |Δk| or a s.d. Its short-horizon deficit (F44) is a heteroscedasticity deficit, concentrated in
+  calm conditions. This motivates V5 (D47, D48).
+
 ### F16 — Not every site file starts on the 1st of a month — *solid*
 - **Evidence:** among the 18 site files of the first event list, Indoor Sports Centre (2021-12-02), Zone J2
   (2021-11-13), Zone D (2022-01-20) and UG Hall9 (2023-02-11) start mid-month. The audit counts 5 of the 15-min and

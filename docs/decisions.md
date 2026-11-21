@@ -607,6 +607,24 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
     rebuilt from that ensemble's calibration predictions, which `tools/r1_lgb_seeds.py` does not yet save.
 - **Evidence:** `results/nb5c_conformal/`.
 
+### D47 — PVSetFormer variant V5a: volatility features of the index [R1 round, Phase 5]
+- **Change:** V4a plus 6 features computed inside the model from the index lags. They are the log s.d. over the last
+  1 h (at least 3 valid lags) and over the last 2 h (at least 4), and log |k(t) − k(t − 1)|, each as
+  log((x + 0.01)/0.1) times its validity flag, followed by the flag. A per-horizon linear map (zero start, no weight
+  decay) adds them to the 9 head outputs. Near the start the spread logits sit in softplus's exponential tail, so a
+  weight β on a log s.d. makes the spread scale roughly as s.d.^β, which is what LightGBM does (F46). 60,481
+  parameters (+324).
+- **Checks:** the features equal `forecast.state`'s `sd_1h` and |`dk`| (maximum difference 2·10⁻⁷, same validity
+  flags). V5a's initial outputs equal V4a's exactly, and V4a still reproduces exactly with the option present.
+- **Result:** pending (queued after A6e_5s; 1 seed, the seed of V4a's single-seed round, so paired with V4a's 0.17949).
+
+### D48 — PVSetFormer variant V5b: volatility gate on the median shift [R1 round, Phase 5]
+- **Change:** V5a plus a per-horizon gate 1 + tanh(w · vol + b), with w and b zero at the start (gate 1), on the
+  transformer head's median output only (not on the spread logits). The model can then shrink the transformer's
+  median shift toward persistence in calm states, where its median is worse than LightGBM's (F46). 60,523
+  parameters (+42).
+- **Result:** pending (queued after V5a; same seed).
+
 ### D16 — pvlib 0.16.1 and ruptures 1.1.10 are installed locally and pinned [environment, Phase 0]
 - **Request or reason:** both are in the guide's software list (§5.6) and were missing locally on 18 Nov 2026.
 - **Change:** `pip install pvlib==0.16.1 ruptures==1.1.10`. A dry run first showed that nothing else would be

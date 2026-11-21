@@ -20,12 +20,17 @@ NP = L // PATCH
 F_PATCH, F_STATIC, F_GEO, F_Q, F_FLEET = 3 * PATCH, 6, 7, 11, 2 * PATCH + 3
 KAPPA_MAX = 2.0                              # implied indices above 2 (dawn, tiny clear sky) are capped
 F_LIN = 2 * L + 3 + F_Q                      # linear path: index lags (as change from k_t) and flags, sigma, c, n, queries
+F_VOL = 6                                    # V5: log s.d. over 1 h and 2 h, log |last change|, each with its flag
+VOL_EPS, VOL_REF = 0.01, 0.1                 # log((x + VOL_EPS) / VOL_REF): finite at zero, near 0 for typical values
+NO_DECAY = ("lin_w", "vol_w", "vg_w", "vg_b")  # linear and volatility paths: no weight decay
 DEFAULTS = {"d": 64, "heads": 4, "n_sky": 4, "n_enc": 2, "n_dec": 2, "dropout": 0.1, "lr": 1e-3, "weight_decay": 1e-2,
             "batch": 256, "max_epochs": 100, "patience": 15, "donor_dropout": 0.1,
             "fleet_token": 0, "balance": 0,   # V2 options (D36): fleet-summary token per patch; horizon-balanced loss
             "lin": 0,                         # V4 option: per-horizon linear path on the index lags (no weight decay)
             "aux": 0.0,                       # V4 option: weight of the auxiliary donor-forecast loss (censored)
             "summary_only": 0,                # A6e (rule R2): fleet-summary tokens only, no donor tokens
+            "vol": 0,                         # V5 option: volatility features of the index -> the 9 head outputs
+            "vgate": 0,                       # V5 option: volatility gate on the transformer's median shift
             "arch": "pvsf"}                   # "timexer": TimeXer with the same inputs (rule R2, timexer.py)
 
 
@@ -137,7 +142,8 @@ def build_model(cfg: dict):
     import torch.nn.functional as Fn
 
     class PVSetFormer(nn.Module):
-        def __init__(self, d, heads, n_sky, n_enc, n_dec, dropout, fleet_token, lin=0, aux=0.0, summary_only=0):
+        def __init__(self, d, heads, n_sky, n_enc, n_dec, dropout, fleet_token, lin=0, aux=0.0, summary_only=0,
+                     vol=0, vgate=0):
             super().__init__()
             # A6e (rule R2): the fleet summary only, no donor tokens; needs the fleet token, excludes the donor loss
             self.summary_only = bool(summary_only)
@@ -168,6 +174,12 @@ def build_model(cfg: dict):
             if self.aux:                                     # donor offset from the aggregate median, per horizon
                 self.aux_in = nn.Linear(2 * d, d)
                 self.aux_out = nn.Linear(d, 1)
+            self.vol, self.vgate = bool(vol), bool(vgate)    # V5 options, created last; zero start = V4a's start
+            if self.vol:                                     # per-horizon map of the volatility features
+                self.vol_w = nn.Parameter(torch.zeros(len(FC.H), F_VOL, 9))
+            if self.vgate:                                   # per-horizon gate 1 + tanh(w . vol + b), 1 at the start
+                self.vg_w = nn.Parameter(torch.zeros(len(FC.H), F_VOL))
+                self.vg_b = nn.Parameter(torch.zeros(len(FC.H)))
             causal = torch.triu(torch.ones(NP, NP, dtype=torch.bool), 1)
             self.register_buffer("causal", causal.repeat_interleave(self.m, 0).repeat_interleave(self.m, 1))
 
@@ -180,6 +192,24 @@ def build_model(cfg: dict):
             qq = q.clone()
             qq[..., 8] = (q[..., 8] - anchor[:, None]) * q[..., 9]
             return torch.cat([z[:, None].expand(B, q.shape[1], -1), qq], -1)
+
+        def vol_features(self, fleet):
+            """(B, F_VOL): recent volatility of the index from its own lags, the scale LightGBM reads from sd_1h and dk.
+            Log s.d. over the last 1 h (at least 3 valid lags) and 2 h (at least 4), and log |k_t - k_(t-1)|, each as
+            log((x + VOL_EPS) / VOL_REF) times its validity flag, followed by the flag. Inputs only: no gradient."""
+            B = fleet.shape[0]
+            kl, kv = fleet[:, :, :PATCH].reshape(B, L), fleet[:, :, PATCH:2 * PATCH].reshape(B, L)   # oldest -> newest
+            out = []
+            for n, need in ((PATCH, 3), (2 * PATCH, 4)):
+                xs, vs = kl[:, -n:], kv[:, -n:]
+                c = vs.sum(1)
+                mu = (xs * vs).sum(1) / c.clamp(min=1)
+                sd = (((xs - mu[:, None]) ** 2 * vs).sum(1) / (c - 1).clamp(min=1)).clamp(min=0).sqrt()
+                ok = (c >= need).float()
+                out += [torch.log((sd + VOL_EPS) / VOL_REF) * ok, ok]
+            ok = kv[:, -1] * kv[:, -2]
+            out += [torch.log(((kl[:, -1] - kl[:, -2]).abs() + VOL_EPS) / VOL_REF) * ok, ok]
+            return torch.stack(out, -1)
 
         def forward(self, x, static, online, geo, q, anchor, fleet, return_aux=False):
             B, n = x.shape[0], x.shape[1]
@@ -200,6 +230,13 @@ def build_model(cfg: dict):
             enc = self.temporal(s, mask=self.causal)
             dec = self.norm(self.decoder(self.q_in(q), enc))                          # (B, 6, d)
             o = self.head(dec)                                                        # (B, 6, 9)
+            if self.vol or self.vgate:
+                vf = self.vol_features(fleet)                                         # (B, F_VOL)
+            if self.vgate:                                   # scales the transformer's median shift only
+                g = 1 + torch.tanh(torch.einsum("bf,hf->bh", vf, self.vg_w) + self.vg_b)
+                o = torch.cat([o[..., :1] * g[..., None], o[..., 1:]], -1)
+            if self.vol:                                     # in the softplus tail: spread ~ volatility ** w
+                o = o + torch.einsum("bf,hfo->bho", vf, self.vol_w)
             if self.lin:
                 o = o + torch.einsum("bhf,hfo->bho", self.lin_features(q, anchor, fleet), self.lin_w)
             up = Fn.softplus(o[..., 1:5]).cumsum(-1)
@@ -214,7 +251,8 @@ def build_model(cfg: dict):
             return out, out[:, None, :, 4] + off                                     # donor medians
 
     return PVSetFormer(cfg["d"], cfg["heads"], cfg["n_sky"], cfg["n_enc"], cfg["n_dec"], cfg["dropout"],
-                       cfg.get("fleet_token", 0), cfg.get("lin", 0), cfg.get("aux", 0.0), cfg.get("summary_only", 0))
+                       cfg.get("fleet_token", 0), cfg.get("lin", 0), cfg.get("aux", 0.0), cfg.get("summary_only", 0),
+                       cfg.get("vol", 0), cfg.get("vgate", 0))
 
 
 def n_params(cfg: dict) -> int:
@@ -269,9 +307,10 @@ def _train(Btr: dict, ytr, mtr, cfg, seed, epochs, Bva=None, yva=None, mva=None,
     torch.manual_seed(seed)
     rng = np.random.default_rng(seed)
     model = build_model(cfg)
-    if model.lin:                                        # the linear path is not shrunk (it is the persistence fix)
-        rest = [p for n_, p in model.named_parameters() if n_ != "lin_w"]
-        opt = torch.optim.AdamW([{"params": rest}, {"params": [model.lin_w], "weight_decay": 0.0}],
+    nowd = [p for n_, p in model.named_parameters() if n_ in NO_DECAY]
+    if nowd:                                             # linear and volatility paths are not shrunk
+        rest = [p for n_, p in model.named_parameters() if n_ not in NO_DECAY]
+        opt = torch.optim.AdamW([{"params": rest}, {"params": nowd, "weight_decay": 0.0}],
                                 lr=cfg["lr"], weight_decay=cfg["weight_decay"])
     else:
         opt = torch.optim.AdamW(model.parameters(), lr=cfg["lr"], weight_decay=cfg["weight_decay"])

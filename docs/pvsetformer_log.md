@@ -42,3 +42,8 @@ pooling: one fleet-summary token per patch. Same setting, no search.
 | Run | Date | What | Parameters | Seeds | nRMSE 1 h | Units won at 1 h | nRMSE 15 min / 6 h | Reading |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | A6e | 2026-11-21 | V4a with `summary_only=1` | 46,621 | 1 | 0.18056 | 3 of 10 vs LightGBM (0.18098); 3 of 10 vs V4a at the same seed | 0.1356 / 0.2108 | Against V4a at the same seed (20261119): worse at 5 of 6 horizons, by 0.4–1.7% in nRMSE (1 h +0.6%, 15 min +1.3%, 6 h +1.7%), level at 2 h; CRPS worse at every horizon (+0.3% to +2.5%). The donor tokens help a little, but at 1 h the gap is within one seed's spread (s.d. 0.0014). A 5-seed run (A6e_5s) is queued. 5 min |
+
+**Design round V5 (21 Nov 2026).** The volatility diagnosis F46 (`tools/pvsf_vol_diag.py`) locates the 15-min
+deficit: PVSetFormer's interval width hardly reacts to recent volatility. V5a (D47) adds the index's own volatility
+features to the head; V5b (D48) also gates the transformer's median shift by them. Both start exactly at V4a and
+are queued (1 seed each, paired with V4a's single-seed round).

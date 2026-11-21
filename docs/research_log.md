@@ -225,3 +225,8 @@ One entry per work session: what was asked, what was done, the key numbers, what
 - **A6e (21 Nov):** PVSetFormer without donor tokens scores 0.18056 at 1 h (single seed), against 0.17949 for V4a
   with the same seed. It is worse at 5 of 6 horizons, but by less than one seed's spread at 1 h. `A6e_5s` (5 seeds)
   is queued after TimeXer's search (CVX, running) and round (TX1), so that it compares with V4a_5s as ensembles.
+- **Volatility diagnosis and V5 (21 Nov):** at the index level PVSetFormer's 10–90% width at 15 min goes from 0.32
+  to 0.37 between the calmest and the most volatile quartile of the last hour's s.d., LightGBM's from 0.18 to 0.41.
+  The calm quartile carries most of the 15-min deficit (F46, `tools/pvsf_vol_diag.py`). New options `vol` and
+  `vgate` in `setformer.py` (zero start; V4a reproduces exactly; the features equal LightGBM's `sd_1h` and |`dk`|
+  to 2e-7). V5a and V5b (D47, D48) are queued after A6e_5s.
