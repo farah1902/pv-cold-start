@@ -237,6 +237,49 @@ def run_origin(S: pd.DataFrame, origin: pd.Timestamp, end: pd.Timestamp, params:
     return (pd.concat(rows, ignore_index=True) if rows else pd.DataFrame()), diag
 
 
+def run_origin_source(S_src: pd.DataFrame, S_fleet: pd.DataFrame, origin: pd.Timestamp, end: pd.Timestamp,
+                      params: dict, models=("LGB", "A1", "A7")) -> tuple[pd.DataFrame, dict]:
+    """Rows with an external index in place of the fleet index (guide §4.2, D51): A4 and A4b are the LightGBM bank on
+    the raw and the corrected pyranometer index; A9 is the persisted satellite index (A1 on it) and A9n its same-time
+    value (A7, oracle). Features and targets come from the source alone: the fleet fields sigma, c and n are left
+    empty, so no fleet information enters a forecast. The issue and target rules are the fleet's, so these rows are
+    scored on the fleet models' slots; the source's own index must also exist at the issue time."""
+    st = state(S_src)
+    st[["sigma", "c", "n"]] = np.nan
+    st_f = state(S_fleet)
+    k = S_src["k"].to_numpy()
+    t = S_src.index
+    rows, diag = [], {}
+    for h in H:
+        D = design(S_src, st, h)
+        ok = design(S_fleet, st_f, h)["ok"] & np.isfinite(k)
+        X = D["X"].to_numpy(dtype=float)
+        tgt_time = t + pd.Timedelta(minutes=15 * h)
+        tr = ok & np.isfinite(D["y"]) & (t >= TRAIN_START) & (tgt_time < origin)
+        fc = ok & (t >= origin) & (t < end)
+        if fc.sum() == 0 or tr.sum() < 50:
+            diag[h] = {"n_train": int(tr.sum()), "n_fc": int(fc.sum()), "skipped": True}
+            continue
+        out = {}
+        if "LGB" in models:
+            bank, best = fit_bank(X[tr], D["y"][tr] - k[tr], params)        # change from persistence (D34)
+            out["LGB"] = predict_bank(bank, X[fc], anchor=k[fc])
+            diag[h] = {"best_iter": best}
+        if "A1" in models:
+            out["A1"] = point(k[fc])
+        if "A7" in models:
+            out["A7"] = point(D["y"][fc])           # oracle: the source's same-time index at the target
+        d = diag.setdefault(h, {})
+        d.update({"n_train": int(tr.sum()), "n_fc": int(fc.sum())})
+        for m, Q in out.items():
+            f = pd.DataFrame(Q, columns=[f"q{tau:.1f}" for tau in TAUS])
+            f.insert(0, "t", t[fc])
+            f.insert(0, "h", h)
+            f.insert(0, "model", m)
+            rows.append(f)
+    return (pd.concat(rows, ignore_index=True) if rows else pd.DataFrame()), diag
+
+
 def lgb_variant(S: pd.DataFrame, origin: pd.Timestamp, end: pd.Timestamp, params: dict, target: str = "level",
                 pooled: bool = False) -> tuple[pd.DataFrame, dict]:
     """Development variants of the LightGBM bank (D34), same issue rows as run_origin.

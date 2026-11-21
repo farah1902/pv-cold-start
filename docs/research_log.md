@@ -237,8 +237,9 @@ One entry per work session: what was asked, what was done, the key numbers, what
 - **A6e with 5 seeds (21 Nov):** 0.17997 at 1 h against V4a_5s's 0.18001; equal at every horizon (below 0.6%),
   Wilcoxon p = 1.0. On validation the donor tokens add nothing over the fleet summary (F47, *strong*). This bears on
   the title and the novelty claim; raised with the author. V5a and V5b run next, then TX1_5s.
-- **Author decisions (21 Nov):** keep developing PVSetFormer until the freeze (D50); LightGBM for the sensor and
-  satellite rows A4, A4b and A9, with A4c = the main model plus the corrected sensor index (D51).
+- **Author decisions (21 Nov):** keep developing PVSetFormer until the freeze (D50); LightGBM for the sensor rows
+  A4 and A4b, with A4c = the main model plus the corrected sensor index (D51). The question wrongly listed A9 among
+  the learner rows; the guide defines A9 as persistence of the satellite index, so it stays so (D51 corrected).
 - **V5a, V5b, TimeXer with 5 seeds (21 Nov):** V5a makes the spread follow volatility but does not lower the pinball
   (rejected); V5b halves the calm-state gap at 15 min but loses the longer horizons (rejected). TimeXer's 5-seed
   ensemble scores 0.17845 at 1 h, below PVSetFormer (0.18001) and LightGBM (0.18130), none significant (F48). The
@@ -248,3 +249,8 @@ One entry per work session: what was asked, what was done, the key numbers, what
   zero start. Checks: V4a and TimeXer TX1 reproduce exactly after the static features gained a 7th column (the
   unit index); all four options start at V4a's outputs; a 2-epoch run with all four is finite and sorted. The four
   rounds run in sequence (about 90 min).
+- **NB5d code (21 Nov):** `forecast.run_origin_source` (an external index in place of the fleet index; source-only
+  features; the fleet's issue and target rules) and `tools/make_nb5d.py` (A4, A4b, A9, A9n on the validation units,
+  each paired with fleet LightGBM on the same slots; priors recomputed from NB4's external gains and checked against
+  NB4's). Smoke test on SQ567, first origin: 12 s, the same issue counts per horizon as the fleet rows, finite and
+  sorted quantiles. Queued after the V6/V7 rounds.

@@ -665,10 +665,15 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
   donors, and a sensor or a satellite pixel is one series. Asked which learner to use, the author chose (21 Nov 2026)
   LightGBM.
 - **Change:**
-  - A4 (raw pyranometer index), A4b (corrected pyranometer index) and A9 (CAMS satellite index) use LightGBM with the
-    frozen setting of part 2a and the change-from-persistence target (D34), on the NB4 index sources and their
-    refitted gains (D32). LightGBM on the fleet index is reported beside them, so the index source is compared with
-    the learner held fixed.
+  - A4 (raw pyranometer index) and A4b (corrected pyranometer index) use LightGBM with the frozen setting of part
+    2a and the change-from-persistence target (D34), on the NB4 index sources and their refitted gains (D32).
+    LightGBM on the fleet index is reported beside them, so the index source is compared with the learner held
+    fixed. The features come from the source alone (σ, c and n left empty); the issue and target rules are the
+    fleet's, so all rows share the fleet models' slots (`forecast.run_origin_source`).
+  - **Correction (21 Nov 2026).** The question put to the author grouped A9 with the learner rows. The guide
+    defines A9 as the satellite index *persisted* forward × prior gain, and A9n as its same-time value (oracle),
+    so neither has a learner. They stay as the guide defines them; the author's answer applies to A4 and A4b.
+    A LightGBM row on the satellite index would be an addition and is not made without the author.
   - A4c is the main model plus the corrected sensor index as an extra input.
 - **Evidence:** this session's question and answer.
 
