@@ -136,6 +136,22 @@ Source: `results/nb5c_r1/summary.json`, `r1_medians.csv`, `r1_units_1h.csv`, `r1
 | CV pinball of the search CV2: PVSetFormer (d 32, lr 1e-3, wd 0.5); LightGBM | 0.07003; 0.06855 | nb5c_variants/CV2/summary.json |
 | Configuration part 2c, sha256 | `d6a24ddb931d0b88…` | nb5c_r1/r1_config_part2c.yaml |
 
+## Conformal calibration of PVSetFormer (NB5c conformal)
+Source: `results/nb5c_conformal/summary.json`, `val_conformal_medians.csv`, `corrections.csv` (development data;
+PVSetFormer's 5-seed ensemble; run of 21 Nov 2026).
+
+| Quantity | Value | Source file |
+| --- | --- | --- |
+| Median PICP80 at 15 min / 1 h / 2 h / 6 h, raw | 0.705 / 0.713 / 0.691 / 0.673 | val_conformal_medians.csv |
+| Same, conformal | 0.792 / 0.799 / 0.804 / 0.825 | val_conformal_medians.csv |
+| Coverage of the 60 / 40 / 20% intervals at 1 h: raw; conformal | 0.542 / 0.347 / 0.158; 0.623 / 0.424 / 0.206 | val_conformal_medians.csv |
+| Median IS80 at 1 h: raw; conformal (units improved) | 0.5937; 0.5897 (8 of 10) | val_conformal_medians.csv, summary.json |
+| Median IS80 at 6 h: raw; conformal | 0.6608; 0.6292 | val_conformal_medians.csv |
+| Median CRPS (9 quantiles) at 1 h: raw; conformal | 0.0948; 0.0941 | val_conformal_medians.csv |
+| Raw PICP80 of the donors' pseudo cold starts at 15 min / 1 h / 6 h | 0.720 / 0.684 / 0.615 | corrections.csv |
+| Median 80% correction at 15 min / 1 h / 6 h (units of G̃) | 0.038 / 0.063 / 0.106 | corrections.csv |
+| Keep rule met; conformal configuration part 2b (PVSetFormer), sha256 | yes; `cc1b10eb80f3afc8…` | conformal_config_part2b_pvsf.yaml |
+
 ## Forecast skill and statistics (NB5, NB6)
 _empty_
 

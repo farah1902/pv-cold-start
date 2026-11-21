@@ -1,0 +1,30 @@
+calibration_set: pseudo cold starts of the event donors; 5-seed ensemble of the early-stopped
+  PVSetFormer predictions on the last 20% of the training issue times
+donors: clean metadata (G1/G2 target) or all (G0 target); leave-one-out prior and
+  uncertainty set
+intervals:
+- '80'
+- '60'
+- '40'
+- '20'
+keep_rule: median PICP80 at 1 h closer to 0.80 and median IS80 at 1 h not higher (validation
+  units)
+kept: true
+median_and_point: unchanged
+method: CQR (Romano et al. 2019), split conformal
+min_scores: 50
+model: PVSetFormer
+normalisation: Gt(t + h)
+part: 2b
+part2c_sha256: d6a24ddb931d0b887753a68df2d982cf3d1114e6cc8d141c5a7f93994ff06487
+per: event, origin, horizon
+power_bounds:
+- 0.0
+- 1.05
+seeds:
+- 20261119
+- 20261120
+- 20261121
+- 20261122
+- 20261123
+variant: V4a_5s

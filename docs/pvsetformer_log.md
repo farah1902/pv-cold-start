@@ -35,3 +35,10 @@ favours the model that had more rounds (PVSetFormer; LightGBM had 4, D34). The t
 PVSetFormer (V4a) 0.18001, LightGBM 0.18130. PVSetFormer becomes the main index forecaster, with 6 variants tried
 before the decision. The margin is within the spread of PVSetFormer's single seeds (F44). Configuration part 2c:
 `results/nb5c_r1/r1_config_part2c.yaml`.
+
+**Rule R2 runs (not design variants, D38).** A6e is the final variant (V4a) without donor tokens, set attention or
+pooling: one fleet-summary token per patch. Same setting, no search.
+
+| Run | Date | What | Parameters | Seeds | nRMSE 1 h | Units won at 1 h | nRMSE 15 min / 6 h | Reading |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| A6e | 2026-11-21 | V4a with `summary_only=1` | 46,621 | 1 | 0.18056 | 3 of 10 vs LightGBM (0.18098); 3 of 10 vs V4a at the same seed | 0.1356 / 0.2108 | Against V4a at the same seed (20261119): worse at 5 of 6 horizons, by 0.4–1.7% in nRMSE (1 h +0.6%, 15 min +1.3%, 6 h +1.7%), level at 2 h; CRPS worse at every horizon (+0.3% to +2.5%). The donor tokens help a little, but at 1 h the gap is within one seed's spread (s.d. 0.0014). A 5-seed run (A6e_5s) is queued. 5 min |

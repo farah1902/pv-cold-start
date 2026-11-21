@@ -422,6 +422,25 @@ repository). Paths are relative to `data/raw/hkust/Dataset/Time series dataset/`
   trees use it better. The selection used the same 10 units on which six PVSetFormer variants were developed, which
   favours PVSetFormer. The test run is the unbiased check.
 
+### F45 — The conformal layer calibrates PVSetFormer's intervals as well as LightGBM's — *strong*
+- **Evidence:** `results/nb5c_conformal/summary.json`, `val_conformal_medians.csv` (development data: the 10
+  validation units; PVSetFormer's 5-seed ensemble, D46).
+  - Median PICP80, raw → conformal: 0.705 → 0.792 (15 min), 0.713 → 0.799 (1 h), 0.691 → 0.804 (2 h), 0.673 →
+    0.825 (6 h). At every horizon the calibrated value is between 0.79 and 0.83.
+  - At 1 h the 60, 40 and 20% intervals cover 0.623, 0.424 and 0.206 (raw 0.542, 0.347, 0.158).
+  - IS80 falls at every horizon (1 h: 0.5937 → 0.5897, lower on 8 of 10 units; 6 h: 0.6608 → 0.6292); the
+    9-quantile CRPS falls too (1 h: 0.0948 → 0.0941).
+  - Raw 80% coverage of the donors' pseudo cold starts: 0.720 at 15 min, 0.684 at 1 h, 0.615 at 6 h. The median
+    80% corrections, in units of G̃, are 0.038, 0.063 and 0.106.
+  - Against LightGBM's layer (NB5a, single seed), after calibration: IS80 at 1 h 0.5897 vs 0.5716, at 6 h 0.6292
+    vs 0.6664; CRPS at 1 h 0.0941 vs 0.0932, at 6 h 0.1083 vs 0.1156. This is the same split as for the point error
+    (F44): LightGBM ahead up to 1 h, PVSetFormer ahead from 2 h.
+- **Reading:** the layer works whichever index forecaster feeds it, because it corrects what neither forecaster
+  sees: the new roof's own deviation from the fleet. PVSetFormer's raw intervals cover slightly more than
+  LightGBM's on the validation units (raw PICP80 0.654–0.713 vs 0.631–0.709) but are still too narrow. Its
+  corrections are larger (80% at 1 h: 0.063 vs 0.047), because its calibration predictions cover the donors less
+  well (0.684 vs 0.714 at 1 h). The coverage target (75–85%) is met on development data; the test run decides.
+
 ### F16 — Not every site file starts on the 1st of a month — *solid*
 - **Evidence:** among the 18 site files of the first event list, Indoor Sports Centre (2021-12-02), Zone J2
   (2021-11-13), Zone D (2022-01-20) and UG Hall9 (2023-02-11) start mid-month. The audit counts 5 of the 15-min and

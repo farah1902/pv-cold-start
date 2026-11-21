@@ -45,7 +45,9 @@ telemetry start instead of grid connection (F06); metadata errors (D01).
 - That monthly recalibration improves a stable sensor: on the validation units it does not (F35).
 - That the forecaster beats CLIPER at 4–6 h: on the validation units it does not (F39); wait for the test run.
 - Calibrated intervals on the test events before the test run: so far only the validation units show it
-  (conformal 0.75–0.80, raw 0.63–0.71; F40, F43).
+  (conformal 0.75–0.80, raw 0.63–0.71; F40, F43; PVSetFormer 0.79–0.83, F45).
+- That PVSetFormer's donor tokens matter, before A6e is scored with 5 seeds and on the test events: with one
+  seed, removing them costs 0.6% at 1 h on validation, within the seed spread.
 - Any validation number as a result of the paper: NB5a is development data (D33).
 - "19 real start events" or "two capacity additions": there are 13 scored events and one addition (D08, D27).
 - "Real start dates" for the four sensitivity events, whose starts are left-censored (D08, D27).
@@ -56,7 +58,7 @@ telemetry start instead of grid connection (F06); metadata errors (D01).
 
 ## 8. What is still missing
 Before the freeze: the sensor and satellite rows' learner inputs, TimeXer and the ablation A6e (NB5c;
-PVSetFormer was chosen by R1 on 21 Nov, D45), PVSetFormer's conformal layer, the foundation models (NB5b), freeze part 2 and the tag. After it: the test run (NB5) and
+PVSetFormer was chosen by R1 on 21 Nov, D45; its conformal layer is kept, D46), the foundation models (NB5b), freeze part 2 and the tag. After it: the test run (NB5) and
 everything from NB6 on. NB0–NB4, NB5a and the conformal layer done by 20 Nov 2026.
 
 ## 9. Writing conventions

@@ -219,3 +219,9 @@ One entry per work session: what was asked, what was done, the key numbers, what
   narrow: 4 of 10 units, Wilcoxon p = 1.0, and 3 of the 5 single seeds score above LightGBM's ensemble. The
   advantage is at 2–6 h; LightGBM leads at 15–30 min (F44, *provisional*). A6e, then TimeXer's search and round,
   follow in the queue.
+- **PVSetFormer's conformal layer (21 Nov):** `NB5c_conformal` applies D35's rules unchanged to PVSetFormer's
+  5-seed ensemble (D46). Kept: PICP80 at 1 h 0.713 → 0.799, IS80 lower on 8 of 10 units; 0.79–0.83 at every horizon
+  (F45). Runtime 110 s.
+- **A6e (21 Nov):** PVSetFormer without donor tokens scores 0.18056 at 1 h (single seed), against 0.17949 for V4a
+  with the same seed. It is worse at 5 of 6 horizons, but by less than one seed's spread at 1 h. `A6e_5s` (5 seeds)
+  is queued after TimeXer's search (CVX, running) and round (TX1), so that it compares with V4a_5s as ensembles.

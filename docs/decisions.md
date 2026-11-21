@@ -587,6 +587,26 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
 - **Evidence:** `results/nb5c_r1/` (summary.json, r1_medians.csv, r1_units_1h.csv, r1_pairs.csv, fig_r1),
   `results/nb5c_variants/V4a_5s/`, `results/nb5c_variants/LGB_seeds/`.
 
+### D46 — The conformal layer of D35 applied to PVSetFormer, and kept [method, Phase 5]
+- **Request or reason:** R1 made PVSetFormer the main index forecaster (D45). The conformal layer of D35 was fitted
+  for LightGBM, so the main model needs its own.
+- **Change:**
+  - `notebooks/NB5c_conformal.ipynb` (`python tools/make_nb5c_conformal.py`, after NB5c) applies the rules of D35
+    unchanged: CQR on the donors' pseudo cold starts, per event, origin and horizon, at the 80, 60, 40 and 20%
+    intervals, normalised by G̃(t + h), with no correction under 50 scores; the median is unchanged. The keep rule is
+    also unchanged.
+  - The calibration set comes from PVSetFormer itself: in each seed, the early-stopped model predicts the last 20% of
+    the training issue times before the refit (`setformer.fit_predict`, as for LightGBM in D35). The 5 seeds'
+    predictions are ensembled like the forecasts.
+  - Checks: the notebook verifies the hashes of part 2c and of the final variant's summary. The raw PICP80 it
+    computes equals the R1 scores of the ensemble (maximum difference 0). All 180 groups have at least 50 scores.
+  - Keep rule met (F45): at 1 h, PICP80 0.713 → 0.799 and IS80 0.5937 → 0.5897 (lower on 8 of 10 units). Settings:
+    `results/nb5c_conformal/conformal_config_part2b_pvsf.yaml`, sha256 `cc1b10eb80f3afc8…`. They join the frozen
+    part 2 beside LightGBM's part 2b, which stays the layer for LightGBM's rows.
+  - Proposed, to settle at the freeze: if the test run treats LightGBM as a 5-seed ensemble (D37), its layer must be
+    rebuilt from that ensemble's calibration predictions, which `tools/r1_lgb_seeds.py` does not yet save.
+- **Evidence:** `results/nb5c_conformal/`.
+
 ### D16 — pvlib 0.16.1 and ruptures 1.1.10 are installed locally and pinned [environment, Phase 0]
 - **Request or reason:** both are in the guide's software list (§5.6) and were missing locally on 18 Nov 2026.
 - **Change:** `pip install pvlib==0.16.1 ruptures==1.1.10`. A dry run first showed that nothing else would be
