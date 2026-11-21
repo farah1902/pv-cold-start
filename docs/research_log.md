@@ -257,3 +257,12 @@ One entry per work session: what was asked, what was done, the key numbers, what
 - **A4c option (21 Nov):** `ext=sensor_corr` feeds the corrected sensor index into PVSetFormer's fleet token
   through a zero-start layer (D56). V4a, A6e and TX1 reproduce exactly; the option starts at V4a's outputs. A4c's
   development round is queued after NB5d.
+- **V6/V7 results (21 Nov):** V6a rejected; V6b fixes most of the 15-min drift but costs 4–6 h; V7a and V7b are
+  within single-seed noise of V4a, V7a better on 9 of 10 units at 1 h (D52–D55, F50; `tools/pvsf_vol_diag.py` for
+  each round).
+- **NB5d results (21 Nov):** 289 s, nbconvert exit 0. Fleet LightGBM beats the sensor-index LightGBM on all 10 units
+  up to 1 h and is level from 2 h; the corrected sensor is worse than the raw one; the CAMS oracle bounds a satellite
+  nowcast (F51, results_summary).
+- **V8 options (21 Nov):** `hhead_n` in `setformer.py` (the per-horizon readout on the first n horizons; 0 = all).
+  V4a and V6b reproduce exactly (a first version changed V6b's addition order and gave 2.4e-7; fixed before use).
+  V8a (`hhead_n=1`) and V8b (`donor_id` + `donor_rel`) start at V4a's outputs; queued after A4c (D57, D58).

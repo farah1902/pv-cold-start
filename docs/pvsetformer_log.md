@@ -32,6 +32,10 @@ favours the model that had more rounds (PVSetFormer; LightGBM had 4, D34). The t
 | V4a_5s | 2026-11-21 | V4a with the 5 R1 seeds (D37); ensemble = the mean of the sorted quantiles across the seeds, sorted again | 60,157 | 5 | 0.18001 (ensemble; single seeds 0.17949–0.18281, mean 0.18104, s.d. 0.0014) | 4 of 10 against LightGBM's ensemble (0.18130) | 0.1329 / 0.2068 | **R1 met (D45): PVSetFormer becomes the main index forecaster.** Narrow at 1 h: Wilcoxon p = 1.0 across units; 2 of the 5 single seeds beat LightGBM's ensemble. Clear from 2 h (8, 10 and 9 units of 10 at 2, 4 and 6 h); LightGBM keeps 15–30 min (F44). 90 min |
 | V5a | 2026-11-21 | V4a + volatility features of the index (log s.d. over 1 h and 2 h, log \|Δk\|, with flags) → the 9 head outputs, zero start, no weight decay (D47) | 60,481 | 1 | 0.17950 | 3 of 10 | 0.1344 / 0.2134 | Rejected: the spread now follows volatility (15 min width 0.233 → 0.451, as LightGBM's) but the pinball does not improve, and 15 min, 4 h and 6 h are worse. The calm-state deficit is in the median (F49). 22 min |
 | V5b | 2026-11-21 | V5a + a volatility gate 1 + tanh(w · vol + b) on the transformer's median shift, zero start (D48) | 60,523 | 1 | 0.18263 | 3 of 10 | 0.1335 / 0.2136 | Rejected: worse at every horizon except 15 min; halves the calm-state pinball gap at 15 min (41% → 22%) but costs the longer horizons. 25 min |
+| V6a | 2026-11-21 | V4a + a diagonal self-attention mask in the decoder: each horizon query attends only to itself and the encoder (D52) | 60,157 | 1 | 0.18053 | 4 of 10 | 0.1333 / 0.2112 | Rejected: worse than V4a at 1 h (+0.6%) and 6 h (+1.9%), and the calm-state 15-min drift is not reduced (move 0.037 vs 0.034). The horizons' mutual attention is not the cause of F49 (F50). 22 min |
+| V6b | 2026-11-21 | V4a + a per-horizon linear readout of the decoder output, added to the shared head, zero start (D53) | 61,939 | 1 | 0.18024 | 5 of 10 | 0.1311 / 0.2204 | Not kept as is: best 15 min so far (−2.1% vs V4a, 8 of 10 units; clear-spell bias −0.031 → −0.013), but 4 h +5.2% and 6 h +6.3%. Led to V8a (the readout at 15 min only). 20 min |
+| V7a | 2026-11-21 | V4a + a learned identity embedding per donor, zero start (D54) | 62,205 | 1 | 0.17938 | 4 of 10 | 0.1337 / 0.2075 | Within 0.11% of V4a at every horizon, but better at 1 h on 9 of 10 units (same seed). Kept for the combination V8b. 22 min |
+| V7b | 2026-11-21 | V4a + each donor's implied index minus the campus index, per step, into the donor token, zero start (D55) | 60,317 | 1 | 0.17927 | 4 of 10 | 0.1337 / 0.2058 | Lowest single-seed 1 h so far (−0.1%); 2 h −0.5%, 6 h −0.7%, CRPS at 1 h −0.4%; better at 1 h on 5 of 10 units. Within single-seed noise; kept for V8b. 21 min |
 
 **R1 decision (21 Nov 2026, D45):** `notebooks/NB5c_R1_decision.ipynb` compared the 5-seed ensembles at 1 h:
 PVSetFormer (V4a) 0.18001, LightGBM 0.18130. PVSetFormer becomes the main index forecaster, with 6 variants tried
@@ -61,3 +65,7 @@ the short-horizon gap; the main model and the title are decided at the freeze.
 horizons kept apart in the decoder, and a per-horizon readout. V7a (D54) and V7b (D55) try to make the donors
 useful (F47): a learned identity per donor, and each donor's deviation from the index. All four start exactly at V4a
 (checked) and run with one seed, paired with V4a's single-seed round.
+
+**Design round V8 (21 Nov 2026, D50).** From F50: V8a (D57) keeps V6b's own readout for the 15-min horizon only,
+where it removed most of the drift, and leaves the other horizons on the shared head. V8b (D58) combines the two
+donor options V7a and V7b. Both start exactly at V4a (checked) and run with one seed after A4c.

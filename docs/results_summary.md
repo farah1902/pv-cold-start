@@ -140,6 +140,9 @@ Source: `results/nb5c_r1/summary.json`, `r1_medians.csv`, `r1_units_1h.csv`, `r1
 | TimeXer search CVX: chosen d, lr, weight decay; CV pinball | 32, 3e-3, 0.01; 0.06800 | nb5c_variants/CVX/summary.json |
 | Single-seed rounds at 1 h: V5a / V5b / TX1 | 0.17950 / 0.18263 / 0.18174 | nb5c_variants/log.csv |
 | A6e (no donor tokens) vs V4a, 5-seed ensembles, median nRMSE at 15 min / 1 h / 6 h | 0.1331 / 0.17997 / 0.2069 vs 0.1329 / 0.18001 / 0.2068 | nb5c_variants/A6e_5s/scores.csv, V4a_5s/scores.csv |
+| Single-seed rounds at 1 h: V6a / V6b / V7a / V7b (V4a at the same seed 0.17949) | 0.18053 / 0.18024 / 0.17938 / 0.17927 | nb5c_variants/log.csv |
+| Median nRMSE at 15 min / 6 h, same seed: V6b; V4a | 0.1311 / 0.2204; 0.1339 / 0.2073 | nb5c_variants/V6b/scores.csv, V4a/scores.csv |
+| 15-min clear spells (calmest quartile, k(t) > 0.9), median move from k(t) and bias: V4a; V6b; LightGBM | 0.048, −0.031; 0.031, −0.013; 0.010, +0.009 | nb5c_diag/V4a, V6b/calm_by_level.csv |
 
 ## Conformal calibration of PVSetFormer (NB5c conformal)
 Source: `results/nb5c_conformal/summary.json`, `val_conformal_medians.csv`, `corrections.csv` (development data;
@@ -156,6 +159,21 @@ PVSetFormer's 5-seed ensemble; run of 21 Nov 2026).
 | Raw PICP80 of the donors' pseudo cold starts at 15 min / 1 h / 6 h | 0.720 / 0.684 / 0.615 | corrections.csv |
 | Median 80% correction at 15 min / 1 h / 6 h (units of G̃) | 0.038 / 0.063 / 0.106 | corrections.csv |
 | Keep rule met; conformal configuration part 2b (PVSetFormer), sha256 | yes; `cc1b10eb80f3afc8…` | conformal_config_part2b_pvsf.yaml |
+
+## Sensor and satellite rows on the validation units (NB5d)
+Source: `results/nb5d_sources/summary.json`, `medians.csv`, `prior_check.csv` (development data; LightGBM part-2a
+setting for A4 and A4b, D51; each row against fleet LightGBM on the same slots; run of 21 Nov 2026, 289 s).
+
+| Quantity | Value | Source file |
+| --- | --- | --- |
+| Median nRMSE at 15 min / 1 h / 6 h: A4 (raw sensor, LightGBM); fleet LightGBM on the same slots | 0.1414 / 0.1839 / 0.2177; 0.1292 / 0.1810 / 0.2183 | medians.csv |
+| Median change vs fleet LightGBM at 15 min / 30 min / 1 h / 2 h / 4 h / 6 h: A4 | +8.8 / +3.4 / +1.7 / +0.5 / +0.2 / 0.0% | medians.csv |
+| Same: A4b (corrected sensor, LightGBM) | +13.1 / +6.6 / +3.5 / +2.0 / +0.9 / +1.2% | medians.csv |
+| Same: A9 (CAMS index persisted × prior) | +16.3 / +6.8 / +4.2 / +3.9 / +8.8 / +9.2% | medians.csv |
+| Same: A9n (oracle, CAMS index at the target time × prior) | +9.9 / −7.8 / −20.0 / −28.7 / −34.8 / −32.6% | medians.csv |
+| Units better than fleet LightGBM at 1 h: A4 / A4b / A9 / A9n; Wilcoxon p | 0 / 0 / 1 / 10; 0.002 / 0.002 / 0.004 / 0.002 | medians.csv |
+| Median slot coverage at 1 h: A4, A4b; A9; A9n | 1.00; 0.972; 0.945 | summary.json |
+| Priors recomputed from NB4's external gains: largest difference | 4.4e-16 | summary.json |
 
 ## Forecast skill and statistics (NB5, NB6)
 _empty_

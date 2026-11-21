@@ -681,13 +681,20 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
 - **Change:** V4a with a diagonal self-attention mask in the decoder, so each horizon query attends only to itself
   (and to the encoder). It tests F49's hypothesis that the 15-min median inherits the long horizons' mean reversion
   through the decoder. No new parameter (60,157); same initial outputs as V4a.
-- **Result:** pending (1 seed, paired with V4a).
+- **Result (21 Nov 2026):** rejected. Median nRMSE against V4a at the same seed: 15 min 0.1333 vs 0.1339,
+  1 h 0.18053 vs 0.17949 (+0.6%), 6 h 0.2112 vs 0.2073 (+1.9%). At 15 min in the calmest quartile the median
+  moves further from persistence (0.037 vs 0.034), and on clear spells its bias grows (−0.035 vs −0.031). The
+  horizons' mutual attention is not the cause of F49 (F50).
 
 ### D53 — PVSetFormer variant V6b: per-horizon deviation from the shared head [R1 round, Phase 5]
 - **Change:** V4a plus, per horizon, a linear readout of the decoder output added to the shared head (zero start,
   normal weight decay, so it stays a shrunk deviation). TimeXer reads each horizon out with its own weights (F49).
   61,939 parameters (+1,782).
-- **Result:** pending (1 seed, paired with V4a).
+- **Result (21 Nov 2026):** not kept as is. Best 15 min so far: 0.1311 vs 0.1339 (−2.1%, better on 8 of 10
+  units); the 15-min pinball gap to LightGBM falls from +9.5% to +6.2% (calmest quartile +41% → +30%); on clear
+  spells the median's bias falls from −0.031 to −0.013. But 1 h +0.4%, 4 h +5.2%, 6 h +6.3%, and training stops
+  earlier (mean best epoch 14, V4a 17): the separate readouts over-fit the long horizons (F50). Next: the readout
+  at 15 min only (V8a, D57).
 
 ### D54 — PVSetFormer variant V7a: learned donor identity [R1 round, Phase 5]
 - **Change:** V4a plus a learned embedding per donor (a table over the panel's 44 units, zero start, normal weight
@@ -696,13 +703,17 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
   station names but no coordinates (F10), so position enters only through this learned identity. 62,205 parameters.
   The static donor features now carry the unit index as a 7th column; every model reads only the first 6 for its
   static features (V4a and TimeXer TX1 reproduce exactly).
-- **Result:** pending (1 seed, paired with V4a).
+- **Result (21 Nov 2026):** within 0.11% of V4a at every horizon (1 h 0.17938 vs 0.17949), but better at 1 h
+  on 9 of 10 units, at 15 min on 9 and at 6 h on 7 (same seed). A small, consistent effect inside one seed's
+  spread. Kept for the combination V8b (D58).
 
 ### D55 — PVSetFormer variant V7b: each donor's deviation from the index [R1 round, Phase 5]
 - **Change:** V4a plus, per step, the donor's implied index minus the campus index (where both are valid), mapped
   into the donor token by a zero-start linear layer. The donor tokens did not see the index (it enters only through
   the fleet token, after pooling), so "this roof is darker than the fleet now" had to be inferred. 60,317 parameters.
-- **Result:** pending (1 seed, paired with V4a).
+- **Result (21 Nov 2026):** lowest single-seed 1 h so far, 0.17927 vs 0.17949 (−0.1%); 2 h −0.5%, 6 h −0.7%;
+  CRPS −0.4% at 1 h and −0.9% at 6 h; better at 1 h on 5 of 10 units. Within single-seed noise. Kept for the
+  combination V8b (D58).
 
 ### D56 — A4c: the main model plus the corrected sensor index (option `ext`) [models, Phase 5]
 - **Request or reason:** D51: A4c is the main model with the corrected sensor index as an extra input (guide §4.2:
@@ -719,6 +730,23 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
     (60,445 parameters); a 2-epoch run is finite and sorted.
   - A development round A4c (1 seed, paired with V4a) follows NB5d.
 - **Evidence:** `src/pvcold/setformer.py`; results in `results/nb5c_variants/A4c/`.
+
+### D57 — PVSetFormer variant V8a: the per-horizon readout at 15 min only [R1 round, Phase 5]
+- **Reason:** V6b's per-horizon readout removed most of the 15-min drift (F49) but over-fitted the long horizons, and
+  at 30 min it did not help (0.1570 vs 0.1562); F50.
+- **Change:** option `hhead_n` (V8): the deviation from the shared head on the first n horizons only (0 = all, V6b's
+  behaviour). V8a = V4a + `hhead=1 hhead_n=1`: only the 15-min horizon gets its own readout. 60,454 parameters
+  (+297). Checks: V4a and V6b reproduce exactly on their shortest task; V8a starts at V4a's outputs; a 2-epoch run is
+  finite and sorted.
+- **Result:** pending (1 seed, paired with V4a).
+
+### D58 — PVSetFormer variant V8b: donor identity and donor deviation together [R1 round, Phase 5]
+- **Reason:** V7a and V7b each moved the forecast slightly in the right direction (F50); the two act on different
+  parts of the donor token (who the donor is; how far it is from the campus index now).
+- **Change:** V4a + `donor_id=1 donor_rel=1`. 62,365 parameters. Starts at V4a's outputs (checked); a 2-epoch run is
+  finite and sorted.
+- **Result:** pending (1 seed, paired with V4a). If V8a and V8b both help, their combination is the next round, then
+  5 seeds (D37).
 
 ### D16 — pvlib 0.16.1 and ruptures 1.1.10 are installed locally and pinned [environment, Phase 0]
 - **Request or reason:** both are in the guide's software list (§5.6) and were missing locally on 18 Nov 2026.

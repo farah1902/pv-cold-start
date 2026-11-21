@@ -17,7 +17,7 @@ must add Longarini et al. (2026) (F19). Additions approved on 18 Nov: D18–D22.
 | --- | --- |
 | 1. Causal fleet-factor forecaster | Index forecaster chosen by rule R1 on 21 Nov 2026: PVSetFormer (V4a), 0.18001 vs LightGBM 0.18130 at 1 h on validation (D45, F44) |
 | 2. DC/AC gain prior with shrinkage update | Planned (D02) |
-| 3. Evaluation protocol: real starts, information set, error budget, sensor ablation; Safi external case | Events and drift boundary fixed (NB2, NB3); sensor and satellite index sources built, same-time evidence only (NB4, F35) |
+| 3. Evaluation protocol: real starts, information set, error budget, sensor ablation; Safi external case | Events and drift boundary fixed (NB2, NB3); sensor and satellite index sources built (NB4, F35); sensor and satellite rows on the validation units (NB5d, F51): the fleet index is better up to 1 h and level from 2 h |
 
 ## 5. Evidence for each research question and hypothesis
 _Empty._
@@ -43,8 +43,10 @@ telemetry start instead of grid connection (F06); metadata errors (D01).
 - A significant Wilcoxon result in the drifted window (D10, F12).
 - That the pyranometer was replaced or recalibrated in February 2023: the data show a step on 14–15 February,
   not its cause (F37).
-- That the fleet beats the pyranometer at forecast horizons before NB6: so far the evidence is same-time, on
-  the validation units (F35).
+- That the fleet beats the pyranometer at forecast horizons before the test run: on the validation units fleet
+  LightGBM beats the sensor-index LightGBM up to 1 h and is level from 2 h (F51), development data only.
+- That a satellite forecast would beat the fleet: A9n is an oracle (the CAMS index at the target time), not a
+  forecast (F51).
 - That monthly recalibration improves a stable sensor: on the validation units it does not (F35).
 - That the forecaster beats CLIPER at 4–6 h: on the validation units it does not (F39); wait for the test run.
 - Calibrated intervals on the test events before the test run: so far only the validation units show it

@@ -34,6 +34,7 @@ DEFAULTS = {"d": 64, "heads": 4, "n_sky": 4, "n_enc": 2, "n_dec": 2, "dropout": 
             "vgate": 0,                       # V5 option: volatility gate on the transformer's median shift
             "hmask": 0,                       # V6 option: horizon queries do not attend to one another
             "hhead": 0,                       # V6 option: per-horizon deviation from the shared head
+            "hhead_n": 0,                     # V8 option: that deviation on the first n horizons only (0 = all)
             "donor_id": 0,                    # V7 option: learned identity embedding per donor
             "donor_rel": 0,                   # V7 option: donor deviation from the index, per step
             "ext": "",                         # A4c (D51): external index source added to the fleet token, e.g. sensor_corr
@@ -157,7 +158,7 @@ def build_model(cfg: dict):
 
     class PVSetFormer(nn.Module):
         def __init__(self, d, heads, n_sky, n_enc, n_dec, dropout, fleet_token, lin=0, aux=0.0, summary_only=0,
-                     vol=0, vgate=0, hmask=0, hhead=0, donor_id=0, donor_rel=0, ext=0):
+                     vol=0, vgate=0, hmask=0, hhead=0, donor_id=0, donor_rel=0, ext=0, hhead_n=0):
             super().__init__()
             # A6e (rule R2): the fleet summary only, no donor tokens; needs the fleet token, excludes the donor loss
             self.summary_only = bool(summary_only)
@@ -197,9 +198,11 @@ def build_model(cfg: dict):
             self.hmask, self.hhead = bool(hmask), bool(hhead)  # V6 options, created last; zero start
             if self.hmask:                                   # each horizon query attends only to itself
                 self.register_buffer("hmask_buf", ~torch.eye(len(FC.H), dtype=torch.bool))
+            self.hh_n = (int(hhead_n) or len(FC.H)) if self.hhead else 0   # V8: first n horizons only
+            assert 0 <= self.hh_n <= len(FC.H)
             if self.hhead:                                   # per-horizon deviation from the shared head
-                self.hh_w = nn.Parameter(torch.zeros(len(FC.H), d, 9))
-                self.hh_b = nn.Parameter(torch.zeros(len(FC.H), 9))
+                self.hh_w = nn.Parameter(torch.zeros(self.hh_n, d, 9))
+                self.hh_b = nn.Parameter(torch.zeros(self.hh_n, 9))
             self.donor_id, self.donor_rel = bool(donor_id), bool(donor_rel)   # V7 options, created last
             assert not ((donor_id or donor_rel) and self.summary_only), "V7 options need donor tokens"
             if self.donor_id:                                # learned identity per donor, zero start
@@ -276,8 +279,10 @@ def build_model(cfg: dict):
             dec = self.norm(self.decoder(self.q_in(q), enc,
                                          tgt_mask=self.hmask_buf if self.hmask else None))  # (B, 6, d)
             o = self.head(dec)                                                        # (B, 6, 9)
-            if self.hhead:
-                o = o + torch.einsum("bhd,hdo->bho", dec, self.hh_w) + self.hh_b
+            if self.hhead:                                   # zero rows for the horizons without a deviation
+                r = o.shape[1] - self.hh_n                   # same addition order as V6b (exact reproduction)
+                o = o + Fn.pad(torch.einsum("bhd,hdo->bho", dec[:, :self.hh_n], self.hh_w), (0, 0, 0, r)) \
+                    + Fn.pad(self.hh_b, (0, 0, 0, r))
             if self.vol or self.vgate:
                 vf = self.vol_features(fleet)                                         # (B, F_VOL)
             if self.vgate:                                   # scales the transformer's median shift only
@@ -301,7 +306,8 @@ def build_model(cfg: dict):
     return PVSetFormer(cfg["d"], cfg["heads"], cfg["n_sky"], cfg["n_enc"], cfg["n_dec"], cfg["dropout"],
                        cfg.get("fleet_token", 0), cfg.get("lin", 0), cfg.get("aux", 0.0), cfg.get("summary_only", 0),
                        cfg.get("vol", 0), cfg.get("vgate", 0), cfg.get("hmask", 0), cfg.get("hhead", 0),
-                       cfg.get("donor_id", 0), cfg.get("donor_rel", 0), bool(cfg.get("ext", "")))
+                       cfg.get("donor_id", 0), cfg.get("donor_rel", 0), bool(cfg.get("ext", "")),
+                       cfg.get("hhead_n", 0))
 
 
 def n_params(cfg: dict) -> int:

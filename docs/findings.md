@@ -512,6 +512,45 @@ repository). Paths are relative to `data/raw/hkust/Dataset/Time series dataset/`
   at 15 min. A likely cause is the decoder, whose horizon queries attend to one another and share one output head,
   so short horizons inherit the long horizons' mean reversion. TimeXer reads each horizon out with its own weights.
 
+### F50 — A per-horizon readout removes most of the 15-min drift but over-fits the long horizons; the horizons' mutual attention is not the cause — *provisional*
+- **Evidence:** `results/nb5c_variants/{V6a,V6b,V7a,V7b}/` and `results/nb5c_diag/<round>/` (development data;
+  1 seed, 20261119, each paired with V4a's round at the same seed; all start at V4a's outputs).
+  - V6a (horizon queries kept apart in the decoder): 15 min 0.1333 vs 0.1339, 1 h 0.18053 vs 0.17949, 6 h 0.2112
+    vs 0.2073. In the calmest quartile at 15 min the median moves 0.037 from k(t) (V4a 0.034); on clear spells
+    (k(t) > 0.9) its bias is −0.035 (V4a −0.031).
+  - V6b (per-horizon readout added to the shared head): 15 min 0.1311 (−2.1%, better on 8 of 10 units); pinball gap
+    to LightGBM at 15 min +6.2% (V4a +9.5%), calmest quartile +30% (V4a +41%). On clear spells: move 0.031 (V4a
+    0.048), bias −0.013 (V4a −0.031), MAE 0.042 (V4a 0.054; LightGBM 0.030; persistence 0.029). But 1 h +0.4%,
+    4 h +5.2%, 6 h +6.3%; mean best epoch 14 (V4a 17).
+  - V7a (learned donor identity): within 0.11% of V4a at every horizon; better at 1 h on 9 of 10 units.
+  - V7b (each donor's deviation from the index): 1 h −0.1%, 2 h −0.5%, 6 h −0.7%; CRPS −0.4% at 1 h, −0.9% at 6 h;
+    better at 1 h on 5 of 10 units.
+- **Reading:** F49's drift comes from the shared output head, not from the horizons attending to one another: a
+  separate readout lets the 15-min median stay near persistence. Separate readouts at every horizon over-fit the
+  long ones, which have fewer training pairs and noisier targets. The two donor options move the forecast by less
+  than one seed's spread; V7a's consistency across units hints at a small real effect. Single seed: provisional.
+
+### F51 — On the validation units the fleet index forecasts a new inverter better than the pyranometer index up to 1 h, and as well from 2 h — *strong*
+- **Evidence:** `results/nb5d_sources/medians.csv`, `summary.json` (NB5d, 21 Nov 2026; development data, 10
+  validation units; the sensor rows use LightGBM with the part-2a setting and features from the source alone (D51);
+  each row is scored against fleet LightGBM on the same slots; priors recomputed from NB4's external gains, largest
+  difference from NB4's 4.4e-16).
+  - A4 (raw sensor index): median change in nRMSE against fleet LightGBM +8.8% at 15 min, +3.4% at 30 min, +1.7% at
+    1 h (0 of 10 units better at each; Wilcoxon p = 0.002), then +0.5%, +0.2% and 0.0% at 2, 4 and 6 h (p 0.23,
+    0.28, 0.70). Median nRMSE at 1 h 0.1839 vs 0.1810.
+  - A4b (corrected sensor index): +13.1%, +6.6%, +3.5% up to 1 h (0 of 10 units better, p = 0.002), +2.0%, +0.9%,
+    +1.2% at 2–6 h. Worse than the raw sensor at every horizon.
+  - A9 (CAMS index persisted, × prior gain): +16.3% at 15 min, +4.2% at 1 h, +9.2% at 6 h; better on 1 of 10 units
+    up to 1 h and on none from 2 h. Slot coverage 0.97 at 1 h.
+  - A9n (oracle: the CAMS index at the target time): −20.0% at 1 h and −32.6% at 6 h (10 and 9 of 10 units better),
+    but +9.9% at 15 min.
+- **Reading:** with the learner held fixed, a co-located pyranometer gives a new inverter no forecasting advantage
+  over the index of the inverters already online: it is worse up to 1 h, where the forecast leans on the current
+  state and the fleet tracks the inverter better (F35), and level from 2 h. The monthly correction does not help on
+  these stable-period units (as at the same time, F35). A9n is an oracle, not a forecast: it bounds what a perfect
+  satellite nowcast of the target time could add from 30 min on. Development data; the paper's numbers come from the
+  test run.
+
 ### F16 — Not every site file starts on the 1st of a month — *solid*
 - **Evidence:** among the 18 site files of the first event list, Indoor Sports Centre (2021-12-02), Zone J2
   (2021-11-13), Zone D (2022-01-20) and UG Hall9 (2023-02-11) start mid-month. The audit counts 5 of the 15-min and
