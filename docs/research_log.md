@@ -196,10 +196,13 @@ One entry per work session: what was asked, what was done, the key numbers, what
   - The search CV2 ran in 84 min and chose d 32, lr 1e-3, weight decay 0.5. Its CV pinball is 0.07003 against
     LightGBM's 0.06855, with the gap at the short horizons (9% at 15 min, 4.4% at 1 h; 2.5% better at 6 h).
   - Every variant is in `docs/pvsetformer_log.md`.
-- **Interrupted:** the first V3 run stopped with the previous session at 22 of 30 trainings; nothing was written
-  (all-or-nothing). Re-run on 21 Nov, chained with V4a (a linear path on the index lags, aimed at the short-horizon
+- **V3 ran twice:** the first V3 run was reported stopped when the previous session ended (last log line at 22
+  of 30 trainings), but the process outlived the session and finished at 00:23. Not knowing this, I re-ran V3 on
+  21 Nov, chained with V4a (a linear path on the index lags, aimed at the short-horizon
   gap) and V4b (auxiliary donor-forecast loss, clipped readings one-sided). Both options default to off. They were
-  smoke-tested, and a V1 training retrained with them present reproduced V1 exactly.
+  smoke-tested, and a V1 training retrained with them present reproduced V1 exactly. The re-run finished at
+  00:49 and overwrote the first run's folder. The two runs' `scores.csv` are identical (R1 0.18250), a check
+  that rounds are deterministic. `log.csv` keeps both rows; the first is marked as the duplicate.
 - **Author decision (21 Nov):** R1 compares 5-seed ensembles of both models (D37). Added `tools/r1_score.py`
   (shared scoring, reproduces V1's scores to 1e-16) and `tools/r1_lgb_seeds.py` (LightGBM refitted with 5 seeds; its
   check reproduces NB5a's forecasts to 6e-8). The LightGBM run follows the V3–V4b chain.

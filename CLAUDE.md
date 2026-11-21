@@ -167,8 +167,9 @@ timeout of 7200 s. The LightGBM setting is `results/nb5a_dev/lgb_config_part2a.y
 (`results/nb5a_conformal/`, settings `conformal_config_part2b.yaml`, D35).
 PVSetFormer development (D36): one round `python tools/pvsf_dev.py --name V<k> --seeds 1 --set key=value ...`
 (about 30–40 min, 8 workers; `results/nb5c_variants/<V>/`, every variant in `docs/pvsetformer_log.md`); the
-search `python tools/pvsf_cv.py --name CV<k> --set ...` (about 85 min). Run long rounds in a chain script so
-an interrupted session loses at most one round. Pandas
+search `python tools/pvsf_cv.py --name CV<k> --set ...` (about 85 min). A background run can outlive the
+session: before re-running a round, look for a live `pvsf_dev.py` process (PowerShell `Get-CimInstance
+Win32_Process`) and for its row in `log.csv`. Pandas
 pitfall: use `x['gt']`, never `x.gt` (a DataFrame method), for any column whose name is also a method.
 
 ## Environment notes

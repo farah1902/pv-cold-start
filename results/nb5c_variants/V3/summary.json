@@ -15,16 +15,18 @@
     "patience": 15,
     "donor_dropout": 0.1,
     "fleet_token": 1,
-    "balance": 1
+    "balance": 1,
+    "lin": 0,
+    "aux": 0.0
   },
   "n_params": 57673,
   "seeds": 1,
-  "runtime_s": 2072.8,
+  "runtime_s": 2082.9,
   "environment": {
     "python": "3.12.1",
     "platform": "Windows-11-10.0.26300-SP0",
     "executable": "C:\\Python312\\python.exe",
-    "run_at": "2026-11-21 00:23:35",
+    "run_at": "2026-11-21 00:49:24",
     "numpy": "1.26.4",
     "pandas": "2.2.0",
     "scipy": "1.12.0",
@@ -107,5 +109,5 @@
     }
   },
   "mean_best_epoch": 24.366666666666667,
-  "mean_task_runtime_s": 459.4366666666666
+  "mean_task_runtime_s": 514.56
 }

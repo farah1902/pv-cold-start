@@ -483,7 +483,11 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
     checked by the runner).
   - Ensemble: the mean of the sorted quantiles across the seeds, sorted again. Composition with the prior and scoring
     are unchanged. Both models are scored by `tools/r1_score.py`, which reproduces the round runner's scores on V1
-    (max difference 1·10⁻¹⁶).
+    (max difference 1·10⁻¹⁶) and NB5a's own LightGBM scores when given NB5a's LightGBM forecasts (all 60
+    unit–horizon rows, same slot counts, max difference 4·10⁻¹⁰), so the two models are scored alike.
+  - The decision is made in `notebooks/NB5c_R1_decision.ipynb` (`tools/make_nb5c.py --final <variant>`). It trains
+    nothing: it checks that both rounds used the same seeds and slots, applies the rule and writes
+    `results/nb5c_r1/` with the frozen configuration part 2c (the chosen index forecaster and its settings).
   - R1 bar: the median validation nRMSE at 1 h of LightGBM's ensemble (`tools/r1_lgb_seeds.py`, results in
     `results/nb5c_variants/LGB_seeds/`). The per-seed mean and s.d. of both models are reported beside it.
     Single-seed development rounds keep the single-seed bar 0.18098 as their reference.
