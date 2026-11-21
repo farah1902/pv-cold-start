@@ -62,9 +62,16 @@ telemetry start instead of grid connection (F06); metadata errors (D01).
 - That satellite data confirm the HKUST sensor drift, unless the CAMS all-sky check is actually run (D14).
 
 ## 8. What is still missing
-Before the freeze: the sensor and satellite rows' learner inputs, TimeXer and the ablation A6e (NB5c;
-PVSetFormer was chosen by R1 on 21 Nov, D45; its conformal layer is kept, D46), the foundation models (NB5b), freeze part 2 and the tag. After it: the test run (NB5) and
-everything from NB6 on. NB0–NB4, NB5a and the conformal layer done by 20 Nov 2026.
+Before the freeze:
+- the foundation-model grid on a Colab GPU (`NB5b_colab`, code and inputs ready, D59), then `NB5b_foundation`;
+  TabPFN-TS (A6c) waits for the author's choice of weights or its removal;
+- PVSetFormer design rounds until the freeze (D50; V8a with 5 seeds running);
+- whether LightGBM is a 5-seed ensemble at test, and then its conformal layer from that ensemble (D46);
+- freeze part 2 (2a LightGBM, 2b conformal, 2c R1, 2d foundation models) and the `protocol-freeze` tag.
+
+Done on development data by 21 Nov 2026: NB0–NB4, NB5a and its conformal layer, R1 (NB5c, D45) and PVSetFormer's
+conformal layer (D46), TimeXer and A6e (R2, F47, F48), the sensor and satellite rows (NB5d, F51) and A4c (D56).
+After the freeze: the test run (NB5) and everything from NB6 on.
 
 ## 9. Writing conventions
 Roadmap Phase 10: clear academic English, short sentences, active verbs; research questions and hypotheses as one
