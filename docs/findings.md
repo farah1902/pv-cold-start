@@ -525,10 +525,15 @@ repository). Paths are relative to `data/raw/hkust/Dataset/Time series dataset/`
   - V7a (learned donor identity): within 0.11% of V4a at every horizon; better at 1 h on 9 of 10 units.
   - V7b (each donor's deviation from the index): 1 h −0.1%, 2 h −0.5%, 6 h −0.7%; CRPS −0.4% at 1 h, −0.9% at 6 h;
     better at 1 h on 5 of 10 units.
+  - V8a (the readout at 15 min only): 15 min 0.1308 (−2.3%), 6 h +0.8%, but 30 min +1.4% and 1 h +1.1%.
+    V8b (V7a + V7b): within ±0.8% of V4a at every horizon.
 - **Reading:** F49's drift comes from the shared output head, not from the horizons attending to one another: a
   separate readout lets the 15-min median stay near persistence. Separate readouts at every horizon over-fit the
   long ones, which have fewer training pairs and noisier targets. The two donor options move the forecast by less
-  than one seed's spread; V7a's consistency across units hints at a small real effect. Single seed: provisional.
+  than one seed's spread; V7a's consistency across units hints at a small real effect, but V8b, which combines
+  them, gains nothing. Same-seed pairing does not remove the seed spread (the paths diverge in training; V4a's
+  single seeds at 1 h have s.d. 0.0014, about 0.8%), so only differences of about 2% or more are visible in a
+  one-seed round. Single seed: provisional; V8a is checked with 5 seeds.
 
 ### F51 — On the validation units the fleet index forecasts a new inverter better than the pyranometer index up to 1 h, and as well from 2 h — *strong*
 - **Evidence:** `results/nb5d_sources/medians.csv`, `summary.json` (NB5d, 21 Nov 2026; development data, 10

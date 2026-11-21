@@ -742,15 +742,20 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
   behaviour). V8a = V4a + `hhead=1 hhead_n=1`: only the 15-min horizon gets its own readout. 60,454 parameters
   (+297). Checks: V4a and V6b reproduce exactly on their shortest task; V8a starts at V4a's outputs; a 2-epoch run is
   finite and sorted.
-- **Result:** pending (1 seed, paired with V4a).
+- **Result (21 Nov 2026, 1 seed):** best 15 min so far, 0.1308 vs 0.1339 (−2.3%, better on 7 of 10 units; pinball
+  gap to LightGBM at 15 min +7.1%, V4a +9.5%), and the long horizons are kept (6 h +0.8%, against V6b's +6.3%).
+  But 30 min +1.4% and 1 h +1.1% (0.18138; better on 2 of 10 units), CRPS at 1 h +1.4%. The 1-h loss is within
+  the single-seed spread (s.d. 0.0014, about 0.8%), so V8a runs with the 5 R1 seeds (V8a_5s) before a verdict.
 
 ### D58 — PVSetFormer variant V8b: donor identity and donor deviation together [R1 round, Phase 5]
 - **Reason:** V7a and V7b each moved the forecast slightly in the right direction (F50); the two act on different
   parts of the donor token (who the donor is; how far it is from the campus index now).
 - **Change:** V4a + `donor_id=1 donor_rel=1`. 62,365 parameters. Starts at V4a's outputs (checked); a 2-epoch run is
   finite and sorted.
-- **Result:** pending (1 seed, paired with V4a). If V8a and V8b both help, their combination is the next round, then
-  5 seeds (D37).
+- **Result (21 Nov 2026, 1 seed):** rejected. Against V4a at the same seed: 15 min −0.2%, 30 min +0.8%, 1 h +0.3%
+  (0.18000; better on 4 of 10 units), 6 h −0.6%; CRPS at 1 h −0.2%. The two donor options together do no better
+  than either alone, and every difference is within one seed's spread: the donor tokens still add nothing
+  measurable (F47). The V8a + V8b combination is not run.
 
 ### D16 — pvlib 0.16.1 and ruptures 1.1.10 are installed locally and pinned [environment, Phase 0]
 - **Request or reason:** both are in the guide's software list (§5.6) and were missing locally on 18 Nov 2026.

@@ -36,6 +36,8 @@ favours the model that had more rounds (PVSetFormer; LightGBM had 4, D34). The t
 | V6b | 2026-11-21 | V4a + a per-horizon linear readout of the decoder output, added to the shared head, zero start (D53) | 61,939 | 1 | 0.18024 | 5 of 10 | 0.1311 / 0.2204 | Not kept as is: best 15 min so far (−2.1% vs V4a, 8 of 10 units; clear-spell bias −0.031 → −0.013), but 4 h +5.2% and 6 h +6.3%. Led to V8a (the readout at 15 min only). 20 min |
 | V7a | 2026-11-21 | V4a + a learned identity embedding per donor, zero start (D54) | 62,205 | 1 | 0.17938 | 4 of 10 | 0.1337 / 0.2075 | Within 0.11% of V4a at every horizon, but better at 1 h on 9 of 10 units (same seed). Kept for the combination V8b. 22 min |
 | V7b | 2026-11-21 | V4a + each donor's implied index minus the campus index, per step, into the donor token, zero start (D55) | 60,317 | 1 | 0.17927 | 4 of 10 | 0.1337 / 0.2058 | Lowest single-seed 1 h so far (−0.1%); 2 h −0.5%, 6 h −0.7%, CRPS at 1 h −0.4%; better at 1 h on 5 of 10 units. Within single-seed noise; kept for V8b. 21 min |
+| V8a | 2026-11-21 | V4a + the per-horizon readout of V6b on the 15-min horizon only (`hhead_n=1`, D57) | 60,454 | 1 | 0.18138 | 4 of 10 | 0.1308 / 0.2089 | Best 15 min so far (−2.3% vs V4a, 7 of 10 units) and the long horizons kept (6 h +0.8%), but 30 min +1.4%, 1 h +1.1% (2 of 10 units better). Within the single-seed spread at 1 h: checked with 5 seeds (V8a_5s). 24 min |
+| V8b | 2026-11-21 | V4a + donor identity and donor deviation together (V7a + V7b, D58) | 62,365 | 1 | 0.18000 | 4 of 10 | 0.1337 / 0.2060 | Rejected: within ±0.8% of V4a at every horizon; no better than V7a or V7b alone. The donor tokens still add nothing measurable (F47). 29 min |
 
 **R1 decision (21 Nov 2026, D45):** `notebooks/NB5c_R1_decision.ipynb` compared the 5-seed ensembles at 1 h:
 PVSetFormer (V4a) 0.18001, LightGBM 0.18130. PVSetFormer becomes the main index forecaster, with 6 variants tried
@@ -73,3 +75,8 @@ zero start, 60,445 parameters, 1 seed: 1 h 0.18038 (V4a 0.17949 at the same seed
 **Design round V8 (21 Nov 2026, D50).** From F50: V8a (D57) keeps V6b's own readout for the 15-min horizon only,
 where it removed most of the drift, and leaves the other horizons on the shared head. V8b (D58) combines the two
 donor options V7a and V7b. Both start exactly at V4a (checked) and run with one seed after A4c.
+
+**Noise in single-seed rounds (21 Nov 2026, F50).** A round with one seed is paired with V4a at the same seed, but
+the training paths diverge, so the pairing does not remove the seed spread: V4a's single seeds at 1 h have s.d.
+0.0014 (about 0.8%). Differences below about 2% in one round are not evidence either way; candidates that matter go
+to 5 seeds (D37). V8a_5s is the first such check.
