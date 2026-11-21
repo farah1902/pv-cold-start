@@ -158,6 +158,8 @@ Source: `results/nb5c_r1/summary.json`, `r1_medians.csv`, `r1_units_1h.csv`, `r1
 | Same for V4a_5s at 15 min; 6 h | +7.5 / +8.2 / +8.1%; −6.9 / −8.9 / −2.7% | nb5c_diag/learning_window/by_origin.csv |
 | Third origin, matched history (18–61 d): gap to LightGBM at 15 min / 1 h / 6 h, PVSetFormer; TimeXer | +11.6 / +7.5 / +7.2%; +2.6 / +2.6 / +6.3% | nb5c_diag/learning_window/medians.csv |
 | Third origin, full vs matched history, own pinball at 15 min / 1 h / 6 h: LightGBM; PVSetFormer; TimeXer | −3.1 / −3.5 / +2.4%; −6.2 / −4.4 / −4.5%; −0.4 / −2.4 / −3.2% | nb5c_diag/learning_window/medians.csv |
+| V4a level split (3 tasks, 1 seed), calmest quartile, mean 15-min median change at k(t) > 0.9: total; head; linear change terms; other linear terms; truth median | −0.048; −0.020; −0.018; −0.010; −0.0045 | nb5c_diag/drift_level/decomposition_level.csv |
+| Same at k(t) ≤ 0.3 | +0.028; +0.037; +0.007; −0.015; +0.0065 | nb5c_diag/drift_level/decomposition_level.csv |
 
 ## Conformal calibration of PVSetFormer (NB5c conformal)
 Source: `results/nb5c_conformal/summary.json`, `val_conformal_medians.csv`, `corrections.csv` (development data;

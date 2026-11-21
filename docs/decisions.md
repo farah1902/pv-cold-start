@@ -863,6 +863,23 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
   PVSetFormer is still behind LightGBM at the third origin (1 h: +7.5%), so the late-origin gap is not a matter
   of the amount of history; the extra 60 days help PVSetFormer more than LightGBM. Numbers and reading: F53.
 
+### D63 — PVSetFormer variant V11a: a volatility gate on the whole median change [R1 round, Phase 5]
+- **Reason:** F54: in calm states the transformer head and both parts of the linear path move the median off
+  persistence, so a gate on one part (V10a on the change terms, V5b on the head) leaves the others.
+- **Change:** option `vmed` (V11). Per horizon, a gate g_h = exp(clip(u_h · v + b_h, −3, 3)) from V5a's six
+  volatility features multiplies the whole median change (the head's plus the linear path's). The forecast
+  distribution can then stay at persistence in calm states and move further in volatile ones; the spread is
+  unchanged. u and b start at zero (g = 1, exactly V4a) and have no weight decay. 60,199 parameters (+42). V4a's
+  setting (d 32, lr 10⁻³, weight decay 0.5), so the comparison isolates the gate.
+- **Checks:** V4a and V10a_5s reproduce exactly on their shortest tasks (max difference 0 over 5,060 rows each);
+  V11a starts at V4a's outputs; with g = 2 every quantile moves by exactly the median change; the gate receives a
+  gradient; a 2-epoch run is finite and sorted.
+- **Protocol:** directly with the 5 R1 seeds (V11a_5s), queued after V9_5s. **Rule, fixed before the result:** V11a
+  replaces V4a as the candidate if its ensemble's median nRMSE is lower at 1 h and no more than 1% higher at any other
+  horizon. If V9 (D60) and V11a both meet their rules, the candidate is the one with the lower ensemble at 1 h, and
+  V12 (V9's setting with the gate) runs with 5 seeds. The diagnoses of F46, F49 and F52 are repeated on it.
+- **Result:** pending.
+
 ### D16 — pvlib 0.16.1 and ruptures 1.1.10 are installed locally and pinned [environment, Phase 0]
 - **Request or reason:** both are in the guide's software list (§5.6) and were missing locally on 18 Nov 2026.
 - **Change:** `pip install pvlib==0.16.1 ruptures==1.1.10`. A dry run first showed that nothing else would be

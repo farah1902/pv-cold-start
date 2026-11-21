@@ -293,3 +293,6 @@ One entry per work session: what was asked, what was done, the key numbers, what
   size; the extra 60 days help PVSetFormer most (F53, D62). V10a_5s (92 min): +0.06% at 1 h against V4a_5s, not kept
   (D61); its reversion slopes follow volatility but the calm-state gap stays. `pvsf_drift_diag.py` gains `--out` and
   a split of the decomposition by level (`decomposition_level`). V9_5s running since 15:16.
+- **Level split and V11a (21 Nov):** the decomposition by level (`--out drift_level`, reproduces F52 exactly): in
+  calm clear spells the 15-min median change −0.048 = head −0.020 + change terms −0.018 + other linear terms −0.010
+  (truth median −0.0045) (F54). Option `vmed` (V11a, D63) added and checked; V11a_5s queued after V9_5s.

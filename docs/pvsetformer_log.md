@@ -102,3 +102,8 @@ volatility as the data's does, yet its scores equal V4a's and the calm-state def
 gap at later origins comes from the period, not from the amount of history, and that the extra history helps it
 more than LightGBM. Next: where the level-dependent calm-state bias comes from (head or linear path), with V9_5s
 (the CV4 setting) running.
+
+**Level split, and V11a (21 Nov 2026).** Splitting V4a's calm-state median change by level (F54) shows that the head
+(pulling toward the overall mean), the linear change terms (the reversion of F52) and the other linear terms each
+move the median off persistence. V11a (D63) puts one volatility gate on the whole median change; it runs with 5 seeds
+after V9_5s.

@@ -81,7 +81,7 @@ def decomposition(rnd: str, tasks: list, p: dict, E: pd.DataFrame) -> tuple[pd.D
     import torch
     torch.set_num_threads(1)
     cfg = {**SF.DEFAULTS, **json.loads((C.RESULTS / "nb5c_variants" / rnd / "summary.json").read_text())["cfg"]}
-    assert cfg.get("lin") and not any(cfg.get(o) for o in ("vol", "vgate", "hhead", "vlin")), "head + linear path only"
+    assert cfg.get("lin") and not any(cfg.get(o) for o in ("vol", "vgate", "hhead", "vlin", "vmed")), "head + linear path only"
     idx = {c: pd.read_parquet(C.RESULTS / "nb3_index" / f"{c}.parquet").set_index("time") for c in ["k_cens", "sigma", "c", "n"]}
     gains3 = pd.read_csv(C.RESULTS / "nb3_index" / "gains.csv")
     rows, meta = [], []

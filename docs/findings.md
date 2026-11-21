@@ -610,6 +610,24 @@ repository). Paths are relative to `data/raw/hkust/Dataset/Time series dataset/`
   "more varied data" are not separated. The paper must not claim from this that PVSetFormer learns more from history
   or that its gap will change at the test.
 
+### F54 — In calm states the transformer head and both parts of the linear path move the median off persistence; the head's part follows the level — *provisional*
+- **Evidence:** `results/nb5c_diag/drift_level/decomposition_level.csv` (`python tools/pvsf_drift_diag.py --rounds
+  V4a_5s --decomp V4a "UG Hall2 RF:0" "SQ Apartment1-12:30" "SQ Apartment13-24:60" --out drift_level`; the same
+  three one-seed refits as F52, whose decomposition they reproduce exactly; development data). Mean of each part of
+  the median change in the calmest quartile of the last hour's s.d., by level of k(t):
+  - At 15 min on clear spells (k(t) > 0.9; 159 issue times): model −0.048 = head −0.020 + the linear path's change
+    terms (lags and day-earlier index minus k(t)) −0.018 + its other terms −0.010. Truth: mean −0.019, median −0.0045.
+  - At 15 min on dark spells (k(t) ≤ 0.3; 343): model +0.028 = head +0.037 + change terms +0.007 + other terms
+    −0.015. Truth: mean +0.023, median +0.0065.
+  - The head's part falls with the level: +0.037, +0.011, −0.0005 and −0.020 from the darkest to the clearest bin.
+    At 1 h on clear spells: model −0.100 = head −0.022 + change terms −0.062 + other terms −0.016 (truth median
+    −0.031).
+- **Reading:** no single part carries the calm-state bias of F49. The head pulls toward the overall mean (up when
+  dark, down when clear); the change terms add the reversion of F52; the other linear terms add a small constant
+  offset. A gate on one part therefore leaves the rest: V10a (change terms only) keeps the clear-spell bias, and V5b
+  (head only) halves the calm gap. Provisional: three tasks, one seed, and one of the three refits stopped at epoch
+  3, so the split points to a cause; it does not measure it.
+
 ### F16 — Not every site file starts on the 1st of a month — *solid*
 - **Evidence:** among the 18 site files of the first event list, Indoor Sports Centre (2021-12-02), Zone J2
   (2021-11-13), Zone D (2022-01-20) and UG Hall9 (2023-02-11) start mid-month. The audit counts 5 of the 15-min and
