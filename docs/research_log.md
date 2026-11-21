@@ -200,3 +200,6 @@ One entry per work session: what was asked, what was done, the key numbers, what
   (all-or-nothing). Re-run on 21 Nov, chained with V4a (a linear path on the index lags, aimed at the short-horizon
   gap) and V4b (auxiliary donor-forecast loss, clipped readings one-sided). Both options default to off. They were
   smoke-tested, and a V1 training retrained with them present reproduced V1 exactly.
+- **Author decision (21 Nov):** R1 compares 5-seed ensembles of both models (D37). Added `tools/r1_score.py`
+  (shared scoring, reproduces V1's scores to 1e-16) and `tools/r1_lgb_seeds.py` (LightGBM refitted with 5 seeds; its
+  check reproduces NB5a's forecasts to 6e-8). The LightGBM run follows the V3–V4b chain.

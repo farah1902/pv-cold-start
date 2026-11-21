@@ -464,13 +464,33 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
     dropout 0.1.
   - **R1 number:** the median, over the 10 validation units, of the nRMSE at 1 h of the composed power forecast,
     computed as for LightGBM (0.18098). Each round reports the single-seed value. The final R1 run uses 5 seeds
-    (guide §5.4) and reports the per-seed mean and s.d. and the seed ensemble (mean of the sorted quantiles). Which
-    of these counts for R1 is the author's call (asked 21 Nov 2026).
+    (guide §5.4) and reports the per-seed mean and s.d. and the seed ensemble (mean of the sorted quantiles). R1
+    compares the 5-seed ensembles of both models (D37).
   - **Compute:** local CPU (torch 2.2.0+cpu), one thread per training, 8 in parallel; a round takes about 30–40 min.
     The test run is planned on Colab GPU (D04).
 - **Caveat, stated in the paper:** the rounds and the final comparison use the same 10 validation units, so the
   comparison favours the model with more rounds (PVSetFormer; LightGBM had 4, D34). The test run is the unbiased check.
 - **Evidence:** `results/nb5c_variants/`, `docs/pvsetformer_log.md`.
+
+### D37 — Rule R1 compares 5-seed ensembles of both models [method, Phase 5] [author decision]
+- **Request or reason:** asked which number decides R1 when PVSetFormer is trained with 5 seeds, the author chose
+  (21 Nov 2026) "Ensemble for both". PVSetFormer's 5-seed ensemble is compared with LightGBM's 5-seed ensemble, so
+  that neither model gains from seed averaging alone. Neural networks gain more from it than LightGBM, whose only
+  randomness is bagging.
+- **Change:**
+  - Both models use the seeds C.SEED + 1 … C.SEED + 5. In LightGBM the seed drives the bagging and feature
+    fractions (0.8 each); the rest of NB5a's bank is unchanged (configuration part 2a, sha256 `d03bb0b86827009e…`,
+    checked by the runner).
+  - Ensemble: the mean of the sorted quantiles across the seeds, sorted again. Composition with the prior and scoring
+    are unchanged. Both models are scored by `tools/r1_score.py`, which reproduces the round runner's scores on V1
+    (max difference 1·10⁻¹⁶).
+  - R1 bar: the median validation nRMSE at 1 h of LightGBM's ensemble (`tools/r1_lgb_seeds.py`, results in
+    `results/nb5c_variants/LGB_seeds/`). The per-seed mean and s.d. of both models are reported beside it.
+    Single-seed development rounds keep the single-seed bar 0.18098 as their reference.
+  - Check: refitted with NB5a's seed C.SEED, the bank reproduces NB5a's LightGBM forecasts (max difference
+    6·10⁻⁸ on SQ567, origin 2 Jun 2021; float32 storage).
+  - Proposed, to confirm at the freeze: the test run treats both models the same way (5-seed ensembles).
+- **Evidence:** `tools/r1_score.py`, `tools/r1_lgb_seeds.py`.
 
 ### D16 — pvlib 0.16.1 and ruptures 1.1.10 are installed locally and pinned [environment, Phase 0]
 - **Request or reason:** both are in the guide's software list (§5.6) and were missing locally on 18 Nov 2026.
