@@ -86,3 +86,10 @@ to 5 seeds (D37). V8a_5s is the first such check.
 1 h, and its seeds spread more: not kept (D57). The diagnosis shows the drift moving from 15 to 30 min, so a readout
 per horizon only shifts the problem (F50). Next, CV4 (D60) repeats the shared search on V4a's own architecture,
 because CV2 ran before the linear path existed.
+
+**Source of the drift, and V10a (21 Nov 2026).** The regression of each median change on the last 4 hours' mean
+(F52) shows that PVSetFormer's reversion at 15 and 30 min is nearly the same in calm and volatile states, while the
+data's rises steeply with volatility. Refitting V4a on three tasks and splitting its median change shows that the
+linear path carries this reversion, not the transformer. V10a (D61) lets a volatility gate scale the linear path's
+median coefficients on the change terms; it runs directly with 5 seeds after CV4 and the matched-history
+diagnostic (D62).

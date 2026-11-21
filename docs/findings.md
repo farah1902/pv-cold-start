@@ -564,6 +564,29 @@ repository). Paths are relative to `data/raw/hkust/Dataset/Time series dataset/`
   satellite nowcast of the target time could add from 30 min on. Development data; the paper's numbers come from the
   test run.
 
+### F52 — PVSetFormer's short-horizon reversion toward the recent mean hardly depends on volatility, and its linear path carries it — *provisional*
+- **Evidence:** `results/nb5c_diag/drift/reversion.csv`, `decomposition.csv`, `decomposition_tasks.csv` (`python
+  tools/pvsf_drift_diag.py --rounds V4a_5s TX1_5s V8a_5s --decomp V4a "UG Hall2 RF:0" "SQ Apartment1-12:30" "SQ
+  Apartment13-24:60"`; development data, index level).
+  - **Reversion by volatility** (every validation forecast, 5-seed ensembles). Per horizon and quartile of the last
+    hour's s.d., the least-squares slope of the median change q0.5 − k(t) on (last 4 h mean − k(t)), with the
+    day-earlier change and an intercept in the same fit. At 15 min, from the calmest to the most volatile quartile:
+    truth (k(t + h) − k(t)) 0.039 / 0.123 / 0.171 / 0.217; LightGBM 0.026 / 0.038 / 0.062 / 0.098; TimeXer 0.078 /
+    0.088 / 0.105 / 0.138; PVSetFormer (V4a) 0.112 / 0.101 / 0.127 / 0.158. At 30 min: truth 0.112 → 0.364, LightGBM
+    0.065 → 0.177, V4a 0.192 → 0.279. V8a (own readout at 15 min) lowers its calm 15-min slope to 0.089 but raises
+    the calm 30-min slope to 0.204.
+  - **Decomposition** (V4a refitted on three tasks with 907, 3,572 and 5,024 training issue times; one seed; the
+    median change is exactly the transformer head's part plus the linear path's part). At 15 min the linear path's
+    slope is 0.147 / 0.156 / 0.172 / 0.197 by quartile, the head's −0.011 to −0.031; truth on the same tasks 0.087 →
+    0.258. At 30 min: linear 0.284 → 0.360, head −0.007 to −0.029, truth 0.161 → 0.440.
+- **Reading:** in calm states PVSetFormer pulls the next 15 min toward the last 4 hours' mean about three times as
+  strongly as the data justify, and in volatile states not strongly enough. LightGBM's median reverts more weakly
+  but in proportion to volatility. The pull comes from V4a's linear path, whose coefficients on the lags (as changes
+  from k(t)) are the same in every state; the transformer head adds almost none. This explains F49 (the clear-spell
+  bias) and why a separate readout (V6b, V8a) only moves the drift between horizons (F50). The slopes of the truth
+  describe the conditional mean, not the median, so they are an upper guide, not a target. Provisional: the
+  decomposition covers three tasks and one seed.
+
 ### F16 — Not every site file starts on the 1st of a month — *solid*
 - **Evidence:** among the 18 site files of the first event list, Indoor Sports Centre (2021-12-02), Zone J2
   (2021-11-13), Zone D (2022-01-20) and UG Hall9 (2023-02-11) start mid-month. The audit counts 5 of the 15-min and

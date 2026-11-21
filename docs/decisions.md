@@ -816,6 +816,37 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
   budget stays equal across models: each final model has its setting from one search on its own architecture.
 - **Result:** pending.
 
+### D61 — PVSetFormer variant V10a: a volatility gate on the linear path's reversion [R1 round, Phase 5]
+- **Reason:** F52: the short-horizon drift is the linear path's reversion toward the recent mean, with the same
+  strength in calm and volatile states.
+- **Change:** option `vlin` (V10). Per horizon, a gate g_h = exp(clip(u_h · v + b_h, −3, 3)), where v holds the six
+  volatility features of V5a (log s.d. of the index over the last 1 h and 2 h, log |last change|, each with its
+  flag). The gate multiplies the median coefficients of the linear path's change terms (the 16 lags minus k(t), and
+  the day-earlier index minus k(t)), so the strength of the reversion can follow the recent volatility. The spread,
+  the other linear terms and the transformer are unchanged. u and b start at zero (g = 1, exactly V4a) and have no
+  weight decay. 60,199 parameters (+42).
+- **Checks:** V4a reproduces exactly on its shortest task (max difference 0 over 5,060 rows); V10a starts at V4a's
+  outputs; the gate receives a gradient; the change columns are the lags and the day-earlier change; a 2-epoch run
+  is finite and sorted.
+- **Protocol:** directly with the 5 R1 seeds (V10a_5s), against V4a_5s, because one seed cannot show differences
+  below about 2% (F50). **Rule, fixed before the result:** V10a replaces V4a as the candidate if its ensemble's
+  median nRMSE is lower at 1 h and no more than 1% higher at any other horizon. The drift diagnosis (F52) is
+  repeated on it.
+- **Result:** pending.
+
+### D62 — Matched-history diagnostic: is the late-origin gap data or season? [diagnostic, Phase 5]
+- **Reason:** on the validation units PVSetFormer's and TimeXer's index-level pinball gaps to LightGBM at 1 h grow
+  from the first origin to the third (recorded by the tool in `by_origin.csv`). Training always starts
+  at the fleet's start (2021-05-15), so a later origin has both more history and a later season. The scored test
+  units start between 2021-10-05 and 2023-07-09 (5 to 26 months of history, against 0.5 to 4 months on validation),
+  so the answer bears on how the validation ranking carries to the test.
+- **Change:** `tools/learn_window.py`. At the third origin of each validation unit, LightGBM (part-2a setting,
+  seeds of LGB_seeds), PVSetFormer (V4a's setting) and TimeXer (TX1's) are refitted with 5 seeds on only as much
+  history as the unit had at its first origin, ending at the origin. History is hidden by setting the index, σ, c
+  and n to missing before the window. Forecast rows must equal the full-history rounds' (asserted). Index-level
+  pinball and median MAE. Development data only; no rule or setting of the protocol changes with the result.
+- **Result:** pending.
+
 ### D16 — pvlib 0.16.1 and ruptures 1.1.10 are installed locally and pinned [environment, Phase 0]
 - **Request or reason:** both are in the guide's software list (§5.6) and were missing locally on 18 Nov 2026.
 - **Change:** `pip install pvlib==0.16.1 ruptures==1.1.10`. A dry run first showed that nothing else would be

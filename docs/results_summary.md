@@ -146,6 +146,9 @@ Source: `results/nb5c_r1/summary.json`, `r1_medians.csv`, `r1_units_1h.csv`, `r1
 | V8a 5-seed ensemble vs V4a_5s, median nRMSE at 15 min / 30 min / 1 h / 6 h | 0.1309 / 0.1585 / 0.18061 / 0.2090 vs 0.1329 / 0.1566 / 0.18001 / 0.2068 | nb5c_variants/V8a_5s/scores.csv, V4a_5s/scores.csv |
 | V8a single seeds at 1 h: range; mean (s.d.) | 0.17935–0.18482; 0.18215 (0.0025) | nb5c_variants/V8a_5s/scores.csv |
 | Clear spells (calmest quartile, k(t) > 0.9), median move and bias at 15 min; 30 min: V8a_5s; V4a_5s | 0.028, −0.011; 0.082, −0.044 vs 0.047, −0.029; 0.067, −0.030 | nb5c_diag/V8a_5s, V4a_5s/calm_by_level.csv |
+| Slope of the 15-min median change on (4-h mean − k(t)), calmest → most volatile quartile: truth; LightGBM; TimeXer; V4a | 0.039 → 0.217; 0.026 → 0.098; 0.078 → 0.138; 0.112 → 0.158 | nb5c_diag/drift/reversion.csv |
+| Same at 30 min: truth; LightGBM; V4a | 0.112 → 0.364; 0.065 → 0.177; 0.192 → 0.279 | nb5c_diag/drift/reversion.csv |
+| V4a decomposition (3 tasks, 1 seed), 15-min slope by quartile: linear path; transformer head | 0.147 → 0.197; −0.011 to −0.031 | nb5c_diag/drift/decomposition.csv |
 
 ## Conformal calibration of PVSetFormer (NB5c conformal)
 Source: `results/nb5c_conformal/summary.json`, `val_conformal_medians.csv`, `corrections.csv` (development data;

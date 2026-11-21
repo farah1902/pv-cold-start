@@ -282,3 +282,7 @@ One entry per work session: what was asked, what was done, the key numbers, what
 - **V8a with 5 seeds (21 Nov):** not kept. Ensemble vs V4a_5s: 15 min −1.6%, 30 min +1.2%, 1 h +0.3%, 6 h +1.1%;
   the 15-min clear-spell drift moves to 30 min (`tools/pvsf_vol_diag.py --pvsf V8a_5s`). D57, F50. Search CV4 on
   V4a's architecture started (D60; about 85 min).
+- **Drift source (21 Nov):** `tools/pvsf_drift_diag.py`: PVSetFormer's 15-min reversion toward the last 4 h's mean is
+  0.11–0.16 in every volatility quartile (truth 0.04 → 0.22), and V4a's linear path carries it (F52). Option `vlin`
+  (V10a, D61) added and checked; `tools/learn_window.py` (D62) written: at the third origin, the gap to LightGBM
+  grows with the origin (confounded with season). Queued after CV4: the matched-history run, then V10a_5s.

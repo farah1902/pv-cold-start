@@ -1,0 +1,4 @@
+task,n_train,n_fc,best_epoch,seed
+UG Hall2 RF:0,907,1329,25,20261119
+SQ Apartment1-12:30,3572,1320,3,20261119
+SQ Apartment13-24:60,5024,1301,10,20261119
