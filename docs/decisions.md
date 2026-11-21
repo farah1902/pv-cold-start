@@ -434,6 +434,44 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
     frozen configuration part 2.
 - **Evidence:** `results/nb5a_conformal/`; F43.
 
+### D36 — PVSetFormer development protocol under rule R1 [method, Phase 5]
+- **Request or reason:** the author: "start PVSetFormer" (20 Nov 2026), under rule R1 (D25): as many design rounds as
+  needed, on development data only, every variant logged, the same tuning budget as LightGBM.
+- **Change:**
+  - **Model** (`src/pvcold/setformer.py`, guide §5.4). The inputs are donor tokens over the last 4 h in four 1-h
+    patches: each donor's implied index κ_d = y_d / (g_d G̃), capped at 2, plus its clipping and validity flags. Static
+    features: gain, DC/AC ratio (0 without clean metadata), metadata flag and tilt class. The layers are, in order:
+    - set attention across the donors online, per patch;
+    - attention pooling to 4 sky tokens;
+    - a causal temporal encoder with sun-geometry positions;
+    - a decoder with 6 horizon queries (future geometry, the index one day earlier);
+    - a monotone 9-quantile head on the change from persistence (as LightGBM, D34), zero-initialised so that
+      training starts at persistence.
+  - **Training.** Pinball loss and AdamW. Early stopping on the last 20% of the training issue times (by time), then
+    a refit on all of them for the best number of epochs; the early-stopped model's predictions on that 20% are the
+    conformal calibration set (D35). Interface, issue rules, horizons, origins and composition with the prior are
+    NB5a's. Options added by later variants default to off and are created after the existing layers, so earlier
+    variants reproduce exactly (checked: V1 retrained, max difference 0.0 over 5,060 forecast rows).
+  - **Round runner** `tools/pvsf_dev.py`. One round is every validation unit and origin, for n seeds. Scores come from
+    exactly the slots NB5a scored (an assertion stops the run otherwise), so the LightGBM numbers compare directly.
+    Output goes to `results/nb5c_variants/<variant>/` plus one row of `log.csv`, with every variant in
+    `docs/pvsetformer_log.md`.
+  - **Search** `tools/pvsf_cv.py`. The LightGBM budget and protocol: 18 settings × 3 folds on the same development
+    index (SQ Apartment25-36, masked from 2021-10-05), the same monthly folds (July, August, September 2021) and the
+    same criterion (mean pinball over quantiles, horizons and folds). Grid: d ∈ {32, 64} × lr ∈ {3·10⁻⁴, 10⁻³,
+    3·10⁻³} × weight decay ∈ {0.01, 0.1, 0.5}. Ties (within 10⁻⁶) go to the base setting, then to fewer parameters.
+    Fixed: 4 heads, 4 sky tokens, 2 + 2 layers, dropout 0.1, batch 256, at most 100 epochs, patience 15, donor
+    dropout 0.1.
+  - **R1 number:** the median, over the 10 validation units, of the nRMSE at 1 h of the composed power forecast,
+    computed as for LightGBM (0.18098). Each round reports the single-seed value. The final R1 run uses 5 seeds
+    (guide §5.4) and reports the per-seed mean and s.d. and the seed ensemble (mean of the sorted quantiles). Which
+    of these counts for R1 is the author's call (asked 21 Nov 2026).
+  - **Compute:** local CPU (torch 2.2.0+cpu), one thread per training, 8 in parallel; a round takes about 30–40 min.
+    The test run is planned on Colab GPU (D04).
+- **Caveat, stated in the paper:** the rounds and the final comparison use the same 10 validation units, so the
+  comparison favours the model with more rounds (PVSetFormer; LightGBM had 4, D34). The test run is the unbiased check.
+- **Evidence:** `results/nb5c_variants/`, `docs/pvsetformer_log.md`.
+
 ### D16 — pvlib 0.16.1 and ruptures 1.1.10 are installed locally and pinned [environment, Phase 0]
 - **Request or reason:** both are in the guide's software list (§5.6) and were missing locally on 18 Nov 2026.
 - **Change:** `pip install pvlib==0.16.1 ruptures==1.1.10`. A dry run first showed that nothing else would be

@@ -183,3 +183,20 @@ One entry per work session: what was asked, what was done, the key numbers, what
 - **Next, before the freeze:** the inputs of the sensor and satellite rows (same learner), PVSetFormer and TimeXer
   development (NB5c, Colab GPU) with their own conformal layers, the foundation-model settings (NB5b); then freeze
   part 2, the tag and the test run.
+
+## 2026-11-20 to 21 — PVSetFormer development (rule R1): V1, V2 and the search
+
+- **Asked:** the author: "start PVSetFormer".
+- **Done:**
+  - Wrote `src/pvcold/setformer.py` (model, training, search fold), `tools/pvsf_dev.py` (one validation round) and
+    `tools/pvsf_cv.py` (the LightGBM-budget search). D36 records the protocol.
+  - V1, the guide's design, scored 0.1858 at 1 h against LightGBM's 0.1810. V2 added a fleet-summary token and a
+    horizon-balanced loss: 0.1864 at 1 h, and better at 15 min (0.1422 → 0.1395), still worse than persistence there
+    (0.1338).
+  - The search CV2 ran in 84 min and chose d 32, lr 1e-3, weight decay 0.5. Its CV pinball is 0.07003 against
+    LightGBM's 0.06855, with the gap at the short horizons (9% at 15 min, 4.4% at 1 h; 2.5% better at 6 h).
+  - Every variant is in `docs/pvsetformer_log.md`.
+- **Interrupted:** the first V3 run stopped with the previous session at 22 of 30 trainings; nothing was written
+  (all-or-nothing). Re-run on 21 Nov, chained with V4a (a linear path on the index lags, aimed at the short-horizon
+  gap) and V4b (auxiliary donor-forecast loss, clipped readings one-sided). Both options default to off. They were
+  smoke-tested, and a V1 training retrained with them present reproduced V1 exactly.
