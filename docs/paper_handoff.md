@@ -35,11 +35,12 @@ telemetry start instead of grid connection (F06); metadata errors (D01).
   by 2–8% (F56).
 - That the foundation models beat the trained forecasters at 1 h: the differences are below 3% (F56); from 2 h
   several exceed it, on validation only so far.
-- That PVSetFormer beats TimeXer: on validation the candidate V9 is level with TimeXer at 1 h (0.17848 vs
-  0.17845), and the three learned forecasters are level (F48).
-- That PVSetFormer beats LightGBM at 1 h: on validation V9 is 1.6% below LightGBM's ensemble, on 6 of 10 units,
-  Wilcoxon p = 0.56 (V4a: 0.7%, 4 of 10, p = 1.0; F44). R1 selects the main model; it is not a result. Wait for
-  the test run.
+- That PVSetFormer beats TimeXer: on validation the candidate V12 is level with TimeXer at 1 h (0.17782 vs
+  0.17845, 4 of 10 units), and the three learned forecasters are level (F48).
+- That PVSetFormer beats LightGBM at 1 h: on validation V12 is 1.9% below LightGBM's ensemble, on 6 of 10 units,
+  Wilcoxon p = 0.77 (V9: 1.6%, p 0.56; V4a: 0.7%, p 1.0; F44). R1 selects the main model; it is not a result.
+  Wait for the test run.
+- That V12 improves on V9 beyond 30 min: its 1-h median is lower but 8 of 10 units are higher (D67).
 - That censoring clearly improves the index: on validation it won on 4 of 10 units (F28); wait for ablation A2.
 - That the nameplate prior is worth many days of data: w0 is below one day (F30).
 - The PVSetFormer title if rule R1 keeps LightGBM as the main model: then use the fallback title (D25).
@@ -73,8 +74,8 @@ telemetry start instead of grid connection (F06); metadata errors (D01).
 Before the freeze:
 - TabPFN-TS (A6c) waits for the author's licence (D65);
 - PVSetFormer rounds toward the target of D68 (lowest of the five forecasters on validation; V13_5s queued, D69);
-- PVSetFormer design rounds until the freeze (D50; candidate V9_5s since D60's result; V11a not kept; V12_5s
-  queued, D67); at the freeze, R1 (`make_nb5c.py --final`) and PVSetFormer's conformal layer are rerun on the final
+- PVSetFormer design rounds until the freeze (D50; candidate V12_5s since D67's result; V11a not kept; V13_5s
+  running, D69); at the freeze, R1 (`make_nb5c.py --final`) and PVSetFormer's conformal layer are rerun on the final
   candidate;
 - freeze part 2 (2a LightGBM, 2b conformal, 2c R1, 2d foundation models) and the `protocol-freeze` tag.
 

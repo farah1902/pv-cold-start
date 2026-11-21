@@ -986,7 +986,18 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
   15 min, no more than 0.5% higher at 1 h, and no more than 1% higher at any other horizon. The rule's target is
   15 min because the variant aims at the short-horizon gap (D50); the bound at 1 h is tighter because rule R1 is
   decided there. The diagnoses of F46, F49 and F52 are repeated on it.
-- **Result:** pending.
+- **Result (21 Nov 2026, 185 min): meets its rule; V12 replaces V9 as the candidate.** Ensemble median nRMSE at
+  15 min / 30 min / 1 h / 2 h / 4 h / 6 h: 0.13290 / 0.15667 / 0.17782 / 0.20719 / 0.23154 / 0.20555, against V9's
+  0.13320 / 0.15717 / 0.17848 / 0.20754 / 0.23241 / 0.20607 (−0.22, −0.32, −0.37, −0.17, −0.38, −0.25%).
+  **Caveat, reported with the result:** the gain is real only at 15 and 30 min (8 and 7 of 10 units lower; mean over
+  units −0.35 and −0.33%). From 1 h on the median falls but most units rise: at 1 h 2 of 10 units are lower (p
+  0.13), the mean over units is +0.21%, and per unit the change runs from −0.71 to +0.69%; at 2–6 h the means are
+  +0.09 to +0.39%. Every difference is below 1% and no p is below 0.13. Single seeds spread more than V9's: s.d. of
+  the per-seed median 0.0035 at 1 h (V9 0.0028) and 0.0077 at 6 h (0.0031); at 1 h 0.17800–0.18644, mean 0.18090.
+  The short-horizon diagnoses move as V11a's did: calmest-quartile 15-min pinball 31.7% above LightGBM's (V9
+  40.4%), 30-min 16.8% (21.2%), but 1-h 10.2% (7.7%); clear-spell bias at 15 min −0.022 (−0.030). Against the four
+  others (`nb5c_diag/vs_all/V12_5s.csv`): lowest at no horizon; at 1 h +0.15% against Chronos-2, −0.35% against
+  TimeXer, −1.9% against LightGBM (6 of 10 units, p 0.77). By D69, if V13 meets its rule, V14 = V12 + V13's input.
 
 ### D68 — PVSetFormer stays the main model; the development target is to beat all four other forecasters [author decision, Phase 5]
 - **Request:** the author, 21 Nov 2026, after F56: "i want honestly to keep my model the main one and become the best

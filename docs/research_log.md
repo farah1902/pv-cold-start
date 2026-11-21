@@ -318,3 +318,6 @@ One entry per work session: what was asked, what was done, the key numbers, what
   Chronos-2 and TimesFM at every horizon (development data). New scoreboard `tools/pvsf_vs_all.py`: V9 is lowest at
   no horizon (+0.5% at 1 h, +6.0% at 4 h against Chronos-2). V13 (D69, option `clim`: 7- and 28-day index at the
   target's time of day; checks passed, V9 and TX1 reproduce exactly) queued after V12_5s.
+- **V12_5s (21 Nov, 185 min):** meets its rule (D67) and becomes the candidate: medians −0.2 to −0.4% against V9 at
+  every horizon, but per unit only 15 and 30 min improve (8 and 7 of 10); at 1 h 2 of 10 units, unit mean +0.21%.
+  Calm 15-min gap 40 → 32%. Scoreboard: lowest at no horizon (+0.15% against Chronos-2 at 1 h). V13_5s started 23:04.

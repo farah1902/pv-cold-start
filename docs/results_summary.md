@@ -241,6 +241,11 @@ Source: `results/nb5b_fm/summary.json`, `medians.csv`, `comparison.csv`, `fm_con
 | Raw PICP80 at 1 h: Chronos-2; TimesFM 2.5 | 0.691; 0.731 | medians.csv |
 | V9_5s against the four others (ratio of medians), 15 min / 30 min / 1 h / 2 h / 4 h / 6 h: Chronos-2 | +2.7 / +1.9 / +0.5 / +2.2 / +6.0 / +3.0% | nb5c_diag/vs_all/V9_5s.csv |
 | Same: TimesFM 2.5; TimeXer; LightGBM | +3.2 / +1.6 / −0.3 / +1.4 / +4.7 / +0.8%; +2.3 / +0.9 / +0.0 / −1.4 / −1.2 / −1.4%; +3.2 / +0.6 / −1.6 / −1.3 / −1.8 / −5.5% | nb5c_diag/vs_all/V9_5s.csv |
+| V12 (V9 + median-change gate at 15 and 30 min, D67) 5-seed ensemble, median nRMSE at 15 min / 30 min / 1 h / 2 h / 4 h / 6 h | 0.13290 / 0.15667 / 0.17782 / 0.20719 / 0.23154 / 0.20555 | nb5c_variants/V12_5s/scores.csv |
+| V12 vs V9_5s: median over units; mean over units; units lower | −0.22 / −0.32 / −0.37 / −0.17 / −0.38 / −0.25%; −0.35 / −0.33 / +0.21 / +0.23 / +0.09 / +0.39%; 8 / 7 / 2 / 3 / 8 / 4 of 10 | nb5c_variants/V12_5s, V9_5s/scores.csv |
+| V12 single seeds at 1 h: range; mean; s.d. over seeds at 1 h / 6 h (V9) | 0.17800–0.18644; 0.18090; 0.0035 / 0.0077 (0.0028 / 0.0031) | nb5c_variants/V12_5s/scores.csv |
+| V12 vs Chronos-2 / TimesFM 2.5 / TimeXer / LightGBM at 1 h (ratio of medians); vs Chronos-2 at 15 min / 4 h | +0.15 / −0.67 / −0.35 / −1.92%; +2.4 / +5.6% | nb5c_diag/vs_all/V12_5s.csv |
+| V12 vs LightGBM, calmest-quartile pinball at 15 / 30 min / 1 h; clear-spell bias at 15 min (V9) | +31.7 / +16.8 / +10.2%; −0.022 (+40.4 / +21.2 / +7.7%; −0.030) | nb5c_diag/V12_5s, V9_5s/summary.json, calm_by_level.csv |
 
 ## Forecast skill and statistics (NB5, NB6)
 _empty_

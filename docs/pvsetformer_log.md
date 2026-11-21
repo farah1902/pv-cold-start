@@ -43,6 +43,7 @@ favours the model that had more rounds (PVSetFormer; LightGBM had 4, D34). The t
 | V10a_5s | 2026-11-21 | V4a + a volatility gate exp(u · vol + b) per horizon on the median coefficients of the linear path's change terms (D61), 5 R1 seeds | 60,199 | 5 | 0.18011 (ensemble; single seeds 0.17908–0.18331, mean 0.18114, s.d. 0.0018) | 4 of 10 vs LightGBM; 7 of 10 vs V4a_5s | 0.1324 / 0.2064 | Not kept (rule: lower at 1 h): +0.06% at 1 h, −0.4% at 15 min, +0.5% at 2 h, every p ≥ 0.27. The reversion now follows volatility (15-min slope 0.094 → 0.183), but the calm-state pinball gap (39%) and the clear-spell bias (−0.028) stay: the reversion is not the cause. 92 min |
 | V9_5s | 2026-11-21 | V4a with the setting of its own search CV4 (d 64, lr 1e-3, wd 0.5; D60), 5 R1 seeds | 224,317 | 5 | 0.17848 (ensemble; single seeds 0.17772–0.18475, mean 0.18072, s.d. 0.0028) | 6 of 10 vs LightGBM's ensemble; 5 of 10 vs V4a_5s | 0.1332 / 0.2061 | **New candidate (D60 rule: lower at 1 h).** −0.85% at 1 h, −0.8% at 2 h against V4a_5s; +0.2% at 15 min. −1.6% against LightGBM's ensemble at 1 h, level with TimeXer (0.17845). The short-horizon deficit is unchanged (calm 15-min pinball +40%). 154 min |
 | V11a_5s | 2026-11-21 | V4a + a volatility gate exp(u · vol + b) per horizon on the whole median change, head and linear path (D63), 5 R1 seeds | 60,199 | 5 | 0.18022 (ensemble; single seeds 0.17870–0.18507, mean 0.18135, s.d. 0.0023) | 4 of 10 vs LightGBM's ensemble; 4 of 10 vs V4a_5s | 0.1318 / 0.2098 | Not kept (rule: lower at 1 h): +0.12% at 1 h, +1.6% at 4 h, +1.4% at 6 h; −0.9% at 15 min (9 of 10 units, p 0.084). Calm 15-min pinball gap 40 → 30%, clear-spell bias −0.029 → −0.021; seed s.d. at 4 h about five times V4a's (F55). 112 min |
+| V12_5s | 2026-11-21 | V9 + the median-change gate on 15 and 30 min only (D67), 5 R1 seeds | 224,331 | 5 | 0.17782 (ensemble; single seeds 0.17800–0.18644, mean 0.18090, s.d. 0.0035) | 6 of 10 vs LightGBM's ensemble; 2 of 10 vs V9_5s | 0.1329 / 0.2056 | **New candidate (D67 rule: lower at 15 min, ≤ +0.5% at 1 h, ≤ +1% elsewhere).** Medians −0.2 to −0.4% at every horizon, but only 15 and 30 min improve on most units (8 and 7 of 10); from 1 h most units rise slightly (unit mean +0.1 to +0.4%). Calm 15-min gap 40 → 32%. Lowest of the five at no horizon. 185 min |
 
 **R1 decision (21 Nov 2026, D45):** `notebooks/NB5c_R1_decision.ipynb` compared the 5-seed ensembles at 1 h:
 PVSetFormer (V4a) 0.18001, LightGBM 0.18130. PVSetFormer becomes the main index forecaster, with 6 variants tried
@@ -126,3 +127,8 @@ the goal of making it the lowest of the five forecasters. V9 is lowest at no hor
 15 min, 0.5% at 1 h and 6% at 4 h (Chronos-2, `tools/pvsf_vs_all.py`). The first lever is the context: PVSetFormer
 reads 4 h, Chronos-2 28 days. V13 (D69) adds the index at the target's time of day over the past 7 and 28 days to
 the linear path; it runs after V12.
+
+**V12 becomes the candidate, narrowly (21 Nov 2026).** The gate on 15 and 30 min (D67) keeps V11a's short-horizon
+gain without its long-horizon loss in the medians: −0.22% at 15 min, −0.37% at 1 h against V9. Only the short
+horizons improve on most units, though; at 1 h the lower median sits on 2 of 10 units. The candidate changes by the
+rule, not because PVSetFormer is clearly better at 1 h. V13 (the 28-day input, D69) is running.
