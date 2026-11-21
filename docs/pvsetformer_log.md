@@ -16,6 +16,8 @@ single-seed rounds below. The decision itself compares 5-seed ensembles of both 
 PVSetFormer becomes the main index forecaster only if its ensemble's value is lower than LightGBM's ensemble's
 (`results/nb5c_variants/LGB_seeds/`) before the freeze.
 
+**LightGBM's 5-seed bar (21 Nov 2026):** ensemble **0.18130** at 1 h; the five seeds alone give 0.18090–0.18157 (mean 0.18123, s.d. 0.00025). Seed averaging barely moves LightGBM: its ensemble is better than NB5a's single seed on 7 of 10 units at 1 h, but its median is 0.0003 higher. Runtime 8.6 min; the reproduction check passed.
+
 **Caveat:** the design rounds and the final R1 comparison use the same 10 validation units, so the comparison
 favours the model that had more rounds (PVSetFormer; LightGBM had 4, D34). The test run is the unbiased check.
 
