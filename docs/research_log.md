@@ -309,3 +309,8 @@ One entry per work session: what was asked, what was done, the key numbers, what
 - **LightGBM's 5-seed conformal layer (21 Nov, D64):** `lgb_seeds_cal.py` (13 min) reproduces all 919,910 rows
   of `LGB_seeds` (max diff 6e-8) and writes 411,365 calibration rows; `NB5c_conformal_lgb` (55 s) is kept: PICP80 at
   1 h 0.709 → 0.795, IS80 0.5756 → 0.5705 (9 of 10 units). Figure checked at print size.
+- **Foundation models (21 Nov, D59):** the author's Colab run (all 8 settings) was on Drive in `pv-cold-start (1)`,
+  a second folder of the same name (D66); code and inputs equal to the manifest; fetched with checks.
+  `NB5b_foundation` (PVSetFormer reference now V9_5s) chose Chronos-2 with 28 days and covariates (0.1776 at 1 h)
+  and TimesFM 2.5 with 28 days, no XReg (0.1790). Chronos-2 is level with V9, LightGBM and TimeXer at 1 h (−0.5 to
+  −2.1%) and 2–8% lower from 2 h (F56, provisional). Question for the author on the main model and title.

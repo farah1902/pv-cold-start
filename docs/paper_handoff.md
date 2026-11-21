@@ -30,6 +30,11 @@ telemetry start instead of grid connection (F06); metadata errors (D01).
 ## 7. Claims the paper must NOT make
 - PVSetFormer as a general-purpose forecaster: describe it only for cold-start PV fleets (guide §6, D25).
 - That PVSetFormer beats a model unless rules R1 and R2 show it at the primary horizon (D25).
+- That PVSetFormer (or any trained forecaster) beats the zero-shot foundation models: on validation Chronos-2
+  is level with all of them at 1 h (0.1776 vs V9 0.1785, LightGBM 0.1813, TimeXer 0.1784) and lower from 2 h,
+  by 2–8% (F56).
+- That the foundation models beat the trained forecasters at 1 h: the differences are below 3% (F56); from 2 h
+  several exceed it, on validation only so far.
 - That PVSetFormer beats TimeXer: on validation the candidate V9 is level with TimeXer at 1 h (0.17848 vs
   0.17845), and the three learned forecasters are level (F48).
 - That PVSetFormer beats LightGBM at 1 h: on validation V9 is 1.6% below LightGBM's ensemble, on 6 of 10 units,
@@ -66,8 +71,9 @@ telemetry start instead of grid connection (F06); metadata errors (D01).
 
 ## 8. What is still missing
 Before the freeze:
-- the foundation-model grid on a Colab GPU (`NB5b_colab`; the Drive mirror is in place, D66), then
-  `tools/fetch_drive_runs.py` and `NB5b_foundation`; TabPFN-TS (A6c) waits for the author's licence (D65);
+- TabPFN-TS (A6c) waits for the author's licence (D65);
+- the author's view on F56 (a zero-shot foundation model level with or better than the trained forecasters)
+  for the main model and the title (D25, D50);
 - PVSetFormer design rounds until the freeze (D50; candidate V9_5s since D60's result; V11a not kept; V12_5s
   queued, D67); at the freeze, R1 (`make_nb5c.py --final`) and PVSetFormer's conformal layer are rerun on the final
   candidate;
@@ -75,7 +81,7 @@ Before the freeze:
 
 Done on development data by 21 Nov 2026: NB0–NB4, NB5a and its conformal layer, R1 (NB5c, D45) and PVSetFormer's
 conformal layer (D46), LightGBM's 5-seed conformal layer (D64), TimeXer and A6e (R2, F47, F48), the sensor and
-satellite rows (NB5d, F51) and A4c (D56).
+satellite rows (NB5d, F51), A4c (D56), and the foundation models A6a and A6b (NB5b, D59, F56).
 After the freeze: the test run (NB5) and everything from NB6 on.
 
 ## 9. Writing conventions

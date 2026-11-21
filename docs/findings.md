@@ -643,6 +643,29 @@ repository). Paths are relative to `data/raw/hkust/Dataset/Time series dataset/`
   depend on a few volatility features, and some seeds fit it badly. Provisional: one setting, and the split between
   horizons is read from the same validation units the rule uses. D67 keeps the gate on 15 and 30 min only.
 
+### F56 — Zero-shot Chronos-2 on the fleet index is level with every trained forecaster at 1 h and lower from 2 h — *provisional*
+- **Evidence:** `results/nb5b_fm/` (`NB5b_foundation`, D59; 10 validation units, NB5a's slots, development data).
+  Median nRMSE of the chosen settings against the 5-seed ensembles (ratio of medians; units where the foundation
+  model is lower; Wilcoxon p on the paired unit scores):
+  - Chronos-2 (28 days, covariates) at 15 min / 30 min / 1 h / 2 h / 4 h / 6 h: 0.1297 / 0.1542 / 0.1776 / 0.2031 /
+    0.2192 / 0.2000. Against LightGBM +0.5 / −1.3 / −2.1 / −3.4 / −7.4 / −8.2% (at 15 min 1 of 10 units, p 0.049; at
+    1 h 9 of 10, p 0.004; from 2 h 10 of 10, p 0.002). Against PVSetFormer V9 −2.6 / −1.9 / −0.5 / −2.1 / −5.7 /
+    −2.9% (at 1 h 8 of 10, p 0.43; at 4 h 8 of 10, p 0.010; at 6 h 10 of 10, p 0.002). Against TimeXer −0.3 / −1.0 /
+    −0.5 / −3.5 / −6.8 / −4.3% (at 1 h 8 of 10, p 0.16).
+  - TimesFM 2.5 (28 days, no covariates): 0.1291 / 0.1546 / 0.1790 / 0.2047 / 0.2220 / 0.2045; against LightGBM
+    −0.0 / −1.0 / −1.3 / −2.7 / −6.2 / −6.2% (at 1 h 9 of 10, p 0.020); against V9 −3.1 / −1.6 / +0.3 / −1.4 / −4.5 /
+    −0.8%.
+  - What the inputs add: 28 days of context beat 7, except for TimesFM with XReg (0.1806 against 0.1801); Chronos-2's
+    covariates (σ, c, n, geometry) lower its 1-h error by 0.4% with 28 days and 1.2% with 7 days, its 4-h error by
+    1.2% and 3.3%; TimesFM's XReg on the geometry does not help (0.1806 against 0.1790 with 28 days).
+  - Raw PICP80 at 1 h: Chronos-2 0.691, TimesFM 0.731 (LightGBM's ensemble 0.709, V9 0.705).
+- **Reading:** a model that has never seen this fleet, given only the causal fleet index (and for Chronos-2 the
+  fleet state), forecasts a new inverter at 1 h as well as the trained forecasters and better from 2 h; at 15 min
+  LightGBM and TimesFM are level and Chronos-2 is slightly behind LightGBM. The forecaster on top of the index
+  matters less than the index itself: all five rows forecast the new unit from the same fleet index and gain
+  prior. Below 3% (guide §3.10) the 1-h differences are level. Provisional: validation units only; each foundation
+  model's setting was chosen among four on these units (D59's rule), as the trained models' settings were.
+
 ### F16 — Not every site file starts on the 1st of a month — *solid*
 - **Evidence:** among the 18 site files of the first event list, Indoor Sports Centre (2021-12-02), Zone J2
   (2021-11-13), Zone D (2022-01-20) and UG Hall9 (2023-02-11) start mid-month. The audit counts 5 of the 15-min and

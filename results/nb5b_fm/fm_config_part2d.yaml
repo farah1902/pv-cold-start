@@ -1,0 +1,49 @@
+part: 2d
+decision: D59
+rule: lowest median validation nRMSE at 1 h per model
+inputs_sha256:
+  series.parquet: 35af0c3f78bdd0a26f1e93b1a8d143fd9123e8d734ca66189aeea30b484ef9a9
+  tasks.parquet: e6f3429c9578b66dd0d3d58724ef1509b16238265e9c7e6ed49ca7257b491020
+models:
+  chronos2:
+    weights: amazon/chronos-2
+    context: 1344
+    cov: full
+    grid: daylight 06:00-17:45
+    prediction_length: 24
+    versions:
+      torch: 2.14.1+cu130
+      numpy: 2.4.6
+      pandas: 2.2.3
+      chronos-forecasting: 2.3.2
+      transformers: 5.22.1
+    setting: chronos2_c1344_full
+    revision: 29ec3766d36d6f73f0696f85560a422f50e8498c
+    forecast_config: null
+    xreg: null
+  timesfm25:
+    weights: google/timesfm-2.5-200m-pytorch
+    context: 1344
+    cov: none
+    grid: daylight 06:00-17:45
+    prediction_length: 24
+    versions:
+      torch: 2.14.1+cu130
+      numpy: 2.4.6
+      pandas: 2.2.3
+      timesfm: 3.0.2
+      jax: 0.11.1
+      scikit-learn: 1.6.1
+    setting: timesfm25_c1344_none
+    revision: 1d952420fba87f3c6dee4f240de0f1a0fbc790e3
+    forecast_config:
+      max_context: 1344
+      max_horizon: 24
+      normalize_inputs: true
+      use_continuous_quantile_head: true
+      force_flip_invariance: true
+      infer_is_positive: true
+      fix_quantile_crossing: true
+      return_backcast: false
+      per_core_batch_size: 64
+    xreg: null

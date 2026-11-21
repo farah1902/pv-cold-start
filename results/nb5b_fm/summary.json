@@ -1,0 +1,412 @@
+{
+  "notebook": "NB5b_foundation",
+  "environment": {
+    "python": "3.12.1",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "executable": "C:\\Python312\\python.exe",
+    "run_at": "2026-11-21 22:36:39",
+    "numpy": "1.26.4",
+    "pandas": "2.2.0",
+    "scipy": "1.12.0",
+    "sklearn": "1.5.1",
+    "statsmodels": "0.15.0",
+    "lightgbm": "4.6.0",
+    "pvlib": "0.16.1",
+    "ruptures": "v1.1.10",
+    "matplotlib": "3.8.3",
+    "torch": "2.2.0+cpu",
+    "openpyxl": "3.1.5",
+    "pyarrow": "15.0.2",
+    "yaml": "6.0.1"
+  },
+  "runtime_s": 414.7,
+  "grid": [
+    "chronos2_c336_full",
+    "chronos2_c336_none",
+    "chronos2_c1344_full",
+    "chronos2_c1344_none",
+    "timesfm25_c336_full",
+    "timesfm25_c336_none",
+    "timesfm25_c1344_full",
+    "timesfm25_c1344_none"
+  ],
+  "chosen": {
+    "chronos2": "chronos2_c1344_full",
+    "timesfm25": "timesfm25_c1344_none"
+  },
+  "fm_config_sha256": "d637d1b05e16aac80a04ab73b702efd78471a6719dd8f7a37dcf2cd4c3d0d5d6",
+  "median_nRMSE_1h": {
+    "chronos2_c1344_full": 0.17755,
+    "chronos2_c1344_none": 0.17828,
+    "timesfm25_c1344_none": 0.17901,
+    "chronos2_c336_full": 0.17954,
+    "timesfm25_c336_full": 0.18013,
+    "timesfm25_c336_none": 0.18056,
+    "timesfm25_c1344_full": 0.18056,
+    "chronos2_c336_none": 0.18165
+  },
+  "vs_refs_1h": [
+    {
+      "fm": "chronos2",
+      "reference": "LightGBM",
+      "rel_pct": -2.521,
+      "units_fm_better": 9,
+      "wilcoxon_p": 0.0039
+    },
+    {
+      "fm": "chronos2",
+      "reference": "PVSetFormer",
+      "rel_pct": -3.009,
+      "units_fm_better": 8,
+      "wilcoxon_p": 0.4316
+    },
+    {
+      "fm": "chronos2",
+      "reference": "TimeXer",
+      "rel_pct": -2.3858,
+      "units_fm_better": 8,
+      "wilcoxon_p": 0.1602
+    },
+    {
+      "fm": "timesfm25",
+      "reference": "LightGBM",
+      "rel_pct": -1.5428,
+      "units_fm_better": 9,
+      "wilcoxon_p": 0.0195
+    },
+    {
+      "fm": "timesfm25",
+      "reference": "PVSetFormer",
+      "rel_pct": -2.7121,
+      "units_fm_better": 7,
+      "wilcoxon_p": 0.4922
+    },
+    {
+      "fm": "timesfm25",
+      "reference": "TimeXer",
+      "rel_pct": -2.2018,
+      "units_fm_better": 7,
+      "wilcoxon_p": 0.2324
+    }
+  ],
+  "run_info": {
+    "chronos2_c336_full": {
+      "model": "chronos2",
+      "weights": "amazon/chronos-2",
+      "revision": "29ec3766d36d6f73f0696f85560a422f50e8498c",
+      "max_context": 8192,
+      "native_quantiles": true,
+      "context": 336,
+      "cov": "full",
+      "grid": "daylight 06:00-17:45",
+      "prediction_length": 24,
+      "device": "cuda",
+      "threads": 8,
+      "batch": 64,
+      "limit": 0,
+      "inputs_sha256": {
+        "series.parquet": "35af0c3f78bdd0a26f1e93b1a8d143fd9123e8d734ca66189aeea30b484ef9a9",
+        "tasks.parquet": "e6f3429c9578b66dd0d3d58724ef1509b16238265e9c7e6ed49ca7257b491020"
+      },
+      "n_tasks": 37619,
+      "n_rows": 184353,
+      "runtime_s": 1034.8,
+      "versions": {
+        "torch": "2.14.1+cu130",
+        "numpy": "2.4.6",
+        "pandas": "2.2.3",
+        "chronos-forecasting": "2.3.2",
+        "transformers": "5.22.1"
+      },
+      "python": "3.13.16",
+      "run_at": "2026-11-21 18:13:41"
+    },
+    "chronos2_c336_none": {
+      "model": "chronos2",
+      "weights": "amazon/chronos-2",
+      "revision": "29ec3766d36d6f73f0696f85560a422f50e8498c",
+      "max_context": 8192,
+      "native_quantiles": true,
+      "context": 336,
+      "cov": "none",
+      "grid": "daylight 06:00-17:45",
+      "prediction_length": 24,
+      "device": "cuda",
+      "threads": 8,
+      "batch": 64,
+      "limit": 0,
+      "inputs_sha256": {
+        "series.parquet": "35af0c3f78bdd0a26f1e93b1a8d143fd9123e8d734ca66189aeea30b484ef9a9",
+        "tasks.parquet": "e6f3429c9578b66dd0d3d58724ef1509b16238265e9c7e6ed49ca7257b491020"
+      },
+      "n_tasks": 37619,
+      "n_rows": 184353,
+      "runtime_s": 86.0,
+      "versions": {
+        "torch": "2.14.1+cu130",
+        "numpy": "2.4.6",
+        "pandas": "2.2.3",
+        "chronos-forecasting": "2.3.2",
+        "transformers": "5.22.1"
+      },
+      "python": "3.13.16",
+      "run_at": "2026-11-21 18:15:12"
+    },
+    "chronos2_c1344_full": {
+      "model": "chronos2",
+      "weights": "amazon/chronos-2",
+      "revision": "29ec3766d36d6f73f0696f85560a422f50e8498c",
+      "max_context": 8192,
+      "native_quantiles": true,
+      "context": 1344,
+      "cov": "full",
+      "grid": "daylight 06:00-17:45",
+      "prediction_length": 24,
+      "device": "cuda",
+      "threads": 8,
+      "batch": 64,
+      "limit": 0,
+      "inputs_sha256": {
+        "series.parquet": "35af0c3f78bdd0a26f1e93b1a8d143fd9123e8d734ca66189aeea30b484ef9a9",
+        "tasks.parquet": "e6f3429c9578b66dd0d3d58724ef1509b16238265e9c7e6ed49ca7257b491020"
+      },
+      "n_tasks": 37619,
+      "n_rows": 184353,
+      "runtime_s": 3657.6,
+      "versions": {
+        "torch": "2.14.1+cu130",
+        "numpy": "2.4.6",
+        "pandas": "2.2.3",
+        "chronos-forecasting": "2.3.2",
+        "transformers": "5.22.1"
+      },
+      "python": "3.13.16",
+      "run_at": "2026-11-21 19:16:13"
+    },
+    "chronos2_c1344_none": {
+      "model": "chronos2",
+      "weights": "amazon/chronos-2",
+      "revision": "29ec3766d36d6f73f0696f85560a422f50e8498c",
+      "max_context": 8192,
+      "native_quantiles": true,
+      "context": 1344,
+      "cov": "none",
+      "grid": "daylight 06:00-17:45",
+      "prediction_length": 24,
+      "device": "cuda",
+      "threads": 8,
+      "batch": 64,
+      "limit": 0,
+      "inputs_sha256": {
+        "series.parquet": "35af0c3f78bdd0a26f1e93b1a8d143fd9123e8d734ca66189aeea30b484ef9a9",
+        "tasks.parquet": "e6f3429c9578b66dd0d3d58724ef1509b16238265e9c7e6ed49ca7257b491020"
+      },
+      "n_tasks": 37619,
+      "n_rows": 184353,
+      "runtime_s": 282.3,
+      "versions": {
+        "torch": "2.14.1+cu130",
+        "numpy": "2.4.6",
+        "pandas": "2.2.3",
+        "chronos-forecasting": "2.3.2",
+        "transformers": "5.22.1"
+      },
+      "python": "3.13.16",
+      "run_at": "2026-11-21 19:20:59"
+    },
+    "timesfm25_c336_full": {
+      "model": "timesfm25",
+      "weights": "google/timesfm-2.5-200m-pytorch",
+      "revision": "1d952420fba87f3c6dee4f240de0f1a0fbc790e3",
+      "forecast_config": {
+        "max_context": 352,
+        "max_horizon": 24,
+        "normalize_inputs": true,
+        "use_continuous_quantile_head": true,
+        "force_flip_invariance": true,
+        "infer_is_positive": true,
+        "fix_quantile_crossing": true,
+        "return_backcast": true,
+        "per_core_batch_size": 64
+      },
+      "native_quantiles": true,
+      "xreg": {
+        "mode": "xreg + timesfm",
+        "covariates": [
+          "Gt",
+          "cosz",
+          "sin_az",
+          "cos_az",
+          "sin_ha",
+          "cos_ha"
+        ],
+        "ridge": 0.0
+      },
+      "context": 336,
+      "cov": "full",
+      "grid": "daylight 06:00-17:45",
+      "prediction_length": 24,
+      "device": "cuda",
+      "threads": 8,
+      "batch": 64,
+      "limit": 0,
+      "inputs_sha256": {
+        "series.parquet": "35af0c3f78bdd0a26f1e93b1a8d143fd9123e8d734ca66189aeea30b484ef9a9",
+        "tasks.parquet": "e6f3429c9578b66dd0d3d58724ef1509b16238265e9c7e6ed49ca7257b491020"
+      },
+      "n_tasks": 37619,
+      "n_rows": 184353,
+      "runtime_s": 279.7,
+      "versions": {
+        "torch": "2.14.1+cu130",
+        "numpy": "2.4.6",
+        "pandas": "2.2.3",
+        "timesfm": "3.0.2",
+        "jax": "0.11.1",
+        "scikit-learn": "1.6.1"
+      },
+      "python": "3.13.16",
+      "run_at": "2026-11-21 19:25:42"
+    },
+    "timesfm25_c336_none": {
+      "model": "timesfm25",
+      "weights": "google/timesfm-2.5-200m-pytorch",
+      "revision": "1d952420fba87f3c6dee4f240de0f1a0fbc790e3",
+      "forecast_config": {
+        "max_context": 352,
+        "max_horizon": 24,
+        "normalize_inputs": true,
+        "use_continuous_quantile_head": true,
+        "force_flip_invariance": true,
+        "infer_is_positive": true,
+        "fix_quantile_crossing": true,
+        "return_backcast": false,
+        "per_core_batch_size": 64
+      },
+      "native_quantiles": true,
+      "xreg": null,
+      "context": 336,
+      "cov": "none",
+      "grid": "daylight 06:00-17:45",
+      "prediction_length": 24,
+      "device": "cuda",
+      "threads": 8,
+      "batch": 64,
+      "limit": 0,
+      "inputs_sha256": {
+        "series.parquet": "35af0c3f78bdd0a26f1e93b1a8d143fd9123e8d734ca66189aeea30b484ef9a9",
+        "tasks.parquet": "e6f3429c9578b66dd0d3d58724ef1509b16238265e9c7e6ed49ca7257b491020"
+      },
+      "n_tasks": 37619,
+      "n_rows": 184353,
+      "runtime_s": 171.9,
+      "versions": {
+        "torch": "2.14.1+cu130",
+        "numpy": "2.4.6",
+        "pandas": "2.2.3",
+        "timesfm": "3.0.2",
+        "jax": "0.11.1",
+        "scikit-learn": "1.6.1"
+      },
+      "python": "3.13.16",
+      "run_at": "2026-11-21 19:28:38"
+    },
+    "timesfm25_c1344_full": {
+      "model": "timesfm25",
+      "weights": "google/timesfm-2.5-200m-pytorch",
+      "revision": "1d952420fba87f3c6dee4f240de0f1a0fbc790e3",
+      "forecast_config": {
+        "max_context": 1344,
+        "max_horizon": 24,
+        "normalize_inputs": true,
+        "use_continuous_quantile_head": true,
+        "force_flip_invariance": true,
+        "infer_is_positive": true,
+        "fix_quantile_crossing": true,
+        "return_backcast": true,
+        "per_core_batch_size": 64
+      },
+      "native_quantiles": true,
+      "xreg": {
+        "mode": "xreg + timesfm",
+        "covariates": [
+          "Gt",
+          "cosz",
+          "sin_az",
+          "cos_az",
+          "sin_ha",
+          "cos_ha"
+        ],
+        "ridge": 0.0
+      },
+      "context": 1344,
+      "cov": "full",
+      "grid": "daylight 06:00-17:45",
+      "prediction_length": 24,
+      "device": "cuda",
+      "threads": 8,
+      "batch": 64,
+      "limit": 0,
+      "inputs_sha256": {
+        "series.parquet": "35af0c3f78bdd0a26f1e93b1a8d143fd9123e8d734ca66189aeea30b484ef9a9",
+        "tasks.parquet": "e6f3429c9578b66dd0d3d58724ef1509b16238265e9c7e6ed49ca7257b491020"
+      },
+      "n_tasks": 37619,
+      "n_rows": 184353,
+      "runtime_s": 735.5,
+      "versions": {
+        "torch": "2.14.1+cu130",
+        "numpy": "2.4.6",
+        "pandas": "2.2.3",
+        "timesfm": "3.0.2",
+        "jax": "0.11.1",
+        "scikit-learn": "1.6.1"
+      },
+      "python": "3.13.16",
+      "run_at": "2026-11-21 19:40:57"
+    },
+    "timesfm25_c1344_none": {
+      "model": "timesfm25",
+      "weights": "google/timesfm-2.5-200m-pytorch",
+      "revision": "1d952420fba87f3c6dee4f240de0f1a0fbc790e3",
+      "forecast_config": {
+        "max_context": 1344,
+        "max_horizon": 24,
+        "normalize_inputs": true,
+        "use_continuous_quantile_head": true,
+        "force_flip_invariance": true,
+        "infer_is_positive": true,
+        "fix_quantile_crossing": true,
+        "return_backcast": false,
+        "per_core_batch_size": 64
+      },
+      "native_quantiles": true,
+      "xreg": null,
+      "context": 1344,
+      "cov": "none",
+      "grid": "daylight 06:00-17:45",
+      "prediction_length": 24,
+      "device": "cuda",
+      "threads": 8,
+      "batch": 64,
+      "limit": 0,
+      "inputs_sha256": {
+        "series.parquet": "35af0c3f78bdd0a26f1e93b1a8d143fd9123e8d734ca66189aeea30b484ef9a9",
+        "tasks.parquet": "e6f3429c9578b66dd0d3d58724ef1509b16238265e9c7e6ed49ca7257b491020"
+      },
+      "n_tasks": 37619,
+      "n_rows": 184353,
+      "runtime_s": 569.5,
+      "versions": {
+        "torch": "2.14.1+cu130",
+        "numpy": "2.4.6",
+        "pandas": "2.2.3",
+        "timesfm": "3.0.2",
+        "jax": "0.11.1",
+        "scikit-learn": "1.6.1"
+      },
+      "python": "3.13.16",
+      "run_at": "2026-11-21 19:50:30"
+    }
+  }
+}

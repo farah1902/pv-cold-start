@@ -1,0 +1,31 @@
+{
+  "model": "chronos2",
+  "weights": "amazon/chronos-2",
+  "revision": "29ec3766d36d6f73f0696f85560a422f50e8498c",
+  "max_context": 8192,
+  "native_quantiles": true,
+  "context": 336,
+  "cov": "full",
+  "grid": "daylight 06:00-17:45",
+  "prediction_length": 24,
+  "device": "cuda",
+  "threads": 8,
+  "batch": 64,
+  "limit": 0,
+  "inputs_sha256": {
+    "series.parquet": "35af0c3f78bdd0a26f1e93b1a8d143fd9123e8d734ca66189aeea30b484ef9a9",
+    "tasks.parquet": "e6f3429c9578b66dd0d3d58724ef1509b16238265e9c7e6ed49ca7257b491020"
+  },
+  "n_tasks": 37619,
+  "n_rows": 184353,
+  "runtime_s": 1034.8,
+  "versions": {
+    "torch": "2.14.1+cu130",
+    "numpy": "2.4.6",
+    "pandas": "2.2.3",
+    "chronos-forecasting": "2.3.2",
+    "transformers": "5.22.1"
+  },
+  "python": "3.13.16",
+  "run_at": "2026-11-21 18:13:41"
+}

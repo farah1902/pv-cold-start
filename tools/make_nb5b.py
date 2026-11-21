@@ -3,8 +3,12 @@
   NB5b_inputs.ipynb      local, main environment: the index series and NB5a's issue times -> results/nb5b_inputs/
   NB5b_colab.ipynb       Colab GPU (or locally with .venv_fm): the settings grid -> results/nb5b_runs/
   NB5b_foundation.ipynb  local, main environment: scores on NB5a's slots, the setting per model, the comparison
-                         with the 5-seed ensembles of LightGBM, PVSetFormer (V4a) and TimeXer -> results/nb5b_fm/
+                         with the 5-seed ensembles of LightGBM, PVSetFormer (the candidate V9, D60) and TimeXer
+                         -> results/nb5b_fm/
+
+    python tools/make_nb5b.py [--only NB5b_foundation ...]   (default: all three)
 """
+import argparse
 from pathlib import Path
 
 import nbformat as nbf
@@ -127,7 +131,7 @@ nb3.cells = [
        "D23, D59; guide §5.4 rows A6a (Chronos-2) and A6b (TimesFM 2.5). Each run of the grid is composed with the "
        "frozen prior and scored on exactly NB5a's slots (`r1_score.score`). **Setting per model (rule fixed before any "
        "score, D59):** the lowest median nRMSE at 1 h over the 10 units. The chosen settings are compared with the "
-       "5-seed ensembles of LightGBM, PVSetFormer (V4a) and TimeXer on the same slots (paired by unit). Writes "
+       "5-seed ensembles of LightGBM, PVSetFormer (the candidate V9, D60) and TimeXer on the same slots (paired by unit). Writes "
        "`results/nb5b_fm/` with `fm_config_part2d.yaml`."),
     code(SETUP +
          "from scipy.stats import wilcoxon\n"
@@ -136,7 +140,7 @@ nb3.cells = [
          "INP, RUNS, VD = C.RESULTS / 'nb5b_inputs', C.RESULTS / 'nb5b_runs', C.RESULTS / 'nb5c_variants'\n"
          "man = json.loads((INP / 'inputs_manifest.json').read_text())\n"
          f"GRID = {GRID!r}\n"
-         "REFS = {'LightGBM': 'LGB_seeds', 'PVSetFormer': 'V4a_5s', 'TimeXer': 'TX1_5s'}\n"
+         "REFS = {'LightGBM': 'LGB_seeds', 'PVSetFormer': 'V9_5s', 'TimeXer': 'TX1_5s'}\n"
          "info = {}\n"
          "for model, L, cov in GRID:\n"
          "    s = f'{model}_c{L}_{cov}'\n"
@@ -211,7 +215,13 @@ nb3.cells = [
          "print('written to', out, '|', sorted(x.name for x in out.iterdir()))"),
 ]
 
-for nb, name in [(nb1, "NB5b_inputs"), (nb2, "NB5b_colab"), (nb3, "NB5b_foundation")]:
+NAMES = ["NB5b_inputs", "NB5b_colab", "NB5b_foundation"]
+ap = argparse.ArgumentParser()
+ap.add_argument("--only", nargs="*", choices=NAMES, default=NAMES, help="notebooks to write (the others keep outputs)")
+ONLY = ap.parse_args().only
+for nb, name in zip([nb1, nb2, nb3], NAMES):
+    if name not in ONLY:
+        continue
     nb.metadata["kernelspec"] = KERNEL
     nbf.write(nb, ROOT / "notebooks" / f"{name}.ipynb")
     print(f"wrote notebooks/{name}.ipynb")

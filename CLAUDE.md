@@ -178,7 +178,9 @@ Foundation models (NB5b, D59): `python tools/make_nb5b.py`, execute `NB5b_inputs
 `NB5b_colab.ipynb` on a Colab GPU (or locally with `.venv_fm`, very slow), copy `results/nb5b_runs/` back, then
 execute `NB5b_foundation.ipynb` (`results/nb5b_fm/`). Colab round trip (D66): `python tools/make_drive_mirror.py`
 puts the 16 files NB5b_colab reads in `G:/My Drive/pv-cold-start` (Google Drive for desktop); after the run,
-`python tools/fetch_drive_runs.py` copies the runs back with hash checks. The packages live only in the separate environment
+`python tools/fetch_drive_runs.py` copies the runs back with hash checks (pass the folder Colab actually used: on
+21 Nov 2026 it was `"G:/My Drive/pv-cold-start (1)"`, a second folder of the same name; D66). Regenerate one
+NB5b notebook only with `python tools/make_nb5b.py --only NB5b_foundation`. The packages live only in the separate environment
 `.venv_fm` (`requirements-fm.txt`): never install them in the main one (numpy 2, torch 2.15). Downloads from the
 Hugging Face hub run with `HF_HUB_DISABLE_IMPLICIT_TOKEN=1` (the stored token has expired).
 PVSetFormer development (D36): one round `python tools/pvsf_dev.py --name V<k> --seeds 1 --set key=value ...`

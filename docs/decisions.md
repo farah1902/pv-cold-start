@@ -801,6 +801,17 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
     License, Apache-2.0 with an attribution clause) or the default TabPFN-3.5 weights (non-commercial, licence
     accepted through the author's account).
 - **Evidence:** `tools/fm_infer.py`, `tools/make_nb5b.py`, `requirements-fm.txt`, `results/nb5b_inputs/inputs_manifest.json`.
+- **Result (21 Nov 2026).** The author ran `NB5b_colab` on a Colab GPU (all 8 settings, 184,353 rows each;
+  Chronos-2 86–3,658 s, TimesFM 172–736 s per setting; Colab's torch 2.14.1+cu130, chronos-forecasting 2.3.2,
+  transformers 5.22.1, timesfm 3.0.2, jax 0.11.1, scikit-learn 1.6.1, numpy 2.4.6, pandas 2.2.3, recorded per run).
+  `fetch_drive_runs.py` brought them back (input hashes, row counts and sorted quantiles checked), and
+  `NB5b_foundation` (415 s) scored them on NB5a's slots. Its PVSetFormer reference is now the candidate V9_5s
+  (D60) instead of V4a_5s (`make_nb5b.py --only NB5b_foundation`; the other two notebooks are not rewritten).
+  Median nRMSE at 1 h: Chronos-2 0.1776 (28 days, covariates) / 0.1783 (28 days, none) / 0.1795 (7 days,
+  covariates) / 0.1817 (7 days, none); TimesFM 2.5 0.1790 (28 days, none) / 0.1801 (7 days, XReg) / 0.1806
+  (7 days, none) / 0.1806 (28 days, XReg). **By the rule: A6a = Chronos-2 with 1,344 daylight steps and the
+  covariates; A6b = TimesFM 2.5 with 1,344 steps and no XReg.** Part 2d: `results/nb5b_fm/fm_config_part2d.yaml`
+  (sha256 `d637d1b05e16aac8…`), with the weights' revisions. The comparison with the trained forecasters is F56.
 
 ### D60 — Search CV4: the shared search on V4a's own architecture [R1 round, Phase 5]
 - **Reason:** PVSetFormer's setting (d 32, lr 10⁻³, weight decay 0.5) was chosen by CV2 on V2 (D41), before V4a's
@@ -950,6 +961,12 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
     all-or-nothing, idempotent (tested on a synthetic mirror). Then `NB5b_foundation` runs locally.
 - **Rule:** the local repository stays the master copy (D04). The mirror is never edited by hand; to refresh it,
   delete the Drive folder and rerun the tool.
+- **What happened (21 Nov 2026):** My Drive now holds two folders named `pv-cold-start`: the mirror (17:33) and a
+  copy made at 17:54, which Google Drive for desktop shows as `G:/My Drive/pv-cold-start (1)`. Colab's
+  `/content/drive/MyDrive/pv-cold-start` resolved to the copy, so the runs are there. Its code and inputs equal
+  the mirror's manifest file for file (SHA-256); the runs were fetched with
+  `python tools/fetch_drive_runs.py "G:/My Drive/pv-cold-start (1)"`. Before another Colab run, one of the
+  two folders should be removed (the author's choice; nothing on Drive is deleted by the agent).
 
 ### D67 — PVSetFormer variant V12: the median-change gate on the 15- and 30-min horizons only, on V9's setting [R1 round, Phase 5]
 - **Reason:** V11a (D63, F55) lowers the 15-min ensemble on 9 of 10 units and narrows the calm-state gap, but on the

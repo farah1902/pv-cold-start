@@ -17,6 +17,7 @@ Every figure and table, the code that draws it and its role in the paper. The pl
 | `results/nb5a_conformal/figures/fig_conformal_reliability.{png,pdf}` | Observed vs nominal coverage of the central intervals at 1 h, and PICP80 against horizon, raw and conformal (validation units) | NB5a conformal | Development record (the paper's reliability figure comes from the test run) |
 | `results/nb5c_conformal/figures/fig_conformal_reliability_pvsf.{png,pdf}` | The same for PVSetFormer's 5-seed ensemble (D46) | NB5c conformal | Development record |
 | `results/nb5c_conformal_lgb/figures/fig_conformal_reliability_lgb5.{png,pdf}` | The same for LightGBM's 5-seed ensemble (D64) | NB5c conformal (LightGBM) | Development record |
+| `results/nb5b_fm/figures/fig_fm.{png,pdf}` | Median nRMSE against horizon on the validation units: the two chosen foundation-model settings and the 5-seed ensembles of LightGBM, PVSetFormer (V9) and TimeXer | NB5b foundation | Development record |
 | `results/nb1_audit/figures/quirks.{png,pdf}` | 17:55 cut (Zone A5), Zone J2 before its inverter file, Zone D station / inverter 2 | `audit.fig_quirks` (NB1) | Data section or supplement |
 
 Changes to the planned list:

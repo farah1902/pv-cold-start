@@ -221,6 +221,25 @@ setting for A4 and A4b, D51; each row against fleet LightGBM on the same slots; 
 | Priors recomputed from NB4's external gains: largest difference | 4.4e-16 | summary.json |
 | A4c (V4a + corrected sensor index, 1 seed) vs V4a at the same seed, median nRMSE at 15 min / 1 h / 6 h | 0.1349 / 0.18038 / 0.2065 vs 0.1339 / 0.17949 / 0.2073 | nb5c_variants/A4c/scores.csv, V4a/scores.csv |
 
+## Foundation models on the validation units (NB5b)
+Source: `results/nb5b_fm/summary.json`, `medians.csv`, `comparison.csv`, `fm_config_part2d.yaml`, and
+`results/nb5b_runs/*.json` (development data; Colab GPU run of 21 Nov 2026, scored locally in 415 s; D59).
+
+| Quantity | Value | Source file |
+| --- | --- | --- |
+| Median nRMSE at 1 h, Chronos-2: 28 d covariates / 28 d none / 7 d covariates / 7 d none | 0.1776 / 0.1783 / 0.1795 / 0.1817 | medians.csv |
+| Same, TimesFM 2.5: 28 d none / 7 d XReg / 7 d none / 28 d XReg | 0.1790 / 0.1801 / 0.1806 / 0.1806 | medians.csv |
+| Chosen settings (part 2d), sha256 of the configuration | chronos2_c1344_full, timesfm25_c1344_none; `d637d1b05e16aac8…` | summary.json, fm_config_part2d.yaml |
+| Chronos-2 (chosen), median nRMSE at 15 min / 30 min / 1 h / 2 h / 4 h / 6 h | 0.1297 / 0.1542 / 0.1776 / 0.2031 / 0.2192 / 0.2000 | medians.csv |
+| TimesFM 2.5 (chosen), same horizons | 0.1291 / 0.1546 / 0.1790 / 0.2047 / 0.2220 / 0.2045 | medians.csv |
+| Chronos-2 vs LightGBM's ensemble, same horizons (ratio of medians); units lower at 1 h (p) | +0.5 / −1.3 / −2.1 / −3.4 / −7.4 / −8.2%; 9 of 10 (0.004) | comparison.csv |
+| Chronos-2 vs PVSetFormer V9_5s; units lower at 1 h (p) | −2.6 / −1.9 / −0.5 / −2.1 / −5.7 / −2.9%; 8 of 10 (0.43) | comparison.csv |
+| Chronos-2 vs TimeXer TX1_5s; units lower at 1 h (p) | −0.3 / −1.0 / −0.5 / −3.5 / −6.8 / −4.3%; 8 of 10 (0.16) | comparison.csv |
+| TimesFM 2.5 vs LightGBM's ensemble; units lower at 1 h (p) | −0.0 / −1.0 / −1.3 / −2.7 / −6.2 / −6.2%; 9 of 10 (0.020) | comparison.csv |
+| TimesFM 2.5 vs PVSetFormer V9_5s; units lower at 1 h (p) | −3.1 / −1.6 / +0.3 / −1.4 / −4.5 / −0.8%; 7 of 10 (0.49) | comparison.csv |
+| Chronos-2 vs LightGBM at 15 min: units lower (p) | 1 of 10 (0.049) | comparison.csv |
+| Raw PICP80 at 1 h: Chronos-2; TimesFM 2.5 | 0.691; 0.731 | medians.csv |
+
 ## Forecast skill and statistics (NB5, NB6)
 _empty_
 
