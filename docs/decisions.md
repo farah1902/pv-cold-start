@@ -746,6 +746,12 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
   gap to LightGBM at 15 min +7.1%, V4a +9.5%), and the long horizons are kept (6 h +0.8%, against V6b's +6.3%).
   But 30 min +1.4% and 1 h +1.1% (0.18138; better on 2 of 10 units), CRPS at 1 h +1.4%. The 1-h loss is within
   the single-seed spread (s.d. 0.0014, about 0.8%), so V8a runs with the 5 R1 seeds (V8a_5s) before a verdict.
+- **Result with 5 seeds (21 Nov 2026, V8a_5s):** not kept. Ensemble against V4a_5s: 15 min 0.1309 vs 0.1329
+  (−1.6%, better on 7 of 10 units, Wilcoxon p 0.28; CRPS −2.6%), but 30 min 0.1585 vs 0.1566 (+1.2%, 1 of 10,
+  p 0.08), 1 h 0.18061 vs 0.18001 (+0.3%, 2 of 10, p 0.11), 2 h +0.6%, 6 h +1.1%. The single seeds spread more
+  at 1 h (s.d. 0.0025 against 0.0014). The diagnosis shows why: on 15-min clear spells the drift is removed
+  (median move 0.028, bias −0.011; V4a 0.047, −0.029), but it moves to 30 min (0.082, −0.044; V4a 0.067, −0.030).
+  V4a stays the candidate.
 
 ### D58 — PVSetFormer variant V8b: donor identity and donor deviation together [R1 round, Phase 5]
 - **Reason:** V7a and V7b each moved the forecast slightly in the right direction (F50); the two act on different
@@ -795,6 +801,20 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
     License, Apache-2.0 with an attribution clause) or the default TabPFN-3.5 weights (non-commercial, licence
     accepted through the author's account).
 - **Evidence:** `tools/fm_infer.py`, `tools/make_nb5b.py`, `requirements-fm.txt`, `results/nb5b_inputs/inputs_manifest.json`.
+
+### D60 — Search CV4: the shared search on V4a's own architecture [R1 round, Phase 5]
+- **Reason:** PVSetFormer's setting (d 32, lr 10⁻³, weight decay 0.5) was chosen by CV2 on V2 (D41), before V4a's
+  linear path (D43) changed the architecture. LightGBM's and TimeXer's settings come from a search on their own
+  final architecture (NB5a, CVX). In CV2 the two best settings were close (wd 0.5: 0.07003; wd 0.01: 0.07014), and
+  TimeXer's search chose the other end of the grid (lr 3·10⁻³, wd 0.01). The linear path is not shrunk, so it may
+  change how much the transformer needs to be.
+- **Change:** `python tools/pvsf_cv.py --name CV4 --set fleet_token=1 balance=1 lin=1`: the D36 search unchanged
+  (18 settings × 3 monthly folds on the development index SQ Apartment25-36, masked from 2021-10-05; mean pinball;
+  ties toward d 64, lr 10⁻³, wd 0.01, then fewer parameters), on V4a. **Rule, fixed before the result:** if CV4
+  chooses V4a's setting, V4a stands, and its setting is confirmed on its own architecture. Otherwise V9 = V4a with
+  the CV4 setting runs with the 5 R1 seeds and replaces V4a as the candidate if its ensemble is lower at 1 h. The
+  budget stays equal across models: each final model has its setting from one search on its own architecture.
+- **Result:** pending.
 
 ### D16 — pvlib 0.16.1 and ruptures 1.1.10 are installed locally and pinned [environment, Phase 0]
 - **Request or reason:** both are in the guide's software list (§5.6) and were missing locally on 18 Nov 2026.

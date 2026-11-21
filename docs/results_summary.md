@@ -143,6 +143,9 @@ Source: `results/nb5c_r1/summary.json`, `r1_medians.csv`, `r1_units_1h.csv`, `r1
 | Single-seed rounds at 1 h: V6a / V6b / V7a / V7b (V4a at the same seed 0.17949) | 0.18053 / 0.18024 / 0.17938 / 0.17927 | nb5c_variants/log.csv |
 | Median nRMSE at 15 min / 6 h, same seed: V6b; V4a | 0.1311 / 0.2204; 0.1339 / 0.2073 | nb5c_variants/V6b/scores.csv, V4a/scores.csv |
 | 15-min clear spells (calmest quartile, k(t) > 0.9), median move from k(t) and bias: V4a; V6b; LightGBM | 0.048, −0.031; 0.031, −0.013; 0.010, +0.009 | nb5c_diag/V4a, V6b/calm_by_level.csv |
+| V8a 5-seed ensemble vs V4a_5s, median nRMSE at 15 min / 30 min / 1 h / 6 h | 0.1309 / 0.1585 / 0.18061 / 0.2090 vs 0.1329 / 0.1566 / 0.18001 / 0.2068 | nb5c_variants/V8a_5s/scores.csv, V4a_5s/scores.csv |
+| V8a single seeds at 1 h: range; mean (s.d.) | 0.17935–0.18482; 0.18215 (0.0025) | nb5c_variants/V8a_5s/scores.csv |
+| Clear spells (calmest quartile, k(t) > 0.9), median move and bias at 15 min; 30 min: V8a_5s; V4a_5s | 0.028, −0.011; 0.082, −0.044 vs 0.047, −0.029; 0.067, −0.030 | nb5c_diag/V8a_5s, V4a_5s/calm_by_level.csv |
 
 ## Conformal calibration of PVSetFormer (NB5c conformal)
 Source: `results/nb5c_conformal/summary.json`, `val_conformal_medians.csv`, `corrections.csv` (development data;

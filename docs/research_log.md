@@ -279,3 +279,6 @@ One entry per work session: what was asked, what was done, the key numbers, what
 - **NB5b scoring self-test (21 Nov):** `NB5b_foundation`'s cells run on a stand-in setting (LightGBM's 5-seed ensemble
   relabelled) reproduce LightGBM's 0.18130 and PVSetFormer's 0.18001 at 1 h on identical slots; the stand-in differs
   from LightGBM only by float32 rounding (about 1e-9 relative). Outputs removed after the check.
+- **V8a with 5 seeds (21 Nov):** not kept. Ensemble vs V4a_5s: 15 min −1.6%, 30 min +1.2%, 1 h +0.3%, 6 h +1.1%;
+  the 15-min clear-spell drift moves to 30 min (`tools/pvsf_vol_diag.py --pvsf V8a_5s`). D57, F50. Search CV4 on
+  V4a's architecture started (D60; about 85 min).

@@ -526,6 +526,9 @@ repository). Paths are relative to `data/raw/hkust/Dataset/Time series dataset/`
   - V7b (each donor's deviation from the index): 1 h −0.1%, 2 h −0.5%, 6 h −0.7%; CRPS −0.4% at 1 h, −0.9% at 6 h;
     better at 1 h on 5 of 10 units.
   - V8a (the readout at 15 min only): 15 min 0.1308 (−2.3%), 6 h +0.8%, but 30 min +1.4% and 1 h +1.1%.
+    With 5 seeds (ensembles, `V8a_5s` vs `V4a_5s`): 15 min −1.6% (7 of 10 units, p 0.28), 30 min +1.2% (1 of 10,
+    p 0.08), 1 h +0.3% (2 of 10), 6 h +1.1%. On clear spells (calmest quartile, k(t) > 0.9) the 15-min median
+    moves 0.028 from k(t), bias −0.011 (V4a 0.047, −0.029), but at 30 min 0.082, −0.044 (V4a 0.067, −0.030).
     V8b (V7a + V7b): within ±0.8% of V4a at every horizon.
 - **Reading:** F49's drift comes from the shared output head, not from the horizons attending to one another: a
   separate readout lets the 15-min median stay near persistence. Separate readouts at every horizon over-fit the
@@ -533,7 +536,9 @@ repository). Paths are relative to `data/raw/hkust/Dataset/Time series dataset/`
   than one seed's spread; V7a's consistency across units hints at a small real effect, but V8b, which combines
   them, gains nothing. Same-seed pairing does not remove the seed spread (the paths diverge in training; V4a's
   single seeds at 1 h have s.d. 0.0014, about 0.8%), so only differences of about 2% or more are visible in a
-  one-seed round. Single seed: provisional; V8a is checked with 5 seeds.
+  one-seed round. With 5 seeds V8a confirms the 15-min effect but shows that the drift moves to the next
+  horizon: the shared head, freed from 15 min, reverts toward the mean harder at 30 min. The mean reversion is
+  learned by the shared head as a whole, not by one horizon's readout. Provisional.
 
 ### F51 — On the validation units the fleet index forecasts a new inverter better than the pyranometer index up to 1 h, and as well from 2 h — *strong*
 - **Evidence:** `results/nb5d_sources/medians.csv`, `summary.json` (NB5d, 21 Nov 2026; development data, 10
