@@ -152,6 +152,11 @@ Source: `results/nb5c_r1/summary.json`, `r1_medians.csv`, `r1_units_1h.csv`, `r1
 | V4a decomposition (3 tasks, 1 seed), 15-min slope by quartile: linear path; transformer head | 0.147 → 0.197; −0.011 to −0.031 | nb5c_diag/drift/decomposition.csv |
 | V10a 5-seed ensemble vs V4a_5s, median nRMSE at 15 min / 30 min / 1 h / 2 h / 4 h / 6 h | 0.13242 / 0.15694 / 0.18011 / 0.21032 / 0.23336 / 0.20637 vs 0.13294 / 0.15661 / 0.18001 / 0.20926 / 0.23336 / 0.20679 | nb5c_variants/V10a_5s/scores.csv, V4a_5s/scores.csv |
 | V10a single seeds at 1 h: range; mean (s.d.) | 0.17908–0.18331; 0.18114 (0.0018) | nb5c_variants/V10a_5s/scores.csv |
+| V9 (CV4 setting) 5-seed ensemble, median nRMSE at 15 min / 30 min / 1 h / 2 h / 4 h / 6 h | 0.13320 / 0.15717 / 0.17848 / 0.20754 / 0.23241 / 0.20607 | nb5c_variants/V9_5s/scores.csv |
+| V9 vs V4a_5s ensembles, 15 min / 30 min / 1 h / 2 h / 4 h / 6 h | +0.19 / +0.36 / −0.85 / −0.82 / −0.41 / −0.35% | nb5c_variants/V9_5s, V4a_5s/scores.csv |
+| V9 vs LightGBM's ensemble (LGB_seeds), same horizons; units better at 1 h (p) | +3.16 / +0.63 / −1.56 / −1.32 / −1.84 / −5.46%; 6 of 10 (0.56) | nb5c_variants/V9_5s, LGB_seeds/scores.csv |
+| V9 single seeds at 1 h: range; mean (s.d.) | 0.17772–0.18475; 0.18072 (0.0028) | nb5c_variants/V9_5s/scores.csv |
+| V9 vs LightGBM, 15-min pinball in the calmest quartile; clear-spell bias at 15 min | +40.4%; −0.030 | nb5c_diag/V9_5s/summary.json, calm_by_level.csv |
 | V10a 15-min reversion slope, calmest → most volatile quartile; 30 min | 0.094 / 0.099 / 0.134 / 0.183; 0.152 → 0.320 | nb5c_diag/drift_V10a/reversion.csv |
 | V10a vs LightGBM, 15-min pinball in the calmest quartile; clear-spell bias at 15 min (V4a_5s) | +39.3% (+40.1%); −0.028 (−0.029) | nb5c_diag/V10a_5s, V4a_5s/summary.json, calm_by_level.csv |
 | Index-level pinball gap to LightGBM by origin (s, s + 30 d, s + 60 d) at 1 h: V4a_5s; TX1_5s | −1.6 / +2.4 / +6.5%; −1.2 / +2.0 / +3.5% | nb5c_diag/learning_window/by_origin.csv |

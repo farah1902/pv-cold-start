@@ -496,6 +496,9 @@ repository). Paths are relative to `data/raw/hkust/Dataset/Time series dataset/`
   3% at most horizons; LightGBM falls behind the two transformers only at 4–6 h. A TimeXer that receives the same
   per-donor inputs is at least as good as PVSetFormer up to 1 h. The paper cannot rank PVSetFormer above TimeXer on
   this evidence.
+- **Update (21 Nov 2026, V9_5s, D60):** with the setting of its own search (CV4), PVSetFormer's ensemble reaches
+  0.17848 at 1 h, level with TimeXer's 0.17845 (lower on 3 of 10 units) and 1.6% below LightGBM's (6 of 10, p
+  0.56); at 15 min it stays behind both (0.1332 against 0.1301 and 0.1291). The three remain level at 1 h.
 
 ### F49 — In calm states PVSetFormer's median leaves persistence and reverts toward the mean — *strong*
 - **Evidence:** `results/nb5c_diag/<round>/vol_regimes.csv` and `calm_by_level.csv` (`tools/pvsf_vol_diag.py`;

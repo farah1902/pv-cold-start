@@ -30,10 +30,11 @@ telemetry start instead of grid connection (F06); metadata errors (D01).
 ## 7. Claims the paper must NOT make
 - PVSetFormer as a general-purpose forecaster: describe it only for cold-start PV fleets (guide §6, D25).
 - That PVSetFormer beats a model unless rules R1 and R2 show it at the primary horizon (D25).
-- That PVSetFormer beats TimeXer: on validation TimeXer's ensemble is lower at 1 h (0.17845 vs 0.18001), and
-  the three learned forecasters are level (F48).
-- That PVSetFormer beats LightGBM at 1 h: on validation it passes R1 by 0.7%, on 4 of 10 units, Wilcoxon
-  p = 1.0 (F44). R1 selects the main model; it is not a result. Wait for the test run.
+- That PVSetFormer beats TimeXer: on validation the candidate V9 is level with TimeXer at 1 h (0.17848 vs
+  0.17845), and the three learned forecasters are level (F48).
+- That PVSetFormer beats LightGBM at 1 h: on validation V9 is 1.6% below LightGBM's ensemble, on 6 of 10 units,
+  Wilcoxon p = 0.56 (V4a: 0.7%, 4 of 10, p = 1.0; F44). R1 selects the main model; it is not a result. Wait for
+  the test run.
 - That censoring clearly improves the index: on validation it won on 4 of 10 units (F28); wait for ablation A2.
 - That the nameplate prior is worth many days of data: w0 is below one day (F30).
 - The PVSetFormer title if rule R1 keeps LightGBM as the main model: then use the fallback title (D25).
@@ -67,7 +68,8 @@ telemetry start instead of grid connection (F06); metadata errors (D01).
 Before the freeze:
 - the foundation-model grid on a Colab GPU (`NB5b_colab`; the Drive mirror is in place, D66), then
   `tools/fetch_drive_runs.py` and `NB5b_foundation`; TabPFN-TS (A6c) waits for the author's licence (D65);
-- PVSetFormer design rounds until the freeze (D50; V9_5s running, V11a_5s queued);
+- PVSetFormer design rounds until the freeze (D50; candidate V9_5s since D60's result; V11a_5s running); at the
+  freeze, R1 (`make_nb5c.py --final`) and PVSetFormer's conformal layer are rerun on the final candidate;
 - LightGBM's 5-seed conformal layer (D64; queued after V11a_5s);
 - freeze part 2 (2a LightGBM, 2b conformal, 2c R1, 2d foundation models) and the `protocol-freeze` tag.
 

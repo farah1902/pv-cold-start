@@ -41,6 +41,7 @@ favours the model that had more rounds (PVSetFormer; LightGBM had 4, D34). The t
 | V8a_5s | 2026-11-21 | V8a with the 5 R1 seeds (D37) | 60,454 | 5 | 0.18061 (ensemble; single seeds 0.17935–0.18482, mean 0.18215, s.d. 0.0025) | 4 of 10 vs LightGBM; 2 of 10 vs V4a_5s | 0.1309 / 0.2090 | Not kept: against V4a_5s, 15 min −1.6% (7 of 10 units, p 0.28) but 30 min +1.2% (1 of 10), 1 h +0.3%, 6 h +1.1%. The 15-min drift is removed but moves to 30 min (F50). 96 min |
 | CV4 | 2026-11-21 | The D36 search (18 settings × 3 folds, development index) on V4a's own architecture (D60) | 224,317 (chosen) | 1 | — | — | — | Chose d 64, lr 1e-3, wd 0.5: CV pinball 0.07059; V4a's setting 10th of 18 (0.07237). The linear path does not lower the CV pinball (CV2 on V2: 0.07003). V9 = V4a with this setting runs with 5 seeds. 85 min |
 | V10a_5s | 2026-11-21 | V4a + a volatility gate exp(u · vol + b) per horizon on the median coefficients of the linear path's change terms (D61), 5 R1 seeds | 60,199 | 5 | 0.18011 (ensemble; single seeds 0.17908–0.18331, mean 0.18114, s.d. 0.0018) | 4 of 10 vs LightGBM; 7 of 10 vs V4a_5s | 0.1324 / 0.2064 | Not kept (rule: lower at 1 h): +0.06% at 1 h, −0.4% at 15 min, +0.5% at 2 h, every p ≥ 0.27. The reversion now follows volatility (15-min slope 0.094 → 0.183), but the calm-state pinball gap (39%) and the clear-spell bias (−0.028) stay: the reversion is not the cause. 92 min |
+| V9_5s | 2026-11-21 | V4a with the setting of its own search CV4 (d 64, lr 1e-3, wd 0.5; D60), 5 R1 seeds | 224,317 | 5 | 0.17848 (ensemble; single seeds 0.17772–0.18475, mean 0.18072, s.d. 0.0028) | 6 of 10 vs LightGBM's ensemble; 5 of 10 vs V4a_5s | 0.1332 / 0.2061 | **New candidate (D60 rule: lower at 1 h).** −0.85% at 1 h, −0.8% at 2 h against V4a_5s; +0.2% at 15 min. −1.6% against LightGBM's ensemble at 1 h, level with TimeXer (0.17845). The short-horizon deficit is unchanged (calm 15-min pinball +40%). 154 min |
 
 **R1 decision (21 Nov 2026, D45):** `notebooks/NB5c_R1_decision.ipynb` compared the 5-seed ensembles at 1 h:
 PVSetFormer (V4a) 0.18001, LightGBM 0.18130. PVSetFormer becomes the main index forecaster, with 6 variants tried
@@ -107,3 +108,8 @@ more than LightGBM. Next: where the level-dependent calm-state bias comes from (
 (pulling toward the overall mean), the linear change terms (the reversion of F52) and the other linear terms each
 move the median off persistence. V11a (D63) puts one volatility gate on the whole median change; it runs with 5 seeds
 after V9_5s.
+
+**V9 becomes the candidate (21 Nov 2026).** With the setting of its own search (CV4: d 64, weight decay 0.5),
+PVSetFormer's 5-seed ensemble is 0.17848 at 1 h: 0.85% below V4a, 1.6% below LightGBM's ensemble and level with
+TimeXer's (0.17845). The gain is from 1 h on; 15 and 30 min stay as V4a's. V11a (the gate on the median change, on
+V4a's setting) is running; if it meets its rule, the gate is tried on V9's setting (V12, D63).

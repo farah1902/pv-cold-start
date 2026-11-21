@@ -300,3 +300,6 @@ One entry per work session: what was asked, what was done, the key numbers, what
   test: 10,120 rows matched, max diff 6e-8) and `make_nb5c_conformal.py --model lgb`, queued after V11a_5s. TabPFN-TS
   waits for the licence (D65). Colab: minimal Drive mirror at `G:/My Drive/pv-cold-start` (16 files, 1.68 MB,
   smoke-tested from a copy) and `tools/fetch_drive_runs.py` for the way back (D66).
+- **V9_5s (21 Nov, 154 min):** the CV4 setting lowers PVSetFormer's 1-h ensemble to 0.17848 (V4a 0.18001, LightGBM
+  0.18130, TimeXer 0.17845): V9 is the new candidate (D60). Diagnoses `nb5c_diag/V9_5s/`, `drift_V9/` (`--out`):
+  short horizons unchanged. V11a_5s running; then LightGBM's 5-seed conformal layer (D64).

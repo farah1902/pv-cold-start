@@ -819,6 +819,17 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
   wd 0.5) ranks 10th of 18 (0.07237). On the development index the linear path does not lower the CV pinball:
   CV2's best on V2 was 0.07003 (LightGBM 0.06855, TimeXer 0.06800). By the rule, V9 = V4a with the CV4 setting
   runs with the 5 R1 seeds (V9_5s), queued after V10a_5s.
+- **Result of V9_5s (21 Nov 2026, 154 min): V9 replaces V4a as the PVSetFormer candidate.** Ensemble median nRMSE
+  at 15 min / 30 min / 1 h / 2 h / 4 h / 6 h: 0.13320 / 0.15717 / 0.17848 / 0.20754 / 0.23241 / 0.20607, against
+  V4a_5s's 0.13294 / 0.15661 / 0.18001 / 0.20926 / 0.23336 / 0.20679 (+0.19, +0.36, −0.85, −0.82, −0.41, −0.35%;
+  5 or 6 of 10 units better; Wilcoxon p ≥ 0.23). Single seeds at 1 h 0.17772–0.18475, mean 0.18072 (s.d. 0.0028,
+  twice V4a's 0.0014). Against LightGBM's ensemble: +3.2% at 15 min, +0.6% at 30 min, −1.6% at 1 h (6 of 10
+  units, p 0.56), −1.3% at 2 h, −1.8% at 4 h (9 of 10, p 0.004), −5.5% at 6 h (8 of 10, p 0.010). Against
+  TimeXer's ensemble at 1 h: 0.17848 against 0.17845, level (V9 lower on 3 of 10 units). The short-horizon
+  pattern is V4a's: calmest-quartile 15-min pinball 40.4% above LightGBM's, clear-spell bias −0.030, reversion
+  slopes 0.115 → 0.163 (`results/nb5c_diag/V9_5s/`, `drift_V9/`). Rule R1 (part 2c) and PVSetFormer's conformal
+  layer (D46) still name V4a_5s; they are rerun on the final candidate at the freeze (`make_nb5c.py --final`,
+  `NB5c_conformal`). By D63, V11a (on V4a's setting) is then compared with V9 at 1 h if it meets its rule.
 
 ### D61 — PVSetFormer variant V10a: a volatility gate on the linear path's reversion [R1 round, Phase 5]
 - **Reason:** F52: the short-horizon drift is the linear path's reversion toward the recent mean, with the same
