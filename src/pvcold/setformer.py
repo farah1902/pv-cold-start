@@ -25,7 +25,8 @@ DEFAULTS = {"d": 64, "heads": 4, "n_sky": 4, "n_enc": 2, "n_dec": 2, "dropout": 
             "fleet_token": 0, "balance": 0,   # V2 options (D36): fleet-summary token per patch; horizon-balanced loss
             "lin": 0,                         # V4 option: per-horizon linear path on the index lags (no weight decay)
             "aux": 0.0,                       # V4 option: weight of the auxiliary donor-forecast loss (censored)
-            "summary_only": 0}                # A6e (rule R2): fleet-summary tokens only, no donor tokens
+            "summary_only": 0,                # A6e (rule R2): fleet-summary tokens only, no donor tokens
+            "arch": "pvsf"}                   # "timexer": TimeXer with the same inputs (rule R2, timexer.py)
 
 
 # --- Data: donor tokens, geometry, queries, targets on the full 15-min grid -----------------------------------------
@@ -127,6 +128,10 @@ def targets(A: dict, origin: pd.Timestamp | None = None) -> tuple[np.ndarray, np
 
 # --- Model ----------------------------------------------------------------------------------------------------------
 def build_model(cfg: dict):
+    if cfg.get("arch", "pvsf") == "timexer":         # rule R2: same inputs, interface and training path
+        from .timexer import build_timexer
+        return build_timexer(cfg)
+    assert cfg.get("arch", "pvsf") == "pvsf", cfg.get("arch")
     import torch
     import torch.nn as nn
     import torch.nn.functional as Fn
