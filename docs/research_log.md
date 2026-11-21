@@ -234,3 +234,6 @@ One entry per work session: what was asked, what was done, the key numbers, what
   LightGBM's 0.06855); its round TX1 scores 0.18174 at 1 h with one seed, better than V4a at 15 min and 2 h, worse at
   1, 4 and 6 h (D49). TX1_5s (5 seeds) is queued after V5b, so that the three learned forecasters compare as
   ensembles.
+- **A6e with 5 seeds (21 Nov):** 0.17997 at 1 h against V4a_5s's 0.18001; equal at every horizon (below 0.6%),
+  Wilcoxon p = 1.0. On validation the donor tokens add nothing over the fleet summary (F47, *strong*). This bears on
+  the title and the novelty claim; raised with the author. V5a and V5b run next, then TX1_5s.

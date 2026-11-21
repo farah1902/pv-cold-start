@@ -460,6 +460,26 @@ repository). Paths are relative to `data/raw/hkust/Dataset/Time series dataset/`
   a scale such as |Δk| or a s.d. Its short-horizon deficit (F44) is a heteroscedasticity deficit, concentrated in
   calm conditions. This motivates V5 (D47, D48).
 
+### F47 — Without its donor tokens, PVSetFormer forecasts as well: the fleet summary carries the information — *strong*
+- **Evidence:** `results/nb5c_variants/A6e_5s/scores.csv` against `V4a_5s/scores.csv` (development data: the 10
+  validation units; both 5-seed ensembles with the same seeds, setting and protocol; rule R2, D38).
+  - A6e is V4a without donor tokens, set attention and pooling: one fleet-summary token per patch (index values,
+    validity, σ, c, n), 46,621 parameters against 60,157.
+  - Median nRMSE, A6e vs V4a: 15 min 0.1331 vs 0.1329, 30 min 0.1574 vs 0.1566, 1 h 0.1800 vs 0.1800 (0.17997 vs
+    0.18001), 2 h 0.2089 vs 0.2093, 4 h 0.2331 vs 0.2334, 6 h 0.2069 vs 0.2068. Every difference is below 0.6%, and
+    the CRPS differences below 1%.
+  - Per unit, A6e is better on 4, 4, 3, 4, 6 and 5 of 10 units at the six horizons; no unit differs by more than
+    3%. At 1 h the Wilcoxon p across units is 1.0.
+  - Single seeds at 1 h: A6e 0.17935–0.18233 (mean 0.18041, s.d. 0.0012), V4a 0.17949–0.18281 (mean 0.18104,
+    s.d. 0.0014). Seed by seed, the differences go both ways (−0.0027 to +0.0026).
+  - A6e's ensemble is also below LightGBM's at 1 h (0.17997 vs 0.18130).
+- **Reading:** on this campus the per-donor tokens add nothing that the causal fleet index and its spread do not
+  already carry. The censored index is close to a sufficient statistic of the donors for forecasting the index.
+  PVSetFormer's advantage over LightGBM (F44) comes from the neural model of the fleet summary with the linear path,
+  not from attention over donors. This supports contribution 1 (the causal fleet index) and weakens the set-
+  attention part of PVSetFormer's novelty. It may differ on the test events (longer histories, other donor sets)
+  or with spatially spread fleets, which this campus cannot test.
+
 ### F16 — Not every site file starts on the 1st of a month — *solid*
 - **Evidence:** among the 18 site files of the first event list, Indoor Sports Centre (2021-12-02), Zone J2
   (2021-11-13), Zone D (2022-01-20) and UG Hall9 (2023-02-11) start mid-month. The audit counts 5 of the 15-min and

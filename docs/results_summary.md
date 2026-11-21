@@ -135,6 +135,7 @@ Source: `results/nb5c_r1/summary.json`, `r1_medians.csv`, `r1_units_1h.csv`, `r1
 | Single-seed rounds at 1 h: V1 / V2 / V3 / V4a / V4b (bar 0.18098) | 0.1858 / 0.1864 / 0.1825 / 0.1795 / 0.1890 | nb5c_variants/log.csv |
 | CV pinball of the search CV2: PVSetFormer (d 32, lr 1e-3, wd 0.5); LightGBM | 0.07003; 0.06855 | nb5c_variants/CV2/summary.json |
 | Configuration part 2c, sha256 | `d6a24ddb931d0b88…` | nb5c_r1/r1_config_part2c.yaml |
+| A6e (no donor tokens) vs V4a, 5-seed ensembles, median nRMSE at 15 min / 1 h / 6 h | 0.1331 / 0.17997 / 0.2069 vs 0.1329 / 0.18001 / 0.2068 | nb5c_variants/A6e_5s/scores.csv, V4a_5s/scores.csv |
 
 ## Conformal calibration of PVSetFormer (NB5c conformal)
 Source: `results/nb5c_conformal/summary.json`, `val_conformal_medians.csv`, `corrections.csv` (development data;
