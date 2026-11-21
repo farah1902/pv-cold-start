@@ -30,6 +30,8 @@ telemetry start instead of grid connection (F06); metadata errors (D01).
 ## 7. Claims the paper must NOT make
 - PVSetFormer as a general-purpose forecaster: describe it only for cold-start PV fleets (guide §6, D25).
 - That PVSetFormer beats a model unless rules R1 and R2 show it at the primary horizon (D25).
+- That PVSetFormer beats TimeXer: on validation TimeXer's ensemble is lower at 1 h (0.17845 vs 0.18001), and
+  the three learned forecasters are level (F48).
 - That PVSetFormer beats LightGBM at 1 h: on validation it passes R1 by 0.7%, on 4 of 10 units, Wilcoxon
   p = 1.0 (F44). R1 selects the main model; it is not a result. Wait for the test run.
 - That censoring clearly improves the index: on validation it won on 4 of 10 units (F28); wait for ablation A2.

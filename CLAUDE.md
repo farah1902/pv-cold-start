@@ -107,6 +107,10 @@ something, record it and follow it, even if you would have chosen otherwise.
   variant as a decision. All models get the same hyperparameter budget. It becomes the main model only if it beats
   LightGBM on the validation units at 1 h before the `protocol-freeze` tag (R1). TimeXer gets the same per-donor inputs,
   and PVSetFormer also runs on the fleet summary only (R2).
+- **Main model (D50, 21 Nov 2026):** keep developing PVSetFormer until the freeze, aiming to make the donors
+  useful (F47) and to close the short-horizon gap; the main model and the title are decided at the freeze.
+  The sensor and satellite rows A4, A4b and A9 use LightGBM; A4c is the main model plus the corrected sensor
+  index (D51).
 - **Guide revisions on request:** when the author asks the agent to change the guide, apply the edits by an
   all-or-nothing script, keep the previous version in `docs/history/`, and log a decision (as in D25).
 - **Data are never committed** (about 1.7 GB). `data/MANIFEST_sha256.csv` is committed instead (D15).

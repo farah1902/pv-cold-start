@@ -237,3 +237,10 @@ One entry per work session: what was asked, what was done, the key numbers, what
 - **A6e with 5 seeds (21 Nov):** 0.17997 at 1 h against V4a_5s's 0.18001; equal at every horizon (below 0.6%),
   Wilcoxon p = 1.0. On validation the donor tokens add nothing over the fleet summary (F47, *strong*). This bears on
   the title and the novelty claim; raised with the author. V5a and V5b run next, then TX1_5s.
+- **Author decisions (21 Nov):** keep developing PVSetFormer until the freeze (D50); LightGBM for the sensor and
+  satellite rows A4, A4b and A9, with A4c = the main model plus the corrected sensor index (D51).
+- **V5a, V5b, TimeXer with 5 seeds (21 Nov):** V5a makes the spread follow volatility but does not lower the pinball
+  (rejected); V5b halves the calm-state gap at 15 min but loses the longer horizons (rejected). TimeXer's 5-seed
+  ensemble scores 0.17845 at 1 h, below PVSetFormer (0.18001) and LightGBM (0.18130), none significant (F48). The
+  diagnosis tool now also writes how far the median leaves persistence and its bias, by index level in calm states:
+  PVSetFormer reverts toward the mean at 15 min (F49).

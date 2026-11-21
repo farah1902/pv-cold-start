@@ -3,8 +3,10 @@ ensemble, on the validation units' forecast issue times.
 
 For each horizon, issue times are split into quartiles of the index's s.d. over the last hour at the issue time (the
 feature sd_1h of the LightGBM bank, known ex ante). Per quartile: the mean pinball loss of the 9 index quantiles, the
-MAE of the median, the mean width of the 10-90% interval and its coverage, against k(t + h) from NB3. Index level, before
-composition with the gain prior: this explains the R1 scores, it does not replace them.
+MAE of the median, the mean width of the 10-90% interval and its coverage, against k(t + h) from NB3; also how far the
+median moves from persistence |q0.5 - k(t)| and its signed error, and (calm_by_level.csv) the calmest quartile split by
+the index level k(t). Index level, before composition with the gain prior: this explains the R1 scores, it does not
+replace them.
 
     python tools/pvsf_vol_diag.py --pvsf V4a_5s [--lgb LGB_seeds]
 
@@ -65,6 +67,7 @@ def main() -> None:
         z = z.copy()
         z["y"] = kk.reindex(z["t"] + pd.to_timedelta(15 * z["h"], unit="min")).to_numpy()
         z["sd1"] = sd1.reindex(z["t"]).to_numpy()
+        z["k0"] = kk.reindex(z["t"]).to_numpy()
         parts.append(z)
     m = pd.concat(parts, ignore_index=True)
     m = m[np.isfinite(m["y"]) & np.isfinite(m["sd1"])]
@@ -77,15 +80,27 @@ def main() -> None:
         m[f"mae_{tag}"] = np.abs(m["y"] - m[f"q0.5_{tag}"])
         m[f"w_{tag}"] = m[f"q0.9_{tag}"] - m[f"q0.1_{tag}"]
         m[f"cov_{tag}"] = ((m["y"] >= m[f"q0.1_{tag}"]) & (m["y"] <= m[f"q0.9_{tag}"])).astype(float)
+        m[f"move_{tag}"] = np.abs(m[f"q0.5_{tag}"] - m["k0"])            # how far the median leaves persistence
+        m[f"bias_{tag}"] = m[f"q0.5_{tag}"] - m["y"]                      # signed error of the median
+    m["mae_persist"] = np.abs(m["k0"] - m["y"])
+    calm_rows = []
     for h, z in m.groupby("h"):
         z = z.assign(vol=pd.qcut(z["sd1"], 4, labels=LABELS))
         for lab, w in [("all", z)] + [(q, z[z.vol == q]) for q in LABELS]:
             r = {"h": int(h), "quartile": lab, "n": len(w), "sd1_max": float(w["sd1"].max())}
-            for met in ("pin", "mae", "w", "cov"):
+            for met in ("pin", "mae", "w", "cov", "move", "bias"):
                 r[f"{met}_pvsf"], r[f"{met}_lgb"] = float(w[f"{met}_p"].mean()), float(w[f"{met}_l"].mean())
+            r["mae_persist"] = float(w["mae_persist"].mean())
             r["pin_rel_pct"] = 100 * (r["pin_pvsf"] / r["pin_lgb"] - 1)
             rows.append(r)
+        c = z[z.vol == LABELS[0]]                                          # calm quartile, by index level at t
+        for lev, w in c.groupby(pd.cut(c["k0"], [-np.inf, 0.3, 0.6, 0.9, np.inf]), observed=True):
+            calm_rows.append({"h": int(h), "k0_bin": str(lev), "n": len(w),
+                              **{f"{met}_{nm}": float(w[f"{met}_{tag}"].mean()) for met in ("mae", "bias", "move")
+                                 for tag, nm in (("p", "pvsf"), ("l", "lgb"))},
+                              "mae_persist": float(w["mae_persist"].mean())})
     tab = pd.DataFrame(rows)
+    calm = pd.DataFrame(calm_rows)
     show = tab[tab.h.isin([1, 4, 24])][["h", "quartile", "pin_pvsf", "pin_lgb", "pin_rel_pct", "mae_pvsf", "mae_lgb",
                                          "w_pvsf", "w_lgb", "cov_pvsf", "cov_lgb"]]
     print(show.round(4).to_string(index=False))
@@ -100,7 +115,7 @@ def main() -> None:
                                                        tab[(tab.h == h) & tab.quartile.isin([LABELS[0], LABELS[3]])]["w_lgb"]]
                                               for h in FC.H}}
     (C.RESULTS / "nb5c_diag").mkdir(exist_ok=True)
-    out = A.write_outputs(f"nb5c_diag/{a.pvsf}", {"vol_regimes": tab}, summary)
+    out = A.write_outputs(f"nb5c_diag/{a.pvsf}", {"vol_regimes": tab, "calm_by_level": calm}, summary)
     tmp_parent = C.RESULTS / ".tmp_nb5c_diag"                   # write_outputs' temp folder parent, now empty
     if tmp_parent.exists() and not any(tmp_parent.iterdir()):
         tmp_parent.rmdir()

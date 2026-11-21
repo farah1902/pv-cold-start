@@ -480,6 +480,38 @@ repository). Paths are relative to `data/raw/hkust/Dataset/Time series dataset/`
   attention part of PVSetFormer's novelty. It may differ on the test events (longer histories, other donor sets)
   or with spatially spread fleets, which this campus cannot test.
 
+### F48 — The three learned index forecasters are level at 1 h; TimeXer's ensemble is lowest — *provisional*
+- **Evidence:** `results/nb5c_variants/TX1_5s/`, `V4a_5s/`, `LGB_seeds/` scores (development data: the 10 validation
+  units; 5-seed ensembles with the same seeds; TimeXer with PVSetFormer's per-donor inputs, rule R2, D49).
+  - Median nRMSE, TimeXer vs PVSetFormer vs LightGBM: 15 min 0.1301 / 0.1329 / 0.1291; 30 min 0.1558 / 0.1566 /
+    0.1562; 1 h 0.1784 / 0.1800 / 0.1813; 2 h 0.2105 / 0.2093 / 0.2103; 4 h 0.2353 / 0.2334 / 0.2368; 6 h 0.2091 /
+    0.2068 / 0.2180.
+  - TimeXer against PVSetFormer: −2.1% at 15 min, −0.9% at 1 h, +1.1% at 6 h; units won 8, 6 and 4 of 10; Wilcoxon
+    p 0.43, 0.56 and 0.23. Against LightGBM: +0.8%, −1.6%, −4.1%; p 0.49, 0.38 and 0.32.
+  - Median CRPS: TimeXer 0.0619 / 0.0931 / 0.1108 at 15 min / 1 h / 6 h; PVSetFormer 0.0651 / 0.0948 / 0.1095;
+    LightGBM 0.0617 / 0.0937 / 0.1167.
+  - Single seeds at 1 h: TimeXer mean 0.18109 (s.d. 0.0011), PVSetFormer 0.18104 (0.0014), LightGBM 0.18123
+    (0.00025). TimeXer gains most from the ensemble (−0.0026, against −0.0010 and +0.0001).
+- **Reading:** on validation the three learned forecasters differ by less than 1% at 1 h and by less than the guide's
+  3% at most horizons; LightGBM falls behind the two transformers only at 4–6 h. A TimeXer that receives the same
+  per-donor inputs is at least as good as PVSetFormer up to 1 h. The paper cannot rank PVSetFormer above TimeXer on
+  this evidence.
+
+### F49 — In calm states PVSetFormer's median leaves persistence and reverts toward the mean — *strong*
+- **Evidence:** `results/nb5c_diag/<round>/vol_regimes.csv` and `calm_by_level.csv` (`tools/pvsf_vol_diag.py`;
+  development data, index level, 15 min; calmest quartile of the last hour's s.d.).
+  - Persistence is the best median there: MAE 0.0400, equal to LightGBM's. LightGBM's median moves 0.015 from k(t)
+    on average, TimeXer's 0.023, PVSetFormer's (V4a, 5 seeds) 0.036.
+  - By index level within the calm quartile: on clear spells (k(t) > 0.9; 1,817 issue times) PVSetFormer's median
+    moves 0.047 and is biased −0.029 (LightGBM 0.010 and +0.009; TimeXer 0.029 and −0.010), MAE 0.053 against
+    0.030 for LightGBM and 0.029 for persistence. On dark spells (k(t) ≤ 0.3; 3,769) it is biased +0.017 (LightGBM
+    +0.002), MAE 0.042 against 0.032.
+  - V5a makes the spread follow volatility but leaves this median error (clear spells: move 0.055, bias −0.037).
+    V5b's gate reduces it (move 0.040, bias −0.021) and halves the calm pinball gap.
+- **Reading:** PVSetFormer pulls the 15-min median toward the mean, which is right at 6 h but wrong in calm states
+  at 15 min. A likely cause is the decoder, whose horizon queries attend to one another and share one output head,
+  so short horizons inherit the long horizons' mean reversion. TimeXer reads each horizon out with its own weights.
+
 ### F16 — Not every site file starts on the 1st of a month — *solid*
 - **Evidence:** among the 18 site files of the first event list, Indoor Sports Centre (2021-12-02), Zone J2
   (2021-11-13), Zone D (2022-01-20) and UG Hall9 (2023-02-11) start mid-month. The audit counts 5 of the 15-min and

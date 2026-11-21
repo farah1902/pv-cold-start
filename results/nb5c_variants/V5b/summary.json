@@ -1,0 +1,117 @@
+{
+  "variant": "V5b",
+  "note": "V5a + volatility gate 1 + tanh(w . vol + b) on the transformer's median shift, zero start",
+  "cfg": {
+    "d": 32,
+    "heads": 4,
+    "n_sky": 4,
+    "n_enc": 2,
+    "n_dec": 2,
+    "dropout": 0.1,
+    "lr": 0.001,
+    "weight_decay": 0.5,
+    "batch": 256,
+    "max_epochs": 100,
+    "patience": 15,
+    "donor_dropout": 0.1,
+    "fleet_token": 1,
+    "balance": 1,
+    "lin": 1,
+    "aux": 0.0,
+    "summary_only": 0,
+    "vol": 1,
+    "vgate": 1,
+    "arch": "pvsf"
+  },
+  "n_params": 60523,
+  "seeds": 1,
+  "runtime_s": 1476.4,
+  "environment": {
+    "python": "3.12.1",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "executable": "C:\\Python312\\python.exe",
+    "run_at": "2026-11-21 05:01:28",
+    "numpy": "1.26.4",
+    "pandas": "2.2.0",
+    "scipy": "1.12.0",
+    "sklearn": "1.5.1",
+    "statsmodels": "0.15.0",
+    "lightgbm": "4.6.0",
+    "pvlib": "0.16.1",
+    "ruptures": "v1.1.10",
+    "matplotlib": "3.8.3",
+    "torch": "2.2.0+cpu",
+    "openpyxl": "3.1.5",
+    "pyarrow": "15.0.2",
+    "yaml": "6.0.1"
+  },
+  "R1_bar_lgb": 0.18097840353848627,
+  "R1_seed_mean": 0.18263249531401998,
+  "R1_seed_sd": null,
+  "R1_ensemble": 0.18263249531401998,
+  "units_beating_lgb_1h_ensemble": 3,
+  "median_nRMSE_by_h": {
+    "seed_mean": {
+      "1": 0.13353,
+      "2": 0.15821,
+      "4": 0.18263,
+      "8": 0.21571,
+      "16": 0.24135,
+      "24": 0.21358
+    },
+    "ensemble": {
+      "1": 0.13353,
+      "2": 0.15821,
+      "4": 0.18263,
+      "8": 0.21571,
+      "16": 0.24135,
+      "24": 0.21358
+    },
+    "lgb": {
+      "1": 0.12921,
+      "2": 0.15625,
+      "4": 0.18098,
+      "8": 0.21057,
+      "16": 0.23688,
+      "24": 0.21832
+    }
+  },
+  "median_CRPS_by_h": {
+    "ensemble": {
+      "1": 0.06424,
+      "2": 0.08017,
+      "4": 0.0959,
+      "8": 0.11624,
+      "16": 0.13062,
+      "24": 0.11211
+    },
+    "lgb": {
+      "1": 0.06179,
+      "2": 0.07745,
+      "4": 0.09389,
+      "8": 0.11476,
+      "16": 0.13016,
+      "24": 0.11743
+    }
+  },
+  "median_PICP80_by_h": {
+    "ensemble": {
+      "1": 0.7026,
+      "2": 0.7044,
+      "4": 0.687,
+      "8": 0.6611,
+      "16": 0.6198,
+      "24": 0.6223
+    },
+    "lgb": {
+      "1": 0.6846,
+      "2": 0.6978,
+      "4": 0.7142,
+      "8": 0.6624,
+      "16": 0.6286,
+      "24": 0.6489
+    }
+  },
+  "mean_best_epoch": 18.3,
+  "mean_task_runtime_s": 312.13
+}

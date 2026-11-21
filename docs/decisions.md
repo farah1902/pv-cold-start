@@ -616,14 +616,21 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
   parameters (+324).
 - **Checks:** the features equal `forecast.state`'s `sd_1h` and |`dk`| (maximum difference 2·10⁻⁷, same validity
   flags). V5a's initial outputs equal V4a's exactly, and V4a still reproduces exactly with the option present.
-- **Result:** pending (queued after A6e_5s; 1 seed, the seed of V4a's single-seed round, so paired with V4a's 0.17949).
+- **Result (21 Nov):** 0.17950 at 1 h (V4a at the same seed 0.17949). The intervals now follow volatility: at 15 min
+  the 10–90% width goes from 0.233 (calmest quartile) to 0.451 (most volatile), coverage 0.847 and 0.741,
+  close to LightGBM (`results/nb5c_diag/V5a/`). But the index pinball does not improve (+10.1% against LightGBM
+  at 15 min; V4a +9.5%), and nRMSE is worse at 15 min (0.1344 vs 0.1339), 4 h (0.2390 vs 0.2336) and 6 h
+  (0.2134 vs 0.2073). **Verdict:** rejected. The calm-state deficit lies in the median, not the spread (F49).
 
 ### D48 — PVSetFormer variant V5b: volatility gate on the median shift [R1 round, Phase 5]
 - **Change:** V5a plus a per-horizon gate 1 + tanh(w · vol + b), with w and b zero at the start (gate 1), on the
   transformer head's median output only (not on the spread logits). The model can then shrink the transformer's
   median shift toward persistence in calm states, where its median is worse than LightGBM's (F46). 60,523
   parameters (+42).
-- **Result:** pending (queued after V5a; same seed).
+- **Result (21 Nov):** 0.18263 at 1 h, worse than V4a at the same seed at every horizon except 15 min (0.1335 vs
+  0.1339): 30 min 0.1582, 2 h 0.2157, 4 h 0.2414, 6 h 0.2136. At 15 min the calm-quartile pinball gap to
+  LightGBM falls from 41% to 22%, which supports the diagnosis (F49), but the gate costs the longer horizons.
+  **Verdict:** rejected.
 
 ### D49 — TimeXer's setting (search CVX) and its validation round TX1 [models, Phase 5]
 - **Request or reason:** rule R2 (D25, D38). TimeXer gets the same search budget as LightGBM and PVSetFormer.
@@ -635,9 +642,35 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
   - Round TX1, 1 seed (the seed of V4a's single-seed round): 0.18174 at 1 h (LightGBM's single seed 0.18098, V4a
     0.17949). Against V4a with the same seed it is better at 15 min (nRMSE −1.5%, CRPS −4.4%) and 2 h (−0.9%), level
     at 30 min, and worse at 1, 4 and 6 h (+1.3%, +1.7%, +2.4%). 37,224 parameters; 4.5 min.
-  - TimeXer is run with the 5 R1 seeds (TX1_5s, queued after V5b), so that all three learned index forecasters are
-    compared as 5-seed ensembles (D37).
+  - TimeXer with the 5 R1 seeds (TX1_5s): ensemble **0.17845** at 1 h, below PVSetFormer's 0.18001 and LightGBM's
+    0.18130; single seeds 0.17961–0.18208 (mean 0.18109, s.d. 0.0011), the same mean as PVSetFormer's. None of
+    the differences is significant across units (F48).
 - **Evidence:** `results/nb5c_variants/CVX/`, `results/nb5c_variants/TX1/`.
+
+### D50 — The main model after A6e: keep developing until the freeze [method, Phase 5] [author decision]
+- **Request or reason:** with 5 seeds, PVSetFormer without donor tokens (A6e) equals the full model on validation
+  (F47). Asked how to handle the main model, the author chose (21 Nov 2026) "Keep trying until freeze".
+- **Change:**
+  - More design rounds, on development data only, try to make the donors useful (for example their timing relative
+    to the index, or their disagreement), and to close the short-horizon gap (F46, F49).
+  - At the freeze, if A6e still equals the full model, the paper reports that the fleet index carries the donor
+    information, and the author then decides the main model and the title.
+  - Every round stays logged as a decision and in `docs/pvsetformer_log.md`; the paper reports the number of
+    variants.
+- **Evidence:** F47; this session's question and answer.
+
+### D51 — The sensor and satellite rows use LightGBM [method, Phase 5] [author decision] [guide deviation]
+- **Request or reason:** guide §4.2 defines A4, A4b and A9 as "the main model" with the sensor or satellite index in
+  place of the fleet index. With PVSetFormer as the main model this is ill-defined: PVSetFormer reads individual
+  donors, and a sensor or a satellite pixel is one series. Asked which learner to use, the author chose (21 Nov 2026)
+  LightGBM.
+- **Change:**
+  - A4 (raw pyranometer index), A4b (corrected pyranometer index) and A9 (CAMS satellite index) use LightGBM with the
+    frozen setting of part 2a and the change-from-persistence target (D34), on the NB4 index sources and their
+    refitted gains (D32). LightGBM on the fleet index is reported beside them, so the index source is compared with
+    the learner held fixed.
+  - A4c is the main model plus the corrected sensor index as an extra input.
+- **Evidence:** this session's question and answer.
 
 ### D16 — pvlib 0.16.1 and ruptures 1.1.10 are installed locally and pinned [environment, Phase 0]
 - **Request or reason:** both are in the guide's software list (§5.6) and were missing locally on 18 Nov 2026.
