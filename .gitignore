@@ -9,6 +9,8 @@ __pycache__/
 .ipynb_checkpoints/
 .venv/
 venv/
+# foundation models (NB5b): a separate environment, requirements-fm.txt
+.venv_fm/
 
 # Scratch and local archives
 *.tmp

@@ -171,6 +171,11 @@ workers (`results/nb5a_dev/`), then `NB5a_variants` about 13 min (`results/nb5a_
 timeout of 7200 s. The LightGBM setting is `results/nb5a_dev/lgb_config_part2a.yaml` (D33, D34).
 `NB5a_conformal` (`python tools/make_nb5a_conformal.py`, after NB5a) takes about 8 min
 (`results/nb5a_conformal/`, settings `conformal_config_part2b.yaml`, D35).
+Foundation models (NB5b, D59): `python tools/make_nb5b.py`, execute `NB5b_inputs.ipynb` (30 s), run
+`NB5b_colab.ipynb` on a Colab GPU (or locally with `.venv_fm`, very slow), copy `results/nb5b_runs/` back, then
+execute `NB5b_foundation.ipynb` (`results/nb5b_fm/`). The packages live only in the separate environment
+`.venv_fm` (`requirements-fm.txt`): never install them in the main one (numpy 2, torch 2.15). Downloads from the
+Hugging Face hub run with `HF_HUB_DISABLE_IMPLICIT_TOKEN=1` (the stored token has expired).
 PVSetFormer development (D36): one round `python tools/pvsf_dev.py --name V<k> --seeds 1 --set key=value ...`
 (about 30–40 min, 8 workers; `results/nb5c_variants/<V>/`, every variant in `docs/pvsetformer_log.md`); the
 search `python tools/pvsf_cv.py --name CV<k> --set ...` (about 85 min). The R1 decision: `python

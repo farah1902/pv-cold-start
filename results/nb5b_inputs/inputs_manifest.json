@@ -1,0 +1,41 @@
+{
+  "notebook": "NB5b_inputs",
+  "environment": {
+    "python": "3.12.1",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "executable": "C:\\Python312\\python.exe",
+    "run_at": "2026-11-21 10:15:48",
+    "numpy": "1.26.4",
+    "pandas": "2.2.0",
+    "scipy": "1.12.0",
+    "sklearn": "1.5.1",
+    "statsmodels": "0.15.0",
+    "lightgbm": "4.6.0",
+    "pvlib": "0.16.1",
+    "ruptures": "v1.1.10",
+    "matplotlib": "3.8.3",
+    "torch": "2.2.0+cpu",
+    "openpyxl": "3.1.5",
+    "pyarrow": "15.0.2",
+    "yaml": "6.0.1"
+  },
+  "runtime_s": 26.6,
+  "events": [
+    "SQ567",
+    "UG Hall2 2F",
+    "UG Hall2 RF",
+    "Zone A1",
+    "Zone A4",
+    "Zone A2 1",
+    "SQ Apartment1-12",
+    "SQ Apartment13-24",
+    "SQ Apartment25-36",
+    "SQ Apartment37-48"
+  ],
+  "n_series_rows": 124992,
+  "n_tasks": 37619,
+  "sha256": {
+    "series.parquet": "35af0c3f78bdd0a26f1e93b1a8d143fd9123e8d734ca66189aeea30b484ef9a9",
+    "tasks.parquet": "e6f3429c9578b66dd0d3d58724ef1509b16238265e9c7e6ed49ca7257b491020"
+  }
+}

@@ -757,6 +757,45 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
   than either alone, and every difference is within one seed's spread: the donor tokens still add nothing
   measurable (F47). The V8a + V8b combination is not run.
 
+### D59 — Foundation-model baselines A6a (Chronos-2) and A6b (TimesFM 2.5): interface, environment, settings [models, Phase 5] [guide deviation]
+- **Request or reason:** D23 and guide §5.4 (rows A6a–A6c): zero-shot foundation models with the past fleet state as
+  past covariates and u(t + h) as known future covariates, inference local; their settings belong to the freeze.
+- **Sources checked (21 Nov 2026):** the model cards `amazon/chronos-2` (Apache-2.0; 120M parameters; context 8,192;
+  GPU and CPU) and `google/timesfm-2.5-200m-pytorch` (Apache-2.0); the chronos-forecasting and timesfm READMEs and
+  pyproject files; and the installed sources. Chronos-2 (chronos-forecasting 2.3.2): `predict_quantiles` masks
+  missing values in the context and in the future covariates, and the nine levels 0.1–0.9 are among its 21 native
+  quantiles. TimesFM 2.5 (package `timesfm` 3.0.2, module `timesfm_2p5`): missing values are filled by linear
+  interpolation; covariates enter only through XReg, a per-input linear model on covariates known over context and
+  horizon, so a past-only covariate cannot enter. **This is the guide deviation:** A6b cannot receive the fleet state.
+- **Change:**
+  - **Environment:** a separate `.venv_fm` (`requirements-fm.txt`, git-ignored) or Colab. The packages bring numpy 2,
+    torch 2.15 and transformers 5, so the main environment stays untouched (torch 2.2.0, numpy 1.26.4) and the
+    PVSetFormer rounds keep reproducing; the two exchange parquet files only. The weights are public and downloaded
+    once without a token (a stored, expired Hugging Face token is not sent); no data leave the machine.
+  - **Inputs** (`NB5b_inputs`, `results/nb5b_inputs/`): each validation event's index, fleet state and sun geometry
+    from the fleet's start (2021-05-15, LightGBM's first training day), and NB5a's 37,619 issue times; sha256 manifest
+    checked by every run.
+  - **Grid:** the daylight slots 06:00–17:45 (48 a day). The index exists only there (D12); on this grid step h is
+    t + 15 h for every scored target.
+  - **A6a Chronos-2:** the index as target; σ, c and n as past-only covariates; the eight geometry features of
+    LightGBM's future set (Gt, cos z, sin and cos of azimuth, hour angle and day of year) as known covariates.
+  - **A6b TimesFM 2.5:** XReg (`xreg + timesfm`, ridge 0) on the six within-day geometry features (the day of year
+    is constant over a window), with the context's gaps filled by linear interpolation for the linear model.
+    Forecast settings as on the model card (input normalisation, continuous quantile head, flip invariance,
+    positivity, quantile-crossing fix); `torch_compile` off. The fleet state cannot enter.
+  - **Settings grid, fixed before any score:** context 336 or 1,344 daylight steps (7 or 28 days) × covariates on
+    (the guide's interface) or off (what the covariates add), for each model: 8 runs, deterministic (seed 1).
+    **Rule:** per model, the setting with the lowest median validation nRMSE at 1 h, on NB5a's slots after composition
+    with the frozen prior (`NB5b_foundation`, configuration part 2d `fm_config_part2d.yaml`).
+  - **Where:** Colab GPU (D04), with `NB5b_colab` (resumable, hash-checked); the same notebook runs locally on the
+    CPU through `.venv_fm`. Local smoke tests on 3 issue times per unit (30), 3 threads, beside a PVSetFormer
+    round, model load included: Chronos-2 144 s, TimesFM 409 s without and 296 s with XReg, each writing sorted quantiles for the 6 horizons. The 37,619 issue times × 8 settings are not feasible on this CPU.
+  - **A6c TabPFN-TS:** pending the author. Its default engine is Prior Labs' cloud API (excluded: data would leave
+    the machine) and it collects telemetry by default; local inference needs the TabPFN-2 weights (Prior Labs
+    License, Apache-2.0 with an attribution clause) or the default TabPFN-3.5 weights (non-commercial, licence
+    accepted through the author's account).
+- **Evidence:** `tools/fm_infer.py`, `tools/make_nb5b.py`, `requirements-fm.txt`, `results/nb5b_inputs/inputs_manifest.json`.
+
 ### D16 — pvlib 0.16.1 and ruptures 1.1.10 are installed locally and pinned [environment, Phase 0]
 - **Request or reason:** both are in the guide's software list (§5.6) and were missing locally on 18 Nov 2026.
 - **Change:** `pip install pvlib==0.16.1 ruptures==1.1.10`. A dry run first showed that nothing else would be

@@ -1,0 +1,11 @@
+# Foundation-model baselines (NB5b; D23, D59). A separate environment only: `.venv_fm` locally, or Colab.
+# Never install these in the main environment: they bring numpy 2, a newer torch and transformers, and the main
+# environment must keep reproducing the PVSetFormer rounds (torch 2.2.0, numpy 1.26.4). The two environments only
+# exchange parquet files. Every run records the versions it used. Resolved locally on 21 Nov 2026 (Python 3.12.1).
+#   python -m venv .venv_fm && .venv_fm/Scripts/python.exe -m pip install -r requirements-fm.txt
+chronos-forecasting==2.3.2   # Chronos-2 (amazon/chronos-2, Apache-2.0); local: torch 2.15.0, transformers 5.23.0
+timesfm[torch]==3.0.2        # TimesFM 2.5 (google/timesfm-2.5-200m-pytorch, Apache-2.0)
+jax[cpu]>=0.4.30             # TimesFM XReg (unpinned, pip picked jax 0.2.22 without jaxlib); local: 0.12.1
+scikit-learn>=1.5            # TimesFM XReg; local: 1.9.1
+pandas>=2.2.3,<3             # numpy 2 support, pandas 2 semantics; local: 2.3.3
+pyarrow>=17                  # numpy 2 support; local: 26.0.1

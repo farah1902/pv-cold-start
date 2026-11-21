@@ -270,3 +270,12 @@ One entry per work session: what was asked, what was done, the key numbers, what
   forecast by less than single-seed noise: +0.5% at 1 h (2 of 10 units better), −0.4% at 6 h (D56, F51).
 - **V8 results (21 Nov):** V8a keeps V6b's 15-min gain (−2.3%) without its long-horizon loss but is +1.1% at 1 h
   (within the seed spread); 5 seeds queued (V8a_5s). V8b rejected (D57, D58, F50).
+- **NB5b foundation models (21 Nov):** sources checked (model cards, READMEs, pyproject files, installed code). Chronos-2
+  and TimesFM 2.5 installed in a separate `.venv_fm` (numpy 2, torch 2.15; the main environment untouched; pip first
+  picked jax 0.2.22 without jaxlib and pandas 3, fixed and pinned in `requirements-fm.txt`). The weights downloaded
+  without the expired stored token. `tools/fm_infer.py` and `tools/make_nb5b.py` (inputs, Colab inference, scoring);
+  `NB5b_inputs` executed (37,619 issue times, sha256 manifest). Smoke tests on 30 issue times: Chronos-2 and TimesFM
+  write the expected rows. Chronos-2 144 s, TimesFM 409 s without and 296 s with XReg, each writing sorted quantiles for the 6 horizons. The grid needs a GPU: Colab (D04, D59). TabPFN-TS (A6c) waits for the author.
+- **NB5b scoring self-test (21 Nov):** `NB5b_foundation`'s cells run on a stand-in setting (LightGBM's 5-seed ensemble
+  relabelled) reproduce LightGBM's 0.18130 and PVSetFormer's 0.18001 at 1 h on identical slots; the stand-in differs
+  from LightGBM only by float32 rounding (about 1e-9 relative). Outputs removed after the check.
