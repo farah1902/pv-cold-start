@@ -1,5 +1,12 @@
 """Generate notebooks/NB5c_conformal.ipynb: the conformal layer of D35 applied to the main index forecaster chosen
-by rule R1 (PVSetFormer, D45). Run after NB5c_R1_decision. Development data only (the 10 validation units)."""
+by rule R1 (PVSetFormer, D45). Run after NB5c_R1_decision. Development data only (the 10 validation units).
+
+    python tools/make_nb5c_conformal.py               # PVSetFormer's 5-seed ensemble -> NB5c_conformal.ipynb
+    python tools/make_nb5c_conformal.py --model lgb   # LightGBM's 5-seed ensemble (D64) -> NB5c_conformal_lgb.ipynb
+
+The LightGBM notebook reads LGB_seeds' forecasts and the calibration set of tools/lgb_seeds_cal.py; every rule and
+every cell after the setup is the same, except the reference table, the figure title and the output names."""
+import argparse
 from pathlib import Path
 
 import nbformat as nbf
@@ -184,6 +191,60 @@ nb.cells = [
          "print('conformal config (part 2b, PVSetFormer) sha256:', CONF_HASH)\n"
          "print('written to', out, '|', sorted(x.name for x in out.iterdir()))"),
 ]
+LGB_HEADER = "# NB5c conformal (LightGBM) — calibrated intervals for LightGBM's 5-seed ensemble (validation units only)\n\nD06, D35, D46, D64. The author decided on 21 Nov 2026 that LightGBM enters the test as its 5-seed ensemble (`LGB_seeds`, D37). Its conformal layer is therefore rebuilt from that ensemble, with **the rules of D35, unchanged**, exactly as for PVSetFormer (`NB5c_conformal`). Reads `results/nb5c_variants/LGB_seeds/` and `results/nb5c_variants/LGB_seeds_cal/` (`tools/lgb_seeds_cal.py`); writes `results/nb5c_conformal_lgb/`. No test event is used.\n\n**Rules (D35, fixed before any number below):**\n1. *Calibration set*, per event, origin and horizon: pseudo cold starts of the event's donors (clean-metadata donors for a G1/G2 target, all donors for a G0 target). Their index is forecast by the early-stopped models on the last 20% of the training pairs (out of sample for those models, targets before the origin), here the 5-seed ensemble of these predictions, built like the forecasts (mean of the sorted quantiles, sorted again), and composed with each donor's leave-one-out prior and uncertainty set (200 members).\n2. *Conformity*: CQR (Romano et al. 2019) per horizon and per central interval (80, 60, 40 and 20%), normalised by G̃(t + h). The correction is the ⌈(1 − α)(n + 1)⌉-th smallest score; under 50 scores, none.\n3. *Use*: applied to LightGBM's 9 power quantiles; the median and the point forecast are unchanged.\n4. *Keep rule*: the layer is kept if, on the validation units, it brings the median PICP80 at 1 h closer to 0.80 than the raw forecast and does not raise the median IS80 at 1 h."
+LGB_SETUP = "import os, sys, time, json, hashlib\nfrom pathlib import Path\nimport numpy as np, pandas as pd, yaml\nROOT = Path.cwd().resolve()\nROOT = ROOT.parent if ROOT.name == 'notebooks' else ROOT\nsys.path.insert(0, str(ROOT / 'src')); sys.path.insert(0, str(ROOT / 'tools'))\nfrom pvcold import config as C, audit as A, fleet as F, forecast as FC\nimport r1_score as R                      # the scoring shared by rule R1 (D37)\npd.set_option('display.width', 200); pd.set_option('display.max_columns', 40)\nt0 = time.time()\nVDIR, CDIR = C.RESULTS / 'nb5c_variants' / 'LGB_seeds', C.RESULTS / 'nb5c_variants' / 'LGB_seeds_cal'\nnb5 = json.loads((C.RESULTS / 'nb5a_dev' / 'summary.json').read_text())\nls_bytes = (VDIR / 'summary.json').read_bytes(); ls = json.loads(ls_bytes)\nlc = json.loads((CDIR / 'summary.json').read_text())\nP2A_SHA = hashlib.sha256((C.RESULTS / 'nb5a_dev' / 'lgb_config_part2a.yaml').read_bytes()).hexdigest()\nassert P2A_SHA == nb5['lgb_config_sha256'] == ls['lgb_config_sha256'] == lc['lgb_config_sha256'], 'configuration part 2a changed'\nassert hashlib.sha256(ls_bytes).hexdigest() == lc['lgb_seeds_summary_sha256'], 'LGB_seeds changed after its calibration run'\nSEEDS = ls['seeds']\nassert lc['seeds'] == SEEDS and lc['forecasts_max_abs_diff'] < 1e-6\nassert lc['calibration_keys_with_all_seeds'] == lc['calibration_keys'], 'a calibration key lacks a seed'\nctx = R.load_context()\np, E, U, geo15, gains3 = ctx['p'], ctx['E'], ctx['U'], ctx['geo15'], ctx['gains3']\nPRIOR, ALT, VAL, fc5 = ctx['PRIOR'], ctx['ALT'], ctx['VAL'], ctx['fc5']\nQC = R.QC\nlv, gl = FC.member_levels()\ndef ensemble(x):\n    x = x[x.seed != 0]\n    n = x.groupby(['event', 'origin', 'h', 't'])['seed'].nunique()\n    assert sorted(x.seed.unique().tolist()) == sorted(SEEDS) and (n == len(SEEDS)).all(), 'seeds differ'\n    e = R.with_ensemble(x.drop(columns='model'))\n    return e[e.seed == 0].drop(columns='seed').reset_index(drop=True)\nfc = ensemble(pd.read_parquet(VDIR / 'forecasts.parquet'))\ncal = ensemble(pd.read_parquet(CDIR / 'calibration.parquet'))\nprint('LightGBM 5-seed ensemble | seeds', SEEDS, '| prior', PRIOR)\nprint('ensemble rows: forecasts %d, calibration %d' % (len(fc), len(cal)))"
+ap = argparse.ArgumentParser()
+ap.add_argument("--model", choices=["pvsf", "lgb"], default="pvsf")
+ap.add_argument("--out", default=str(ROOT / "notebooks"), help="folder for the notebook (default notebooks/)")
+MODEL = ap.parse_args().model
+NAME = "NB5c_conformal"
+if MODEL == "lgb":                                       # D64: LightGBM's 5-seed ensemble, the same rules
+    NAME = "NB5c_conformal_lgb"
+
+    def swap(i, pairs):
+        src = nb.cells[i].source
+        for old, new in pairs:
+            assert src.count(old) == 1, (i, old[:60])
+            src = src.replace(old, new)
+        nb.cells[i] = (md if nb.cells[i].cell_type == "markdown" else code)(src)
+
+    nb.cells[0], nb.cells[1] = md(LGB_HEADER), code(LGB_SETUP)
+    swap(6, [("## Keep rule (rule 4), and LightGBM's layer for reference\n"
+              "LightGBM's numbers are NB5a's single-seed model with its own layer (`results/nb5a_conformal/`), shown for "
+              "reference only.",
+              "## Keep rule (rule 4), and the other layers for reference\n"
+              "NB5a's single-seed LightGBM with its own layer (`results/nb5a_conformal/`) and PVSetFormer with its layer "
+              "(`results/nb5c_conformal/`), shown for reference only.")])
+    swap(7, [("print('KEEP the conformal layer for PVSetFormer:', KEEP)\n",
+              "print('KEEP the conformal layer for LightGBM (5 seeds):', KEEP)\n"),
+             ("lgbm = pd.read_csv(C.RESULTS / 'nb5a_conformal' / 'val_conformal_medians.csv').query(\"window == 'full'\")\n"
+              "ref = pd.concat({'PVSetFormer': vm[vm.window == 'full'].set_index(['kind', 'h'])[['cover80', 'IS80', 'CRPS_q']],\n"
+              "                 'LightGBM (NB5a)': lgbm.set_index(['kind', 'h'])[['cover80', 'IS80', 'CRPS_q']]}, names=['model'])\n",
+              "lgb1 = pd.read_csv(C.RESULTS / 'nb5a_conformal' / 'val_conformal_medians.csv').query(\"window == 'full'\")\n"
+              "pvsf = pd.read_csv(C.RESULTS / 'nb5c_conformal' / 'val_conformal_medians.csv').query(\"window == 'full'\")\n"
+              "ref = pd.concat({'LightGBM, 5 seeds': vm[vm.window == 'full'].set_index(['kind', 'h'])[['cover80', 'IS80', 'CRPS_q']],\n"
+              "                 'LightGBM (NB5a, 1 seed)': lgb1.set_index(['kind', 'h'])[['cover80', 'IS80', 'CRPS_q']],\n"
+              "                 'PVSetFormer (NB5c)': pvsf.set_index(['kind', 'h'])[['cover80', 'IS80', 'CRPS_q']]}, names=['model'])\n")])
+    swap(9, [("'PVSetFormer, median over the 10 validation units'", "'LightGBM (5 seeds), median over the 10 validation units'")])
+    swap(10, [("PVSetFormer's conformal settings join the frozen part 2", "LightGBM's 5-seed conformal settings join the frozen part 2")])
+    swap(11, [("conf_cfg = {'part': '2b', 'model': 'PVSetFormer', 'part2c_sha256': r1['part2c_sha256'], 'variant': VAR,\n"
+               "            'seeds': P2C['seeds'], ",
+               "conf_cfg = {'part': '2b', 'model': 'LightGBM, 5-seed ensemble', 'lgb_config': P2A_SHA,\n"
+               "            'seeds': SEEDS, "),
+              ("5-seed ensemble of the early-stopped PVSetFormer predictions on the last 20% of the training issue times",
+               "5-seed ensemble of the early-stopped LightGBM predictions on the last 20% of the training pairs"),
+              ("summary = {'notebook': 'NB5c_conformal', ", "summary = {'notebook': 'NB5c_conformal_lgb', 'decision': 'D64', "),
+              ("           'part2c_sha256': r1['part2c_sha256'], 'variant': VAR, 'conformal_config_sha256'",
+               "           'lgb_config_sha256': P2A_SHA, 'lgb_seeds_summary_sha256': lc['lgb_seeds_summary_sha256'], 'seeds': SEEDS,\n"
+               "           'conformal_config_sha256'"),
+              ("A.write_outputs('nb5c_conformal', ", "A.write_outputs('nb5c_conformal_lgb', "),
+              ("{'fig_conformal_reliability_pvsf': f8}", "{'fig_conformal_reliability_lgb5': f8}"),
+              ("texts={'conformal_config_part2b_pvsf.yaml': CONF_TEXT}", "texts={'conformal_config_part2b_lgb5.yaml': CONF_TEXT}"),
+              ("print('conformal config (part 2b, PVSetFormer) sha256:', CONF_HASH)",
+               "print('conformal config (part 2b, LightGBM 5 seeds) sha256:', CONF_HASH)")])
+    for c in nb.cells:                                   # only the reference row may still name PVSetFormer
+        left = c.cell_type == "code" and "PVSetFormer" in c.source.replace("'PVSetFormer (NB5c)'", "")
+        assert not left, "a PVSetFormer-only line is left"
 nb.metadata["kernelspec"] = {"name": "python3", "display_name": "Python 3", "language": "python"}
-nbf.write(nb, ROOT / "notebooks" / "NB5c_conformal.ipynb")
-print("wrote notebooks/NB5c_conformal.ipynb")
+nbf.write(nb, Path(ap.parse_args().out) / f"{NAME}.ipynb")
+print(f"wrote {NAME}.ipynb")

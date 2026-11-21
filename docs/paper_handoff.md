@@ -65,10 +65,10 @@ telemetry start instead of grid connection (F06); metadata errors (D01).
 
 ## 8. What is still missing
 Before the freeze:
-- the foundation-model grid on a Colab GPU (`NB5b_colab`, code and inputs ready, D59), then `NB5b_foundation`;
-  TabPFN-TS (A6c) waits for the author's choice of weights or its removal;
-- PVSetFormer design rounds until the freeze (D50; V8a with 5 seeds running);
-- whether LightGBM is a 5-seed ensemble at test, and then its conformal layer from that ensemble (D46);
+- the foundation-model grid on a Colab GPU (`NB5b_colab`; the Drive mirror is in place, D66), then
+  `tools/fetch_drive_runs.py` and `NB5b_foundation`; TabPFN-TS (A6c) waits for the author's licence (D65);
+- PVSetFormer design rounds until the freeze (D50; V9_5s running, V11a_5s queued);
+- LightGBM's 5-seed conformal layer (D64; queued after V11a_5s);
 - freeze part 2 (2a LightGBM, 2b conformal, 2c R1, 2d foundation models) and the `protocol-freeze` tag.
 
 Done on development data by 21 Nov 2026: NB0–NB4, NB5a and its conformal layer, R1 (NB5c, D45) and PVSetFormer's

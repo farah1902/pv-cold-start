@@ -880,6 +880,51 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
   V12 (V9's setting with the gate) runs with 5 seeds. The diagnoses of F46, F49 and F52 are repeated on it.
 - **Result:** pending.
 
+### D64 — LightGBM enters the test as its 5-seed ensemble; its conformal layer is rebuilt from that ensemble [author decision, Phase 5]
+- **Request:** the author, 21 Nov 2026, answering the question left open in D46: "yes, LightGBM be a 5-seed ensemble
+  at test".
+- **Change:** LightGBM's rows at the test use the ensemble of the 5 R1 seeds (`LGB_seeds`, D37: mean of the sorted
+  quantiles, sorted again), like PVSetFormer's. Its conformal layer is rebuilt from that ensemble with the rules of D35
+  unchanged, as D46 proposed:
+  - `tools/lgb_seeds_cal.py` refits the bank (part-2a setting) with the same seeds through `forecast.cal_task`
+    (NB5a_conformal's code path) and keeps the early-stopped models' predictions on the last 20% of the training
+    pairs. Its forecasts must equal `LGB_seeds`' rows seed by seed (asserted). Smoke test on two tasks: 10,120 rows
+    matched, max difference 6·10⁻⁸ (float32 storage), 914 calibration rows.
+  - `python tools/make_nb5c_conformal.py --model lgb` writes `notebooks/NB5c_conformal_lgb.ipynb`: PVSetFormer's
+    conformal notebook with only the setup, the reference table, the figure title and the output names changed
+    (cells 2–5 and 8 identical; the PVSetFormer notebook regenerates with identical sources). Output
+    `results/nb5c_conformal_lgb/`, settings `conformal_config_part2b_lgb5.yaml`.
+  - Queued after V11a_5s (memory is short while two 8-worker runs would overlap).
+- **Consequence:** part 2b holds LightGBM's 5-seed layer for its test rows; NB5a's single-seed layer stays on record.
+- **Result:** pending.
+
+### D65 — TabPFN-TS (row A6c) waits for the author to accept the TabPFN licence [author decision, Phase 5]
+- **Request:** the author, 21 Nov 2026, on the three options of D59 (local TabPFN-2 weights with telemetry off, the
+  TabPFN-3.5 weights once the author has accepted their licence, or dropping the row): "u can wait to accept the
+  licence".
+- **Change:** none yet. A6c stays in the plan; it runs locally (never the cloud API) once the author has accepted the
+  licence through their own account and the weights can be downloaded. If the download needs a Hugging Face login
+  (the stored token has expired), the author logs in on this machine themselves; no token is ever written into the
+  repository or the chat.
+- **Consequence:** if the licence is not available by the freeze, the author decides then between TabPFN-2 and
+  dropping the row.
+
+### D66 — The Colab run of NB5b goes through a minimal Google Drive mirror [environment, Phase 5]
+- **Request:** the author, 21 Nov 2026, asked what exactly to run on Colab, whether the repository is on Drive so the
+  notebook opens from there, and how the results come back.
+- **Change:**
+  - `tools/make_drive_mirror.py` copies only what `NB5b_colab` reads (the notebook, `tools/fm_infer.py`,
+    `src/pvcold/*.py`, `requirements-fm.txt`, `results/nb5b_inputs/`): 16 files, 1.68 MB, no raw data and no
+    documents, each checked by SHA-256 and listed in `MIRROR_MANIFEST.json`. Created on 21 Nov 2026 at `G:/My
+    Drive/pv-cold-start` (Google Drive for desktop, streaming mode), the folder `DRIVE_REPO` names in the notebook.
+  - Before the upload, a copy of the mirror ran `fm_infer.py` on its own (`.venv_fm`, Chronos-2, context 336,
+    covariates on, one issue time per unit): 10 tasks, 60 rows.
+  - `tools/fetch_drive_runs.py` brings `results/nb5b_runs/` back from the mirror: every record must come from the
+    local input hashes, must not be a smoke test, and its parquet must hold the recorded rows with sorted quantiles;
+    all-or-nothing, idempotent (tested on a synthetic mirror). Then `NB5b_foundation` runs locally.
+- **Rule:** the local repository stays the master copy (D04). The mirror is never edited by hand; to refresh it,
+  delete the Drive folder and rerun the tool.
+
 ### D16 — pvlib 0.16.1 and ruptures 1.1.10 are installed locally and pinned [environment, Phase 0]
 - **Request or reason:** both are in the guide's software list (§5.6) and were missing locally on 18 Nov 2026.
 - **Change:** `pip install pvlib==0.16.1 ruptures==1.1.10`. A dry run first showed that nothing else would be

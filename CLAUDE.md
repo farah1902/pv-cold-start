@@ -111,6 +111,9 @@ something, record it and follow it, even if you would have chosen otherwise.
   useful (F47) and to close the short-horizon gap; the main model and the title are decided at the freeze.
   The sensor rows A4 and A4b use LightGBM; A9 stays the persisted satellite index (guide); A4c is the main
   model plus the corrected sensor index (D51).
+- **LightGBM at the test (D64, 21 Nov 2026):** its 5-seed ensemble (`LGB_seeds`), with its conformal layer rebuilt
+  from that ensemble (`tools/lgb_seeds_cal.py`, then `NB5c_conformal_lgb`).
+- **TabPFN-TS (D65, 21 Nov 2026):** wait until the author has accepted the TabPFN licence; local inference only.
 - **Guide revisions on request:** when the author asks the agent to change the guide, apply the edits by an
   all-or-nothing script, keep the previous version in `docs/history/`, and log a decision (as in D25).
 - **Data are never committed** (about 1.7 GB). `data/MANIFEST_sha256.csv` is committed instead (D15).
@@ -173,7 +176,9 @@ timeout of 7200 s. The LightGBM setting is `results/nb5a_dev/lgb_config_part2a.y
 (`results/nb5a_conformal/`, settings `conformal_config_part2b.yaml`, D35).
 Foundation models (NB5b, D59): `python tools/make_nb5b.py`, execute `NB5b_inputs.ipynb` (30 s), run
 `NB5b_colab.ipynb` on a Colab GPU (or locally with `.venv_fm`, very slow), copy `results/nb5b_runs/` back, then
-execute `NB5b_foundation.ipynb` (`results/nb5b_fm/`). The packages live only in the separate environment
+execute `NB5b_foundation.ipynb` (`results/nb5b_fm/`). Colab round trip (D66): `python tools/make_drive_mirror.py`
+puts the 16 files NB5b_colab reads in `G:/My Drive/pv-cold-start` (Google Drive for desktop); after the run,
+`python tools/fetch_drive_runs.py` copies the runs back with hash checks. The packages live only in the separate environment
 `.venv_fm` (`requirements-fm.txt`): never install them in the main one (numpy 2, torch 2.15). Downloads from the
 Hugging Face hub run with `HF_HUB_DISABLE_IMPLICIT_TOKEN=1` (the stored token has expired).
 PVSetFormer development (D36): one round `python tools/pvsf_dev.py --name V<k> --seeds 1 --set key=value ...`

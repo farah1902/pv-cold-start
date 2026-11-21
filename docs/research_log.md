@@ -296,3 +296,7 @@ One entry per work session: what was asked, what was done, the key numbers, what
 - **Level split and V11a (21 Nov):** the decomposition by level (`--out drift_level`, reproduces F52 exactly): in
   calm clear spells the 15-min median change −0.048 = head −0.020 + change terms −0.018 + other linear terms −0.010
   (truth median −0.0045) (F54). Option `vmed` (V11a, D63) added and checked; V11a_5s queued after V9_5s.
+- **Author's answers (21 Nov):** LightGBM is a 5-seed ensemble at the test (D64): `tools/lgb_seeds_cal.py` (smoke
+  test: 10,120 rows matched, max diff 6e-8) and `make_nb5c_conformal.py --model lgb`, queued after V11a_5s. TabPFN-TS
+  waits for the licence (D65). Colab: minimal Drive mirror at `G:/My Drive/pv-cold-start` (16 files, 1.68 MB,
+  smoke-tested from a copy) and `tools/fetch_drive_runs.py` for the way back (D66).
