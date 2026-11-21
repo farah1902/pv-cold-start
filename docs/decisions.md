@@ -889,7 +889,16 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
   replaces V4a as the candidate if its ensemble's median nRMSE is lower at 1 h and no more than 1% higher at any other
   horizon. If V9 (D60) and V11a both meet their rules, the candidate is the one with the lower ensemble at 1 h, and
   V12 (V9's setting with the gate) runs with 5 seeds. The diagnoses of F46, F49 and F52 are repeated on it.
-- **Result:** pending.
+- **Result (21 Nov 2026, 112 min): not kept.** Ensemble median nRMSE at 15 min / 30 min / 1 h / 2 h / 4 h / 6 h:
+  0.13176 / 0.15741 / 0.18022 / 0.21101 / 0.23715 / 0.20976, against V4a_5s's 0.13294 / 0.15661 / 0.18001 /
+  0.20926 / 0.23336 / 0.20679 (−0.88, +0.51, +0.12, +0.84, +1.63, +1.44%): higher at 1 h, and more than 1% higher
+  at 4 and 6 h. At 15 min it is lower on 9 of 10 units (Wilcoxon p 0.084), and the short-horizon diagnoses move
+  the right way: calmest-quartile 15-min pinball 30.4% above LightGBM's (V4a 40.1%), 30-min 16.3% (21.1%);
+  clear-spell bias at 15 min −0.021 (−0.029); calm 15-min reversion slope 0.098 (0.112; truth 0.039). The cost is
+  at the long horizons, where training becomes unstable: the s.d. over seeds of the per-seed median nRMSE is
+  0.0058 at 4 h and 0.0064 at 6 h, against 0.0012 and 0.0018 for V4a (F55). Single seeds at 1 h 0.17870–0.18507,
+  mean 0.18135 (s.d. 0.0023). V9 stays the candidate; V12 is redefined in D67 (the gate on 15 and 30 min only).
+  `results/nb5c_variants/V11a_5s/`, `nb5c_diag/V11a_5s/`, `nb5c_diag/drift_V11a/`.
 
 ### D64 — LightGBM enters the test as its 5-seed ensemble; its conformal layer is rebuilt from that ensemble [author decision, Phase 5]
 - **Request:** the author, 21 Nov 2026, answering the question left open in D46: "yes, LightGBM be a 5-seed ensemble
@@ -935,6 +944,26 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
     all-or-nothing, idempotent (tested on a synthetic mirror). Then `NB5b_foundation` runs locally.
 - **Rule:** the local repository stays the master copy (D04). The mirror is never edited by hand; to refresh it,
   delete the Drive folder and rerun the tool.
+
+### D67 — PVSetFormer variant V12: the median-change gate on the 15- and 30-min horizons only, on V9's setting [R1 round, Phase 5]
+- **Reason:** V11a (D63, F55) lowers the 15-min ensemble on 9 of 10 units and narrows the calm-state gap, but on the
+  long horizons the gate makes training unstable (seed s.d. at 4 h about five times V4a's) and raises the error by
+  up to 1.6%. The long horizons do not need it: there PVSetFormer is already below LightGBM (V9: −1.8% at 4 h, −5.5%
+  at 6 h). D63's V12 (V9's
+  setting with the gate on every horizon) is therefore replaced by the gate on the short horizons only.
+- **Change:** option `vmed_n` (V12): V11's gate on the first n horizons only, gate 1 on the others; `vmed_n=2`
+  covers 15 and 30 min (the two horizons where V11a's calmest-quartile pinball gap fell, 40 → 30% and 21 → 16%).
+  On V9's setting (d 64, lr 10⁻³, weight decay 0.5), the candidate: 224,331 parameters (+14). `vmed_n=0` keeps
+  V11 (the gate on all six horizons).
+- **Checks:** V11a_5s reproduces exactly on its shortest task (5,060 rows, max difference 0); V12 starts
+  at V9's outputs; with g = 2 the 15- and 30-min quantiles move by exactly the median change and the later
+  horizons are unchanged; the gate receives a gradient; a 2-epoch run is finite and sorted.
+- **Protocol:** directly with the 5 R1 seeds (V12_5s), queued after LightGBM's 5-seed conformal layer (D64).
+  **Rule, fixed before the result:** V12 replaces V9 as the candidate if its ensemble's median nRMSE is lower at
+  15 min, no more than 0.5% higher at 1 h, and no more than 1% higher at any other horizon. The rule's target is
+  15 min because the variant aims at the short-horizon gap (D50); the bound at 1 h is tighter because rule R1 is
+  decided there. The diagnoses of F46, F49 and F52 are repeated on it.
+- **Result:** pending.
 
 ### D16 — pvlib 0.16.1 and ruptures 1.1.10 are installed locally and pinned [environment, Phase 0]
 - **Request or reason:** both are in the guide's software list (§5.6) and were missing locally on 18 Nov 2026.

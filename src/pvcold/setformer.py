@@ -41,6 +41,7 @@ DEFAULTS = {"d": 64, "heads": 4, "n_sky": 4, "n_enc": 2, "n_dec": 2, "dropout": 
             "ext": "",                         # A4c (D51): external index source added to the fleet token, e.g. sensor_corr
             "vlin": 0,                        # V10 option: volatility gate on the linear path's change terms (median)
             "vmed": 0,                        # V11 option: volatility gate on the whole median change (head + linear)
+            "vmed_n": 0,                      # V12 option: that gate on the first n horizons only (0 = all)
             "arch": "pvsf"}                   # "timexer": TimeXer with the same inputs (rule R2, timexer.py)
 
 
@@ -161,7 +162,8 @@ def build_model(cfg: dict):
 
     class PVSetFormer(nn.Module):
         def __init__(self, d, heads, n_sky, n_enc, n_dec, dropout, fleet_token, lin=0, aux=0.0, summary_only=0,
-                     vol=0, vgate=0, hmask=0, hhead=0, donor_id=0, donor_rel=0, ext=0, hhead_n=0, vlin=0, vmed=0):
+                     vol=0, vgate=0, hmask=0, hhead=0, donor_id=0, donor_rel=0, ext=0, hhead_n=0, vlin=0, vmed=0,
+                     vmed_n=0):
             super().__init__()
             # A6e (rule R2): the fleet summary only, no donor tokens; needs the fleet token, excludes the donor loss
             self.summary_only = bool(summary_only)
@@ -226,9 +228,11 @@ def build_model(cfg: dict):
                 self.vl_w = nn.Parameter(torch.zeros(len(FC.H), F_VOL))
                 self.vl_b = nn.Parameter(torch.zeros(len(FC.H)))
             self.vmed = bool(vmed)                           # V11, created last; zero start = gate 1 = V4a
+            self.vm_n = (int(vmed_n) or len(FC.H)) if self.vmed else 0     # V12: first n horizons only
+            assert 0 <= self.vm_n <= len(FC.H) and (self.vmed or not vmed_n), "vmed_n needs vmed=1"
             if self.vmed:                                    # per-horizon gate exp(u . vol + b) on the median change
-                self.vm_w = nn.Parameter(torch.zeros(len(FC.H), F_VOL))
-                self.vm_b = nn.Parameter(torch.zeros(len(FC.H)))
+                self.vm_w = nn.Parameter(torch.zeros(self.vm_n, F_VOL))
+                self.vm_b = nn.Parameter(torch.zeros(self.vm_n))
             causal = torch.triu(torch.ones(NP, NP, dtype=torch.bool), 1)
             self.register_buffer("causal", causal.repeat_interleave(self.m, 0).repeat_interleave(self.m, 1))
 
@@ -313,6 +317,8 @@ def build_model(cfg: dict):
             if self.vmed:                                    # V11: the whole median change (head + linear path) times g
                 g = torch.exp(torch.clamp(torch.einsum("bf,hf->bh", self.vol_features(fleet), self.vm_w) + self.vm_b,
                                           -3.0, 3.0))
+                if self.vm_n < o.shape[1]:                   # V12: gate 1 on the later horizons
+                    g = torch.cat([g, g.new_ones(g.shape[0], o.shape[1] - self.vm_n)], -1)
                 o = torch.cat([o[..., :1] * g[..., None], o[..., 1:]], -1)
             up = Fn.softplus(o[..., 1:5]).cumsum(-1)
             dn = Fn.softplus(o[..., 5:9]).cumsum(-1)
@@ -329,7 +335,7 @@ def build_model(cfg: dict):
                        cfg.get("fleet_token", 0), cfg.get("lin", 0), cfg.get("aux", 0.0), cfg.get("summary_only", 0),
                        cfg.get("vol", 0), cfg.get("vgate", 0), cfg.get("hmask", 0), cfg.get("hhead", 0),
                        cfg.get("donor_id", 0), cfg.get("donor_rel", 0), bool(cfg.get("ext", "")),
-                       cfg.get("hhead_n", 0), cfg.get("vlin", 0), cfg.get("vmed", 0))
+                       cfg.get("hhead_n", 0), cfg.get("vlin", 0), cfg.get("vmed", 0), cfg.get("vmed_n", 0))
 
 
 def n_params(cfg: dict) -> int:

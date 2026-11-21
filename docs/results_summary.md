@@ -157,6 +157,12 @@ Source: `results/nb5c_r1/summary.json`, `r1_medians.csv`, `r1_units_1h.csv`, `r1
 | V9 vs LightGBM's ensemble (LGB_seeds), same horizons; units better at 1 h (p) | +3.16 / +0.63 / −1.56 / −1.32 / −1.84 / −5.46%; 6 of 10 (0.56) | nb5c_variants/V9_5s, LGB_seeds/scores.csv |
 | V9 single seeds at 1 h: range; mean (s.d.) | 0.17772–0.18475; 0.18072 (0.0028) | nb5c_variants/V9_5s/scores.csv |
 | V9 vs LightGBM, 15-min pinball in the calmest quartile; clear-spell bias at 15 min | +40.4%; −0.030 | nb5c_diag/V9_5s/summary.json, calm_by_level.csv |
+| V11a (V4a + median-change gate, D63) 5-seed ensemble, median nRMSE at 15 min / 30 min / 1 h / 2 h / 4 h / 6 h | 0.13176 / 0.15741 / 0.18022 / 0.21101 / 0.23715 / 0.20976 | nb5c_variants/V11a_5s/scores.csv |
+| V11a vs V4a_5s ensembles, same horizons; units better at 15 min (p) | −0.88 / +0.51 / +0.12 / +0.84 / +1.63 / +1.44%; 9 of 10 (0.084) | nb5c_variants/V11a_5s, V4a_5s/scores.csv |
+| V11a vs LightGBM's ensemble, same horizons | +2.05 / +0.78 / −0.59 / +0.33 / +0.17 / −3.77% | nb5c_variants/V11a_5s, LGB_seeds/scores.csv |
+| V11a single seeds at 1 h: range; mean (s.d.) | 0.17870–0.18507; 0.18135 (0.0023) | nb5c_variants/V11a_5s/scores.csv |
+| V11a s.d. over seeds of the per-seed median nRMSE at 15 min / 4 h / 6 h (V4a_5s) | 0.0011 / 0.0058 / 0.0064 (0.0013 / 0.0012 / 0.0018) | nb5c_variants/V11a_5s, V4a_5s/scores.csv |
+| V11a vs LightGBM, calmest-quartile pinball at 15 / 30 min; clear-spell bias at 15 min; calm 15-min reversion slope (V4a_5s) | +30.4 / +16.3%; −0.021; 0.098 (+40.1 / +21.1%; −0.029; 0.112) | nb5c_diag/V11a_5s/summary.json, calm_by_level.csv; drift_V11a/reversion.csv |
 | V10a 15-min reversion slope, calmest → most volatile quartile; 30 min | 0.094 / 0.099 / 0.134 / 0.183; 0.152 → 0.320 | nb5c_diag/drift_V10a/reversion.csv |
 | V10a vs LightGBM, 15-min pinball in the calmest quartile; clear-spell bias at 15 min (V4a_5s) | +39.3% (+40.1%); −0.028 (−0.029) | nb5c_diag/V10a_5s, V4a_5s/summary.json, calm_by_level.csv |
 | Index-level pinball gap to LightGBM by origin (s, s + 30 d, s + 60 d) at 1 h: V4a_5s; TX1_5s | −1.6 / +2.4 / +6.5%; −1.2 / +2.0 / +3.5% | nb5c_diag/learning_window/by_origin.csv |

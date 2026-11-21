@@ -303,3 +303,6 @@ One entry per work session: what was asked, what was done, the key numbers, what
 - **V9_5s (21 Nov, 154 min):** the CV4 setting lowers PVSetFormer's 1-h ensemble to 0.17848 (V4a 0.18001, LightGBM
   0.18130, TimeXer 0.17845): V9 is the new candidate (D60). Diagnoses `nb5c_diag/V9_5s/`, `drift_V9/` (`--out`):
   short horizons unchanged. V11a_5s running; then LightGBM's 5-seed conformal layer (D64).
+- **V11a_5s (21 Nov, 112 min):** not kept (D63): +0.12% at 1 h, +1.6% at 4 h, but −0.9% at 15 min on 9 of 10
+  units, calm 15-min gap 40 → 30% (F55). New option `vmed_n` (gate on the first n horizons); V12 = V9 + the gate on
+  15 and 30 min (D67), queued after LightGBM's conformal layer. Checks: V11a_5s reproduces exactly, V12 starts at V9, the gate moves 15 and 30 min only.

@@ -631,6 +631,18 @@ repository). Paths are relative to `data/raw/hkust/Dataset/Time series dataset/`
   (head only) halves the calm gap. Provisional: three tasks, one seed, and one of the three refits stopped at epoch
   3, so the split points to a cause; it does not measure it.
 
+### F55 — A volatility gate on the median change helps the 15-min horizon but destabilises the long horizons — *provisional*
+- **Evidence:** V11a_5s against V4a_5s (D63; validation units, 5 R1 seeds each; `results/nb5c_variants/V11a_5s/`,
+  `nb5c_diag/V11a_5s/`, `nb5c_diag/drift_V11a/`). The ensemble's median nRMSE is 0.88% lower at 15 min (9 of 10
+  units, Wilcoxon p 0.084) and 0.8–1.6% higher from 2 h on (at 4 h 1 of 10 units lower, p 0.049). In the calmest
+  quartile, the 15-min pinball loss is 30.4% above LightGBM's ensemble (V4a 40.1%), the 30-min 16.3% (21.1%), and the
+  15-min bias on clear spells −0.021 (−0.029). The s.d. over the 5 seeds of the per-seed median nRMSE is 0.0011 at
+  15 min (V4a 0.0013) but 0.0058 at 4 h and 0.0064 at 6 h (0.0012 and 0.0018).
+- **Reading:** letting the median change shrink in calm states is the right direction for the short horizons, and
+  does part of what LightGBM does there. On the long horizons the same multiplicative gate makes the median change
+  depend on a few volatility features, and some seeds fit it badly. Provisional: one setting, and the split between
+  horizons is read from the same validation units the rule uses. D67 keeps the gate on 15 and 30 min only.
+
 ### F16 — Not every site file starts on the 1st of a month — *solid*
 - **Evidence:** among the 18 site files of the first event list, Indoor Sports Centre (2021-12-02), Zone J2
   (2021-11-13), Zone D (2022-01-20) and UG Hall9 (2023-02-11) start mid-month. The audit counts 5 of the 15-min and
