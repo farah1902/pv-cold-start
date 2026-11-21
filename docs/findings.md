@@ -544,10 +544,13 @@ repository). Paths are relative to `data/raw/hkust/Dataset/Time series dataset/`
     up to 1 h and on none from 2 h. Slot coverage 0.97 at 1 h.
   - A9n (oracle: the CAMS index at the target time): −20.0% at 1 h and −32.6% at 6 h (10 and 9 of 10 units better),
     but +9.9% at 15 min.
+  - A4c (PVSetFormer V4a plus the corrected sensor index in its fleet token, 1 seed, `results/nb5c_variants/A4c/`):
+    against V4a at the same seed +0.8% at 15 min, +0.5% at 1 h (better on 2 of 10 units), −0.4% at 6 h.
 - **Reading:** with the learner held fixed, a co-located pyranometer gives a new inverter no forecasting advantage
   over the index of the inverters already online: it is worse up to 1 h, where the forecast leans on the current
   state and the fleet tracks the inverter better (F35), and level from 2 h. The monthly correction does not help on
-  these stable-period units (as at the same time, F35). A9n is an oracle, not a forecast: it bounds what a perfect
+  these stable-period units (as at the same time, F35). Given the fleet index, the sensor adds nothing either
+  (A4c, within single-seed noise). A9n is an oracle, not a forecast: it bounds what a perfect
   satellite nowcast of the target time could add from 30 min on. Development data; the paper's numbers come from the
   test run.
 

@@ -729,6 +729,10 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
   - Checks: V4a, A6e and TimeXer TX1 reproduce exactly; with `ext=sensor_corr` the initial outputs equal V4a's
     (60,445 parameters); a 2-epoch run is finite and sorted.
   - A development round A4c (1 seed, paired with V4a) follows NB5d.
+- **Result (21 Nov 2026):** the sensor does not help. Against V4a at the same seed, median nRMSE +0.8% at 15 min,
+  +0.5% at 30 min and at 1 h (0.18038 vs 0.17949; better on 2 of 10 units), −0.3%, −0.1% and −0.4% at 2, 4 and
+  6 h; CRPS +0.3% at 1 h, −0.5% at 6 h. All within single-seed noise (F51). On the test events A4c is rerun with
+  the final main model.
 - **Evidence:** `src/pvcold/setformer.py`; results in `results/nb5c_variants/A4c/`.
 
 ### D57 — PVSetFormer variant V8a: the per-horizon readout at 15 min only [R1 round, Phase 5]

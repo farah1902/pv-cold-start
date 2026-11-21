@@ -266,3 +266,5 @@ One entry per work session: what was asked, what was done, the key numbers, what
 - **V8 options (21 Nov):** `hhead_n` in `setformer.py` (the per-horizon readout on the first n horizons; 0 = all).
   V4a and V6b reproduce exactly (a first version changed V6b's addition order and gave 2.4e-7; fixed before use).
   V8a (`hhead_n=1`) and V8b (`donor_id` + `donor_rel`) start at V4a's outputs; queued after A4c (D57, D58).
+- **A4c result (21 Nov):** 21 min, exit 0. The corrected sensor index in PVSetFormer's fleet token changes the
+  forecast by less than single-seed noise: +0.5% at 1 h (2 of 10 units better), −0.4% at 6 h (D56, F51).

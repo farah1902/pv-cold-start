@@ -174,6 +174,7 @@ setting for A4 and A4b, D51; each row against fleet LightGBM on the same slots; 
 | Units better than fleet LightGBM at 1 h: A4 / A4b / A9 / A9n; Wilcoxon p | 0 / 0 / 1 / 10; 0.002 / 0.002 / 0.004 / 0.002 | medians.csv |
 | Median slot coverage at 1 h: A4, A4b; A9; A9n | 1.00; 0.972; 0.945 | summary.json |
 | Priors recomputed from NB4's external gains: largest difference | 4.4e-16 | summary.json |
+| A4c (V4a + corrected sensor index, 1 seed) vs V4a at the same seed, median nRMSE at 15 min / 1 h / 6 h | 0.1349 / 0.18038 / 0.2065 vs 0.1339 / 0.17949 / 0.2073 | nb5c_variants/A4c/scores.csv, V4a/scores.csv |
 
 ## Forecast skill and statistics (NB5, NB6)
 _empty_

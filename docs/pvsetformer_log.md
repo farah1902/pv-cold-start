@@ -66,6 +66,10 @@ horizons kept apart in the decoder, and a per-horizon readout. V7a (D54) and V7b
 useful (F47): a learned identity per donor, and each donor's deviation from the index. All four start exactly at V4a
 (checked) and run with one seed, paired with V4a's single-seed round.
 
+**Sensor ablation A4c (D51, D56; not a design variant).** V4a plus the corrected sensor index in the fleet token,
+zero start, 60,445 parameters, 1 seed: 1 h 0.18038 (V4a 0.17949 at the same seed; better on 2 of 10 units),
+15 min / 6 h 0.1349 / 0.2065 (V4a 0.1339 / 0.2073). The sensor does not help (F51). 21 min.
+
 **Design round V8 (21 Nov 2026, D50).** From F50: V8a (D57) keeps V6b's own readout for the 15-min horizon only,
 where it removed most of the drift, and leaves the other horizons on the shared head. V8b (D58) combines the two
 donor options V7a and V7b. Both start exactly at V4a (checked) and run with one seed after A4c.
