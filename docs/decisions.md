@@ -567,6 +567,26 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
   for clipped readings), weight 0.5. **Result:** 0.1890 at 1 h, worse than V3 at every horizon. **Verdict:**
   rejected; not combined with V4a.
 
+### D45 — Rule R1 met: PVSetFormer (variant V4a) becomes the main index forecaster [method, Phase 5]
+- **Request or reason:** rule R1 (D25), applied as D37 sets it: 5-seed ensembles of both models, median validation
+  nRMSE at 1 h.
+- **Change:**
+  - `notebooks/NB5c_R1_decision.ipynb` (`python tools/make_nb5c.py --final V4a_5s`, run 21 Nov 2026) compared the
+    ensembles on the 10 validation units: PVSetFormer **0.18001**, LightGBM **0.18130** (−0.71%). PVSetFormer is the
+    main index forecaster and the working title of D25 stands.
+  - Frozen configuration part 2c: `results/nb5c_r1/r1_config_part2c.yaml`, sha256 `d6a24ddb931d0b88…`. It holds the
+    V4a setting (60,157 parameters), the seeds C.SEED + 1 … + 5 and the LightGBM setting of part 2a.
+  - LightGBM stays in the paper as the main learned baseline, also as a 5-seed ensemble (D37).
+  - The margin is narrow (F44): 4 of 10 units at 1 h, Wilcoxon p = 1.0, and 3 of PVSetFormer's 5 single seeds
+    score above LightGBM's ensemble. R1 is a pre-registered selection rule, not a result. Under guide §3.10
+    (differences below about 3%), the paper does not claim from this evidence that PVSetFormer beats LightGBM at 1 h.
+  - Variants tried before the decision: 6 (V1, V2, CV2, V3, V4a, V4b), all on development data. The paper reports
+    the count. LightGBM had 4 formulation variants (D34) and its grid search.
+  - Proposed: further design rounds remain allowed before the freeze (D25). A later variant replaces V4a only if its
+    5-seed ensemble scores below V4a's at 1 h, and NB5c is then re-run with it as the final variant.
+- **Evidence:** `results/nb5c_r1/` (summary.json, r1_medians.csv, r1_units_1h.csv, r1_pairs.csv, fig_r1),
+  `results/nb5c_variants/V4a_5s/`, `results/nb5c_variants/LGB_seeds/`.
+
 ### D16 — pvlib 0.16.1 and ruptures 1.1.10 are installed locally and pinned [environment, Phase 0]
 - **Request or reason:** both are in the guide's software list (§5.6) and were missing locally on 18 Nov 2026.
 - **Change:** `pip install pvlib==0.16.1 ruptures==1.1.10`. A dry run first showed that nothing else would be

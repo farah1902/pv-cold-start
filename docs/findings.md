@@ -401,6 +401,27 @@ repository). Paths are relative to `data/raw/hkust/Dataset/Time series dataset/`
   it, and the calibration closes the gap at every level, not only at 80%. The pre-registered coverage target
   (75–85%) is met on development data; the test run decides.
 
+### F44 — PVSetFormer passes rule R1 by 0.7% at 1 h; it leads from 2 h, LightGBM leads at 15–30 min — *provisional*
+- **Evidence:** `results/nb5c_r1/summary.json`, `r1_medians.csv`, `r1_units_1h.csv` (development data: the 10
+  validation units; 5-seed ensembles of both models, D37).
+  - Median nRMSE, PVSetFormer vs LightGBM: 15 min 0.1329 vs 0.1291 (+3.0%); 30 min 0.1566 vs 0.1562 (+0.3%);
+    1 h 0.1800 vs 0.1813 (−0.7%); 2 h 0.2093 vs 0.2103 (−0.5%); 4 h 0.2334 vs 0.2368 (−1.4%); 6 h 0.2068 vs 0.2180
+    (−5.1%). Units won by PVSetFormer: 3, 3, 4, 8, 10 and 9 of 10.
+  - At 1 h the Wilcoxon signed-rank test across units gives p = 1.0 (rank sums 28 and 27): PVSetFormer's four wins
+    include the two largest differences (UG Hall2 2F −6.4%, Zone A2 1 −5.3%; also SQ567 −1.5%, UG Hall2 RF −1.2%);
+    its six losses are +0.5% to +2.1%, four of them on the SQ Apartment roofs.
+  - Median CRPS: LightGBM is better up to 1 h (15 min +5.5%, 30 min +5.4%, 1 h +1.2% for PVSetFormer); PVSetFormer
+    is better from 2 h (−2.1%, −3.1%, −6.2%). Raw 80% coverage: PVSetFormer 0.654–0.713, LightGBM 0.631–0.709.
+  - Seeds: PVSetFormer's single seeds give 0.17949–0.18281 at 1 h (mean 0.18104, s.d. 0.0014), LightGBM's
+    0.18090–0.18157 (s.d. 0.00025), a 5.7-fold spread. Ensembling lowers PVSetFormer's value by 0.0010 and leaves
+    LightGBM's unchanged. Two of PVSetFormer's five single seeds beat LightGBM's ensemble. The single-seed round V4a
+    happened to use the best of the five (0.17949).
+- **Reading:** the pre-registered rule selects PVSetFormer, but at 1 h the two models are level within the spread
+  of PVSetFormer's seeds. The difference grows with the horizon: from 2 h on, where persistence fails, the set of
+  donors and the sun geometry pay off. At 15–30 min, persistence-type information dominates and the gradient-boosted
+  trees use it better. The selection used the same 10 units on which six PVSetFormer variants were developed, which
+  favours PVSetFormer. The test run is the unbiased check.
+
 ### F16 — Not every site file starts on the 1st of a month — *solid*
 - **Evidence:** among the 18 site files of the first event list, Indoor Sports Centre (2021-12-02), Zone J2
   (2021-11-13), Zone D (2022-01-20) and UG Hall9 (2023-02-11) start mid-month. The audit counts 5 of the 15-min and

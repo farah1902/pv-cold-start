@@ -116,6 +116,26 @@ run of 20 Nov 2026).
 | Median correction at 1 h, 80 / 60 / 40 / 20% (units of G̃) | 0.047 / 0.032 / 0.019 / 0.011 | corrections.csv |
 | Keep rule met; conformal configuration part 2b, sha256 | yes; `c68d5a3aa17a6806…` | conformal_config_part2b.yaml |
 
+## PVSetFormer development and rule R1 (NB5c)
+Source: `results/nb5c_r1/summary.json`, `r1_medians.csv`, `r1_units_1h.csv`, `r1_config_part2c.yaml`, and
+`results/nb5c_variants/` (development data; 5-seed ensembles, D37; run of 21 Nov 2026).
+
+| Quantity | Value | Source file |
+| --- | --- | --- |
+| **R1: median validation nRMSE at 1 h, PVSetFormer (V4a) vs LightGBM, 5-seed ensembles** | **0.18001 vs 0.18130 (−0.71%)** | nb5c_r1/summary.json |
+| Units won by PVSetFormer at 1 h; Wilcoxon p across units | 4 of 10; 1.0 | nb5c_r1/summary.json |
+| Single seeds at 1 h, PVSetFormer: range; mean (s.d.) | 0.17949–0.18281; 0.18104 (0.0014) | nb5c_r1/r1_medians.csv |
+| Same, LightGBM | 0.18090–0.18157; 0.18123 (0.00025) | nb5c_r1/r1_medians.csv |
+| Median nRMSE at 15 min / 30 min / 2 h / 4 h / 6 h: PVSetFormer | 0.1329 / 0.1566 / 0.2093 / 0.2334 / 0.2068 | nb5c_r1/r1_medians.csv |
+| Same: LightGBM | 0.1291 / 0.1562 / 0.2103 / 0.2368 / 0.2180 | nb5c_r1/r1_medians.csv |
+| Units won by PVSetFormer at 15 min / 30 min / 1 h / 2 h / 4 h / 6 h | 3 / 3 / 4 / 8 / 10 / 9 | nb5c_r1/summary.json |
+| Median CRPS at 15 min / 1 h / 6 h: PVSetFormer; LightGBM | 0.0651 / 0.0948 / 0.1095; 0.0617 / 0.0937 / 0.1167 | nb5c_r1/r1_medians.csv |
+| Raw PICP80 over horizons: PVSetFormer; LightGBM | 0.654–0.713; 0.631–0.709 | nb5c_r1/r1_medians.csv |
+| Variants before the decision; PVSetFormer parameters | 6; 60,157 | nb5c_r1/summary.json, r1_config_part2c.yaml |
+| Single-seed rounds at 1 h: V1 / V2 / V3 / V4a / V4b (bar 0.18098) | 0.1858 / 0.1864 / 0.1825 / 0.1795 / 0.1890 | nb5c_variants/log.csv |
+| CV pinball of the search CV2: PVSetFormer (d 32, lr 1e-3, wd 0.5); LightGBM | 0.07003; 0.06855 | nb5c_variants/CV2/summary.json |
+| Configuration part 2c, sha256 | `d6a24ddb931d0b88…` | nb5c_r1/r1_config_part2c.yaml |
+
 ## Forecast skill and statistics (NB5, NB6)
 _empty_
 

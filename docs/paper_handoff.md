@@ -15,7 +15,7 @@ must add Longarini et al. (2026) (F19). Additions approved on 18 Nov: D18–D22.
 ## 4. Status of each contribution
 | Contribution | Status |
 | --- | --- |
-| 1. Causal fleet-factor forecaster | Planned |
+| 1. Causal fleet-factor forecaster | Index forecaster chosen by rule R1 on 21 Nov 2026: PVSetFormer (V4a), 0.18001 vs LightGBM 0.18130 at 1 h on validation (D45, F44) |
 | 2. DC/AC gain prior with shrinkage update | Planned (D02) |
 | 3. Evaluation protocol: real starts, information set, error budget, sensor ablation; Safi external case | Events and drift boundary fixed (NB2, NB3); sensor and satellite index sources built, same-time evidence only (NB4, F35) |
 
@@ -29,6 +29,8 @@ telemetry start instead of grid connection (F06); metadata errors (D01).
 ## 7. Claims the paper must NOT make
 - PVSetFormer as a general-purpose forecaster: describe it only for cold-start PV fleets (guide §6, D25).
 - That PVSetFormer beats a model unless rules R1 and R2 show it at the primary horizon (D25).
+- That PVSetFormer beats LightGBM at 1 h: on validation it passes R1 by 0.7%, on 4 of 10 units, Wilcoxon
+  p = 1.0 (F44). R1 selects the main model; it is not a result. Wait for the test run.
 - That censoring clearly improves the index: on validation it won on 4 of 10 units (F28); wait for ablation A2.
 - That the nameplate prior is worth many days of data: w0 is below one day (F30).
 - The PVSetFormer title if rule R1 keeps LightGBM as the main model: then use the fallback title (D25).
@@ -53,8 +55,8 @@ telemetry start instead of grid connection (F06); metadata errors (D01).
 - That satellite data confirm the HKUST sensor drift, unless the CAMS all-sky check is actually run (D14).
 
 ## 8. What is still missing
-Before the freeze: the sensor and satellite rows' learner inputs, PVSetFormer and
-TimeXer (NB5c), the foundation models (NB5b), freeze part 2 and the tag. After it: the test run (NB5) and
+Before the freeze: the sensor and satellite rows' learner inputs, TimeXer and the ablation A6e (NB5c;
+PVSetFormer was chosen by R1 on 21 Nov, D45), PVSetFormer's conformal layer, the foundation models (NB5b), freeze part 2 and the tag. After it: the test run (NB5) and
 everything from NB6 on. NB0–NB4, NB5a and the conformal layer done by 20 Nov 2026.
 
 ## 9. Writing conventions

@@ -214,3 +214,8 @@ One entry per work session: what was asked, what was done, the key numbers, what
   `summary_only`. D38 records them. Reading the paper showed that D23's "future-exogenous variant (Appendix H.1)" is
   only a qualitative showcase, so D38 corrects D23. Each PVSetFormer variant now has its own decision (D39–D44).
   Queued after V4a's 5 seeds: A6e (1 seed), TimeXer's search CVX, then its round TX1.
+- **R1 decided (21 Nov):** the 5-seed V4a round (90 min) gives 0.18001 at 1 h against LightGBM's 0.18130. NB5c
+  applied the rule: PVSetFormer becomes the main index forecaster (D45), configuration part 2c written. The margin is
+  narrow: 4 of 10 units, Wilcoxon p = 1.0, and 3 of the 5 single seeds score above LightGBM's ensemble. The
+  advantage is at 2–6 h; LightGBM leads at 15–30 min (F44, *provisional*). A6e, then TimeXer's search and round,
+  follow in the queue.

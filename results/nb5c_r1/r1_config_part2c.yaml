@@ -1,0 +1,39 @@
+R1_lgb_ensemble: 0.181302
+R1_pvsf_ensemble: 0.180012
+ensemble: mean of the sorted quantiles across seeds, sorted again
+lgb_config_sha256: d03bb0b86827009edcc4d37bd6ebb88de1697e1c8aac60646e988f4e9fe75abe
+lgb_params:
+  learning_rate: 0.05
+  min_data_in_leaf: 200
+  num_leaves: 31
+main_index_forecaster: PVSetFormer
+part: 2c
+pvsetformer_cfg:
+  arch: pvsf
+  aux: 0.0
+  balance: 1
+  batch: 256
+  d: 32
+  donor_dropout: 0.1
+  dropout: 0.1
+  fleet_token: 1
+  heads: 4
+  lin: 1
+  lr: 0.001
+  max_epochs: 100
+  n_dec: 2
+  n_enc: 2
+  n_sky: 4
+  patience: 15
+  summary_only: 0
+  weight_decay: 0.5
+pvsetformer_n_params: 60157
+pvsetformer_variant: V4a_5s
+rule: 'R1 (D25, D37): median validation nRMSE at 1 h, 5-seed ensembles of both models'
+seeds:
+- 20261119
+- 20261120
+- 20261121
+- 20261122
+- 20261123
+variants_before_decision: 6
