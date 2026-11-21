@@ -91,6 +91,8 @@ something, record it and follow it, even if you would have chosen otherwise.
 ## The author's standing instructions (this project)
 
 - **Journal:** *Solar Energy* (D05). Its Guide for Authors is still to be fetched and recorded here before writing.
+  Automated fetching fails (21 Nov 2026: sciencedirect.com returns 403, the elsevier.com guide URLs redirect there):
+  the author opens it in a browser and saves it, or another source is used.
 - **Speed:** no schedules or week plans. Skip external-validation chores (emailing dataset authors, press searches).
   Go straight to the next build step, with full working code.
 - **Document everything:** every decision (`docs/decisions.md`), finding (`docs/findings.md`), session
