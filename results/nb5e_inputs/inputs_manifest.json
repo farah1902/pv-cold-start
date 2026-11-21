@@ -1,0 +1,45 @@
+{
+  "decision": "D70",
+  "series_from": "results/nb5b_inputs/series.parquet (byte copy)",
+  "events": [
+    "SQ Apartment1-12",
+    "SQ Apartment13-24",
+    "SQ Apartment25-36",
+    "SQ Apartment37-48",
+    "SQ567",
+    "UG Hall2 2F",
+    "UG Hall2 RF",
+    "Zone A1",
+    "Zone A2 1",
+    "Zone A4"
+  ],
+  "tasks_per_event": {
+    "SQ Apartment1-12": 6199,
+    "SQ Apartment13-24": 6325,
+    "SQ Apartment25-36": 6491,
+    "SQ Apartment37-48": 6325,
+    "SQ567": 3508,
+    "UG Hall2 2F": 3552,
+    "UG Hall2 RF": 4811,
+    "Zone A1": 4899,
+    "Zone A2 1": 5898,
+    "Zone A4": 4899
+  },
+  "last_task_per_event": {
+    "SQ Apartment1-12": "2021-10-05 17:15:00",
+    "SQ Apartment13-24": "2021-10-08 17:15:00",
+    "SQ Apartment25-36": "2021-10-12 17:00:00",
+    "SQ Apartment37-48": "2021-10-08 17:15:00",
+    "SQ567": "2021-08-30 17:30:00",
+    "UG Hall2 2F": "2021-08-31 17:30:00",
+    "UG Hall2 RF": "2021-09-06 17:30:00",
+    "Zone A1": "2021-09-08 17:30:00",
+    "Zone A2 1": "2021-09-28 17:15:00",
+    "Zone A4": "2021-09-08 17:30:00"
+  },
+  "n_tasks": 52907,
+  "sha256": {
+    "series.parquet": "35af0c3f78bdd0a26f1e93b1a8d143fd9123e8d734ca66189aeea30b484ef9a9",
+    "tasks.parquet": "172590b6b883e26ab967adecc0073d4ededbf6b3495645b8cf4bec3bdead4ab3"
+  }
+}

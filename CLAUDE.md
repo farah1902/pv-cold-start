@@ -184,7 +184,11 @@ execute `NB5b_foundation.ipynb` (`results/nb5b_fm/`). Colab round trip (D66): `p
 puts the 16 files NB5b_colab reads in `G:/My Drive/pv-cold-start` (Google Drive for desktop); after the run,
 `python tools/fetch_drive_runs.py` copies the runs back with hash checks (pass the folder Colab actually used: on
 21 Nov 2026 it was `"G:/My Drive/pv-cold-start (1)"`, a second folder of the same name; D66). Regenerate one
-NB5b notebook only with `python tools/make_nb5b.py --only NB5b_foundation`. The packages live only in the separate environment
+NB5b notebook only with `python tools/make_nb5b.py --only NB5b_foundation`. Chronos-2 at every PVSetFormer issue
+time (D70): `python tools/make_nb5e.py` (inputs and `NB5e_colab`), `python tools/make_drive_mirror.py --set nb5e`,
+the author runs `NB5e_colab` from `G:/My Drive/pv-cold-start-nb5e`, then `python tools/fetch_drive_runs.py --set
+nb5e`. Scoreboard against the four others: `python tools/pvsf_vs_all.py <round>`; equal-average diagnostic:
+`python tools/combo_diag.py` (7 min). The packages live only in the separate environment
 `.venv_fm` (`requirements-fm.txt`): never install them in the main one (numpy 2, torch 2.15). Downloads from the
 Hugging Face hub run with `HF_HUB_DISABLE_IMPLICIT_TOKEN=1` (the stored token has expired).
 PVSetFormer development (D36): one round `python tools/pvsf_dev.py --name V<k> --seeds 1 --set key=value ...`

@@ -321,3 +321,7 @@ One entry per work session: what was asked, what was done, the key numbers, what
 - **V12_5s (21 Nov, 185 min):** meets its rule (D67) and becomes the candidate: medians −0.2 to −0.4% against V9 at
   every horizon, but per unit only 15 and 30 min improve (8 and 7 of 10); at 1 h 2 of 10 units, unit mean +0.21%.
   Calm 15-min gap 40 → 32%. Scoreboard: lowest at no horizon (+0.15% against Chronos-2 at 1 h). V13_5s started 23:04.
+- **Chronos-2 as an input (21 Nov, D70):** the author asked for it and whether it adds value. Equal averages (F57):
+  PVSetFormer + Chronos-2 beats Chronos-2 alone at 30 min–2 h and 6 h and beats the TimeXer and LightGBM pairings
+  from 2 h (by 0.7–2.8%). Built `make_nb5e.py` (52,907 issue times, notebook `NB5e_colab`), `fm_infer.py --events`,
+  mirror and fetch `--set nb5e`; mirror at `G:/My Drive/pv-cold-start-nb5e`. Waiting for the author's Colab run.

@@ -666,6 +666,22 @@ repository). Paths are relative to `data/raw/hkust/Dataset/Time series dataset/`
   prior. Below 3% (guide §3.10) the 1-h differences are level. Provisional: validation units only; each foundation
   model's setting was chosen among four on these units (D59's rule), as the trained models' settings were.
 
+### F57 — PVSetFormer and Chronos-2 carry complementary information; from 2 h the pairing beats Chronos-2's pairings with TimeXer and LightGBM — *provisional*
+- **Evidence:** `results/nb5c_diag/combo/` (`python tools/combo_diag.py`, D70; 10 validation units, NB5a's slots, the
+  NB5a scorer). Equal-weight quantile averages of the members' ensembles, no weight fitted. Median nRMSE at 15 min /
+  30 min / 1 h / 2 h / 4 h / 6 h:
+  - PVSetFormer V12 + Chronos-2: 0.1301 / 0.1541 / 0.1770 / 0.2010 / 0.2210 / 0.1979; against Chronos-2 alone +0.31 /
+    −0.02 / −0.29 / −1.07 / +0.81 / −1.06%; against V12 alone −2.1 / −1.6 / −0.4 / −3.0 / −4.5 / −3.7%.
+  - TimeXer + Chronos-2: 0.1292 / 0.1540 / 0.1768 / 0.2024 / 0.2245 / 0.1993. LightGBM + Chronos-2: 0.1289 / 0.1542 /
+    0.1780 / 0.2035 / 0.2238 / 0.2036.
+  - PVSetFormer + Chronos-2 against TimeXer + Chronos-2: +0.75 / +0.12 / +0.13 / −0.70 / −1.54 / −0.68%; against
+    LightGBM + Chronos-2: +0.99 / −0.07 / −0.52 / −1.27 / −1.22 / −2.81%.
+- **Reading:** a trained forecaster of the index and the zero-shot model err differently, so their average is
+  usually better than either. From 2 h, PVSetFormer is the best partner of the three: it carries information that
+  Chronos-2 lacks and that TimeXer and LightGBM carry less of. At 15 min, LightGBM + Chronos-2 is lowest. At 4 h no
+  equal average beats Chronos-2 alone, so a learned, horizon-dependent weight is needed there. Provisional: medians
+  over 10 units, no paired test, equal weights only.
+
 ### F16 — Not every site file starts on the 1st of a month — *solid*
 - **Evidence:** among the 18 site files of the first event list, Indoor Sports Centre (2021-12-02), Zone J2
   (2021-11-13), Zone D (2022-01-20) and UG Hall9 (2023-02-11) start mid-month. The audit counts 5 of the 15-min and

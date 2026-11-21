@@ -239,6 +239,9 @@ Source: `results/nb5b_fm/summary.json`, `medians.csv`, `comparison.csv`, `fm_con
 | TimesFM 2.5 vs PVSetFormer V9_5s; units lower at 1 h (p) | −3.1 / −1.6 / +0.3 / −1.4 / −4.5 / −0.8%; 7 of 10 (0.49) | comparison.csv |
 | Chronos-2 vs LightGBM at 15 min: units lower (p) | 1 of 10 (0.049) | comparison.csv |
 | Raw PICP80 at 1 h: Chronos-2; TimesFM 2.5 | 0.691; 0.731 | medians.csv |
+| Equal averages (combo_diag, D70), median nRMSE 15 min / 30 min / 1 h / 2 h / 4 h / 6 h: V12 + Chronos-2 | 0.1301 / 0.1541 / 0.1770 / 0.2010 / 0.2210 / 0.1979 | nb5c_diag/combo/medians.csv |
+| Same: TimeXer + Chronos-2; LightGBM + Chronos-2 | 0.1292 / 0.1540 / 0.1768 / 0.2024 / 0.2245 / 0.1993; 0.1289 / 0.1542 / 0.1780 / 0.2035 / 0.2238 / 0.2036 | nb5c_diag/combo/medians.csv |
+| V12 + Chronos-2 against Chronos-2 alone; against TimeXer + Chronos-2; against LightGBM + Chronos-2 | +0.31 / −0.02 / −0.29 / −1.07 / +0.81 / −1.06%; +0.75 / +0.12 / +0.13 / −0.70 / −1.54 / −0.68%; +0.99 / −0.07 / −0.52 / −1.27 / −1.22 / −2.81% | nb5c_diag/combo/medians.csv |
 | V9_5s against the four others (ratio of medians), 15 min / 30 min / 1 h / 2 h / 4 h / 6 h: Chronos-2 | +2.7 / +1.9 / +0.5 / +2.2 / +6.0 / +3.0% | nb5c_diag/vs_all/V9_5s.csv |
 | Same: TimesFM 2.5; TimeXer; LightGBM | +3.2 / +1.6 / −0.3 / +1.4 / +4.7 / +0.8%; +2.3 / +0.9 / +0.0 / −1.4 / −1.2 / −1.4%; +3.2 / +0.6 / −1.6 / −1.3 / −1.8 / −5.5% | nb5c_diag/vs_all/V9_5s.csv |
 | V12 (V9 + median-change gate at 15 and 30 min, D67) 5-seed ensemble, median nRMSE at 15 min / 30 min / 1 h / 2 h / 4 h / 6 h | 0.13290 / 0.15667 / 0.17782 / 0.20719 / 0.23154 / 0.20555 | nb5c_variants/V12_5s/scores.csv |

@@ -1,6 +1,9 @@
 """Build the minimal Google Drive mirror for the Colab run of NB5b (D04, D59, D66): only what NB5b_colab reads.
 
-    python tools/make_drive_mirror.py ["G:/My Drive/pv-cold-start"]
+    python tools/make_drive_mirror.py [--set nb5b|nb5e] [DEST]
+
+Sets: nb5b (D66, default destination "G:/My Drive/pv-cold-start") and nb5e (D70, Chronos-2 at every PVSetFormer issue
+time, default destination "G:/My Drive/pv-cold-start-nb5e").
 
 Copies the notebook, tools/fm_infer.py, src/pvcold/*.py, requirements-fm.txt and results/nb5b_inputs/ (1.7 MB; no raw
 data, no documents). All-or-nothing: the copy is assembled in a temporary folder next to the destination, checked file
@@ -8,18 +11,20 @@ by file (SHA-256), then renamed into place, with MIRROR_MANIFEST.json listing ev
 exist (the local repository is the master copy: to refresh, delete the Drive folder first). The folder name matches
 DRIVE_REPO in the notebooks (/content/drive/MyDrive/pv-cold-start). Results come back with tools/fetch_drive_runs.py.
 """
+import argparse
 import hashlib
 import json
 import shutil
-import sys
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[1]
-DEFAULT = "G:/My Drive/pv-cold-start"
-FILES = ["notebooks/NB5b_colab.ipynb", "tools/fm_infer.py", "requirements-fm.txt",
-         "results/nb5b_inputs/inputs_manifest.json", "results/nb5b_inputs/series.parquet",
-         "results/nb5b_inputs/tasks.parquet"] + sorted(
-    str(p.relative_to(REPO)).replace("\\", "/") for p in (REPO / "src" / "pvcold").glob("*.py"))
+SRC_PY = sorted(str(p.relative_to(REPO)).replace("\\", "/") for p in (REPO / "src" / "pvcold").glob("*.py"))
+SETS = {"nb5b": ("G:/My Drive/pv-cold-start", ["notebooks/NB5b_colab.ipynb", "tools/fm_infer.py", "requirements-fm.txt",
+                 "results/nb5b_inputs/inputs_manifest.json", "results/nb5b_inputs/series.parquet",
+                 "results/nb5b_inputs/tasks.parquet"] + SRC_PY),
+        "nb5e": ("G:/My Drive/pv-cold-start-nb5e", ["notebooks/NB5e_colab.ipynb", "tools/fm_infer.py", "requirements-fm.txt",
+                 "results/nb5e_inputs/inputs_manifest.json", "results/nb5e_inputs/series.parquet",
+                 "results/nb5e_inputs/tasks.parquet"] + SRC_PY)}
 
 
 def sha(p: Path) -> str:
@@ -27,7 +32,12 @@ def sha(p: Path) -> str:
 
 
 def main():
-    dest = Path(sys.argv[1] if len(sys.argv) > 1 else DEFAULT)
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--set", choices=sorted(SETS), default="nb5b")
+    ap.add_argument("dest", nargs="?", default=None)
+    a = ap.parse_args()
+    default, FILES = SETS[a.set]
+    dest = Path(a.dest or default)
     assert dest.parent.exists(), f"{dest.parent} not found (is Google Drive for desktop running?)"
     assert not dest.exists(), f"{dest} exists: delete it first (the local repository is the master copy)"
     tmp = dest.with_name(dest.name + ".tmp")

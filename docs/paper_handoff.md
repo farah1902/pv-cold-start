@@ -33,6 +33,8 @@ telemetry start instead of grid connection (F06); metadata errors (D01).
 - That PVSetFormer (or any trained forecaster) beats the zero-shot foundation models: on validation Chronos-2
   is level with all of them at 1 h (0.1776 vs V9 0.1785, LightGBM 0.1813, TimeXer 0.1784) and lower from 2 h,
   by 2–8% (F56).
+- If PVSetFormer takes Chronos-2's forecast as an input (V15, D70): that it beats the foundation models on its
+  own. Say it improves on Chronos-2, and only with the ablation that gives TimeXer and LightGBM the same input.
 - That the foundation models beat the trained forecasters at 1 h: the differences are below 3% (F56); from 2 h
   several exceed it, on validation only so far.
 - That PVSetFormer beats TimeXer: on validation the candidate V12 is level with TimeXer at 1 h (0.17782 vs
@@ -73,7 +75,9 @@ telemetry start instead of grid connection (F06); metadata errors (D01).
 ## 8. What is still missing
 Before the freeze:
 - TabPFN-TS (A6c) waits for the author's licence (D65);
-- PVSetFormer rounds toward the target of D68 (lowest of the five forecasters on validation; V13_5s queued, D69);
+- PVSetFormer rounds toward the target of D68 (lowest of the five forecasters on validation; V13_5s running, D69);
+  the Chronos-2 input (V15, D70) after the author's Colab run of `NB5e_colab`, with its ablation on TimeXer and
+  LightGBM;
 - PVSetFormer design rounds until the freeze (D50; candidate V12_5s since D67's result; V11a not kept; V13_5s
   running, D69); at the freeze, R1 (`make_nb5c.py --final`) and PVSetFormer's conformal layer are rerun on the final
   candidate;

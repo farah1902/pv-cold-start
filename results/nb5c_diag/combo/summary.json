@@ -1,0 +1,31 @@
+{
+ "tool": "combo_diag",
+ "decision": "D70",
+ "environment": {
+  "python": "3.12.1",
+  "platform": "Windows-11-10.0.26300-SP0",
+  "executable": "C:\\Python312\\python.exe",
+  "run_at": "2026-11-21 23:33:16",
+  "numpy": "1.26.4",
+  "pandas": "2.2.0",
+  "scipy": "1.12.0",
+  "sklearn": "1.5.1",
+  "statsmodels": "0.15.0",
+  "lightgbm": "4.6.0",
+  "pvlib": "0.16.1",
+  "ruptures": "v1.1.10",
+  "matplotlib": "3.8.3",
+  "torch": "2.2.0+cpu",
+  "openpyxl": "3.1.5",
+  "pyarrow": "15.0.2",
+  "yaml": "6.0.1"
+ },
+ "members": {
+  "PVSetFormer": "V12_5s",
+  "LightGBM": "LGB_seeds",
+  "TimeXer": "TX1_5s",
+  "Chronos-2": "chronos2_c1344_full"
+ },
+ "common_keys": 183982,
+ "runtime_s": 422.6
+}

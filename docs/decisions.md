@@ -1041,6 +1041,37 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
   other horizon. If V12 (D67) and V13 both meet their rules, V14 combines them with 5 seeds.
 - **Result:** pending.
 
+### D70 — A Chronos-2 input for PVSetFormer (V15): Chronos-2 at every issue time of the validation units [author decision, Phase 5]
+- **Request:** the author, 21 Nov 2026: "yes, add the chronos forcast as input too, but is this step is good and give
+  a value to our model or not?"
+- **Evidence before building (F57):** equal-weight averages of forecasts already run (`tools/combo_diag.py`, nothing
+  fitted). PVSetFormer (V12) + Chronos-2 is below Chronos-2 alone at 30 min to 2 h and at 6 h (−0.02 to −1.1%) and
+  above it at 15 min and 4 h; it is below V12 alone everywhere (−0.4 to −4.5%). At 2–6 h it is also below TimeXer +
+  Chronos-2 (−0.7 to −1.5%) and LightGBM + Chronos-2 (−1.2 to −2.8%); at 15 min to 1 h the three pairs are within 1%.
+- **Assessment given to the author:** the input should lower PVSetFormer's errors, mostly from 2 h, where its pairing
+  with Chronos-2 beats the other pairings, so part of the gain belongs to PVSetFormer (the donors). Costs: the gain
+  must be shown against TimeXer and LightGBM given the same input (D68), PVSetFormer then depends on a 120M-parameter
+  pretrained model run at every issue time, and the paper's claim becomes "PVSetFormer improves on a foundation
+  model", not "beats" it. Whether Chronos-2's pretraining data include this dataset has not been checked (this also
+  applies to row A6a).
+- **Change:**
+  - `tools/make_nb5e.py` writes `results/nb5e_inputs/`: every issue time PVSetFormer trains on or forecasts on the 10
+    validation units, from the fleet's start to each event's last NB5a slot (52,907, which include NB5a's 37,619; the
+    latest on 12 Oct 2021, inside the validation units' own NB5a windows); the series is a byte copy of NB5b's. It
+    also writes `notebooks/NB5e_colab.ipynb`: A6a's part-2d setting (Chronos-2, 1,344 daylight steps, covariates on),
+    one part per event, resumable. `fm_infer.py --events` restricts a run to some events. Local smoke test (CPU, one
+    event, 2 issue times): 12 rows, 165 s.
+  - The Drive mirror `G:/My Drive/pv-cold-start-nb5e` (`make_drive_mirror.py --set nb5e`; 16 files, 1.71 MB, hashes
+    checked); results come back with `fetch_drive_runs.py --set nb5e`.
+  - Chronos-2 is zero-shot and its forecast at t uses data up to t only, so its forecasts at training and at forecast
+    times are equally out of sample: no stacking leak.
+  - Option `fm` (V15), on V12: the Chronos-2 quantiles at each horizon, as changes from k(t), and their flag, as more
+    rows of the linear path (zero start, so V15 starts at V12).
+- **Fairness:** before the paper credits PVSetFormer, TimeXer and LightGBM receive the same input (ablation rows), and
+  PVSetFormer without it stays a row. At the test, Chronos-2 runs at every issue time of the test events, after the
+  freeze.
+- **Result:** pending (the author's Colab run).
+
 ### D16 — pvlib 0.16.1 and ruptures 1.1.10 are installed locally and pinned [environment, Phase 0]
 - **Request or reason:** both are in the guide's software list (§5.6) and were missing locally on 18 Nov 2026.
 - **Change:** `pip install pvlib==0.16.1 ruptures==1.1.10`. A dry run first showed that nothing else would be

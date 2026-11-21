@@ -134,6 +134,7 @@ def main() -> None:
     ap.add_argument("--threads", type=int, default=8)
     ap.add_argument("--batch", type=int, default=64, help="issue times per call")
     ap.add_argument("--limit", type=int, default=0, help="smoke test: first N tasks of each event")
+    ap.add_argument("--events", nargs="*", default=None, help="only these events (D70: one part per event)")
     a = ap.parse_args()
 
     import torch
@@ -145,6 +146,9 @@ def main() -> None:
         assert sha256(inp / f) == h, f"{f} differs from the manifest"
     series = pd.read_parquet(inp / "series.parquet")
     tasks = pd.read_parquet(inp / "tasks.parquet").sort_values(["event", "t"]).reset_index(drop=True)
+    if a.events is not None:
+        assert set(a.events) <= set(tasks.event), f"unknown events: {set(a.events) - set(tasks.event)}"
+        tasks = tasks[tasks.event.isin(a.events)].reset_index(drop=True)
     if a.limit:
         tasks = tasks.groupby("event", sort=False).head(a.limit)
     model = {"chronos2": Chronos2, "timesfm25": TimesFM25}[a.model](a)
@@ -191,7 +195,8 @@ def main() -> None:
             return None
     info = {"model": a.model, "weights": WEIGHTS[a.model], **model.meta, "context": a.context, "cov": a.cov,
             "grid": "daylight 06:00-17:45", "prediction_length": PL, "device": a.device, "threads": a.threads,
-            "batch": a.batch, "limit": a.limit, "inputs_sha256": man["sha256"], "n_tasks": len(tasks), "n_rows": len(fc),
+            "batch": a.batch, "limit": a.limit, "events": a.events, "inputs_sha256": man["sha256"], "n_tasks": len(tasks),
+            "n_rows": len(fc),
             "runtime_s": round(time.time() - t0, 1),
             "versions": {p: ver(p) for p in ["torch", "numpy", "pandas", *PACKAGES[a.model]]},
             "python": sys.version.split()[0], "run_at": time.strftime("%Y-%m-%d %H:%M:%S")}
