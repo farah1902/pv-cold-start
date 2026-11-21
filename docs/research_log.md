@@ -244,3 +244,7 @@ One entry per work session: what was asked, what was done, the key numbers, what
   ensemble scores 0.17845 at 1 h, below PVSetFormer (0.18001) and LightGBM (0.18130), none significant (F48). The
   diagnosis tool now also writes how far the median leaves persistence and its bias, by index level in calm states:
   PVSetFormer reverts toward the mean at 15 min (F49).
+- **V6 and V7 options (21 Nov):** `hmask`, `hhead`, `donor_id` and `donor_rel` in `setformer.py` (D52–D55),
+  zero start. Checks: V4a and TimeXer TX1 reproduce exactly after the static features gained a 7th column (the
+  unit index); all four options start at V4a's outputs; a 2-epoch run with all four is finite and sorted. The four
+  rounds run in sequence (about 90 min).

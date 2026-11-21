@@ -56,3 +56,8 @@ are queued (1 seed each, paired with V4a's single-seed round).
 
 **Author decision after A6e (D50):** keep developing until the freeze, aiming to make the donors useful and to close
 the short-horizon gap; the main model and the title are decided at the freeze.
+
+**Design rounds V6 and V7 (21 Nov 2026, D50).** V6a (D52) and V6b (D53) address the short-horizon median (F49):
+horizons kept apart in the decoder, and a per-horizon readout. V7a (D54) and V7b (D55) try to make the donors
+useful (F47): a learned identity per donor, and each donor's deviation from the index. All four start exactly at V4a
+(checked) and run with one seed, paired with V4a's single-seed round.

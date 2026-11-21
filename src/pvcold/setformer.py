@@ -23,6 +23,7 @@ F_LIN = 2 * L + 3 + F_Q                      # linear path: index lags (as chang
 F_VOL = 6                                    # V5: log s.d. over 1 h and 2 h, log |last change|, each with its flag
 VOL_EPS, VOL_REF = 0.01, 0.1                 # log((x + VOL_EPS) / VOL_REF): finite at zero, near 0 for typical values
 NO_DECAY = ("lin_w", "vol_w", "vg_w", "vg_b")  # linear and volatility paths: no weight decay
+MAX_UNITS = 64                               # V7 donor identity table (the panel has fewer units; checked)
 DEFAULTS = {"d": 64, "heads": 4, "n_sky": 4, "n_enc": 2, "n_dec": 2, "dropout": 0.1, "lr": 1e-3, "weight_decay": 1e-2,
             "batch": 256, "max_epochs": 100, "patience": 15, "donor_dropout": 0.1,
             "fleet_token": 0, "balance": 0,   # V2 options (D36): fleet-summary token per patch; horizon-balanced loss
@@ -31,6 +32,10 @@ DEFAULTS = {"d": 64, "heads": 4, "n_sky": 4, "n_enc": 2, "n_dec": 2, "dropout": 
             "summary_only": 0,                # A6e (rule R2): fleet-summary tokens only, no donor tokens
             "vol": 0,                         # V5 option: volatility features of the index -> the 9 head outputs
             "vgate": 0,                       # V5 option: volatility gate on the transformer's median shift
+            "hmask": 0,                       # V6 option: horizon queries do not attend to one another
+            "hhead": 0,                       # V6 option: per-horizon deviation from the shared head
+            "donor_id": 0,                    # V7 option: learned identity embedding per donor
+            "donor_rel": 0,                   # V7 option: donor deviation from the index, per step
             "arch": "pvsf"}                   # "timexer": TimeXer with the same inputs (rule R2, timexer.py)
 
 
@@ -44,7 +49,8 @@ def tilt_class(tilt, az) -> list:
 
 
 def event_arrays(name: str, p: dict, S: pd.DataFrame, gains: pd.Series) -> dict:
-    """Full-grid arrays of one event: donor kappa / clip / valid (T x n), static donor features (n x 6), the event's
+    """Full-grid arrays of one event: donor kappa / clip / valid (T x n), static donor features (n x 6) plus the
+    donor's global unit index as a 7th column (read only by the donor_id option), the event's
     index series S (forecast.event_series) and the per-horizon targets. Donor data only; no target power."""
     g = S.index
     dn = list(gains.index)
@@ -61,8 +67,11 @@ def event_arrays(name: str, p: dict, S: pd.DataFrame, gains: pd.Series) -> dict:
     U = p["units"].loc[dn]
     meta = U["in_prior_test"].astype(bool).to_numpy()
     r = np.where(meta, U["DC_AC"].to_numpy(dtype=float), 0.0)
+    uid = p["units"].index.get_indexer(dn)
+    assert (uid >= 0).all() and uid.max() < MAX_UNITS, "donor index outside the identity table"
     static = np.column_stack([gains.to_numpy(), r, meta.astype(float),
-                              np.array([tilt_class(a, b) for a, b in zip(U["tilt"], U["azimuth_brick"])])])
+                              np.array([tilt_class(a, b) for a, b in zip(U["tilt"], U["azimuth_brick"])]),
+                              uid.astype(float)])
     return {"name": name, "dn": dn, "kap": kap.astype(np.float32), "clip": clip.astype(np.float32),
             "valid": valid.astype(np.float32), "started": started, "static": static.astype(np.float32), "S": S}
 
@@ -143,7 +152,7 @@ def build_model(cfg: dict):
 
     class PVSetFormer(nn.Module):
         def __init__(self, d, heads, n_sky, n_enc, n_dec, dropout, fleet_token, lin=0, aux=0.0, summary_only=0,
-                     vol=0, vgate=0):
+                     vol=0, vgate=0, hmask=0, hhead=0, donor_id=0, donor_rel=0):
             super().__init__()
             # A6e (rule R2): the fleet summary only, no donor tokens; needs the fleet token, excludes the donor loss
             self.summary_only = bool(summary_only)
@@ -180,6 +189,20 @@ def build_model(cfg: dict):
             if self.vgate:                                   # per-horizon gate 1 + tanh(w . vol + b), 1 at the start
                 self.vg_w = nn.Parameter(torch.zeros(len(FC.H), F_VOL))
                 self.vg_b = nn.Parameter(torch.zeros(len(FC.H)))
+            self.hmask, self.hhead = bool(hmask), bool(hhead)  # V6 options, created last; zero start
+            if self.hmask:                                   # each horizon query attends only to itself
+                self.register_buffer("hmask_buf", ~torch.eye(len(FC.H), dtype=torch.bool))
+            if self.hhead:                                   # per-horizon deviation from the shared head
+                self.hh_w = nn.Parameter(torch.zeros(len(FC.H), d, 9))
+                self.hh_b = nn.Parameter(torch.zeros(len(FC.H), 9))
+            self.donor_id, self.donor_rel = bool(donor_id), bool(donor_rel)   # V7 options, created last
+            assert not ((donor_id or donor_rel) and self.summary_only), "V7 options need donor tokens"
+            if self.donor_id:                                # learned identity per donor, zero start
+                self.id_emb = nn.Parameter(torch.zeros(MAX_UNITS, d))
+            if self.donor_rel:                               # donor kappa minus the index, per step, zero start
+                self.rel_in = nn.Linear(PATCH, d)
+                nn.init.zeros_(self.rel_in.weight)
+                nn.init.zeros_(self.rel_in.bias)
             causal = torch.triu(torch.ones(NP, NP, dtype=torch.bool), 1)
             self.register_buffer("causal", causal.repeat_interleave(self.m, 0).repeat_interleave(self.m, 1))
 
@@ -217,7 +240,13 @@ def build_model(cfg: dict):
             if self.summary_only:                            # A6e: one fleet-summary token per patch
                 s = self.fleet_in(fleet)[:, :, None]
             else:
-                h = self.patch_in(x) + self.static_in(static)[:, :, None] + ge[:, None]   # (B, n, NP, d)
+                h = self.patch_in(x) + self.static_in(static[..., :F_STATIC])[:, :, None] + ge[:, None]   # (B, n, NP, d)
+                if self.donor_id:
+                    h = h + self.id_emb[static[0, :, F_STATIC].long()][None, :, None]
+                if self.donor_rel:                           # kappa_d - k per step where both are valid
+                    kl, kv = fleet[:, :, :PATCH], fleet[:, :, PATCH:2 * PATCH]               # (B, NP, PATCH)
+                    rel = (x[..., 0::3] - kl[:, None]) * x[..., 2::3] * kv[:, None]        # (B, n, NP, PATCH)
+                    h = h + self.rel_in(rel)
                 h = h.transpose(1, 2).reshape(B * NP, n, -1)
                 pad = (~online)[:, None, :].expand(B, NP, n).reshape(B * NP, n)
                 h = self.set_layer(h, src_key_padding_mask=pad)
@@ -228,8 +257,11 @@ def build_model(cfg: dict):
                     s = torch.cat([s, self.fleet_in(fleet)[:, :, None]], dim=2)
             s = s.reshape(B, NP * self.m, -1) + ge.repeat_interleave(self.m, dim=1)
             enc = self.temporal(s, mask=self.causal)
-            dec = self.norm(self.decoder(self.q_in(q), enc))                          # (B, 6, d)
+            dec = self.norm(self.decoder(self.q_in(q), enc,
+                                         tgt_mask=self.hmask_buf if self.hmask else None))  # (B, 6, d)
             o = self.head(dec)                                                        # (B, 6, 9)
+            if self.hhead:
+                o = o + torch.einsum("bhd,hdo->bho", dec, self.hh_w) + self.hh_b
             if self.vol or self.vgate:
                 vf = self.vol_features(fleet)                                         # (B, F_VOL)
             if self.vgate:                                   # scales the transformer's median shift only
@@ -252,7 +284,8 @@ def build_model(cfg: dict):
 
     return PVSetFormer(cfg["d"], cfg["heads"], cfg["n_sky"], cfg["n_enc"], cfg["n_dec"], cfg["dropout"],
                        cfg.get("fleet_token", 0), cfg.get("lin", 0), cfg.get("aux", 0.0), cfg.get("summary_only", 0),
-                       cfg.get("vol", 0), cfg.get("vgate", 0))
+                       cfg.get("vol", 0), cfg.get("vgate", 0), cfg.get("hmask", 0), cfg.get("hhead", 0),
+                       cfg.get("donor_id", 0), cfg.get("donor_rel", 0))
 
 
 def n_params(cfg: dict) -> int:

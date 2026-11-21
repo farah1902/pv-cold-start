@@ -672,6 +672,33 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
   - A4c is the main model plus the corrected sensor index as an extra input.
 - **Evidence:** this session's question and answer.
 
+### D52 — PVSetFormer variant V6a: horizon queries kept apart in the decoder [R1 round, Phase 5]
+- **Change:** V4a with a diagonal self-attention mask in the decoder, so each horizon query attends only to itself
+  (and to the encoder). It tests F49's hypothesis that the 15-min median inherits the long horizons' mean reversion
+  through the decoder. No new parameter (60,157); same initial outputs as V4a.
+- **Result:** pending (1 seed, paired with V4a).
+
+### D53 — PVSetFormer variant V6b: per-horizon deviation from the shared head [R1 round, Phase 5]
+- **Change:** V4a plus, per horizon, a linear readout of the decoder output added to the shared head (zero start,
+  normal weight decay, so it stays a shrunk deviation). TimeXer reads each horizon out with its own weights (F49).
+  61,939 parameters (+1,782).
+- **Result:** pending (1 seed, paired with V4a).
+
+### D54 — PVSetFormer variant V7a: learned donor identity [R1 round, Phase 5]
+- **Change:** V4a plus a learned embedding per donor (a table over the panel's 44 units, zero start, normal weight
+  decay), added to the donor's tokens. Donor tokens were anonymous: the set attention saw only gain, DC/AC ratio,
+  metadata flag and tilt class, so it could not learn that a given roof dims before the others. The metadata give
+  station names but no coordinates (F10), so position enters only through this learned identity. 62,205 parameters.
+  The static donor features now carry the unit index as a 7th column; every model reads only the first 6 for its
+  static features (V4a and TimeXer TX1 reproduce exactly).
+- **Result:** pending (1 seed, paired with V4a).
+
+### D55 — PVSetFormer variant V7b: each donor's deviation from the index [R1 round, Phase 5]
+- **Change:** V4a plus, per step, the donor's implied index minus the campus index (where both are valid), mapped
+  into the donor token by a zero-start linear layer. The donor tokens did not see the index (it enters only through
+  the fleet token, after pooling), so "this roof is darker than the fleet now" had to be inferred. 60,317 parameters.
+- **Result:** pending (1 seed, paired with V4a).
+
 ### D16 — pvlib 0.16.1 and ruptures 1.1.10 are installed locally and pinned [environment, Phase 0]
 - **Request or reason:** both are in the guide's software list (§5.6) and were missing locally on 18 Nov 2026.
 - **Change:** `pip install pvlib==0.16.1 ruptures==1.1.10`. A dry run first showed that nothing else would be
