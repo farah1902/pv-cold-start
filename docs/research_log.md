@@ -306,3 +306,6 @@ One entry per work session: what was asked, what was done, the key numbers, what
 - **V11a_5s (21 Nov, 112 min):** not kept (D63): +0.12% at 1 h, +1.6% at 4 h, but −0.9% at 15 min on 9 of 10
   units, calm 15-min gap 40 → 30% (F55). New option `vmed_n` (gate on the first n horizons); V12 = V9 + the gate on
   15 and 30 min (D67), queued after LightGBM's conformal layer. Checks: V11a_5s reproduces exactly, V12 starts at V9, the gate moves 15 and 30 min only.
+- **LightGBM's 5-seed conformal layer (21 Nov, D64):** `lgb_seeds_cal.py` (13 min) reproduces all 919,910 rows
+  of `LGB_seeds` (max diff 6e-8) and writes 411,365 calibration rows; `NB5c_conformal_lgb` (55 s) is kept: PICP80 at
+  1 h 0.709 → 0.795, IS80 0.5756 → 0.5705 (9 of 10 units). Figure checked at print size.

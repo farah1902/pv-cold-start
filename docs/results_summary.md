@@ -188,6 +188,23 @@ PVSetFormer's 5-seed ensemble; run of 21 Nov 2026).
 | Median 80% correction at 15 min / 1 h / 6 h (units of G̃) | 0.038 / 0.063 / 0.106 | corrections.csv |
 | Keep rule met; conformal configuration part 2b (PVSetFormer), sha256 | yes; `cc1b10eb80f3afc8…` | conformal_config_part2b_pvsf.yaml |
 
+## Conformal calibration of LightGBM's 5-seed ensemble (NB5c conformal, LightGBM)
+Source: `results/nb5c_conformal_lgb/summary.json`, `val_conformal_medians.csv`, `corrections.csv`, and
+`results/nb5c_variants/LGB_seeds_cal/summary.json` (development data; `LGB_seeds`, D64; run of 21 Nov 2026).
+
+| Quantity | Value | Source file |
+| --- | --- | --- |
+| Calibration refit: forecast rows matched to LGB_seeds; max difference; calibration rows | 919,910; 6.0·10⁻⁸; 411,365 | LGB_seeds_cal/summary.json |
+| Median PICP80 at 15 min / 1 h / 2 h / 6 h, raw | 0.683 / 0.709 / 0.665 / 0.657 | val_conformal_medians.csv |
+| Same, conformal | 0.783 / 0.795 / 0.756 / 0.775 | val_conformal_medians.csv |
+| Coverage of the 60 / 40 / 20% intervals at 1 h: raw; conformal | 0.516 / 0.328 / 0.147; 0.621 / 0.403 / 0.205 | val_conformal_medians.csv |
+| Median IS80 at 1 h: raw; conformal (units improved) | 0.5756; 0.5705 (9 of 10) | val_conformal_medians.csv, summary.json |
+| Median IS80 at 6 h: raw; conformal | 0.7014; 0.6603 | val_conformal_medians.csv |
+| Median CRPS (9 quantiles) at 1 h: raw; conformal | 0.0939; 0.0930 | val_conformal_medians.csv |
+| Raw PICP80 of the donors' pseudo cold starts at 15 min / 1 h / 6 h | 0.719 / 0.704 / 0.659 | corrections.csv |
+| Median 80% correction at 15 min / 1 h / 6 h (units of G̃) | 0.027 / 0.050 / 0.076 | corrections.csv |
+| Keep rule met; conformal configuration part 2b (LightGBM, 5 seeds), sha256 | yes; `feb062a2dda885a5…` | conformal_config_part2b_lgb5.yaml |
+
 ## Sensor and satellite rows on the validation units (NB5d)
 Source: `results/nb5d_sources/summary.json`, `medians.csv`, `prior_check.csv` (development data; LightGBM part-2a
 setting for A4 and A4b, D51; each row against fleet LightGBM on the same slots; run of 21 Nov 2026, 289 s).

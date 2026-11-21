@@ -71,11 +71,11 @@ Before the freeze:
 - PVSetFormer design rounds until the freeze (D50; candidate V9_5s since D60's result; V11a not kept; V12_5s
   queued, D67); at the freeze, R1 (`make_nb5c.py --final`) and PVSetFormer's conformal layer are rerun on the final
   candidate;
-- LightGBM's 5-seed conformal layer (D64; queued after V11a_5s);
 - freeze part 2 (2a LightGBM, 2b conformal, 2c R1, 2d foundation models) and the `protocol-freeze` tag.
 
 Done on development data by 21 Nov 2026: NB0–NB4, NB5a and its conformal layer, R1 (NB5c, D45) and PVSetFormer's
-conformal layer (D46), TimeXer and A6e (R2, F47, F48), the sensor and satellite rows (NB5d, F51) and A4c (D56).
+conformal layer (D46), LightGBM's 5-seed conformal layer (D64), TimeXer and A6e (R2, F47, F48), the sensor and
+satellite rows (NB5d, F51) and A4c (D56).
 After the freeze: the test run (NB5) and everything from NB6 on.
 
 ## 9. Writing conventions

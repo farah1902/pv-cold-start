@@ -916,7 +916,13 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
     `results/nb5c_conformal_lgb/`, settings `conformal_config_part2b_lgb5.yaml`.
   - Queued after V11a_5s (memory is short while two 8-worker runs would overlap).
 - **Consequence:** part 2b holds LightGBM's 5-seed layer for its test rows; NB5a's single-seed layer stays on record.
-- **Result:** pending.
+- **Result (21 Nov 2026): kept.** `lgb_seeds_cal.py` (150 bank fits, 13 min): all 919,910 forecast rows equal
+  `LGB_seeds`' (max difference 6·10⁻⁸), 411,365 calibration rows, every one of the 82,273 calibration keys with all
+  5 seeds. `NB5c_conformal_lgb` (55 s; 180 groups, none without a correction): median PICP80 at 1 h 0.709 raw,
+  0.795 conformal; median IS80 at 1 h 0.5756 → 0.5705, lower on 9 of 10 units; so the keep rule of D35 is met.
+  Conformal PICP80 over horizons 0.756–0.802 (lowest at 2 h). The single-seed layer (NB5a) gave 0.714 → 0.797 and
+  0.5739 → 0.5716 (8 of 10). Settings `results/nb5c_conformal_lgb/conformal_config_part2b_lgb5.yaml` (sha256
+  `feb062a2dda885a5…`), with the LightGBM part-2a configuration and `LGB_seeds`' summary hashed in its summary.
 
 ### D65 — TabPFN-TS (row A6c) waits for the author to accept the TabPFN licence [author decision, Phase 5]
 - **Request:** the author, 21 Nov 2026, on the three options of D59 (local TabPFN-2 weights with telemetry off, the
