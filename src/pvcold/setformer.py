@@ -24,7 +24,8 @@ DEFAULTS = {"d": 64, "heads": 4, "n_sky": 4, "n_enc": 2, "n_dec": 2, "dropout": 
             "batch": 256, "max_epochs": 100, "patience": 15, "donor_dropout": 0.1,
             "fleet_token": 0, "balance": 0,   # V2 options (D36): fleet-summary token per patch; horizon-balanced loss
             "lin": 0,                         # V4 option: per-horizon linear path on the index lags (no weight decay)
-            "aux": 0.0}                       # V4 option: weight of the auxiliary donor-forecast loss (censored)
+            "aux": 0.0,                       # V4 option: weight of the auxiliary donor-forecast loss (censored)
+            "summary_only": 0}                # A6e (rule R2): fleet-summary tokens only, no donor tokens
 
 
 # --- Data: donor tokens, geometry, queries, targets on the full 15-min grid -----------------------------------------
@@ -131,16 +132,21 @@ def build_model(cfg: dict):
     import torch.nn.functional as Fn
 
     class PVSetFormer(nn.Module):
-        def __init__(self, d, heads, n_sky, n_enc, n_dec, dropout, fleet_token, lin=0, aux=0.0):
+        def __init__(self, d, heads, n_sky, n_enc, n_dec, dropout, fleet_token, lin=0, aux=0.0, summary_only=0):
             super().__init__()
-            self.n_sky, self.fleet = n_sky, bool(fleet_token)
-            self.m = n_sky + int(self.fleet)                 # tokens per patch
-            self.patch_in, self.static_in = nn.Linear(F_PATCH, d), nn.Linear(F_STATIC, d)
+            # A6e (rule R2): the fleet summary only, no donor tokens; needs the fleet token, excludes the donor loss
+            self.summary_only = bool(summary_only)
+            assert not self.summary_only or (fleet_token and aux == 0), "summary_only needs fleet_token=1 and aux=0"
+            self.n_sky, self.fleet = (0 if self.summary_only else n_sky), bool(fleet_token)
+            self.m = self.n_sky + int(self.fleet)            # tokens per patch
+            if not self.summary_only:
+                self.patch_in, self.static_in = nn.Linear(F_PATCH, d), nn.Linear(F_STATIC, d)
             self.geo_in, self.q_in = nn.Linear(F_GEO, d), nn.Linear(F_Q, d)
             layer = lambda: nn.TransformerEncoderLayer(d, heads, 2 * d, dropout, batch_first=True, norm_first=True)  # noqa: E731
-            self.set_layer = layer()
-            self.pool_q = nn.Parameter(torch.randn(n_sky, d) * 0.02)
-            self.pool = nn.MultiheadAttention(d, heads, dropout=dropout, batch_first=True)
+            if not self.summary_only:
+                self.set_layer = layer()
+                self.pool_q = nn.Parameter(torch.randn(n_sky, d) * 0.02)
+                self.pool = nn.MultiheadAttention(d, heads, dropout=dropout, batch_first=True)
             self.temporal = nn.TransformerEncoder(layer(), n_enc, enable_nested_tensor=False)
             self.decoder = nn.TransformerDecoder(
                 nn.TransformerDecoderLayer(d, heads, 2 * d, dropout, batch_first=True, norm_first=True), n_dec)
@@ -173,15 +179,18 @@ def build_model(cfg: dict):
         def forward(self, x, static, online, geo, q, anchor, fleet, return_aux=False):
             B, n = x.shape[0], x.shape[1]
             ge = self.geo_in(geo)                                                     # (B, NP, d)
-            h = self.patch_in(x) + self.static_in(static)[:, :, None] + ge[:, None]   # (B, n, NP, d)
-            h = h.transpose(1, 2).reshape(B * NP, n, -1)
-            pad = (~online)[:, None, :].expand(B, NP, n).reshape(B * NP, n)
-            h = self.set_layer(h, src_key_padding_mask=pad)
-            h_last = h.reshape(B, NP, n, -1)[:, -1]                                    # donors at the issue patch
-            s, _ = self.pool(self.pool_q.expand(B * NP, -1, -1), h, h, key_padding_mask=pad)
-            s = s.reshape(B, NP, self.n_sky, -1)
-            if self.fleet:                                   # the fleet summary as one more token per patch
-                s = torch.cat([s, self.fleet_in(fleet)[:, :, None]], dim=2)
+            if self.summary_only:                            # A6e: one fleet-summary token per patch
+                s = self.fleet_in(fleet)[:, :, None]
+            else:
+                h = self.patch_in(x) + self.static_in(static)[:, :, None] + ge[:, None]   # (B, n, NP, d)
+                h = h.transpose(1, 2).reshape(B * NP, n, -1)
+                pad = (~online)[:, None, :].expand(B, NP, n).reshape(B * NP, n)
+                h = self.set_layer(h, src_key_padding_mask=pad)
+                h_last = h.reshape(B, NP, n, -1)[:, -1]                                # donors at the issue patch
+                s, _ = self.pool(self.pool_q.expand(B * NP, -1, -1), h, h, key_padding_mask=pad)
+                s = s.reshape(B, NP, self.n_sky, -1)
+                if self.fleet:                               # the fleet summary as one more token per patch
+                    s = torch.cat([s, self.fleet_in(fleet)[:, :, None]], dim=2)
             s = s.reshape(B, NP * self.m, -1) + ge.repeat_interleave(self.m, dim=1)
             enc = self.temporal(s, mask=self.causal)
             dec = self.norm(self.decoder(self.q_in(q), enc))                          # (B, 6, d)
@@ -200,7 +209,7 @@ def build_model(cfg: dict):
             return out, out[:, None, :, 4] + off                                     # donor medians
 
     return PVSetFormer(cfg["d"], cfg["heads"], cfg["n_sky"], cfg["n_enc"], cfg["n_dec"], cfg["dropout"],
-                       cfg.get("fleet_token", 0), cfg.get("lin", 0), cfg.get("aux", 0.0))
+                       cfg.get("fleet_token", 0), cfg.get("lin", 0), cfg.get("aux", 0.0), cfg.get("summary_only", 0))
 
 
 def n_params(cfg: dict) -> int:
