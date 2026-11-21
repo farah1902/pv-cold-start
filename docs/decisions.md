@@ -704,6 +704,22 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
   the fleet token, after pooling), so "this roof is darker than the fleet now" had to be inferred. 60,317 parameters.
 - **Result:** pending (1 seed, paired with V4a).
 
+### D56 — A4c: the main model plus the corrected sensor index (option `ext`) [models, Phase 5]
+- **Request or reason:** D51: A4c is the main model with the corrected sensor index as an extra input (guide §4.2:
+  "adding the sensor helps or hurts").
+- **Change:**
+  - `ext=<source>` (e.g. `sensor_corr`) adds NB4's 15-min index of that source to the event series. Its values and
+    validity flags over the 4-h window follow the fleet-summary columns of each patch and enter the fleet token
+    through a zero-start linear layer, created last. The model therefore starts exactly at the main model and can
+    learn to use the sensor, or not.
+  - Every reader of the fleet tensor now takes the first 11 columns explicitly (linear path, TimeXer's marks), so
+    the extra columns reach nothing else. `tools/pvsf_dev.py` and `tools/pvsf_cv.py` add the source when `ext` is set;
+    the CV runner masks it after 2021-10-05 like the index.
+  - Checks: V4a, A6e and TimeXer TX1 reproduce exactly; with `ext=sensor_corr` the initial outputs equal V4a's
+    (60,445 parameters); a 2-epoch run is finite and sorted.
+  - A development round A4c (1 seed, paired with V4a) follows NB5d.
+- **Evidence:** `src/pvcold/setformer.py`; results in `results/nb5c_variants/A4c/`.
+
 ### D16 — pvlib 0.16.1 and ruptures 1.1.10 are installed locally and pinned [environment, Phase 0]
 - **Request or reason:** both are in the guide's software list (§5.6) and were missing locally on 18 Nov 2026.
 - **Change:** `pip install pvlib==0.16.1 ruptures==1.1.10`. A dry run first showed that nothing else would be

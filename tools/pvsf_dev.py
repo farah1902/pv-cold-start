@@ -72,6 +72,9 @@ def main():
     for v in VAL:
         s = E.loc[v, "start"]
         S = FC.event_series(v, idx, geo15)
+        if cfg.get("ext"):                            # A4c (D51): NB4's 15-min index of that source
+            S["k_ext"] = pd.read_parquet(C.RESULTS / "nb4_sensor" / "index15.parquet").set_index("time")[
+                "k_" + cfg["ext"]].reindex(S.index).astype(float).to_numpy()
         arrays[v] = SF.event_arrays(v, p, S, gains3[gains3.event == v].set_index("donor")["gain"])
         for d in FC.ORIGIN_DAYS:
             o = s + pd.Timedelta(days=d)

@@ -36,6 +36,7 @@ DEFAULTS = {"d": 64, "heads": 4, "n_sky": 4, "n_enc": 2, "n_dec": 2, "dropout": 
             "hhead": 0,                       # V6 option: per-horizon deviation from the shared head
             "donor_id": 0,                    # V7 option: learned identity embedding per donor
             "donor_rel": 0,                   # V7 option: donor deviation from the index, per step
+            "ext": "",                         # A4c (D51): external index source added to the fleet token, e.g. sensor_corr
             "arch": "pvsf"}                   # "timexer": TimeXer with the same inputs (rule R2, timexer.py)
 
 
@@ -104,6 +105,10 @@ def samples(A: dict, pos: np.ndarray) -> dict:
                             np.isfinite(kw).reshape(len(pos), NP, PATCH).astype(float),
                             np.nan_to_num(S["sigma"].to_numpy()[pe])[..., None], np.nan_to_num(S["c"].to_numpy()[pe])[..., None],
                             (np.nan_to_num(S["n"].to_numpy()[pe]) / 40.0)[..., None]], axis=-1)
+    if "k_ext" in S.columns:                       # A4c: external index values and flags after the F_FLEET columns
+        kx = S["k_ext"].to_numpy()[win]
+        fleet = np.concatenate([fleet, np.nan_to_num(kx).reshape(len(pos), NP, PATCH),
+                                np.isfinite(kx).reshape(len(pos), NP, PATCH).astype(float)], axis=-1)
     # Donor futures for the auxiliary loss: implied index, validity and clipping flag at t + h (B, n, 6)
     T = len(k)
     dy = np.zeros((len(pos), kap.shape[2], len(FC.H)), np.float32)
@@ -152,7 +157,7 @@ def build_model(cfg: dict):
 
     class PVSetFormer(nn.Module):
         def __init__(self, d, heads, n_sky, n_enc, n_dec, dropout, fleet_token, lin=0, aux=0.0, summary_only=0,
-                     vol=0, vgate=0, hmask=0, hhead=0, donor_id=0, donor_rel=0):
+                     vol=0, vgate=0, hmask=0, hhead=0, donor_id=0, donor_rel=0, ext=0):
             super().__init__()
             # A6e (rule R2): the fleet summary only, no donor tokens; needs the fleet token, excludes the donor loss
             self.summary_only = bool(summary_only)
@@ -203,6 +208,12 @@ def build_model(cfg: dict):
                 self.rel_in = nn.Linear(PATCH, d)
                 nn.init.zeros_(self.rel_in.weight)
                 nn.init.zeros_(self.rel_in.bias)
+            self.ext = bool(ext)                             # A4c, created last; zero start
+            assert not self.ext or self.fleet, "ext needs the fleet token"
+            if self.ext:
+                self.ext_in = nn.Linear(2 * PATCH, d)
+                nn.init.zeros_(self.ext_in.weight)
+                nn.init.zeros_(self.ext_in.bias)
             causal = torch.triu(torch.ones(NP, NP, dtype=torch.bool), 1)
             self.register_buffer("causal", causal.repeat_interleave(self.m, 0).repeat_interleave(self.m, 1))
 
@@ -211,7 +222,7 @@ def build_model(cfg: dict):
             and the horizon query with the day-earlier index also as a change from k_t."""
             B = q.shape[0]
             kl, kv = fleet[:, :, :PATCH].reshape(B, L), fleet[:, :, PATCH:2 * PATCH].reshape(B, L)
-            z = torch.cat([(kl - anchor[:, None]) * kv, kv, fleet[:, -1, 2 * PATCH:]], -1)
+            z = torch.cat([(kl - anchor[:, None]) * kv, kv, fleet[:, -1, 2 * PATCH:F_FLEET]], -1)
             qq = q.clone()
             qq[..., 8] = (q[..., 8] - anchor[:, None]) * q[..., 9]
             return torch.cat([z[:, None].expand(B, q.shape[1], -1), qq], -1)
@@ -237,8 +248,13 @@ def build_model(cfg: dict):
         def forward(self, x, static, online, geo, q, anchor, fleet, return_aux=False):
             B, n = x.shape[0], x.shape[1]
             ge = self.geo_in(geo)                                                     # (B, NP, d)
+            assert fleet.shape[-1] == F_FLEET + (2 * PATCH if self.ext else 0), "fleet columns do not match ext"
+            if self.fleet:                                   # the fleet token (plus the external index, A4c)
+                ftok = self.fleet_in(fleet[..., :F_FLEET])
+                if self.ext:
+                    ftok = ftok + self.ext_in(fleet[..., F_FLEET:])
             if self.summary_only:                            # A6e: one fleet-summary token per patch
-                s = self.fleet_in(fleet)[:, :, None]
+                s = ftok[:, :, None]
             else:
                 h = self.patch_in(x) + self.static_in(static[..., :F_STATIC])[:, :, None] + ge[:, None]   # (B, n, NP, d)
                 if self.donor_id:
@@ -254,7 +270,7 @@ def build_model(cfg: dict):
                 s, _ = self.pool(self.pool_q.expand(B * NP, -1, -1), h, h, key_padding_mask=pad)
                 s = s.reshape(B, NP, self.n_sky, -1)
                 if self.fleet:                               # the fleet summary as one more token per patch
-                    s = torch.cat([s, self.fleet_in(fleet)[:, :, None]], dim=2)
+                    s = torch.cat([s, ftok[:, :, None]], dim=2)
             s = s.reshape(B, NP * self.m, -1) + ge.repeat_interleave(self.m, dim=1)
             enc = self.temporal(s, mask=self.causal)
             dec = self.norm(self.decoder(self.q_in(q), enc,
@@ -285,7 +301,7 @@ def build_model(cfg: dict):
     return PVSetFormer(cfg["d"], cfg["heads"], cfg["n_sky"], cfg["n_enc"], cfg["n_dec"], cfg["dropout"],
                        cfg.get("fleet_token", 0), cfg.get("lin", 0), cfg.get("aux", 0.0), cfg.get("summary_only", 0),
                        cfg.get("vol", 0), cfg.get("vgate", 0), cfg.get("hmask", 0), cfg.get("hhead", 0),
-                       cfg.get("donor_id", 0), cfg.get("donor_rel", 0))
+                       cfg.get("donor_id", 0), cfg.get("donor_rel", 0), bool(cfg.get("ext", "")))
 
 
 def n_params(cfg: dict) -> int:

@@ -254,3 +254,6 @@ One entry per work session: what was asked, what was done, the key numbers, what
   each paired with fleet LightGBM on the same slots; priors recomputed from NB4's external gains and checked against
   NB4's). Smoke test on SQ567, first origin: 12 s, the same issue counts per horizon as the fleet rows, finite and
   sorted quantiles. Queued after the V6/V7 rounds.
+- **A4c option (21 Nov):** `ext=sensor_corr` feeds the corrected sensor index into PVSetFormer's fleet token
+  through a zero-start layer (D56). V4a, A6e and TX1 reproduce exactly; the option starts at V4a's outputs. A4c's
+  development round is queued after NB5d.

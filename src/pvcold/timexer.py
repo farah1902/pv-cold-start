@@ -87,7 +87,7 @@ def build_timexer(cfg: dict):
             en = self.patch_in(fleet[:, :, :2 * PATCH]) + self.pe[None]                     # (B, NP, d)
             en = self.drop(torch.cat([en, self.glb.expand(B, -1, -1)], 1))                 # (B, NP + 1, d)
             don = self.donor_in(torch.cat([x.reshape(B, n, -1), static[..., :F_STATIC]], -1))  # (B, n, d)
-            marks = torch.cat([fleet[:, :, 2 * PATCH:], geo], -1).transpose(1, 2)          # (B, N_MARK, NP)
+            marks = torch.cat([fleet[:, :, 2 * PATCH:F_FLEET], geo], -1).transpose(1, 2)   # (B, N_MARK, NP)
             exo = self.drop(torch.cat([don, self.mark_in(marks)], 1))
             pad = torch.cat([~online, torch.zeros(B, N_MARK, dtype=torch.bool)], 1)
             for blk in self.blocks:
@@ -99,7 +99,7 @@ def build_timexer(cfg: dict):
             qs = torch.cat([o[..., :1] - dn.flip(-1), o[..., :1], o[..., :1] + up], -1)
             return anchor[:, None, None] + qs                                              # change from persistence
 
-    for k in ("lin", "aux", "summary_only", "vol", "vgate", "hmask", "hhead", "donor_id", "donor_rel"):
+    for k in ("lin", "aux", "summary_only", "vol", "vgate", "hmask", "hhead", "donor_id", "donor_rel", "ext"):
         assert not cfg.get(k, 0), f"option {k} is PVSetFormer's, not TimeXer's"
     assert F_FLEET == 2 * PATCH + 3
     return TimeXer(cfg["d"], cfg["heads"], cfg["n_enc"], cfg["dropout"])

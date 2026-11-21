@@ -46,8 +46,13 @@ def main():
     idx = {k: pd.read_parquet(C.RESULTS / "nb3_index" / f"{k}.parquet").set_index("time") for k in ["k_cens", "sigma", "c", "n"]}
     gains3 = pd.read_csv(C.RESULTS / "nb3_index" / "gains.csv")
     S = FC.event_series(DEV, idx, p["geometry15"])
+    if base.get("ext"):                               # A4c (D51): NB4's 15-min index of that source
+        S["k_ext"] = pd.read_parquet(C.RESULTS / "nb4_sensor" / "index15.parquet").set_index("time")[
+            "k_" + base["ext"]].reindex(S.index).astype(float).to_numpy()
     cut = S.index >= pd.Timestamp(C.FIRST_TEST_DAY)
     S.loc[cut, ["k", "sigma", "c", "n"]] = np.nan                          # development data only
+    if "k_ext" in S.columns:
+        S.loc[cut, "k_ext"] = np.nan
     Adev = SF.event_arrays(DEV, p, S, gains3[gains3.event == DEV].set_index("donor")["gain"])
     for key in ["kap", "clip", "valid"]:
         Adev[key][cut] = 0.0
