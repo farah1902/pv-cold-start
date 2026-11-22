@@ -12,11 +12,14 @@ two-sided exact Wilcoxon p on the paired unit scores; "level" when the medians d
 Every pair is checked to be scored on the same slots. Writes results/nb5c_rows_v12/ (table.csv, seeds.csv,
 summary.json) all-or-nothing. Descriptive only: development is closed (D73), no design change follows.
 
-Rule for the guide's row A6e (the author, D78, fixed and committed before either run had finished): at 1 h, A6e's
-5-seed ensemble against V12's (ratio of medians). Below 3% in either direction: the row keeps "adds nothing
-measurable" and cites the new finding. More than 3% worse: the row says the donor set adds information with V12, and
-a new finding records it. Neither outcome changes V12 or any frozen setting. A6e more than 3% lower than V12 is not
-covered by the rule: the tool reports it and the author decides.
+Rule for the guide's row A6e (the author, D78, fixed and committed before A6e_V12_5s had finished): at 1 h, A6e's
+5-seed ensemble against V12's (ratio of median nRMSE over the 10 units).
+- Below 3% in either direction: the row keeps "adds nothing measurable" and cites the new finding.
+- 3% or more worse: the row says the donor set adds information with V12, and a new finding records it.
+- 3% or more lower: the row says that with V12 the fleet summary alone forecasts better than the donor set, and a new
+  finding records it.
+Exactly 3% counts as a named difference, as in guide §4.4 ("from 3%"). No outcome changes V12, the main model or any
+frozen setting.
 """
 import hashlib
 import json
@@ -41,12 +44,13 @@ A6E_PAIR = "A6e_V12_5s vs V12_5s (5-seed ensembles)"
 
 
 def a6e_rule(diff_pct: float) -> str:
-    """D78's rule for row A6e at 1 h (see the module docstring)."""
+    """D78's rule for row A6e at 1 h (see the module docstring); diff_pct = 100 (A6e / V12 - 1)."""
     if abs(diff_pct) < LEVEL:
         return "level: the row keeps 'adds nothing measurable' and cites the new finding"
-    if diff_pct > LEVEL:
+    if diff_pct >= LEVEL:
         return "worse: the row says the donor set adds information with V12; a new finding records it"
-    return "not covered: A6e more than 3% lower than V12 (or exactly 3%); the author decides"
+    return ("lower: the row says that with V12 the fleet summary alone forecasts better than the donor set; "
+            "a new finding records it; V12 stays main, no design change")
 
 
 def scores(run: str, seed: int) -> pd.DataFrame:

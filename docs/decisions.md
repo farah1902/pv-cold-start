@@ -1313,14 +1313,23 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
   - Before the tag: A6e (5 seeds) and A4c (1 seed) with V12's setting on the validation units, recorded as a
     finding, with row A6e citing it. Then the guide edit, the freeze tool, the new hash, and the author's check
     before the tag.
+  - Second check (the author, 22 Nov 2026, before A6e_V12_5s finished):
+    - Rows A4c, A6e, A2 and A3 get the main row's seeds and ensembling (part 2c's 5 seeds; the mean of the
+      sorted quantiles, sorted again), written explicitly in the frozen configuration. The 1-seed A4c_V12 run
+      stays a validation check only.
+    - §4.4's bullet gets: "Below 3% and not significant after Holm: level. Below 3% but significant:
+      consistently lower, by less than 3%. From 3%: the difference is named with its p-value."
+    - The case the A6e rule left open is filled (below).
 - **Comparisons (the author):** A4c (1 seed) against V12's run at the same seed (20261119), not against the 5-seed
   ensemble, as D56 did with V4a. A6e's 5-seed ensemble against V12_5s's, and seed by seed.
 - **Rule for row A6e, fixed before the result (the author):** at 1 h, A6e_V12_5s against V12_5s, ratio of median
   nRMSE over the 10 units.
   - Below 3%: the row keeps "adds nothing measurable" and cites the new finding.
   - More than 3% worse: the row says that the donor set adds information with V12, and a new finding records it.
-  - Neither outcome changes V12 or any frozen setting. A6e more than 3% lower than V12 is not covered by the
-    rule: the agent reports it and the author decides.
+  - More than 3% lower (the author's second check, before the result): the row says that with V12 the fleet
+    summary alone forecasts better than the donor set, and a new finding records it.
+  - No outcome changes V12, the main model or any frozen setting. A difference of exactly 3% counts as a named
+    difference, as §4.4's "from 3%" does (the agent's reading).
 - **Runs:** `A6e_V12_5s` and `A4c_V12`, both with `tools/pvsf_dev.py`, started 22 Nov 2026. Each uses part 2c's
   setting plus `summary_only=1` or `ext=sensor_corr`; the switches `clim` and `fm`, added to the defaults after V12,
   are off. Checked before the runs: the base `--set` gives part 2c exactly and 224,331 parameters (V12's). A6e has
@@ -1329,7 +1338,9 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
 - **Tools:** `tools/freeze_rows_val.py` scores both runs and applies the rule. It was committed before either run
   had finished; on the old pair A6e_5s and V4a_5s it reproduces F47 exactly. `tools/freeze_config.py` now writes the
   primary test and the eight secondary tests into the frozen configuration, and checks that each validation run's
-  setting equals its frozen row.
+  setting equals its frozen row. After the second check, it also writes §4.4's wording classes. It gives the rows
+  built on the main model (A2, A3, A4c, A6e) part 2c's 5 seeds and ensembling explicitly, and TimeXer (A6d) the
+  same, since it runs through the same code. The 1-seed A4c_V12 run is recorded as a validation check only.
 - **Result:** pending the runs.
 
 ### D16 — pvlib 0.16.1 and ruptures 1.1.10 are installed locally and pinned [environment, Phase 0]

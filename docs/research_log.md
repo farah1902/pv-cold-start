@@ -359,3 +359,6 @@ One entry per work session: what was asked, what was done, the key numbers, what
 - **The author's check of D76 (22 Nov, D78):** the row texts approved with changes (A6a, LGB, §4.4's family of
   eight secondary tests, the Discussion note on F61). Runs A4c_V12 (1 seed) and A6e_V12_5s (5 seeds) started.
   The rule for row A6e is fixed and committed before the results, together with `tools/freeze_rows_val.py`.
+- **The author's second check (22 Nov, D78):** before A6e_V12_5s finished, the rows built on the main model get
+  part 2c's 5 seeds and ensembling explicitly in the frozen configuration. The A6e rule's open case is filled (3% or
+  more lower: the fleet summary alone forecasts better with V12; a new finding). §4.4 gets three wording classes.

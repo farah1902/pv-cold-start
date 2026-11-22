@@ -67,7 +67,8 @@ def validation_run(name: str, cfg: dict) -> dict:
     s = json.loads((ROOT / rel).read_text())
     run_cfg = {k: v for k, v in s["cfg"].items() if not (k in OFF and v == 0)}
     assert run_cfg == cfg, f"{name}: setting differs from the frozen row"
-    return {"run": name, "seeds": s["seeds"], "summary_sha256": sha(ROOT / rel), "decision": "D78"}
+    return {"run": name, "n_seeds": s["seeds"], "summary_sha256": sha(ROOT / rel), "decision": "D78",
+            "role": "validation check of the setting only; the test row uses the row's own seeds and ensemble"}
 
 
 def main():
@@ -99,26 +100,33 @@ def main():
     tx = json.loads((R / "nb5c_variants" / "TX1_5s" / "summary.json").read_text())
 
     main_cfg = dict(p2c["pvsetformer_cfg"])
+    SEEDS, ENS = list(p2c["seeds"]), p2c["ensemble"]   # part 2c: 5 seeds, mean of the sorted quantiles, sorted again
+    assert len(SEEDS) == 5 and "sorted again" in ENS
+
+    def pvsf_row(model: str, cfg: dict, **extra) -> dict:
+        """A row built on the main model: part 2c's seeds and ensembling, written out explicitly (D78)."""
+        return {"model": model, "cfg": cfg, "seeds": SEEDS, "ensemble": ENS, **extra}
+
     rows = {
         "main": {"model": "PVSetFormer", "variant": p2c["pvsetformer_variant"], "cfg": main_cfg,
-                 "n_params": p2c["pvsetformer_n_params"], "seeds": p2c["seeds"],
+                 "n_params": p2c["pvsetformer_n_params"], "seeds": SEEDS, "ensemble": ENS,
                  "intervals": "part2b_conformal_pvsetformer"},
         "LGB": {"model": "quantile LightGBM, 5-seed ensemble (D64)", "params": p2c["lgb_params"],
                 "seeds": p2c["seeds"], "intervals": "part2b_conformal_lightgbm_5_seeds"},
-        "A2": "main model with the median index (part 1 estimator 'median')",
-        "A3": "main model with prior G0 (g = 1)",
+        "A2": pvsf_row("main model with the median index (part 1 estimator 'median')", main_cfg),
+        "A3": pvsf_row("main model with prior G0 (g = 1)", main_cfg),
         "A4": "LightGBM (part 2a) on the raw pyranometer index (D50, D51)",
         "A4b": "LightGBM (part 2a) on the corrected pyranometer index (D50, D51)",
-        "A4c": {"model": "main model plus the corrected sensor index (D51, D56)", "cfg": dict(main_cfg, ext="sensor_corr"),
-                "validation": validation_run("A4c_V12", dict(main_cfg, ext="sensor_corr"))},
+        "A4c": pvsf_row("main model plus the corrected sensor index (D51, D56)", dict(main_cfg, ext="sensor_corr"),
+                        validation_check=validation_run("A4c_V12", dict(main_cfg, ext="sensor_corr"))),
         "A6a": {"model": "Chronos-2, zero-shot", "setting": p2d["models"]["chronos2"]["setting"],
                 "revision": p2d["models"]["chronos2"]["revision"]},
         "A6b": {"model": "TimesFM 2.5, zero-shot", "setting": p2d["models"]["timesfm25"]["setting"],
                 "revision": p2d["models"]["timesfm25"]["revision"]},
         "A6c": "dropped before the freeze (TabPFN-TS, D73)",
-        "A6d": {"model": "TimeXer, CVX setting (D49)", "cfg": tx["cfg"], "seeds": p2c["seeds"]},
-        "A6e": {"model": "main model on the fleet summary only (rule R2)", "cfg": dict(main_cfg, summary_only=1),
-                "validation": validation_run("A6e_V12_5s", dict(main_cfg, summary_only=1))},
+        "A6d": {"model": "TimeXer, CVX setting (D49)", "cfg": tx["cfg"], "seeds": SEEDS, "ensemble": ENS},
+        "A6e": pvsf_row("main model on the fleet summary only (rule R2)", dict(main_cfg, summary_only=1),
+                        validation_check=validation_run("A6e_V12_5s", dict(main_cfg, summary_only=1))),
         "A9": "satellite (CAMS) clear-sky index persisted forward x prior gain (D51)",
         "weighting_check": {"rule": p2e["rule"], "weights": p2e["weights"], "reference_weight": p2e["reference_weight"]},
     }
@@ -130,6 +138,9 @@ def main():
             "test": "two-sided exact Wilcoxon signed-rank at 1 h on the 13 scored events, Holm across the family; "
                     "Hodges-Lehmann effect sizes",
             "level": "two forecasters are level when their medians differ by less than 3% (guide 3.10)",
+            "wording": {"below 3%, not significant after Holm": "level",
+                        "below 3%, significant after Holm": "consistently lower, by less than 3%",
+                        "from 3%": "the difference is named with its p-value"},
             "comparisons": [["LGB", "main"], ["A6a", "main"], ["A6b", "main"], ["A6d", "main"], ["A6e", "main"],
                             ["weighted PVSetFormer + Chronos-2", "A6a"], ["weighted TimeXer + Chronos-2", "A6a"],
                             ["weighted LightGBM + Chronos-2", "A6a"]]},
