@@ -249,6 +249,13 @@ Source: `results/nb5b_fm/summary.json`, `medians.csv`, `comparison.csv`, `fm_con
 | V12 single seeds at 1 h: range; mean; s.d. over seeds at 1 h / 6 h (V9) | 0.17800–0.18644; 0.18090; 0.0035 / 0.0077 (0.0028 / 0.0031) | nb5c_variants/V12_5s/scores.csv |
 | V12 vs Chronos-2 / TimesFM 2.5 / TimeXer / LightGBM at 1 h (ratio of medians); vs Chronos-2 at 15 min / 4 h | +0.15 / −0.67 / −0.35 / −1.92%; +2.4 / +5.6% | nb5c_diag/vs_all/V12_5s.csv |
 | V12 vs LightGBM, calmest-quartile pinball at 15 / 30 min / 1 h; clear-spell bias at 15 min (V9) | +31.7 / +16.8 / +10.2%; −0.022 (+40.4 / +21.2 / +7.7%; −0.030) | nb5c_diag/V12_5s, V9_5s/summary.json, calm_by_level.csv |
+| V13 (V9 + 7- and 28-day index at the target's time of day, D69) 5-seed ensemble, median nRMSE at 15 min / 30 min / 1 h / 2 h / 4 h / 6 h | 0.13178 / 0.15625 / 0.17812 / 0.20759 / 0.23022 / 0.20292 | nb5c_variants/V13_5s/scores.csv |
+| V13 vs V9_5s: median over units; mean over units; units lower; Wilcoxon p | −1.06 / −0.59 / −0.20 / +0.02 / −0.94 / −1.53%; −0.43 / −0.43 / −0.26 / −0.41 / −1.00 / −1.05%; 7 / 6 / 6 / 7 / 9 / 8 of 10; 0.193 / 0.131 / 0.375 / 0.193 / 0.010 / 0.020 | nb5c_variants/V13_5s, V9_5s/scores.csv |
+| V13 vs V9_5s, median CRPS | −1.30 / −0.34 / −0.46 / +0.14 / −1.08 / −0.89% | nb5c_variants/V13_5s, V9_5s/summary.json |
+| V13 single seeds at 1 h: range; mean; s.d. over seeds at 1 h / 6 h | 0.17888–0.18191; 0.18015; 0.0011 / 0.0024 | nb5c_variants/V13_5s/scores.csv |
+| V13 vs V12_5s: median over units; units lower | −0.84 / −0.27 / +0.17 / +0.19 / −0.57 / −1.28%; 5 / 5 / 6 / 7 / 9 / 10 of 10 | nb5c_variants/V13_5s, V12_5s/scores.csv |
+| V13 against the four others (ratio of medians), 15 min / 30 min / 1 h / 2 h / 4 h / 6 h: Chronos-2; TimesFM 2.5 | +1.59 / +1.35 / +0.32 / +2.19 / +5.00 / +1.44%; +2.09 / +1.05 / −0.50 / +1.41 / +3.71 / −0.78% | nb5c_diag/vs_all/V13_5s.csv |
+| Same: TimeXer; LightGBM | +1.26 / +0.30 / −0.18 / −1.39 / −2.16 / −2.94%; +2.07 / +0.04 / −1.76 / −1.30 / −2.76 / −6.91% | nb5c_diag/vs_all/V13_5s.csv |
 
 ## Forecast skill and statistics (NB5, NB6)
 _empty_

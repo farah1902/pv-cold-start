@@ -682,6 +682,18 @@ repository). Paths are relative to `data/raw/hkust/Dataset/Time series dataset/`
   equal average beats Chronos-2 alone, so a learned, horizon-dependent weight is needed there. Provisional: medians
   over 10 units, no paired test, equal weights only.
 
+### F58 — The index at the target's time of day over 7 and 28 days lowers PVSetFormer's 4- and 6-h errors on most units, but removes little of Chronos-2's 4-h lead — *provisional*
+- **Evidence:** V13_5s against V9_5s (the same setting plus option `clim`, D69; 10 validation units, NB5a's slots,
+  5-seed ensembles). Median nRMSE at 15 min / 30 min / 1 h / 2 h / 4 h / 6 h −1.06 / −0.59 / −0.20 / +0.02 / −0.94
+  / −1.53%; unit mean −0.43 / −0.43 / −0.26 / −0.41 / −1.00 / −1.05%; lower on 7 / 6 / 6 / 7 / 9 / 8 of 10 units
+  (Wilcoxon p 0.19 / 0.13 / 0.38 / 0.19 / 0.010 / 0.020). Median CRPS −1.30% at 15 min, −0.46% at 1 h, −1.08% at
+  4 h. Seed s.d. of the median at 1 h 0.0011, against V9's 0.0028. Against Chronos-2 (ratio of medians, D59's
+  setting): +1.6 / +1.4 / +0.3 / +2.2 / +5.0 / +1.4% (V9: +2.7 / +1.9 / +0.5 / +2.2 / +6.0 / +3.0%).
+- **Reading:** what the index usually does at that time of day helps where it was expected to (4 and 6 h,
+  consistently across units) and makes the seeds agree more. It takes only one point of Chronos-2's six-point lead
+  at 4 h, so most of that lead does not come from the time-of-day mean and spread that PVSetFormer now reads.
+  Provisional: 10 units, and the six p-values are not corrected for multiple horizons.
+
 ### F16 — Not every site file starts on the 1st of a month — *solid*
 - **Evidence:** among the 18 site files of the first event list, Indoor Sports Centre (2021-12-02), Zone J2
   (2021-11-13), Zone D (2022-01-20) and UG Hall9 (2023-02-11) start mid-month. The audit counts 5 of the 15-min and

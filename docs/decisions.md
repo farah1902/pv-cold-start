@@ -1039,7 +1039,11 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
 - **Protocol:** directly with the 5 R1 seeds (V13_5s), queued after V12_5s. **Rule, fixed before the result:** V13
   replaces V9 as the candidate if its ensemble's median nRMSE is lower at 1 h and no more than 1% higher at any
   other horizon. If V12 (D67) and V13 both meet their rules, V14 combines them with 5 seeds.
-- **Result:** pending.
+- **Result (22 Nov 2026, 160 min):** the rule is met. Ensemble median nRMSE 0.13178 / 0.15625 / 0.17812 /
+  0.20759 / 0.23022 / 0.20292 (15 min to 6 h); against V9 −1.06 / −0.59 / −0.20 / +0.02 / −0.94 / −1.53%, lower
+  on 7 / 6 / 6 / 7 / 9 / 8 of 10 units (Wilcoxon p 0.010 at 4 h, 0.020 at 6 h); unit mean lower at every
+  horizon; seed s.d. at 1 h 0.0011 (V9 0.0028). V13 is 0.17% above V12 at 1 h, so V12 stays the candidate and,
+  as fixed above, V14 combines the two (D71). Lowest of the five forecasters at no horizon (F58).
 
 ### D70 — A Chronos-2 input for PVSetFormer (V15): Chronos-2 at every issue time of the validation units [author decision, Phase 5]
 - **Request:** the author, 21 Nov 2026: "yes, add the chronos forcast as input too, but is this step is good and give
@@ -1077,6 +1081,19 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
   run is finite and sorted. `pvsf_dev.py` loads the parts when `fm=1`, prints their coverage and records their
   sha256 in the round's summary.
 - **Result:** pending (the author's Colab run).
+
+### D71 — PVSetFormer variant V14: V12's short-horizon gate with V13's 7- and 28-day input [R1 round, Phase 5]
+- **Reason:** V12 (D67) and V13 (D69) both met their rules, and D69 fixed in advance that V14 then combines them
+  with 5 seeds. The two act on different parts: V12's gate scales the median change at 15 and 30 min; V13's input
+  adds rows to the linear path and helps most at 4 and 6 h (F58).
+- **Change:** no new code. `python tools/pvsf_dev.py --name V14_5s --seeds 5 --set fleet_token=1 balance=1 d=64
+  lr=0.001 weight_decay=0.5 lin=1 vmed=1 vmed_n=2 clim=1`; 224,655 parameters (V12's 224,331 + 324, as built).
+- **Rule, fixed at the run's start (22 Nov 2026, 01:45), before any result:** V14 replaces V12 as the candidate if
+  its ensemble's median nRMSE is lower than V12's at 1 h and no more than 1% higher at any other horizon. Otherwise
+  V12 stays the candidate (V13 is above V12 at 1 h, so it does not replace V12 under the same rule).
+- **Next:** V15 (D70) adds the Chronos-2 input to whichever variant is the candidate when the author's `NB5e_colab`
+  run is back.
+- **Result:** pending.
 
 ### D16 — pvlib 0.16.1 and ruptures 1.1.10 are installed locally and pinned [environment, Phase 0]
 - **Request or reason:** both are in the guide's software list (§5.6) and were missing locally on 18 Nov 2026.
