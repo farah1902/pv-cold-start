@@ -103,7 +103,10 @@ def main():
     }
     frozen = {"protocol": "protocol-freeze (D21, D77)", "commit_parent": git("rev-parse", "HEAD"),
               "primary_horizon_steps": 4, "files": pinned, "test_rows": rows}
-    TEXT = yaml.safe_dump(frozen, sort_keys=False, allow_unicode=True, width=120)
+    class NoAlias(yaml.SafeDumper):           # write repeated lists out in full, no anchors
+        def ignore_aliases(self, data):
+            return True
+    TEXT = yaml.dump(frozen, Dumper=NoAlias, sort_keys=False, allow_unicode=True, width=120)
     HASH = hashlib.sha256(TEXT.encode("utf-8")).hexdigest()
     summary = {"tool": "freeze_config", "decision": "D77", "environment": A.versions(), "frozen_config_sha256": HASH,
                "n_files": len(pinned), "commit_parent": frozen["commit_parent"]}
