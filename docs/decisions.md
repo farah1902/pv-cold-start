@@ -1154,7 +1154,12 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
   arch=timexer d=32 lr=0.003 weight_decay=0.01 balance=1 fm=1`, which is TX1's configuration plus `fm`; TX1_5s
   took 21 min), then `r1_lgb_seeds.py --fm` (LGB_seeds
   took 9 min).
-- **Result:** pending (needs the author's NB5e_colab run).
+- **Scoring:** `python tools/fm_ablation.py` (CSV only, seconds) reads the six ensembles and Chronos-2 and
+  TimesFM 2.5 at their part-2d settings, asserts the same slots, and applies this rule and V15's (D70) as written;
+  it also reports each forecaster's gain from the input and the same comparisons without SQ567 and UG Hall2 2F
+  (F59). Written before any run with the input; a dry run with stand-ins (V14_5s for V15, the bases for TX2 and
+  LGB_fm) reproduced `vs_all/V14_5s.csv` exactly and gave zero gains for the stand-ins.
+- **Result:** pending (queued after V15_5s).
 
 ### D16 — pvlib 0.16.1 and ruptures 1.1.10 are installed locally and pinned [environment, Phase 0]
 - **Request or reason:** both are in the guide's software list (§5.6) and were missing locally on 18 Nov 2026.

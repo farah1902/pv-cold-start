@@ -342,3 +342,6 @@ One entry per work session: what was asked, what was done, the key numbers, what
   above both V12 and V13 from 30 min to 2 h; no difference consistent across units (p ≥ 0.38). V12 stays
   the candidate. The queue applied the same rule and started V15_5s (V12 + `fm=1`) at 04:19; Chronos-2 present for
   100% of the defined targets.
+- **Ablation scorer (22 Nov, D72):** `tools/fm_ablation.py`, written while V15 runs and before any result with the
+  input: applies V15's rule (D70) and D72's rule as fixed, with the F59 view without the two units. Dry run on
+  stand-ins reproduces `vs_all/V14_5s.csv`.

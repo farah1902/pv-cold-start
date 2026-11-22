@@ -192,7 +192,8 @@ the author runs `NB5e_colab` from `G:/My Drive/pv-cold-start-nb5e`, then `python
 nb5e`. Scoreboard against the four others: `python tools/pvsf_vs_all.py <round>`; equal-average diagnostic:
 `python tools/combo_diag.py` (7 min). Ablation of the Chronos-2 input (D72): TimeXer `pvsf_dev.py --set
 arch=timexer ... fm=1`, LightGBM `python tools/r1_lgb_seeds.py --fm` (`LGB_fm_seeds`). LightGBM's rounds per task:
-`python tools/lgb_rounds_diag.py` (F59). The packages live only in the separate environment
+`python tools/lgb_rounds_diag.py` (F59). Scoring of the ablation and of V15's rule: `python tools/fm_ablation.py`
+(seconds; `results/nb5c_diag/fm_ablation/`). The packages live only in the separate environment
 `.venv_fm` (`requirements-fm.txt`): never install them in the main one (numpy 2, torch 2.15). Downloads from the
 Hugging Face hub run with `HF_HUB_DISABLE_IMPLICIT_TOKEN=1` (the stored token has expired).
 PVSetFormer development (D36): one round `python tools/pvsf_dev.py --name V<k> --seeds 1 --set key=value ...`
