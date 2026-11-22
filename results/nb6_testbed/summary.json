@@ -1,0 +1,41 @@
+{
+  "tool": "nb6_testbed --index",
+  "decision": "D79 (D18)",
+  "environment": {
+    "python": "3.12.1",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "executable": "C:\\Python312\\python.exe",
+    "run_at": "2026-11-22 23:56:25",
+    "numpy": "1.26.4",
+    "pandas": "2.2.0",
+    "scipy": "1.12.0",
+    "sklearn": "1.5.1",
+    "statsmodels": "0.15.0",
+    "lightgbm": "4.6.0",
+    "pvlib": "0.16.1",
+    "ruptures": "v1.1.10",
+    "matplotlib": "3.8.3",
+    "torch": "2.2.0+cpu",
+    "openpyxl": "3.1.5",
+    "pyarrow": "15.0.2",
+    "yaml": "6.0.1"
+  },
+  "frozen_config_sha256": "2d27ea1e82060a0f87622dadd0c0a3d0e395e905aa2f39e019db770330f19b0a",
+  "k_min": 0.3,
+  "prior_variant": "G2",
+  "groups": 10,
+  "units": 69,
+  "donors_by_group": {
+    "TB 2022-04-01 g1": 28,
+    "TB 2022-04-01 g2": 28,
+    "TB 2022-04-01 g3": 25,
+    "TB 2022-04-01 g4": 27,
+    "TB 2022-04-01 g5": 26,
+    "TB 2023-04-01 g1": 32,
+    "TB 2023-04-01 g2": 32,
+    "TB 2023-04-01 g3": 32,
+    "TB 2023-04-01 g4": 33,
+    "TB 2023-04-01 g5": 33
+  },
+  "runtime_s": 630.6
+}

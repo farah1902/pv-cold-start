@@ -1,0 +1,80 @@
+event,level,group,date,set,start,units,n_donors,tilt,azimuth_brick,DC_AC,in_prior_test,group_event
+TB 2022-04-01 g1,group,1,2022-04-01,testbed,2022-04-01,SQ2_Inverter+SQ3_Inverter+SQ Apartment25-36_Inverter+SQ Apartment37-48_Inverter+Zone A2_Inverter_1,28,0deg,0deg,1.0072072072072074,True,
+TB 2022-04-01 SQ2_Inverter,unit,1,2022-04-01,testbed,2022-04-01,SQ2_Inverter,28,0deg,0deg,1.0072072072072074,True,TB 2022-04-01 g1
+TB 2022-04-01 SQ3_Inverter,unit,1,2022-04-01,testbed,2022-04-01,SQ3_Inverter,28,0deg,0deg,1.0774774774774776,True,TB 2022-04-01 g1
+TB 2022-04-01 SQ Apartment25-36_Inverter,unit,1,2022-04-01,testbed,2022-04-01,SQ Apartment25-36_Inverter,28,0deg,0deg,1.2847058823529411,True,TB 2022-04-01 g1
+TB 2022-04-01 SQ Apartment37-48_Inverter,unit,1,2022-04-01,testbed,2022-04-01,SQ Apartment37-48_Inverter,28,0deg,0deg,1.1856,True,TB 2022-04-01 g1
+TB 2022-04-01 Zone A2_Inverter_1,unit,1,2022-04-01,testbed,2022-04-01,Zone A2_Inverter_1,28,0deg,0deg,1.3469806763285024,True,TB 2022-04-01 g1
+TB 2022-04-01 g2,group,2,2022-04-01,testbed,2022-04-01,SQ1_Inverter+SQ Apartment13-24_Inverter+UG Hall2 2F_Inverter+UG Hall7_Inverter+Zone A6_Inverter,28,0deg,0deg,1.2434782608695651,True,
+TB 2022-04-01 SQ1_Inverter,unit,2,2022-04-01,testbed,2022-04-01,SQ1_Inverter,28,0deg,0deg,1.2434782608695651,True,TB 2022-04-01 g2
+TB 2022-04-01 SQ Apartment13-24_Inverter,unit,2,2022-04-01,testbed,2022-04-01,SQ Apartment13-24_Inverter,28,0deg,0deg,1.2847058823529411,True,TB 2022-04-01 g2
+TB 2022-04-01 UG Hall2 2F_Inverter,unit,2,2022-04-01,testbed,2022-04-01,UG Hall2 2F_Inverter,28,0deg,0deg,0.936,True,TB 2022-04-01 g2
+TB 2022-04-01 UG Hall7_Inverter,unit,2,2022-04-01,testbed,2022-04-01,UG Hall7_Inverter,28,0/11deg,56/146deg,1.2792,True,TB 2022-04-01 g2
+TB 2022-04-01 Zone A6_Inverter,unit,2,2022-04-01,testbed,2022-04-01,Zone A6_Inverter,28,0deg,0deg,1.2948,True,TB 2022-04-01 g2
+TB 2022-04-01 g3,group,3,2022-04-01,testbed,2022-04-01,Indoor Sports Centre_Inverter+LSK North_Inverter+LSK South_Inverter+SQ4_Inverter+SQ567_Inverter+S H Ho Sports Hall_Inverter_1+S H Ho Sports Hall_Inverter_2+Zone A5_Inverter,25,10deg,0/180deg,1.3153153153153154,False,
+TB 2022-04-01 Indoor Sports Centre_Inverter,unit,3,2022-04-01,testbed,2022-04-01,Indoor Sports Centre_Inverter,25,10deg,0/180deg,1.3153153153153154,False,TB 2022-04-01 g3
+TB 2022-04-01 LSK North_Inverter,unit,3,2022-04-01,testbed,2022-04-01,LSK North_Inverter,25,10deg,10/-153deg,1.2054545454545451,True,TB 2022-04-01 g3
+TB 2022-04-01 LSK South_Inverter,unit,3,2022-04-01,testbed,2022-04-01,LSK South_Inverter,25,0deg,0deg,1.1232,True,TB 2022-04-01 g3
+TB 2022-04-01 SQ4_Inverter,unit,3,2022-04-01,testbed,2022-04-01,SQ4_Inverter,25,0deg,0deg,1.065765765765766,True,TB 2022-04-01 g3
+TB 2022-04-01 SQ567_Inverter,unit,3,2022-04-01,testbed,2022-04-01,SQ567_Inverter,25,0deg,0deg,0.8721818181818182,True,TB 2022-04-01 g3
+TB 2022-04-01 S H Ho Sports Hall_Inverter_1,unit,3,2022-04-01,testbed,2022-04-01,S H Ho Sports Hall_Inverter_1,25,0deg,0deg,1.2847058823529411,True,TB 2022-04-01 g3
+TB 2022-04-01 S H Ho Sports Hall_Inverter_2,unit,3,2022-04-01,testbed,2022-04-01,S H Ho Sports Hall_Inverter_2,25,0deg,0deg,1.092,True,TB 2022-04-01 g3
+TB 2022-04-01 Zone A5_Inverter,unit,3,2022-04-01,testbed,2022-04-01,Zone A5_Inverter,25,0deg,0deg,1.1929411764705884,True,TB 2022-04-01 g3
+TB 2022-04-01 g4,group,4,2022-04-01,testbed,2022-04-01,SQ Apartment1-12_Inverter+UG Hall3_Inverter+Wong Check She Research Centre_Inverter_1+Wong Check She Research Centre_Inverter_2+Zone A1_Inverter+Zone A4_Inverter,27,0deg,0deg,1.2847058823529411,True,
+TB 2022-04-01 SQ Apartment1-12_Inverter,unit,4,2022-04-01,testbed,2022-04-01,SQ Apartment1-12_Inverter,27,0deg,0deg,1.2847058823529411,True,TB 2022-04-01 g4
+TB 2022-04-01 UG Hall3_Inverter,unit,4,2022-04-01,testbed,2022-04-01,UG Hall3_Inverter,27,0deg,0deg,1.092,True,TB 2022-04-01 g4
+TB 2022-04-01 Wong Check She Research Centre_Inverter_1,unit,4,2022-04-01,testbed,2022-04-01,Wong Check She Research Centre_Inverter_1,27,0deg,0deg,1.2012,True,TB 2022-04-01 g4
+TB 2022-04-01 Wong Check She Research Centre_Inverter_2,unit,4,2022-04-01,testbed,2022-04-01,Wong Check She Research Centre_Inverter_2,27,0deg,0deg,1.1856,True,TB 2022-04-01 g4
+TB 2022-04-01 Zone A1_Inverter,unit,4,2022-04-01,testbed,2022-04-01,Zone A1_Inverter,27,0deg,0deg,1.1243243243243244,True,TB 2022-04-01 g4
+TB 2022-04-01 Zone A4_Inverter,unit,4,2022-04-01,testbed,2022-04-01,Zone A4_Inverter,27,0deg,0deg,1.248,True,TB 2022-04-01 g4
+TB 2022-04-01 g5,group,5,2022-04-01,testbed,2022-04-01,SQ Block R_Inverter+SQ Block S_Inverter+UG Hall2 RF_Inverter+UG Hall4_Inverter+UG Hall6_Inverter+Zone A7_Inverter+Zone J2_Inverter,26,0deg,0deg,1.13993993993994,True,
+TB 2022-04-01 SQ Block R_Inverter,unit,5,2022-04-01,testbed,2022-04-01,SQ Block R_Inverter,26,0deg,0deg,1.13993993993994,True,TB 2022-04-01 g5
+TB 2022-04-01 SQ Block S_Inverter,unit,5,2022-04-01,testbed,2022-04-01,SQ Block S_Inverter,26,0deg,0deg,0.9864864864864866,True,TB 2022-04-01 g5
+TB 2022-04-01 UG Hall2 RF_Inverter,unit,5,2022-04-01,testbed,2022-04-01,UG Hall2 RF_Inverter,26,0deg,0deg,1.2675,True,TB 2022-04-01 g5
+TB 2022-04-01 UG Hall4_Inverter,unit,5,2022-04-01,testbed,2022-04-01,UG Hall4_Inverter,26,0/15deg,65/-10deg,1.3104,True,TB 2022-04-01 g5
+TB 2022-04-01 UG Hall6_Inverter,unit,5,2022-04-01,testbed,2022-04-01,UG Hall6_Inverter,26,0deg,0deg,1.2168,True,TB 2022-04-01 g5
+TB 2022-04-01 Zone A7_Inverter,unit,5,2022-04-01,testbed,2022-04-01,Zone A7_Inverter,26,10deg,90/-90deg,1.2775,True,TB 2022-04-01 g5
+TB 2022-04-01 Zone J2_Inverter,unit,5,2022-04-01,testbed,2022-04-01,Zone J2_Inverter,26,10deg,Mixed,1.2775,True,TB 2022-04-01 g5
+TB 2023-04-01 g1,group,1,2023-04-01,testbed,2023-04-01,Library_Inverter_1+Library_Inverter_2+Library_Inverter_3+SQ2_Inverter+SQ3_Inverter+SQ Apartment25-36_Inverter+SQ Apartment37-48_Inverter+Zone A2_Inverter_1,32,10deg,Mixed,1.1544,True,
+TB 2023-04-01 Library_Inverter_1,unit,1,2023-04-01,testbed,2023-04-01,Library_Inverter_1,32,10deg,Mixed,1.1544,True,TB 2023-04-01 g1
+TB 2023-04-01 Library_Inverter_2,unit,1,2023-04-01,testbed,2023-04-01,Library_Inverter_2,32,10deg,Mixed,1.1248,True,TB 2023-04-01 g1
+TB 2023-04-01 Library_Inverter_3,unit,1,2023-04-01,testbed,2023-04-01,Library_Inverter_3,32,10deg,Mixed,1.1248,True,TB 2023-04-01 g1
+TB 2023-04-01 SQ2_Inverter,unit,1,2023-04-01,testbed,2023-04-01,SQ2_Inverter,32,0deg,0deg,1.0072072072072074,True,TB 2023-04-01 g1
+TB 2023-04-01 SQ3_Inverter,unit,1,2023-04-01,testbed,2023-04-01,SQ3_Inverter,32,0deg,0deg,1.0774774774774776,True,TB 2023-04-01 g1
+TB 2023-04-01 SQ Apartment25-36_Inverter,unit,1,2023-04-01,testbed,2023-04-01,SQ Apartment25-36_Inverter,32,0deg,0deg,1.2847058823529411,True,TB 2023-04-01 g1
+TB 2023-04-01 SQ Apartment37-48_Inverter,unit,1,2023-04-01,testbed,2023-04-01,SQ Apartment37-48_Inverter,32,0deg,0deg,1.1856,True,TB 2023-04-01 g1
+TB 2023-04-01 Zone A2_Inverter_1,unit,1,2023-04-01,testbed,2023-04-01,Zone A2_Inverter_1,32,0deg,0deg,1.3469806763285024,True,TB 2023-04-01 g1
+TB 2023-04-01 g2,group,2,2023-04-01,testbed,2023-04-01,SQ1_Inverter+SQ Apartment13-24_Inverter+UG Hall2 2F_Inverter+UG Hall7_Inverter+Zone A6_Inverter+Zone D_Inverter_1+Zone D_Inverter_2+Zone L2_Inverter,32,0deg,0deg,1.2434782608695651,True,
+TB 2023-04-01 SQ1_Inverter,unit,2,2023-04-01,testbed,2023-04-01,SQ1_Inverter,32,0deg,0deg,1.2434782608695651,True,TB 2023-04-01 g2
+TB 2023-04-01 SQ Apartment13-24_Inverter,unit,2,2023-04-01,testbed,2023-04-01,SQ Apartment13-24_Inverter,32,0deg,0deg,1.2847058823529411,True,TB 2023-04-01 g2
+TB 2023-04-01 UG Hall2 2F_Inverter,unit,2,2023-04-01,testbed,2023-04-01,UG Hall2 2F_Inverter,32,0deg,0deg,0.936,True,TB 2023-04-01 g2
+TB 2023-04-01 UG Hall7_Inverter,unit,2,2023-04-01,testbed,2023-04-01,UG Hall7_Inverter,32,0/11deg,56/146deg,1.2792,True,TB 2023-04-01 g2
+TB 2023-04-01 Zone A6_Inverter,unit,2,2023-04-01,testbed,2023-04-01,Zone A6_Inverter,32,0deg,0deg,1.2948,True,TB 2023-04-01 g2
+TB 2023-04-01 Zone D_Inverter_1,unit,2,2023-04-01,testbed,2023-04-01,Zone D_Inverter_1,32,10deg,Mixed,2.060660660660661,False,TB 2023-04-01 g2
+TB 2023-04-01 Zone D_Inverter_2,unit,2,2023-04-01,testbed,2023-04-01,Zone D_Inverter_2,32,10deg,Mixed,0.5147999999999999,False,TB 2023-04-01 g2
+TB 2023-04-01 Zone L2_Inverter,unit,2,2023-04-01,testbed,2023-04-01,Zone L2_Inverter,32,0deg,0deg,1.2045,True,TB 2023-04-01 g2
+TB 2023-04-01 g3,group,3,2023-04-01,testbed,2023-04-01,Indoor Sports Centre_Inverter+LSK North_Inverter+LSK South_Inverter+SQ4_Inverter+SQ567_Inverter+S H Ho Sports Hall_Inverter_1+S H Ho Sports Hall_Inverter_2+Zone A5_Inverter,32,10deg,0/180deg,1.3153153153153154,False,
+TB 2023-04-01 Indoor Sports Centre_Inverter,unit,3,2023-04-01,testbed,2023-04-01,Indoor Sports Centre_Inverter,32,10deg,0/180deg,1.3153153153153154,False,TB 2023-04-01 g3
+TB 2023-04-01 LSK North_Inverter,unit,3,2023-04-01,testbed,2023-04-01,LSK North_Inverter,32,10deg,10/-153deg,1.2054545454545451,True,TB 2023-04-01 g3
+TB 2023-04-01 LSK South_Inverter,unit,3,2023-04-01,testbed,2023-04-01,LSK South_Inverter,32,0deg,0deg,1.1232,True,TB 2023-04-01 g3
+TB 2023-04-01 SQ4_Inverter,unit,3,2023-04-01,testbed,2023-04-01,SQ4_Inverter,32,0deg,0deg,1.065765765765766,True,TB 2023-04-01 g3
+TB 2023-04-01 SQ567_Inverter,unit,3,2023-04-01,testbed,2023-04-01,SQ567_Inverter,32,0deg,0deg,0.8721818181818182,True,TB 2023-04-01 g3
+TB 2023-04-01 S H Ho Sports Hall_Inverter_1,unit,3,2023-04-01,testbed,2023-04-01,S H Ho Sports Hall_Inverter_1,32,0deg,0deg,1.2847058823529411,True,TB 2023-04-01 g3
+TB 2023-04-01 S H Ho Sports Hall_Inverter_2,unit,3,2023-04-01,testbed,2023-04-01,S H Ho Sports Hall_Inverter_2,32,0deg,0deg,1.092,True,TB 2023-04-01 g3
+TB 2023-04-01 Zone A5_Inverter,unit,3,2023-04-01,testbed,2023-04-01,Zone A5_Inverter,32,0deg,0deg,1.1929411764705884,True,TB 2023-04-01 g3
+TB 2023-04-01 g4,group,4,2023-04-01,testbed,2023-04-01,SQ Apartment1-12_Inverter+UG Hall3_Inverter+Wong Check She Research Centre_Inverter_1+Wong Check She Research Centre_Inverter_2+Zone A1_Inverter+Zone A4_Inverter+Zone J1_Inverter,33,0deg,0deg,1.2847058823529411,True,
+TB 2023-04-01 SQ Apartment1-12_Inverter,unit,4,2023-04-01,testbed,2023-04-01,SQ Apartment1-12_Inverter,33,0deg,0deg,1.2847058823529411,True,TB 2023-04-01 g4
+TB 2023-04-01 UG Hall3_Inverter,unit,4,2023-04-01,testbed,2023-04-01,UG Hall3_Inverter,33,0deg,0deg,1.092,True,TB 2023-04-01 g4
+TB 2023-04-01 Wong Check She Research Centre_Inverter_1,unit,4,2023-04-01,testbed,2023-04-01,Wong Check She Research Centre_Inverter_1,33,0deg,0deg,1.2012,True,TB 2023-04-01 g4
+TB 2023-04-01 Wong Check She Research Centre_Inverter_2,unit,4,2023-04-01,testbed,2023-04-01,Wong Check She Research Centre_Inverter_2,33,0deg,0deg,1.1856,True,TB 2023-04-01 g4
+TB 2023-04-01 Zone A1_Inverter,unit,4,2023-04-01,testbed,2023-04-01,Zone A1_Inverter,33,0deg,0deg,1.1243243243243244,True,TB 2023-04-01 g4
+TB 2023-04-01 Zone A4_Inverter,unit,4,2023-04-01,testbed,2023-04-01,Zone A4_Inverter,33,0deg,0deg,1.248,True,TB 2023-04-01 g4
+TB 2023-04-01 Zone J1_Inverter,unit,4,2023-04-01,testbed,2023-04-01,Zone J1_Inverter,33,10deg,Mixed,1.022,True,TB 2023-04-01 g4
+TB 2023-04-01 g5,group,5,2023-04-01,testbed,2023-04-01,SQ Block R_Inverter+SQ Block S_Inverter+UG Hall2 RF_Inverter+UG Hall4_Inverter+UG Hall6_Inverter+Zone A7_Inverter+Zone J2_Inverter,33,0deg,0deg,1.13993993993994,True,
+TB 2023-04-01 SQ Block R_Inverter,unit,5,2023-04-01,testbed,2023-04-01,SQ Block R_Inverter,33,0deg,0deg,1.13993993993994,True,TB 2023-04-01 g5
+TB 2023-04-01 SQ Block S_Inverter,unit,5,2023-04-01,testbed,2023-04-01,SQ Block S_Inverter,33,0deg,0deg,0.9864864864864866,True,TB 2023-04-01 g5
+TB 2023-04-01 UG Hall2 RF_Inverter,unit,5,2023-04-01,testbed,2023-04-01,UG Hall2 RF_Inverter,33,0deg,0deg,1.2675,True,TB 2023-04-01 g5
+TB 2023-04-01 UG Hall4_Inverter,unit,5,2023-04-01,testbed,2023-04-01,UG Hall4_Inverter,33,0/15deg,65/-10deg,1.3104,True,TB 2023-04-01 g5
+TB 2023-04-01 UG Hall6_Inverter,unit,5,2023-04-01,testbed,2023-04-01,UG Hall6_Inverter,33,0deg,0deg,1.2168,True,TB 2023-04-01 g5
+TB 2023-04-01 Zone A7_Inverter,unit,5,2023-04-01,testbed,2023-04-01,Zone A7_Inverter,33,10deg,90/-90deg,1.2775,True,TB 2023-04-01 g5
+TB 2023-04-01 Zone J2_Inverter,unit,5,2023-04-01,testbed,2023-04-01,Zone J2_Inverter,33,10deg,Mixed,1.2775,True,TB 2023-04-01 g5
