@@ -113,6 +113,8 @@ something, record it and follow it, even if you would have chosen otherwise.
   model plus the corrected sensor index (D51).
 - **LightGBM at the test (D64, 21 Nov 2026):** its 5-seed ensemble (`LGB_seeds`), with its conformal layer rebuilt
   from that ensemble (`tools/lgb_seeds_cal.py`, then `NB5c_conformal_lgb`).
+- **LightGBM's setting stays (D72, 22 Nov 2026):** part 2a as rule 1 chose it, even though it learns nothing at
+  the two shortest first origins (F59); report F59 as a caveat, do not retune.
 - **TabPFN-TS (D65, 21 Nov 2026):** wait until the author has accepted the TabPFN licence; local inference only.
 - **PVSetFormer is the main model (D68, 21 Nov 2026):** "the goal of this paper is to show that PVSetFormer is the
   best". Develop it until it is the lowest of the five forecasters (LightGBM, TimeXer, Chronos-2, TimesFM 2.5) at
@@ -188,7 +190,9 @@ NB5b notebook only with `python tools/make_nb5b.py --only NB5b_foundation`. Chro
 time (D70): `python tools/make_nb5e.py` (inputs and `NB5e_colab`), `python tools/make_drive_mirror.py --set nb5e`,
 the author runs `NB5e_colab` from `G:/My Drive/pv-cold-start-nb5e`, then `python tools/fetch_drive_runs.py --set
 nb5e`. Scoreboard against the four others: `python tools/pvsf_vs_all.py <round>`; equal-average diagnostic:
-`python tools/combo_diag.py` (7 min). The packages live only in the separate environment
+`python tools/combo_diag.py` (7 min). Ablation of the Chronos-2 input (D72): TimeXer `pvsf_dev.py --set
+arch=timexer ... fm=1`, LightGBM `python tools/r1_lgb_seeds.py --fm` (`LGB_fm_seeds`). LightGBM's rounds per task:
+`python tools/lgb_rounds_diag.py` (F59). The packages live only in the separate environment
 `.venv_fm` (`requirements-fm.txt`): never install them in the main one (numpy 2, torch 2.15). Downloads from the
 Hugging Face hub run with `HF_HUB_DISABLE_IMPLICIT_TOKEN=1` (the stored token has expired).
 PVSetFormer development (D36): one round `python tools/pvsf_dev.py --name V<k> --seeds 1 --set key=value ...`

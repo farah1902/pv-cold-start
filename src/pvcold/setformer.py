@@ -27,7 +27,8 @@ FM_GLOB = "chronos2_c1344_full__e*.parquet"
 F_LIN = 2 * L + 3 + F_Q                      # linear path: index lags (as change from k_t) and flags, sigma, c, n, queries
 F_VOL = 6                                    # V5: log s.d. over 1 h and 2 h, log |last change|, each with its flag
 VOL_EPS, VOL_REF = 0.01, 0.1                 # log((x + VOL_EPS) / VOL_REF): finite at zero, near 0 for typical values
-NO_DECAY = ("lin_w", "vol_w", "vg_w", "vg_b", "vl_w", "vl_b", "vm_w", "vm_b")  # linear and volatility paths: no decay
+NO_DECAY = ("lin_w", "vol_w", "vg_w", "vg_b", "vl_w", "vl_b", "vm_w", "vm_b",  # linear and volatility paths: no decay
+            "fm_w")                                                           # TimeXer's Chronos-2 rows (D72)
 LIN_CHANGE = list(range(L)) + [2 * L + 3 + 8]  # V10: lin_features columns that are changes from k_t (lags, day earlier)
 MAX_UNITS = 64                               # V7 donor identity table (the panel has fewer units; checked)
 DEFAULTS = {"d": 64, "heads": 4, "n_sky": 4, "n_enc": 2, "n_dec": 2, "dropout": 0.1, "lr": 1e-3, "weight_decay": 1e-2,

@@ -100,6 +100,11 @@ Source: `results/nb5a_dev/summary.json`, `val_medians.csv`, `val_skill.csv`, `cv
 | Variants at 1 h (pinned setting 15, 0.03, 200): level / change / change pooled / level pooled | 0.1913 / 0.1815 / 0.1873 / 0.2032 | nb5a_variants/variant_medians.csv |
 | History to the first origin: validation units; scored events | 18–61 days (median 37); 143–785 days (median 186) | events.csv |
 | LightGBM configuration part 2a, sha256 | `d03bb0b86827009e…` | lgb_config_part2a.yaml |
+| LightGBM quantile models stopping at round 1 (of 540 per origin), first / second / third origin | 145 / 0 / 0 (SQ567 and UG Hall2 2F: all 54; UG Hall2 RF, Zone A1, Zone A4: the 9 at 6 h; Zone A2 1: 10 tail models) | nb5c_diag/lgb_rounds/best_iter.csv |
+| Training pairs at the first origin, over horizons: SQ567; UG Hall2 2F | 230–473; 253–519 | nb5c_diag/lgb_rounds/best_iter.csv |
+| V12_5s vs LGB_seeds, index pinball at 1 h at the first origin: 10 units; without SQ567 and UG Hall2 2F; on those two | −1.72%; −0.40%; −7.9% / −8.0% | nb5c_diag/lgb_rounds/by_origin_units.csv |
+| V12_5s vs LGB_seeds, median nRMSE 15 min / 30 min / 1 h / 2 h / 4 h / 6 h: 10 units; the other 8 | +2.94 / +0.30 / −1.92 / −1.48 / −2.20 / −5.70%; +0.26 / +0.04 / −0.72 / −0.56 / −2.67 / −4.61% | nb5c_diag/lgb_rounds/nrmse_vs_lgb_units.csv |
+| TX1_5s vs LGB_seeds at 1 h, median nRMSE: 10 units; the other 8 | −1.58%; −1.24% | nb5c_diag/lgb_rounds/nrmse_vs_lgb_units.csv |
 
 ## Conformal calibration on the validation units (NB5a conformal)
 Source: `results/nb5a_conformal/summary.json`, `val_conformal_medians.csv`, `corrections.csv` (development data;

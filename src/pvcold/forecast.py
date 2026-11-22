@@ -185,9 +185,13 @@ def knn_quantiles(Xtr: np.ndarray, ytr: np.ndarray, Xf: np.ndarray, k: int = KNN
 
 # --- One event and one origin: every index forecaster ----------------------------------------------------------
 def run_origin(S: pd.DataFrame, origin: pd.Timestamp, end: pd.Timestamp, params: dict,
-               models=("LGB", "A0", "A1", "PeEn", "CLIPER", "A5", "A7")) -> tuple[pd.DataFrame, dict]:
+               models=("LGB", "A0", "A1", "PeEn", "CLIPER", "A5", "A7"), extra: dict | None = None
+               ) -> tuple[pd.DataFrame, dict]:
     """Train on pairs with target before the origin (from TRAIN_START, issue rules applied), forecast the issue times
-    in [origin, end). Returns long rows (model, h, t, q0.1..q0.9) and diagnostics. Index level only."""
+    in [origin, end). Returns long rows (model, h, t, q0.1..q0.9) and diagnostics. Index level only.
+    extra (D72 ablation, LightGBM only): {h: array (len(S), n)} of further features at each grid time t, appended
+    after FEATURES (NaN = missing, which LightGBM handles natively)."""
+    assert extra is None or tuple(models) == ("LGB",), "extra features are for LightGBM only"
     st = state(S)
     k = S["k"].to_numpy()
     t = S.index
@@ -195,6 +199,9 @@ def run_origin(S: pd.DataFrame, origin: pd.Timestamp, end: pd.Timestamp, params:
     for h in H:
         D = design(S, st, h)
         X = D["X"].to_numpy(dtype=float)
+        if extra is not None:
+            assert extra[h].shape[0] == len(X)
+            X = np.hstack([X, np.asarray(extra[h], dtype=float)])
         tgt_time = t + pd.Timedelta(minutes=15 * h)
         tr = D["ok"] & np.isfinite(D["y"]) & (t >= TRAIN_START) & (tgt_time < origin)
         fc = D["ok"] & (t >= origin) & (t < end)

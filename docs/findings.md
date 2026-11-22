@@ -694,6 +694,29 @@ repository). Paths are relative to `data/raw/hkust/Dataset/Time series dataset/`
   at 4 h, so most of that lead does not come from the time-of-day mean and spread that PVSetFormer now reads.
   Provisional: 10 units, and the six p-values are not corrected for multiple horizons.
 
+### F59 — LightGBM's part-2a bank learns nothing at the two shortest first origins, and part of the neural forecasters' 1-h lead over it on validation comes from there — *provisional*
+- **Evidence:** `results/nb5c_diag/lgb_rounds/` (`python tools/lgb_rounds_diag.py`; NB5a's bank, part-2a setting:
+  31 leaves, learning rate 0.05, min_data_in_leaf 200; NB5a's seed; the 30 validation tasks).
+  - At the first origins of SQ567 and UG Hall2 2F (18 and 19 days of fleet history, 230–519 training pairs per
+    horizon), all 54 quantile models stop at round 1, so the forecast is k(t) plus constant offsets. The 6-h models
+    of UG Hall2 RF, Zone A1 and Zone A4 do the same at their first origins (455–501 pairs). Of the 1,620 models,
+    145 stop at round 1, all at first origins; no model stops at round 1 at the second or third origins.
+  - At SQ567's first origin the bank still stops at round 1 when given the true future change as a feature; with
+    min_data_in_leaf 50 or 100 it learns (9–197 rounds). The likely cause: early stopping trains on 80% of fewer
+    than about 520 pairs, and leaves of at least 200 allow at most one split (scratch check, D72).
+  - Index-level pinball (as F53), V12_5s against LGB_seeds at the first origin, median over units: at 1 h −1.72%
+    with all 10 units, −0.40% without the two; on the two units themselves −7.9% and −8.0%.
+  - The paper's measure (median nRMSE over units, all origins, 5-seed ensembles), V12_5s against LightGBM at 15 min
+    / 30 min / 1 h / 2 h / 4 h / 6 h: +2.94 / +0.30 / −1.92 / −1.48 / −2.20 / −5.70% with 10 units; +0.26 / +0.04 /
+    −0.72 / −0.56 / −2.67 / −4.61% with the other 8. TimeXer (TX1_5s) at 1 h: −1.58% and −1.24%.
+- **Reading:** on validation, part of PVSetFormer's 1-h lead over LightGBM comes from two units where LightGBM, at
+  its chosen setting, cannot learn its first 30-day window. The neural forecasters train on these few pairs; the
+  tree bank does not. The scored test units have 143–785 days of history at their first origin, so this cannot
+  happen there, and PVSetFormer's 1-h lead over LightGBM may be smaller at the test. The leads at 4 and 6 h hold
+  without the two units. Provisional: the round counts are a direct measurement, but the effect sizes rest on 10 (or
+  8) units, and a median over 8 units is not the same statistic as one over 10. LightGBM's setting stays as rule 1
+  chose it (the author, 22 Nov 2026, D72); the paper reports the validation leads over LightGBM with this caveat.
+
 ### F16 — Not every site file starts on the 1st of a month — *solid*
 - **Evidence:** among the 18 site files of the first event list, Indoor Sports Centre (2021-12-02), Zone J2
   (2021-11-13), Zone D (2022-01-20) and UG Hall9 (2023-02-11) start mid-month. The audit counts 5 of the 15-min and

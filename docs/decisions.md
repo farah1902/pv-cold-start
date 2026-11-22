@@ -1080,7 +1080,18 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
   +540); a unit weight on Chronos-2's median adds exactly (median − k(t)); the new rows get a gradient; a 2-epoch
   run is finite and sorted. `pvsf_dev.py` loads the parts when `fm=1`, prints their coverage and records their
   sha256 in the round's summary.
-- **Result:** pending (the author's Colab run).
+- **Colab run (the author, 22 Nov 2026, 01:00–02:24, 84 min of GPU):** `NB5e_colab` wrote the 10 parts; fetched
+  with `fetch_drive_runs.py --set nb5e` (hashes checked). Checks (`check_nb5e.py`, scratch): every part names its
+  event, the model revision and setting of NB5b's run, and the hashes of the local `nb5e_inputs`; 259,386 rows,
+  exactly the in-day horizons of all 52,907 issue times, none repeated, none missing, quantiles finite and sorted;
+  on all 184,353 rows of NB5b's run the largest difference is 1.2·10⁻⁶ (the run reproduces NB5b); the two pairs
+  of events with identical inputs (SQ Apartment13-24 and 37-48, Zone A1 and A4) have identical forecasts.
+- **V15's rule, fixed before its run (22 Nov 2026):** V15_5s = the candidate after D71's rule (V14 if it meets it,
+  otherwise V12) plus `fm=1`, 5 R1 seeds. V15 replaces the candidate if its ensemble's median nRMSE is lower at
+  1 h and no more than 1% higher at any other horizon. Whether a model that needs Chronos-2 at every issue time
+  becomes the main model is the author's decision at the freeze (D50); what the paper may claim follows D72's
+  rule. Queue (`queue_v15.py`, scratch): V14_5s, then D71's rule, V15_5s, TX2_5s, LGB_fm_seeds.
+- **Result:** pending (V15_5s and the ablation, D72).
 
 ### D71 — PVSetFormer variant V14: V12's short-horizon gate with V13's 7- and 28-day input [R1 round, Phase 5]
 - **Reason:** V12 (D67) and V13 (D69) both met their rules, and D69 fixed in advance that V14 then combines them
@@ -1094,6 +1105,45 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
 - **Next:** V15 (D70) adds the Chronos-2 input to whichever variant is the candidate when the author's `NB5e_colab`
   run is back.
 - **Result:** pending.
+
+### D72 — Ablation of the Chronos-2 input: TimeXer and LightGBM receive what V15 receives [fairness, Phase 5]
+- **Reason:** D70 and D68. Before the paper credits PVSetFormer with a gain from Chronos-2's forecast, the other two
+  trained forecasters get the same input under the same conditions. Otherwise a gain may belong to Chronos-2 alone.
+- **Change:**
+  - TimeXer, option `fm` (`timexer.py`): the same 10 features per horizon as V15's rows (Chronos-2's 9 quantiles at
+    t + h as changes from k(t), times their flag, and the flag) through a zero-start per-horizon linear map `fm_w`
+    (6 × 10 × 9 = 540 parameters, no weight decay, as for PVSetFormer's rows). Nothing else changes: TX2_5s = TX1's
+    setting plus `fm=1` (37,764 parameters). TimeXer now also refuses PVSetFormer's options `vmed` and `clim`, which no
+    TimeXer run used.
+  - LightGBM: `FC.run_origin(..., extra=...)` appends further features after the 25 of part 2a (LightGBM only;
+    `extra=None` is NB5a's path). `tools/r1_lgb_seeds.py --fm` appends Chronos-2's 9 quantiles at t + h as changes
+    from k(t), NaN where absent (LightGBM's own missing-value handling), and writes `LGB_fm_seeds` (5 seeds, part-2a
+    setting). It prints and records Chronos-2's coverage of NB5a's forecast slots (it stops below 99.9%) and of the
+    issue-rule rows it trains on.
+- **Equal treatment:** no forecaster is retuned for the input. PVSetFormer keeps its candidate's setting, TimeXer
+  its CVX setting and LightGBM part 2a; same 5 seeds, slots and scorer. LightGBM's part-2a setting learns nothing at
+  the shortest first origins (F59), so it cannot use the input there; the ablation reports this with its result.
+- **LightGBM's setting stays (author decision, 22 Nov 2026):** asked whether to change it after F59, the author
+  answered "u can leaving it as it is". Part 2a stays as rule 1 chose it, in every LightGBM row; F59 is reported as
+  a caveat on the validation leads over LightGBM.
+- **Rule, fixed before any run with the input (22 Nov 2026):** the paper may say that PVSetFormer uses the Chronos-2
+  input better than the other trained forecasters at a horizon only if V15's ensemble median nRMSE there is lower
+  than both TX2_5s's and LGB_fm_seeds's. It may say that PVSetFormer improves on Chronos-2 only where V15 is lower
+  than Chronos-2 alone. Both apply to validation now; at the test, only where the test shows it (D68). Below 3% a
+  difference is called level (guide §3.10). The six rows (V15, TX2_5s, LGB_fm_seeds and their bases) are reported
+  whatever the outcome.
+- **Checks** (`check_d72.py`, scratch; development data): TX1_5s reproduces exactly on its shortest task (5,022
+  rows, difference 0); NB5a's LightGBM reproduces through the changed `run_origin` (5,060 rows, largest difference
+  6·10⁻⁸); with a synthetic Chronos-2 part (17,125 rows), LightGBM's extra features equal the stored quantile minus
+  k(t) exactly, and a fit with them gives finite forecasts on the same slots; TimeXer with `fm` starts at TX1's
+  outputs exactly, has 540 more parameters (`fm_w`, in `NO_DECAY`), a unit weight on Chronos-2's median adds
+  exactly (median − k_t) where present and nothing where absent, `fm_w` receives a gradient, and a 2-epoch run is
+  finite and sorted.
+- **Protocol:** after V15_5s, one 8-worker run at a time: TX2_5s (`pvsf_dev.py --name TX2_5s --seeds 5 --set
+  arch=timexer d=32 lr=0.003 weight_decay=0.01 balance=1 fm=1`, which is TX1's configuration plus `fm`; TX1_5s
+  took 21 min), then `r1_lgb_seeds.py --fm` (LGB_seeds
+  took 9 min).
+- **Result:** pending (needs the author's NB5e_colab run).
 
 ### D16 — pvlib 0.16.1 and ruptures 1.1.10 are installed locally and pinned [environment, Phase 0]
 - **Request or reason:** both are in the guide's software list (§5.6) and were missing locally on 18 Nov 2026.

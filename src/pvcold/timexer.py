@@ -29,7 +29,7 @@ from __future__ import annotations
 import math
 
 from . import forecast as FC
-from .setformer import F_FLEET, F_GEO, F_PATCH, F_Q, F_STATIC, NP, PATCH
+from .setformer import F_CLIM, F_FLEET, F_FM, F_GEO, F_PATCH, F_Q, F_STATIC, NP, PATCH
 
 N_MARK = 3 + F_GEO                                  # sigma, c, n and 7 geometry channels as variate tokens
 F_DONOR = NP * F_PATCH + F_STATIC                   # a donor's whole look-back window and its static features
@@ -58,9 +58,10 @@ def build_timexer(cfg: dict):
             return self.n3(x + y)
 
     class TimeXer(nn.Module):
-        def __init__(self, d, heads, n_enc, dropout):
+        def __init__(self, d, heads, n_enc, dropout, fm=0):
             super().__init__()
             self.lin = False                                         # PVSetFormer's option flag, off here
+            self.fm = bool(fm)                                       # D72 ablation: Chronos-2's quantiles at t + h
             self.patch_in = nn.Linear(2 * PATCH, d, bias=False)      # patch values and validity flags
             pe = torch.zeros(NP, d)
             pos = torch.arange(NP, dtype=torch.float32)[:, None]
@@ -75,6 +76,8 @@ def build_timexer(cfg: dict):
             self.norm = nn.LayerNorm(d)
             self.head = nn.Linear(d * (NP + 1), len(FC.H) * 9)
             self.q_w = nn.Parameter(torch.zeros(len(FC.H), F_Q, 9))
+            if self.fm:                                              # the same F_FM features as PVSetFormer's V15 rows
+                self.fm_w = nn.Parameter(torch.zeros(len(FC.H), F_FM, 9))   # zero start, no weight decay (NO_DECAY)
             nn.init.zeros_(self.head.weight)
             with torch.no_grad():                                    # start at persistence with a narrow spread
                 b = torch.zeros(len(FC.H), 9)
@@ -94,12 +97,18 @@ def build_timexer(cfg: dict):
                 en = blk(en, exo, pad)
             o = self.head(self.norm(en).reshape(B, -1)).reshape(B, len(FC.H), 9)
             o = o + torch.einsum("bhf,hfo->bho", q[..., :F_Q], self.q_w)   # base query columns (V13's are extra)
-            up = Fn.softplus(o[..., 1:5]).cumsum(-1)
+            if self.fm:                                              # as PVSetFormer's lin_features: changes from k_t
+                f0 = F_Q + F_CLIM
+                ok = q[..., f0 + 9:f0 + 10]
+                lf = torch.cat([(q[..., f0:f0 + 9] - anchor[:, None, None]) * ok, ok], -1)
+                o = o + torch.einsum("bhf,hfo->bho", lf, self.fm_w)
+            up =Fn.softplus(o[..., 1:5]).cumsum(-1)
             dn = Fn.softplus(o[..., 5:9]).cumsum(-1)
             qs = torch.cat([o[..., :1] - dn.flip(-1), o[..., :1], o[..., :1] + up], -1)
             return anchor[:, None, None] + qs                                              # change from persistence
 
-    for k in ("lin", "aux", "summary_only", "vol", "vgate", "hmask", "hhead", "donor_id", "donor_rel", "ext"):
+    for k in ("lin", "aux", "summary_only", "vol", "vgate", "hmask", "hhead", "donor_id", "donor_rel", "ext", "vmed",
+              "clim"):
         assert not cfg.get(k, 0), f"option {k} is PVSetFormer's, not TimeXer's"
     assert F_FLEET == 2 * PATCH + 3
-    return TimeXer(cfg["d"], cfg["heads"], cfg["n_enc"], cfg["dropout"])
+    return TimeXer(cfg["d"], cfg["heads"], cfg["n_enc"], cfg["dropout"], cfg.get("fm", 0))
