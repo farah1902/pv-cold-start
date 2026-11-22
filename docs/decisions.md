@@ -1355,7 +1355,15 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
   - No design change: V12 and every frozen setting stay as they were.
   - **Frozen configuration rebuilt:** `python tools/freeze_config.py`, sha256 `9ccffb7241172915e037ea9c07e52617dc58250a9c79121b3de91f11f27950e8` (built on commit
     `0354cbd`; 16 pinned files, the guide at `0e10f424bbf71e2d…`). It replaces D77's `805388260696999d…`.
-  - **Tag:** `protocol-freeze` waits for the author's check of this hash and of F62.
+  - **Tag:** none on this hash: the author's third check asked for two fixes first (below).
+- **Third check (the author, 22 Nov 2026): approved, with two fixes before the tag.**
+  - `tools/freeze_config.py` labels the pinned research guide "D76, D78" (it said "D76"; the pinned file is D78's
+    revision). Then the tool is re-run and the new hash recorded here.
+  - F62's title follows §4.4's wording rule: "level with the full model at every horizon (all under 3%); V12 lower
+    on 8 of 10 units at 2 h and 4 h, not significant" (checked: no ties at either horizon). The agent kept the
+    title's last clause on A4c ("the corrected sensor adds nothing").
+  - Then the `protocol-freeze` tag on the commit that holds the final `frozen_config.yaml`, pushed, with the tag's
+    commit and hash recorded here.
 
 ### D16 — pvlib 0.16.1 and ruptures 1.1.10 are installed locally and pinned [environment, Phase 0]
 - **Request or reason:** both are in the guide's software list (§5.6) and were missing locally on 18 Nov 2026.

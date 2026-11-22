@@ -760,7 +760,7 @@ repository). Paths are relative to `data/raw/hkust/Dataset/Time series dataset/`
   that the median nRMSE is flat in w near its minimum. Which trained forecaster pairs best changes with the
   horizon. The test events, with the weights frozen, give the out-of-sample answer (D73).
 
-### F62 — With V12's setting, PVSetFormer without its donor set is level with the full model at 1 h and a little higher from 2 h; the corrected sensor adds nothing — *provisional*
+### F62 — With V12's setting, PVSetFormer without its donor set is level with the full model at every horizon (all under 3%); V12 lower on 8 of 10 units at 2 h and 4 h, not significant; the corrected sensor adds nothing — *provisional*
 - **Evidence:** `results/nb5c_rows_v12/` (`python tools/freeze_rows_val.py`, D78). Development data: the 10
   validation units and NB5a's slots. The runs `A6e_V12_5s` and `A4c_V12` use part 2c's setting plus `summary_only=1`
   or `ext=sensor_corr`.

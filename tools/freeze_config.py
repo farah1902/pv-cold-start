@@ -40,7 +40,7 @@ FILES = {   # label: (path, decision)
     "donors": ("results/nb2_panel/donors.csv", "NB2"),
     "hidden_unit_testbed": ("results/nb2_panel/testbed.csv", "D18"),
     "data_manifest": ("data/MANIFEST_sha256.csv", "D15"),
-    "research_guide": ("docs/research_guide.md", "D76"),
+    "research_guide": ("docs/research_guide.md", "D76, D78"),
 }
 
 
