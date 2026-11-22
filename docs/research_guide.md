@@ -8,6 +8,8 @@ Nov 2, 2026 · @farah · revised 18 and 22 Nov 2026
 
 **Revision of 22 Nov 2026 (before the protocol freeze):** this version integrates D73 of `docs/decisions.md`. D25's fallback title becomes the working title, and the headline says "causal fleet index". The claims of rows A6a, A6d and A6e are reworded to what the validation units showed (F47, F48, F56). TabPFN-TS (A6c) is dropped and moved to Future work. The weighting check with Chronos-2 is added as a secondary analysis (frozen part 2e, D75). The previous version is `docs/history/methodology_2026-11-22_pre-freeze.md`.
 
+**Second revision of 22 Nov 2026 (before the freeze, D78):** made at the author's check of the first. The claims of rows A6a and LGB are reworded, and row A6e cites the validation run with V12's setting (F62). §4.4 states the test of the secondary comparisons and its family. The Discussion plan notes that the weights of the weighting check are unstable across horizons (F61). The previous version is `docs/history/methodology_2026-11-22_d76.md`.
+
 ## Status
 
 The pilot passes the go/no-go test: fleet-based forecasts cut climatology's error by more than half up to 1 h ahead (and by about a fifth at 6 h), and the drifted pyranometer adds about 74% error at 15 min for events after November 2022.
@@ -430,6 +432,7 @@ The open question that A4b settles: can a one-month calibration lag follow a ste
 - **Primary test:** a one-sided Wilcoxon signed-rank test on event-wise differences Δ\_e = nRMSE\_main − nRMSE\_ref at 1 h, with n = 13 scored events and exact p-values.
 - **Effect size:** the Hodges–Lehmann median difference with its 95% confidence interval, plus the share of events won. Wording in the paper follows effect sizes, not only p-values.
 - **Comparisons:** main model vs A1 (primary), vs CLIPER, and vs A4 and A4b split by sensor period.
+- **Secondary comparisons** (LGB, A6a, A6b, A6d, A6e and the weighting check) use a two-sided exact Wilcoxon test at 1 h with Holm across this family, plus Hodges–Lehmann effect sizes; two forecasters are called level when their medians differ by less than 3% (§3.10). Below 3% and not significant after Holm: level. Below 3% but significant: consistently lower, by less than 3%. From 3%: the difference is named with its p-value. The family holds eight tests on the 13 scored events (D78): rows LGB, A6a, A6b, A6d and A6e, each against the main model, and the three weighted pairs of Section 5.4, each against Chronos-2 alone.
 - **Drifted window: effect sizes only.** It holds about 5 events, so the smallest one-sided exact Wilcoxon p is 1/32 ≈ 0.031 (1/16 if only 4 remain), and no Holm-corrected test can reach significance. The paper reports Hodges–Lehmann differences with day-block bootstrap intervals and the number of events won. Significance comes from per-event Diebold–Mariano tests at 1 h, with Holm across the drifted events.
 - **Drift boundary, fixed before scoring:** PELT on the daily log-ratio of measured GHI to the fleet proxy. An event belongs to the drifted window if at least half of its 90 test days fall after the boundary.
 - **Day-block bootstrap within each event:** resample whole days with replacement, B = 2,000, giving the confidence interval of each event's metric and skill. A 3-day moving-block version (Künsch 1989) covers multi-day weather regimes.
@@ -462,7 +465,7 @@ The main model is the causal fleet index (censored estimator, D31) and the DC/AC
 | ID | Model | Claim it tests |
 | --- | --- | --- |
 | **Main** | Causal fleet index (censored estimator) + DC/AC prior + PVSetFormer (chosen by rule R1) | The full method |
-| LGB | The main pipeline with the quantile LightGBM bank, when PVSetFormer is main | A set transformer beats boosting on the same task |
+| LGB | The main pipeline with the quantile LightGBM bank, when PVSetFormer is main | Whether PVSetFormer adds anything over boosting on the same task; on validation level at 1 h (D74: −1.9%, 6 of 10 units, p 0.77), partly from the first training origins of two units, where LightGBM's setting learns nothing (F59) |
 | A0 | Climatological index (slot median over the last 60 days) × prior gain; probabilistic version from the same 60 days | Cloud dynamics matter |
 | A1 | Persisted fleet index × prior gain; PeEn ensemble for probabilistic scores | Learning beats persistence |
 | CLIPER | Optimal convex combination of A0 and A1 (Yang 2019) | Learning beats the strongest simple reference |
@@ -472,10 +475,10 @@ The main model is the causal fleet index (censored estimator, D31) and the DC/AC
 | A4b | Same learner on the corrected pyranometer index | The fleet beats even a recalibrated sensor |
 | A4c | Main model plus the corrected sensor index | Adding the sensor helps or hurts |
 | A5 | k-nearest-neighbour analogs in the fleet-state space (K = 50), quantiles of their future index | Boosting beats analog forecasting (a cross-learning style baseline) |
-| A6a | Chronos-2, zero-shot, past fleet state as past covariates and u(t + h) as known future covariates | The fleet index lets a forecaster with no training on the campus predict a unit with no history; compared with the trained forecasters as a peer, not assumed to lose (on validation: level at 1 h, lower from 2 h, F56) |
+| A6a | Chronos-2, zero-shot, past fleet state as past covariates and u(t + h) as known future covariates | Whether the fleet index lets a zero-shot forecaster, never trained on the campus, forecast a unit with no history as well as the trained forecasters; no direction assumed (validation: level at 1 h, lower error from 2 h; F56) |
 | A6b | TimesFM 2.5, zero-shot, same covariates | Same, second foundation model |
 | A6d | TimeXer, trained, same per-donor series, u(t + h) through its future-exogenous variant, pinball loss | Whether PVSetFormer's design adds anything over a state-of-the-art exogenous transformer given the same information (rule R2); on validation the two are level at 1 h (F48) |
-| A6e | PVSetFormer on the fleet summary only (no donor set) | Whether the donor set adds information beyond the fleet summary (rule R2); on validation it adds nothing measurable (F47) |
+| A6e | PVSetFormer on the fleet summary only (no donor set) | Whether the donor set adds information beyond the fleet summary (rule R2); on validation it adds nothing measurable (F47 with V4a; F62 with V12) |
 | A7 | Same-time fleet index (oracle, labelled as not a forecast) | Upper bound; virtual metering |
 | A8 | Same-roof scaling (capacity additions only) | Beats what an operator would do |
 | L1, L2 | Smart persistence and LightGBM on the unit's own history (90-day curve only) | When to retire the cold-start model |
@@ -745,7 +748,7 @@ Job: answer one question per subsection, in the order of the contributions. The 
 - **Why the fleet beats the sensor:** a shared index averages many roofs, and a single instrument has no redundancy.
 - **Limitations:** one campus, low tilt diversity, 13 scored events, telemetry start instead of grid connection.
 - **Threats to validity and the leakage lesson:** how much leaky protocols inflate skill.
-- **Weighting with Chronos-2 (secondary, frozen part 2e):** the per-horizon weights chosen on the validation units, applied unchanged to the test events for the three trained forecasters alike, beside the 50/50 average; what a forecaster trained on the campus adds to a zero-shot one on the same index.
+- **Weighting with Chronos-2 (secondary, frozen part 2e):** the per-horizon weights chosen on the validation units, applied unchanged to the test events for the three trained forecasters alike, beside the 50/50 average; what a forecaster trained on the campus adds to a zero-shot one on the same index. The chosen weights are unstable across horizons (F61).
 
 ### Paper §8 — Future work
 

@@ -39,7 +39,9 @@ telemetry start instead of grid connection (F06); metadata errors (D01).
 - That a weighted pair of a trained forecaster and Chronos-2 is the method or the main model: it is a secondary
   analysis (D73, D75), and its validation scores are in sample (F61).
 - That the attention over the donor set is what makes PVSetFormer work: without it the model forecasts as well
-  (F47, strong).
+  (F47, strong; with V12 level at 1 h, F62).
+- That the donor set helps at the longer horizons: with V12 the full model is 0.8–2.4% lower from 2 h, below 3%
+  and not consistent across units (F62).
 - That PVSetFormer uses Chronos-2's forecast better than TimeXer or LightGBM, or that it improves on Chronos-2:
   with the same input the three are level (below 3%) at every horizon, and none is below Chronos-2 alone from
   30 min (D72, F60).
@@ -87,7 +89,8 @@ frozen configuration is built (D77, sha256 `805388260696999d…`); then the `pro
 Done on development data by 22 Nov 2026: NB0–NB4, NB5a and its conformal layer, the PVSetFormer rounds V1–V15
 (D36–D72), R1 re-run with V12 and its conformal layer (D74), LightGBM's 5-seed conformal layer (D64), TimeXer and
 A6e (R2, F47, F48), the sensor and satellite rows (NB5d, F51), A4c (D56), the foundation models A6a and A6b
-(NB5b, D59, F56), the Chronos-2 input and its ablation (D70, D72, F60) and the weighting check (D75, F61).
+(NB5b, D59, F56), the Chronos-2 input and its ablation (D70, D72, F60), the weighting check (D75, F61), and
+A6e and A4c with V12's setting (D78, F62).
 After the freeze: the test run (all rows on the 17 events and the hidden-unit test bed; the foundation models on
 a Colab GPU), the weighting check on the test (part 2e), the computation-cost table (guide §6 item 13), and
 everything from NB6 on.

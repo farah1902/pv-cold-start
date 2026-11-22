@@ -1341,7 +1341,18 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
   setting equals its frozen row. After the second check, it also writes §4.4's wording classes. It gives the rows
   built on the main model (A2, A3, A4c, A6e) part 2c's 5 seeds and ensembling explicitly, and TimeXer (A6d) the
   same, since it runs through the same code. The 1-seed A4c_V12 run is recorded as a validation check only.
-- **Result:** pending the runs.
+- **Result (22 Nov 2026):** both runs finished (exit 0; A6e 27 min, A4c 35 min), scored by
+  `tools/freeze_rows_val.py` (`results/nb5c_rows_v12/`, F62).
+  - A6e with V12 against V12_5s at 1 h: +0.74% (lower on 4 of 10 units, p 0.56). The rule gives **level**, so
+    row A6e keeps "adds nothing measurable" and cites F62 beside F47. From 2 h: +0.81 / +1.23 / +2.41%, not
+    consistent across units (p > 0.1).
+  - A4c with V12 against V12 at the same seed: −0.05% at 1 h (3 of 10 units, p 0.23), between −0.06% and
+    +2.35% at every horizon, within single-seed noise: the sensor adds nothing (as D56).
+  - Guide: 6 edits by `guide_d78.py` (scratch; dry run first). The previous version is
+    `docs/history/methodology_2026-11-22_d76.md` (sha256 `e3394b884323c9da…`, identical to the file before the
+    edits); 1,011 → 1,014 lines; new sha256 `0e10f424bbf71e2d…`. The edits: revision note, the §4.4 bullet (the
+    author's two passages and the family of eight tests), rows LGB, A6a and A6e, and the Discussion note on F61.
+  - No design change: V12 and every frozen setting stay as they were.
 
 ### D16 — pvlib 0.16.1 and ruptures 1.1.10 are installed locally and pinned [environment, Phase 0]
 - **Request or reason:** both are in the guide's software list (§5.6) and were missing locally on 18 Nov 2026.

@@ -80,6 +80,17 @@ def compare(label: str, x: pd.DataFrame, y: pd.DataFrame) -> list[dict]:
     return rows
 
 
+def py(v):
+    """numpy scalar -> plain Python, so summary.json keeps numbers and booleans (not their strings)."""
+    if isinstance(v, (bool, np.bool_)):
+        return bool(v)
+    if isinstance(v, (int, np.integer)):
+        return int(v)
+    if isinstance(v, (float, np.floating)):
+        return None if np.isnan(v) else float(v)
+    return v
+
+
 def main():
     s6 = json.loads((VD / RUNS["A6e"] / "summary.json").read_text())
     s4 = json.loads((VD / RUNS["A4c"] / "summary.json").read_text())
@@ -106,9 +117,8 @@ def main():
                         for k, v in RUNS.items()},
                "n_params": {"A6e": s6["n_params"], "A4c": s4["n_params"]},
                "runtime_min": {"A6e": round(s6["runtime_s"] / 60), "A4c": round(s4["runtime_s"] / 60)},
-               "at_1h": {c: {k: (None if isinstance(v, float) and np.isnan(v) else v)
-                             for k, v in head.loc[c, ["nRMSE_row", "nRMSE_ref", "diff_pct", "units_lower",
-                                                      "wilcoxon_p", "level"]].items()} for c in head.index},
+               "at_1h": {c: {k: py(head.loc[c, k]) for k in ["nRMSE_row", "nRMSE_ref", "diff_pct", "units_lower",
+                                                             "wilcoxon_p", "level"]} for c in head.index},
                "single_seeds_1h": {"A6e": [float(v) for v in s1.nRMSE_row], "V12": [float(v) for v in s1.nRMSE_ref],
                                    "diff": [float(a - b) for a, b in zip(s1.nRMSE_row, s1.nRMSE_ref)]},
                "level_at_every_horizon": {c: bool(T[T.comparison == c].level.all()) for c in T.comparison.unique()}}

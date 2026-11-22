@@ -748,6 +748,10 @@ repository). Paths are relative to `data/raw/hkust/Dataset/Time series dataset/`
     −0.44 / −0.31 / −0.58 / −1.26 / +0.00 / −0.59%; LightGBM pair −0.70 / −0.13 / −0.11 / −0.22 / +0.00 / −0.15%.
   - The PVSetFormer pair is lower than Chronos-2 on 9 / 6 / 3 / 3 / 8 / 7 of 10 units (Wilcoxon p
     0.01 / 0.11 / 0.49 / 0.49 / 0.04 / 0.16).
+  - The weights sit where the median nRMSE is flat in w (`medians.csv`, D78). At 1 h the 50/50 blend is within
+    0.4% of each pair's chosen weight: PVSetFormer +0.20%, TimeXer +0.16%, LightGBM +0.34%. The largest gaps
+    are at 4 h, where TimeXer's and LightGBM's pairs choose w = 1 (+2.39% and +2.06% at 0.5), and LightGBM's
+    at 6 h (+1.95%).
   - Lowest pair by horizon: LightGBM / PVSetFormer / TimeXer / TimeXer / PVSetFormer / PVSetFormer. The 50/50 reference: PVSetFormer 0.13014 / 0.15414 / 0.17704 / 0.20097 / 0.22102 / 0.19793.
 - **Reading:** weighted with Chronos-2, each trained forecaster ends at or just below Chronos-2 alone. The gains
   are small (all below 3%) and in sample, and at 4 h TimeXer's and LightGBM's pairs keep Chronos-2 alone (weight
@@ -755,6 +759,38 @@ repository). Paths are relative to `data/raw/hkust/Dataset/Time series dataset/`
   2 h, so at the primary horizon the median gain is not consistent across units. The weights also move between neighbouring horizons, a sign
   that the median nRMSE is flat in w near its minimum. Which trained forecaster pairs best changes with the
   horizon. The test events, with the weights frozen, give the out-of-sample answer (D73).
+
+### F62 — With V12's setting, PVSetFormer without its donor set is level with the full model at 1 h and a little higher from 2 h; the corrected sensor adds nothing — *provisional*
+- **Evidence:** `results/nb5c_rows_v12/` (`python tools/freeze_rows_val.py`, D78). Development data: the 10
+  validation units and NB5a's slots. The runs `A6e_V12_5s` and `A4c_V12` use part 2c's setting plus `summary_only=1`
+  or `ext=sensor_corr`.
+  - A6e with V12 has a fleet-summary token only: 172,683 parameters against 224,331. 5-seed ensembles against
+    V12_5s, median nRMSE at 15 min / 30 min / 1 h / 2 h / 4 h / 6 h: 0.1325 / 0.1559 / 0.1791 / 0.2089 / 0.2344 /
+    0.2105 against 0.1329 / 0.1567 / 0.1778 / 0.2072 / 0.2315 / 0.2056 (−0.28 / −0.50 / +0.74 / +0.81 / +1.23 /
+    +2.41%).
+  - By unit, A6e is lower on 5 / 5 / 4 / 2 / 2 / 5 of 10 (Wilcoxon p 0.77 / 0.85 / 0.56 / 0.19 / 0.11 / 0.43).
+    CRPS −0.90 to +3.02%; the +3.02% is at 6 h.
+  - D78's rule at 1 h: +0.74%, below 3%, so level. Single seeds at 1 h: A6e 0.17884–0.18244 (mean 0.18072, s.d.
+    0.0016), V12 0.17800–0.18644 (mean 0.18090, s.d. 0.0035). Seed by seed the differences go both ways (−0.0070 to
+    +0.0035).
+  - A6e's ensemble against LightGBM's (LGB_seeds): −1.20% at 1 h (lower on 5 of 10 units, p 1.0); −3.43% at 6 h
+    (9 of 10, p 0.049).
+  - A4c with V12 adds the corrected sensor index to the fleet token: 1 seed, 224,907 parameters. Against V12 at the
+    same seed (20261119): +0.88 / +1.53 / −0.05 / −0.06 / +0.85 / +2.35%, lower on 3 / 3 / 3 / 3 / 5 / 4 of 10
+    units (p > 0.1); CRPS +0.23 to +3.64%.
+  - Per-unit differences of A4c reach 7.8% at 1 h and 11.3% at 6 h, the scale of single-seed noise: V12's single
+    seeds at 1 h span 0.17800–0.18644.
+  - Run times: A6e 27 min (V12_5s 186 min: the donor attention carries most of the cost); A4c 35 min for 30
+    trainings.
+- **Reading:** at the primary horizon, the donor set adds nothing measurable with the frozen setting, as with V4a
+  (F47); the fleet summary carries the information for 1 h.
+  - From 2 h the full model is slightly lower (by 0.8–2.4%; A6e lower on 2 of 10 units at 2 and 4 h). With V4a
+    every difference was below 0.6%. This is below the 3% line and not consistent across units (p > 0.1), so the
+    paper does not claim it.
+  - Given the fleet index, the corrected sensor adds nothing: A4c is level with V12 at every horizon, within
+    single-seed noise, as with V4a (D56, F51).
+  - Neither result changes V12 or any frozen setting (D78). Development data; the paper's numbers come from the
+    test run.
 
 ### F16 — Not every site file starts on the 1st of a month — *solid*
 - **Evidence:** among the 18 site files of the first event list, Indoor Sports Centre (2021-12-02), Zone J2

@@ -1,0 +1,107 @@
+{
+  "tool": "freeze_rows_val",
+  "decision": "D78",
+  "environment": {
+    "python": "3.12.1",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "executable": "C:\\Python312\\python.exe",
+    "run_at": "2026-11-22 17:56:52",
+    "numpy": "1.26.4",
+    "pandas": "2.2.0",
+    "scipy": "1.12.0",
+    "sklearn": "1.5.1",
+    "statsmodels": "0.15.0",
+    "lightgbm": "4.6.0",
+    "pvlib": "0.16.1",
+    "ruptures": "v1.1.10",
+    "matplotlib": "3.8.3",
+    "torch": "2.2.0+cpu",
+    "openpyxl": "3.1.5",
+    "pyarrow": "15.0.2",
+    "yaml": "6.0.1"
+  },
+  "a6e_rule": {
+    "diff_pct_1h": 0.7360651696660669,
+    "outcome": "level: the row keeps 'adds nothing measurable' and cites the new finding"
+  },
+  "runs": {
+    "A6e": {
+      "run": "A6e_V12_5s",
+      "summary_sha256": "cb0b68241ae37bf5844104273f706938c0371c58a0ff8d36dc685179eb15e8e3"
+    },
+    "A4c": {
+      "run": "A4c_V12",
+      "summary_sha256": "163320db2874b23c05e9743453821400d43231d1f4357adbd7d0d6f293df8da6"
+    },
+    "main": {
+      "run": "V12_5s",
+      "summary_sha256": "6fb1520c43ecbc3b40002608e44cad4a14870a9349d32d98e9cb326d14273429"
+    },
+    "LGB": {
+      "run": "LGB_seeds",
+      "summary_sha256": "36937388bd72f72b794dd1c709c4b74de8cf0417de9aadb32d21a64bf18df377"
+    }
+  },
+  "n_params": {
+    "A6e": 172683,
+    "A4c": 224907
+  },
+  "runtime_min": {
+    "A6e": 27,
+    "A4c": 35
+  },
+  "at_1h": {
+    "A6e_V12_5s vs V12_5s (5-seed ensembles)": {
+      "nRMSE_row": 0.17912644754424029,
+      "nRMSE_ref": 0.17781759416803125,
+      "diff_pct": 0.7360651696660669,
+      "units_lower": 4,
+      "wilcoxon_p": 0.556640625,
+      "level": true
+    },
+    "A4c_V12 vs V12_5s (seed 20261119)": {
+      "nRMSE_row": 0.1779116220080723,
+      "nRMSE_ref": 0.17800247891187054,
+      "diff_pct": -0.05104249353921064,
+      "units_lower": 3,
+      "wilcoxon_p": 0.232421875,
+      "level": true
+    },
+    "A6e_V12_5s vs LGB_seeds (5-seed ensembles)": {
+      "nRMSE_row": 0.17912644754424029,
+      "nRMSE_ref": 0.181302441838765,
+      "diff_pct": -1.2002013169022163,
+      "units_lower": 5,
+      "wilcoxon_p": 1.0,
+      "level": true
+    }
+  },
+  "single_seeds_1h": {
+    "A6e": [
+      0.17884284099316275,
+      0.1793950240719955,
+      0.18244093945305162,
+      0.1819449218561057,
+      0.1809741559813262
+    ],
+    "V12": [
+      0.17800247891187054,
+      0.18644268188854146,
+      0.1789113283295413,
+      0.17892138785731754,
+      0.18222585140096353
+    ],
+    "diff": [
+      0.0008403620812922064,
+      -0.007047657816545955,
+      0.003529611123510329,
+      0.003023533998788158,
+      -0.001251695419637322
+    ]
+  },
+  "level_at_every_horizon": {
+    "A6e_V12_5s vs V12_5s (5-seed ensembles)": true,
+    "A4c_V12 vs V12_5s (seed 20261119)": true,
+    "A6e_V12_5s vs LGB_seeds (5-seed ensembles)": false
+  }
+}

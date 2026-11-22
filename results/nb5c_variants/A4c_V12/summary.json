@@ -1,0 +1,128 @@
+{
+  "variant": "A4c_V12",
+  "note": "A4c (D51) at the freeze, D78: V12 (part 2c) plus the corrected sensor index in the fleet token, 1 seed; descriptive, no design change",
+  "cfg": {
+    "d": 64,
+    "heads": 4,
+    "n_sky": 4,
+    "n_enc": 2,
+    "n_dec": 2,
+    "dropout": 0.1,
+    "lr": 0.001,
+    "weight_decay": 0.5,
+    "batch": 256,
+    "max_epochs": 100,
+    "patience": 15,
+    "donor_dropout": 0.1,
+    "fleet_token": 1,
+    "balance": 1,
+    "lin": 1,
+    "aux": 0.0,
+    "summary_only": 0,
+    "vol": 0,
+    "vgate": 0,
+    "hmask": 0,
+    "hhead": 0,
+    "hhead_n": 0,
+    "donor_id": 0,
+    "donor_rel": 0,
+    "ext": "sensor_corr",
+    "vlin": 0,
+    "vmed": 1,
+    "vmed_n": 2,
+    "clim": 0,
+    "fm": 0,
+    "arch": "pvsf"
+  },
+  "n_params": 224907,
+  "seeds": 1,
+  "runtime_s": 2093.3,
+  "environment": {
+    "python": "3.12.1",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "executable": "C:\\Python312\\python.exe",
+    "run_at": "2026-11-22 17:27:42",
+    "numpy": "1.26.4",
+    "pandas": "2.2.0",
+    "scipy": "1.12.0",
+    "sklearn": "1.5.1",
+    "statsmodels": "0.15.0",
+    "lightgbm": "4.6.0",
+    "pvlib": "0.16.1",
+    "ruptures": "v1.1.10",
+    "matplotlib": "3.8.3",
+    "torch": "2.2.0+cpu",
+    "openpyxl": "3.1.5",
+    "pyarrow": "15.0.2",
+    "yaml": "6.0.1"
+  },
+  "R1_bar_lgb": 0.18097840353848627,
+  "R1_seed_mean": 0.17791162200807234,
+  "R1_seed_sd": null,
+  "R1_ensemble": 0.17791162200807234,
+  "units_beating_lgb_1h_ensemble": 5,
+  "median_nRMSE_by_h": {
+    "seed_mean": {
+      "1": 0.13279,
+      "2": 0.15751,
+      "4": 0.17791,
+      "8": 0.20727,
+      "16": 0.23207,
+      "24": 0.21112
+    },
+    "ensemble": {
+      "1": 0.13279,
+      "2": 0.15751,
+      "4": 0.17791,
+      "8": 0.20727,
+      "16": 0.23207,
+      "24": 0.21112
+    },
+    "lgb": {
+      "1": 0.12921,
+      "2": 0.15625,
+      "4": 0.18098,
+      "8": 0.21057,
+      "16": 0.23688,
+      "24": 0.21832
+    }
+  },
+  "median_CRPS_by_h": {
+    "ensemble": {
+      "1": 0.06623,
+      "2": 0.08087,
+      "4": 0.09533,
+      "8": 0.11156,
+      "16": 0.12636,
+      "24": 0.11286
+    },
+    "lgb": {
+      "1": 0.06179,
+      "2": 0.07745,
+      "4": 0.09389,
+      "8": 0.11476,
+      "16": 0.13016,
+      "24": 0.11743
+    }
+  },
+  "median_PICP80_by_h": {
+    "ensemble": {
+      "1": 0.7004,
+      "2": 0.7011,
+      "4": 0.6798,
+      "8": 0.6717,
+      "16": 0.6464,
+      "24": 0.6657
+    },
+    "lgb": {
+      "1": 0.6846,
+      "2": 0.6978,
+      "4": 0.7142,
+      "8": 0.6624,
+      "16": 0.6286,
+      "24": 0.6489
+    }
+  },
+  "mean_best_epoch": 16.366666666666667,
+  "mean_task_runtime_s": 504.1133333333333
+}

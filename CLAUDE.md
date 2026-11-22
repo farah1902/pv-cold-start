@@ -112,6 +112,12 @@ something, record it and follow it, even if you would have chosen otherwise.
   method). The paper never claims "best" from differences below 3%.
 - **Weighting check (D73, D75):** each trained forecaster with Chronos-2, weights per horizon frozen as part 2e
   (`results/nb5c_weights/`), applied unchanged at the test; a secondary analysis for the Discussion only.
+- **Secondary tests (D78):** two-sided exact Wilcoxon at 1 h on the 13 scored events, Holm across eight tests
+  (LGB, A6a, A6b, A6d, A6e each against the main model; the three weighted pairs each against Chronos-2 alone),
+  Hodges–Lehmann effect sizes. Wording: below 3% and not significant, level; below 3% but significant,
+  consistently lower by less than 3%; from 3%, the difference named with its p-value (guide §4.4).
+- **Rows on the main model at the test (D78):** A2, A3, A4c, A6e (and A6d) use part 2c's 5 seeds and its
+  ensembling, as written in the frozen configuration; the 1-seed A4c_V12 run was a validation check only.
 - **LightGBM at the test (D64, 21 Nov 2026):** its 5-seed ensemble (`LGB_seeds`), with its conformal layer rebuilt
   from that ensemble (`tools/lgb_seeds_cal.py`, then `NB5c_conformal_lgb`).
 - **LightGBM's setting stays (D72, 22 Nov 2026):** part 2a as rule 1 chose it, even though it learns nothing at
@@ -146,7 +152,7 @@ data/raw/archives/      original downloads: Dataset.zip (Dryad), b2s4ycc2gz-1.zi
 data/external/cams/mcclear/   CAMS McClear clear-sky only, UT, Wh/m2 per 1-min step (HKUST, Safi)        (ignored)
 data/external/open-meteo/     ERA5 hourly, Benguerir only (follow-up paper)                               (ignored)
 data/external/pv_density/     ISPRS source PDF, digitised density grid, cluster map (Introduction)        (ignored)
-docs/research_guide.md  master plan (author), 22 Nov 2026 version (before the freeze, D76)
+docs/research_guide.md  master plan (author), 22 Nov 2026 version (before the freeze, D76, D78)
 docs/history/           methodology_v0.md (2 Nov), review-audit-18-nov.md, hkust-data-audit.md (31 Oct)
 docs/*.md               decisions, findings, results_summary, methods, research_log, data_dictionary,
                         figures_and_tables, paper_handoff
@@ -192,7 +198,8 @@ arch=timexer ... fm=1`, LightGBM `python tools/r1_lgb_seeds.py --fm` (`LGB_fm_se
 `python tools/lgb_rounds_diag.py` (F59). Scoring of the ablation and of V15's rule: `python tools/fm_ablation.py`
 (seconds; `results/nb5c_diag/fm_ablation/`). Weighting check with Chronos-2 (part 2e, D75): `python
 tools/weight_check.py` (3 min; `results/nb5c_weights/`). Frozen configuration (D77): `python tools/freeze_config.py`
-(seconds; every pinned file must be committed; `results/freeze/`). The packages live only in the separate environment
+(seconds; every pinned file must be committed; `results/freeze/`). Rows A6e and A4c with V12 on validation (D78):
+`python tools/freeze_rows_val.py` (seconds, after the runs `A6e_V12_5s` and `A4c_V12`; `results/nb5c_rows_v12/`). The packages live only in the separate environment
 `.venv_fm` (`requirements-fm.txt`): never install them in the main one (numpy 2, torch 2.15). Downloads from the
 Hugging Face hub run with `HF_HUB_DISABLE_IMPLICIT_TOKEN=1` (the stored token has expired).
 PVSetFormer development (D36): one round `python tools/pvsf_dev.py --name V<k> --seeds 1 --set key=value ...`

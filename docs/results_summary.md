@@ -291,7 +291,13 @@ Source: `results/nb5b_fm/summary.json`, `medians.csv`, `comparison.csv`, `fm_con
 | Same, against Chronos-2 alone: PVSetFormer; TimeXer; LightGBM pair | −0.09 / −0.41 / −0.48 / −1.07 / −0.18 / −1.21%; −0.44 / −0.31 / −0.58 / −1.26 / +0.00 / −0.59%; −0.70 / −0.13 / −0.11 / −0.22 / +0.00 / −0.15% | nb5c_weights/chosen.csv |
 | PVSetFormer pair vs Chronos-2: units lower; Wilcoxon p | 9 / 6 / 3 / 3 / 8 / 7 of 10; 0.01 / 0.11 / 0.49 / 0.49 / 0.04 / 0.16 | nb5c_weights/scores.csv |
 | Weighting configuration (part 2e), sha256 | `26ff86ca7ebc9abc…` | weight_config_part2e.yaml |
-| Frozen configuration (D77; 16 pinned files and the test rows), sha256 | `805388260696999d…` | freeze/frozen_config.yaml |
+| A6e with V12 (no donor tokens, D78) vs V12_5s, 5-seed ensembles, median nRMSE at 15 min / 30 min / 1 h / 2 h / 4 h / 6 h | 0.1325 / 0.1559 / 0.17913 / 0.2089 / 0.2344 / 0.2105 vs 0.1329 / 0.1567 / 0.17782 / 0.2072 / 0.2315 / 0.2056 (−0.28 / −0.50 / +0.74 / +0.81 / +1.23 / +2.41%) | nb5c_rows_v12/table.csv |
+| Same: units where A6e is lower; Wilcoxon p | 5 / 5 / 4 / 2 / 2 / 5 of 10; 0.77 / 0.85 / 0.56 / 0.19 / 0.11 / 0.43 | nb5c_rows_v12/table.csv |
+| Same, single seeds at 1 h: A6e; V12 | 0.17884–0.18244 (mean 0.18072, s.d. 0.0016); 0.17800–0.18644 (mean 0.18090, s.d. 0.0035) | nb5c_rows_v12/summary.json |
+| D78's rule for row A6e at 1 h | +0.74%: level | nb5c_rows_v12/summary.json |
+| A4c with V12 (corrected sensor index, 1 seed, D78) vs V12 at the same seed 20261119, median nRMSE at 15 min / 30 min / 1 h / 2 h / 4 h / 6 h | 0.1328 / 0.1575 / 0.17791 / 0.2073 / 0.2321 / 0.2111 vs 0.1316 / 0.1551 / 0.17800 / 0.2074 / 0.2301 / 0.2063 (+0.88 / +1.53 / −0.05 / −0.06 / +0.85 / +2.35%) | nb5c_rows_v12/table.csv |
+| Same: units where A4c is lower; Wilcoxon p | 3 / 3 / 3 / 3 / 5 / 4 of 10; 0.43 / 0.19 / 0.23 / 0.11 / 0.38 / 0.56 | nb5c_rows_v12/table.csv |
+| Frozen configuration (D77; 16 pinned files and the test rows; superseded by D78's rebuild), sha256 | `805388260696999d…` | freeze/frozen_config.yaml (commit 47e1ae9) |
 
 ## Forecast skill and statistics (NB5, NB6)
 _empty_
