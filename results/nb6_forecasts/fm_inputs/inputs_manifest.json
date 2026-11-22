@@ -1,0 +1,48 @@
+{
+  "tool": "nb6_forecast --fm-inputs",
+  "decision": "D79",
+  "environment": {
+    "python": "3.12.1",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "executable": "C:\\Python312\\python.exe",
+    "run_at": "2026-11-22 23:41:12",
+    "numpy": "1.26.4",
+    "pandas": "2.2.0",
+    "scipy": "1.12.0",
+    "sklearn": "1.5.1",
+    "statsmodels": "0.15.0",
+    "lightgbm": "4.6.0",
+    "pvlib": "0.16.1",
+    "ruptures": "v1.1.10",
+    "matplotlib": "3.8.3",
+    "torch": "2.2.0+cpu",
+    "openpyxl": "3.1.5",
+    "pyarrow": "15.0.2",
+    "yaml": "6.0.1"
+  },
+  "events": [
+    "SQ Block S",
+    "Zone A5",
+    "SQ Block R",
+    "Zone A7",
+    "Zone A6",
+    "Zone J2",
+    "Indoor Sports Centre",
+    "Zone D",
+    "UG Hall8",
+    "UG Hall9",
+    "Zone A2 inverters 2-3",
+    "SQ Block P",
+    "Shaw Auditorium",
+    "Library",
+    "Wong Check She",
+    "Zone J1",
+    "Zone L2"
+  ],
+  "n_series_rows": 736128,
+  "n_tasks": 63657,
+  "sha256": {
+    "series.parquet": "2e3c36b31c33dc297bf244b2a0a9bdd7db67cb548903750b86c0c429f4372de0",
+    "tasks.parquet": "003ca17a02d9042724fe1cfa603794e832020714ba1d9bf7fdcf9d86ba7c311f"
+  }
+}

@@ -1440,6 +1440,16 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
     - weighted TimeXer + Chronos-2 vs A6a: -0.58%, lower on 4 of 10, p 0.557, Holm 1.000: level
     - weighted LightGBM + Chronos-2 vs A6a: -0.11%, lower on 7 of 10, p 0.275, Holm 1.000: level
   - These are development numbers. The test pairs 13 events, and no design change follows from any of them (D73).
+- **Where the test rows run (the author, 22 Nov 2026):** asked how to run the PVSetFormer-based rows and the
+  hidden-unit test bed, which are estimated at about 1,400 CPU-hours, the author chose local CPU: the same device and
+  code as every validation run.
+  - Order: main, A4c, A2, A6e, A6d, then the test bed, after the LightGBM-based rows. `bash tools/nb6_run_all.sh`
+    is resumable.
+  - Memory decides the worker count. The largest training holds about 0.9 GB of inputs (1.3 GB peak in a probe),
+    and the open apps leave about 3.5 GB available of 15.7 GB. So the PVSetFormer rows use 6 workers, lowered if
+    Windows pages heavily.
+  - Rows A6a and A6b run on Colab (NB6_colab) from `results/nb6_forecasts/fm_inputs/`: 17 events, 63,657 issue
+    times; its manifest is committed.
 
 ### D16 — pvlib 0.16.1 and ruptures 1.1.10 are installed locally and pinned [environment, Phase 0]
 - **Request or reason:** both are in the guide's software list (§5.6) and were missing locally on 18 Nov 2026.
