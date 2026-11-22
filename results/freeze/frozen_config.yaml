@@ -1,6 +1,39 @@
-protocol: protocol-freeze (D21, D77)
-commit_parent: aadfa8aef8bc17abe4cb1a18b668990468969230
+protocol: protocol-freeze (D21, D77, D78)
+commit_parent: 0354cbd91b6936b2f166dc78f442f38986b4c65b
 primary_horizon_steps: 4
+statistics:
+  primary:
+    comparison:
+    - main
+    - A1
+    horizon_steps: 4
+    test: one-sided exact Wilcoxon signed-rank on event-wise nRMSE differences, 13 scored events, p < 0.05; the other five
+      horizons secondary, with Holm
+  secondary_family:
+    test: two-sided exact Wilcoxon signed-rank at 1 h on the 13 scored events, Holm across the family; Hodges-Lehmann effect
+      sizes
+    level: two forecasters are level when their medians differ by less than 3% (guide 3.10)
+    wording:
+      below 3%, not significant after Holm: level
+      below 3%, significant after Holm: consistently lower, by less than 3%
+      from 3%: the difference is named with its p-value
+    comparisons:
+    - - LGB
+      - main
+    - - A6a
+      - main
+    - - A6b
+      - main
+    - - A6d
+      - main
+    - - A6e
+      - main
+    - - weighted PVSetFormer + Chronos-2
+      - A6a
+    - - weighted TimeXer + Chronos-2
+      - A6a
+    - - weighted LightGBM + Chronos-2
+      - A6a
 files:
   part1_index_gains_prior:
     path: results/nb3_index/frozen_config_part1.yaml
@@ -64,7 +97,7 @@ files:
     decision: D15
   research_guide:
     path: docs/research_guide.md
-    sha256: e3394b884323c9daea8bc2787c1d495d09fd8d2f011465a43f07b69075f56c69
+    sha256: 0e10f424bbf71e2dc052982e7c37f8011ead7a06aaabdecf58c4b6700fe1a320
     decision: D76
 test_rows:
   main:
@@ -107,6 +140,7 @@ test_rows:
     - 20261121
     - 20261122
     - 20261123
+    ensemble: mean of the sorted quantiles across seeds, sorted again
     intervals: part2b_conformal_pvsetformer
   LGB:
     model: quantile LightGBM, 5-seed ensemble (D64)
@@ -121,8 +155,84 @@ test_rows:
     - 20261122
     - 20261123
     intervals: part2b_conformal_lightgbm_5_seeds
-  A2: main model with the median index (part 1 estimator 'median')
-  A3: main model with prior G0 (g = 1)
+  A2:
+    model: main model with the median index (part 1 estimator 'median')
+    cfg:
+      arch: pvsf
+      aux: 0.0
+      balance: 1
+      batch: 256
+      d: 64
+      donor_dropout: 0.1
+      donor_id: 0
+      donor_rel: 0
+      dropout: 0.1
+      ext: ''
+      fleet_token: 1
+      heads: 4
+      hhead: 0
+      hhead_n: 0
+      hmask: 0
+      lin: 1
+      lr: 0.001
+      max_epochs: 100
+      n_dec: 2
+      n_enc: 2
+      n_sky: 4
+      patience: 15
+      summary_only: 0
+      vgate: 0
+      vlin: 0
+      vmed: 1
+      vmed_n: 2
+      vol: 0
+      weight_decay: 0.5
+    seeds:
+    - 20261119
+    - 20261120
+    - 20261121
+    - 20261122
+    - 20261123
+    ensemble: mean of the sorted quantiles across seeds, sorted again
+  A3:
+    model: main model with prior G0 (g = 1)
+    cfg:
+      arch: pvsf
+      aux: 0.0
+      balance: 1
+      batch: 256
+      d: 64
+      donor_dropout: 0.1
+      donor_id: 0
+      donor_rel: 0
+      dropout: 0.1
+      ext: ''
+      fleet_token: 1
+      heads: 4
+      hhead: 0
+      hhead_n: 0
+      hmask: 0
+      lin: 1
+      lr: 0.001
+      max_epochs: 100
+      n_dec: 2
+      n_enc: 2
+      n_sky: 4
+      patience: 15
+      summary_only: 0
+      vgate: 0
+      vlin: 0
+      vmed: 1
+      vmed_n: 2
+      vol: 0
+      weight_decay: 0.5
+    seeds:
+    - 20261119
+    - 20261120
+    - 20261121
+    - 20261122
+    - 20261123
+    ensemble: mean of the sorted quantiles across seeds, sorted again
   A4: LightGBM (part 2a) on the raw pyranometer index (D50, D51)
   A4b: LightGBM (part 2a) on the corrected pyranometer index (D50, D51)
   A4c:
@@ -157,6 +267,19 @@ test_rows:
       vmed_n: 2
       vol: 0
       weight_decay: 0.5
+    seeds:
+    - 20261119
+    - 20261120
+    - 20261121
+    - 20261122
+    - 20261123
+    ensemble: mean of the sorted quantiles across seeds, sorted again
+    validation_check:
+      run: A4c_V12
+      n_seeds: 1
+      summary_sha256: 163320db2874b23c05e9743453821400d43231d1f4357adbd7d0d6f293df8da6
+      decision: D78
+      role: validation check of the setting only; the test row uses the row's own seeds and ensemble
   A6a:
     model: Chronos-2, zero-shot
     setting: chronos2_c1344_full
@@ -195,6 +318,7 @@ test_rows:
     - 20261121
     - 20261122
     - 20261123
+    ensemble: mean of the sorted quantiles across seeds, sorted again
   A6e:
     model: main model on the fleet summary only (rule R2)
     cfg:
@@ -227,6 +351,19 @@ test_rows:
       vmed_n: 2
       vol: 0
       weight_decay: 0.5
+    seeds:
+    - 20261119
+    - 20261120
+    - 20261121
+    - 20261122
+    - 20261123
+    ensemble: mean of the sorted quantiles across seeds, sorted again
+    validation_check:
+      run: A6e_V12_5s
+      n_seeds: 5
+      summary_sha256: cb0b68241ae37bf5844104273f706938c0371c58a0ff8d36dc685179eb15e8e3
+      decision: D78
+      role: validation check of the setting only; the test row uses the row's own seeds and ensemble
   A9: satellite (CAMS) clear-sky index persisted forward x prior gain (D51)
   weighting_check:
     rule: per horizon, weight w on Chronos-2 from the grid 0, 0.1, ..., 1; blend (1 - w) * trained + w * Chronos-2, quantile

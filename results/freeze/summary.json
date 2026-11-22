@@ -1,11 +1,11 @@
 {
   "tool": "freeze_config",
-  "decision": "D77",
+  "decision": "D77, D78",
   "environment": {
     "python": "3.12.1",
     "platform": "Windows-11-10.0.26300-SP0",
     "executable": "C:\\Python312\\python.exe",
-    "run_at": "2026-11-22 15:16:49",
+    "run_at": "2026-11-22 17:59:07",
     "numpy": "1.26.4",
     "pandas": "2.2.0",
     "scipy": "1.12.0",
@@ -20,7 +20,7 @@
     "pyarrow": "15.0.2",
     "yaml": "6.0.1"
   },
-  "frozen_config_sha256": "805388260696999d123ff4d0d9aa016e8d325599753181e5f823675c9e1a4286",
+  "frozen_config_sha256": "9ccffb7241172915e037ea9c07e52617dc58250a9c79121b3de91f11f27950e8",
   "n_files": 16,
-  "commit_parent": "aadfa8aef8bc17abe4cb1a18b668990468969230"
+  "commit_parent": "0354cbd91b6936b2f166dc78f442f38986b4c65b"
 }

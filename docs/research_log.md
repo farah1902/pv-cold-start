@@ -362,3 +362,6 @@ One entry per work session: what was asked, what was done, the key numbers, what
 - **The author's second check (22 Nov, D78):** before A6e_V12_5s finished, the rows built on the main model get
   part 2c's 5 seeds and ensembling explicitly in the frozen configuration. The A6e rule's open case is filled (3% or
   more lower: the fleet summary alone forecasts better with V12; a new finding). §4.4 gets three wording classes.
+- **A6e and A4c with V12, guide and freeze (22 Nov, 17:00–18:10, D78):** A4c_V12 35 min, A6e_V12_5s 27 min. A6e
+  +0.74% at 1 h against V12 (level by the rule); A4c level at every horizon at the same seed (F62). Guide revised by
+  6 edits; frozen configuration rebuilt, sha256 `9ccffb7241172915…`. The tag waits for the author's check.

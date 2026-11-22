@@ -1290,7 +1290,7 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
 - **Tag:** `protocol-freeze` is set only after the author has seen the reworded rows A6a, A6d and A6e (D76), the
   weighting criterion (D73) and the proposed LGB row (D76). A change to any of them changes the guide and so the
   hash; the tool is then re-run.
-- **Result:** pending the author's check.
+- **Result:** superseded before any tag: the author's check led to D78, which rebuilt the configuration.
 
 ### D78 — The author's check of D76: rows reworded, the family of secondary tests, A6e and A4c run with V12's setting; the rule for row A6e fixed before its result [guide deviation, protocol, Phase 5]
 - **Request (the author, 22 Nov 2026):** D73–D77 approved with changes, before the tag:
@@ -1353,6 +1353,9 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
     edits); 1,011 → 1,014 lines; new sha256 `0e10f424bbf71e2d…`. The edits: revision note, the §4.4 bullet (the
     author's two passages and the family of eight tests), rows LGB, A6a and A6e, and the Discussion note on F61.
   - No design change: V12 and every frozen setting stay as they were.
+  - **Frozen configuration rebuilt:** `python tools/freeze_config.py`, sha256 `9ccffb7241172915e037ea9c07e52617dc58250a9c79121b3de91f11f27950e8` (built on commit
+    `0354cbd`; 16 pinned files, the guide at `0e10f424bbf71e2d…`). It replaces D77's `805388260696999d…`.
+  - **Tag:** `protocol-freeze` waits for the author's check of this hash and of F62.
 
 ### D16 — pvlib 0.16.1 and ruptures 1.1.10 are installed locally and pinned [environment, Phase 0]
 - **Request or reason:** both are in the guide's software list (§5.6) and were missing locally on 18 Nov 2026.
