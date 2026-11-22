@@ -1,13 +1,15 @@
-"""The frozen configuration of the protocol (D21, D77): one YAML that pins every setting the test run uses.
+"""The frozen configuration of the protocol (D21, D77, D78): one YAML that pins every setting the test run uses.
 
     python tools/freeze_config.py
 
 Collects parts 1 and 2a-2e, the sensor settings, the event table and the hidden-unit test bed, the data manifest and
 the research guide, each by path and sha256, and checks each against the hash its own notebook recorded. It also
-writes out the settings of the test rows that are derived from part 2c (the main model, A6e, A4c, TimeXer). Every
-pinned file must be tracked by git with no uncommitted change, so the hashes describe committed content. Writes
-results/freeze/ (frozen_config.yaml, summary.json) all-or-nothing; the sha256 of frozen_config.yaml is the frozen
-configuration hash that the tag `protocol-freeze` carries. Development data only; no test event is read.
+writes out the settings of the test rows that are derived from part 2c (the main model, A6e, A4c, TimeXer), checks
+that the validation runs of A6e and A4c with V12's setting (D78) used exactly those settings, and states the primary
+test and the family of secondary tests (guide 4.4). Every pinned file must be tracked by git with no uncommitted
+change, so the hashes describe committed content. Writes results/freeze/ (frozen_config.yaml, summary.json)
+all-or-nothing; the sha256 of frozen_config.yaml is the frozen configuration hash that the tag `protocol-freeze`
+carries. Development data only; no test event is read.
 """
 import hashlib
 import json
@@ -50,14 +52,31 @@ def git(*args) -> str:
     return subprocess.run(["git", "-C", str(ROOT), *args], capture_output=True, text=True, check=True).stdout.strip()
 
 
+def committed(rel: str):
+    assert git("ls-files", rel) == rel, f"{rel} is not tracked by git"
+    assert git("status", "--porcelain", "--", rel) == "", f"{rel} has uncommitted changes"
+
+
+OFF = ("clim", "fm")   # switches added to the defaults after V12 (V13, V15); 0 = off, absent from part 2c
+
+
+def validation_run(name: str, cfg: dict) -> dict:
+    """A validation run of a test row (D78): its setting must be the row's, up to the switches that are off."""
+    rel = f"results/nb5c_variants/{name}/summary.json"
+    committed(rel)
+    s = json.loads((ROOT / rel).read_text())
+    run_cfg = {k: v for k, v in s["cfg"].items() if not (k in OFF and v == 0)}
+    assert run_cfg == cfg, f"{name}: setting differs from the frozen row"
+    return {"run": name, "seeds": s["seeds"], "summary_sha256": sha(ROOT / rel), "decision": "D78"}
+
+
 def main():
     assert Path(git("rev-parse", "--show-toplevel")).resolve() == ROOT.resolve(), "not the paper repository"
     pinned = {}
     for label, (rel, dec) in FILES.items():
         p = ROOT / rel
         assert p.exists(), rel
-        assert git("ls-files", rel) == rel, f"{rel} is not tracked by git"
-        assert git("status", "--porcelain", "--", rel) == "", f"{rel} has uncommitted changes"
+        committed(rel)
         pinned[label] = {"path": rel, "sha256": sha(p), "decision": dec}
     h = {k: v["sha256"] for k, v in pinned.items()}
 
@@ -90,25 +109,40 @@ def main():
         "A3": "main model with prior G0 (g = 1)",
         "A4": "LightGBM (part 2a) on the raw pyranometer index (D50, D51)",
         "A4b": "LightGBM (part 2a) on the corrected pyranometer index (D50, D51)",
-        "A4c": {"model": "main model plus the corrected sensor index (D51, D56)", "cfg": dict(main_cfg, ext="sensor_corr")},
+        "A4c": {"model": "main model plus the corrected sensor index (D51, D56)", "cfg": dict(main_cfg, ext="sensor_corr"),
+                "validation": validation_run("A4c_V12", dict(main_cfg, ext="sensor_corr"))},
         "A6a": {"model": "Chronos-2, zero-shot", "setting": p2d["models"]["chronos2"]["setting"],
                 "revision": p2d["models"]["chronos2"]["revision"]},
         "A6b": {"model": "TimesFM 2.5, zero-shot", "setting": p2d["models"]["timesfm25"]["setting"],
                 "revision": p2d["models"]["timesfm25"]["revision"]},
         "A6c": "dropped before the freeze (TabPFN-TS, D73)",
         "A6d": {"model": "TimeXer, CVX setting (D49)", "cfg": tx["cfg"], "seeds": p2c["seeds"]},
-        "A6e": {"model": "main model on the fleet summary only (rule R2)", "cfg": dict(main_cfg, summary_only=1)},
+        "A6e": {"model": "main model on the fleet summary only (rule R2)", "cfg": dict(main_cfg, summary_only=1),
+                "validation": validation_run("A6e_V12_5s", dict(main_cfg, summary_only=1))},
         "A9": "satellite (CAMS) clear-sky index persisted forward x prior gain (D51)",
         "weighting_check": {"rule": p2e["rule"], "weights": p2e["weights"], "reference_weight": p2e["reference_weight"]},
     }
-    frozen = {"protocol": "protocol-freeze (D21, D77)", "commit_parent": git("rev-parse", "HEAD"),
-              "primary_horizon_steps": 4, "files": pinned, "test_rows": rows}
+    statistics = {   # guide 4.4 (the guide itself is pinned above); the family of secondary tests is D78's
+        "primary": {"comparison": ["main", "A1"], "horizon_steps": 4,
+                    "test": "one-sided exact Wilcoxon signed-rank on event-wise nRMSE differences, 13 scored events, "
+                            "p < 0.05; the other five horizons secondary, with Holm"},
+        "secondary_family": {
+            "test": "two-sided exact Wilcoxon signed-rank at 1 h on the 13 scored events, Holm across the family; "
+                    "Hodges-Lehmann effect sizes",
+            "level": "two forecasters are level when their medians differ by less than 3% (guide 3.10)",
+            "comparisons": [["LGB", "main"], ["A6a", "main"], ["A6b", "main"], ["A6d", "main"], ["A6e", "main"],
+                            ["weighted PVSetFormer + Chronos-2", "A6a"], ["weighted TimeXer + Chronos-2", "A6a"],
+                            ["weighted LightGBM + Chronos-2", "A6a"]]},
+    }
+    assert len(statistics["secondary_family"]["comparisons"]) == 8
+    frozen = {"protocol": "protocol-freeze (D21, D77, D78)", "commit_parent": git("rev-parse", "HEAD"),
+              "primary_horizon_steps": 4, "statistics": statistics, "files": pinned, "test_rows": rows}
     class NoAlias(yaml.SafeDumper):           # write repeated lists out in full, no anchors
         def ignore_aliases(self, data):
             return True
     TEXT = yaml.dump(frozen, Dumper=NoAlias, sort_keys=False, allow_unicode=True, width=120)
     HASH = hashlib.sha256(TEXT.encode("utf-8")).hexdigest()
-    summary = {"tool": "freeze_config", "decision": "D77", "environment": A.versions(), "frozen_config_sha256": HASH,
+    summary = {"tool": "freeze_config", "decision": "D77, D78", "environment": A.versions(), "frozen_config_sha256": HASH,
                "n_files": len(pinned), "commit_parent": frozen["commit_parent"]}
     out = A.write_outputs("freeze", {}, summary, texts={"frozen_config.yaml": TEXT})
     print(TEXT)

@@ -356,3 +356,6 @@ One entry per work session: what was asked, what was done, the key numbers, what
   the guide revised by 17 edits (D76). `make_nb5c.py` now counts design variants only.
 - **Frozen configuration (22 Nov, D77):** `tools/freeze_config.py` pins 16 files and the test rows' settings; sha256
   `805388260696999d…`. The `protocol-freeze` tag waits for the author's check of the reworded guide rows.
+- **The author's check of D76 (22 Nov, D78):** the row texts approved with changes (A6a, LGB, §4.4's family of
+  eight secondary tests, the Discussion note on F61). Runs A4c_V12 (1 seed) and A6e_V12_5s (5 seeds) started.
+  The rule for row A6e is fixed and committed before the results, together with `tools/freeze_rows_val.py`.

@@ -1292,6 +1292,46 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
   hash; the tool is then re-run.
 - **Result:** pending the author's check.
 
+### D78 — The author's check of D76: rows reworded, the family of secondary tests, A6e and A4c run with V12's setting; the rule for row A6e fixed before its result [guide deviation, protocol, Phase 5]
+- **Request (the author, 22 Nov 2026):** D73–D77 approved with changes, before the tag:
+  - Row A6a's claim in the author's words: "Whether the fleet index lets a zero-shot forecaster, never trained on
+    the campus, forecast a unit with no history as well as the trained forecasters; no direction assumed
+    (validation: level at 1 h, lower error from 2 h; F56)". Rows A6d and A6e as D76 wrote them.
+  - §4.4 gets the author's sentence: "Secondary comparisons (LGB, A6a, A6b, A6d, A6e and the weighting check) use a
+    two-sided exact Wilcoxon test at 1 h with Holm across this family, plus Hodges–Lehmann effect sizes; two
+    forecasters are called level when their medians differ by less than 3% (§3.10)."
+  - Asked what the weighting check is tested against, the author chose each weighted pair against Chronos-2 alone.
+    The family thus holds eight tests: rows LGB, A6a, A6b, A6d and A6e, each against the main model, and the three
+    weighted pairs (PVSetFormer, TimeXer, LightGBM with Chronos-2), each against Chronos-2 alone.
+  - The weighting criterion of D75 (lowest median nRMSE over units, a tie to the weight nearest 0.5, raw quantiles)
+    is approved. The 50/50 average is reported beside it, and the Discussion notes that the weights are unstable
+    across horizons (F61).
+  - Row LGB in the author's words, narrowed at the author's choice: "Whether PVSetFormer adds anything over boosting
+    on the same task; on validation level at 1 h (D74: −1.9%, 6 of 10 units, p 0.77), partly from the first
+    training origins of two units, where LightGBM's setting learns nothing (F59)". F59: LightGBM learns at the
+    second and third origins of those units; without them the 1-h difference is −0.72%.
+  - Before the tag: A6e (5 seeds) and A4c (1 seed) with V12's setting on the validation units, recorded as a
+    finding, with row A6e citing it. Then the guide edit, the freeze tool, the new hash, and the author's check
+    before the tag.
+- **Comparisons (the author):** A4c (1 seed) against V12's run at the same seed (20261119), not against the 5-seed
+  ensemble, as D56 did with V4a. A6e's 5-seed ensemble against V12_5s's, and seed by seed.
+- **Rule for row A6e, fixed before the result (the author):** at 1 h, A6e_V12_5s against V12_5s, ratio of median
+  nRMSE over the 10 units.
+  - Below 3%: the row keeps "adds nothing measurable" and cites the new finding.
+  - More than 3% worse: the row says that the donor set adds information with V12, and a new finding records it.
+  - Neither outcome changes V12 or any frozen setting. A6e more than 3% lower than V12 is not covered by the
+    rule: the agent reports it and the author decides.
+- **Runs:** `A6e_V12_5s` and `A4c_V12`, both with `tools/pvsf_dev.py`, started 22 Nov 2026. Each uses part 2c's
+  setting plus `summary_only=1` or `ext=sensor_corr`; the switches `clim` and `fm`, added to the defaults after V12,
+  are off. Checked before the runs: the base `--set` gives part 2c exactly and 224,331 parameters (V12's). A6e has
+  172,683 parameters and A4c 224,907. The runs are named outside the V series, so `make_nb5c.py` does not count
+  them as design variants: they are rows, not design rounds (D73).
+- **Tools:** `tools/freeze_rows_val.py` scores both runs and applies the rule. It was committed before either run
+  had finished; on the old pair A6e_5s and V4a_5s it reproduces F47 exactly. `tools/freeze_config.py` now writes the
+  primary test and the eight secondary tests into the frozen configuration, and checks that each validation run's
+  setting equals its frozen row.
+- **Result:** pending the runs.
+
 ### D16 — pvlib 0.16.1 and ruptures 1.1.10 are installed locally and pinned [environment, Phase 0]
 - **Request or reason:** both are in the guide's software list (§5.6) and were missing locally on 18 Nov 2026.
 - **Change:** `pip install pvlib==0.16.1 ruptures==1.1.10`. A dry run first showed that nothing else would be
