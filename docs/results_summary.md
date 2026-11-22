@@ -267,6 +267,20 @@ Source: `results/nb5b_fm/summary.json`, `medians.csv`, `comparison.csv`, `fm_con
 | V14 single seeds at 1 h: range; mean; s.d. over seeds at 1 h / 6 h | 0.18054–0.18521; 0.18232; 0.0018 / 0.0059 | nb5c_variants/V14_5s/scores.csv |
 | V14 against the four others (ratio of medians), 15 min / 30 min / 1 h / 2 h / 4 h / 6 h: Chronos-2; TimesFM 2.5 | +1.75 / +2.60 / +1.56 / +3.33 / +5.14 / +2.55%; +2.25 / +2.29 / +0.73 / +2.54 / +3.84 / +0.30% | nb5c_diag/vs_all/V14_5s.csv |
 | Same: TimeXer; LightGBM | +1.42 / +1.53 / +1.05 / −0.29 / −2.04 / −1.88%; +2.23 / +1.27 / −0.54 / −0.20 / −2.64 / −5.89% | nb5c_diag/vs_all/V14_5s.csv |
+| V15 (V12 + Chronos-2's quantiles at t + h, D70) 5-seed ensemble, median nRMSE at 15 min / 30 min / 1 h / 2 h / 4 h / 6 h | 0.13170 / 0.15593 / 0.17898 / 0.20761 / 0.22966 / 0.20507 | nb5c_variants/V15_5s/scores.csv |
+| V15 vs V12_5s (D70's rule): ratio of medians; mean of per-unit changes; units lower; Wilcoxon p | −0.90 / −0.47 / +0.65 / +0.20 / −0.81 / −0.24%; −0.22 / −0.25 / −0.61 / −1.18 / −2.13 / −2.84%; 6 / 5 / 7 / 8 / 9 / 9 of 10; 0.432 / 0.625 / 0.232 / 0.037 / 0.004 / 0.006 | nb5c_variants/V15_5s, V12_5s/scores.csv |
+| V15 single seeds at 1 h: range; mean; s.d. at 1 h / 6 h; gain of the 5-seed average at 1 h (V12) | 0.17825–0.18228; 0.17978; 0.0019 / 0.0021; −0.45% (−1.70%) | nb5c_variants/V15_5s, V12_5s/scores.csv |
+| TimeXer + Chronos-2 input (TX2_5s, D72) 5-seed ensemble, median nRMSE, same horizons | 0.12963 / 0.15584 / 0.17934 / 0.20730 / 0.23137 / 0.20754 | nb5c_variants/TX2_5s/scores.csv |
+| TX2 single seeds at 1 h: range; mean; s.d. | 0.17807–0.18332; 0.18110; 0.0020 | nb5c_variants/TX2_5s/scores.csv |
+| LightGBM + Chronos-2 input (LGB_fm_seeds, D72) 5-seed ensemble, median nRMSE, same horizons | 0.12874 / 0.15515 / 0.17968 / 0.20504 / 0.23159 / 0.21074 | nb5c_variants/LGB_fm_seeds/scores.csv |
+| Gain from the input (ratio of medians): TimeXer (TX2 vs TX1); LightGBM (LGB_fm vs LGB_seeds) | −0.40 / +0.04 / +0.50 / −1.52 / −1.67 / −0.73%; −0.29 / −0.67 / −0.89 / −2.51 / −2.18 / −3.32% | nb5c_diag/fm_ablation/table.csv |
+| Units lower with the input: TimeXer; LightGBM (largest Wilcoxon p) | 5 / 5 / 6 / 9 / 7 / 7; 10 / 10 / 10 / 10 / 10 / 9 of 10 (0.004) | nb5c_diag/fm_ablation/table.csv |
+| V15 vs TX2_5s; vs LGB_fm_seeds (ratio of medians, 10 units) | +1.60 / +0.06 / −0.20 / +0.15 / −0.74 / −1.19%; +2.30 / +0.50 / −0.39 / +1.25 / −0.84 / −2.69% | nb5c_diag/fm_ablation/table.csv |
+| V15 vs Chronos-2; vs TimesFM 2.5 (10 units) | +1.52 / +1.14 / +0.80 / +2.20 / +4.75 / +2.51%; +2.02 / +0.84 / −0.02 / +1.42 / +3.45 / +0.27% | nb5c_diag/fm_ablation/table.csv |
+| Same without SQ567 and UG Hall2 2F (F59): vs TX2_5s; vs LGB_fm_seeds; vs Chronos-2 | +0.16 / −0.20 / −0.37 / −0.11 / −0.87 / −0.70%; +0.86 / 0.00 / −0.78 / +1.06 / −0.73 / −2.84%; −0.12 / +0.24 / +0.32 / +2.71 / +3.77 / +4.66% | nb5c_diag/fm_ablation/table.csv |
+| D72's rules, 15 min / 30 min / 1 h / 2 h / 4 h / 6 h: V15 below TX2 and LGB_fm; V15 below Chronos-2 | no / no / yes / no / yes / yes; no / no / no / no / no / no (all differences with TX2 and LGB_fm below 3%: level) | nb5c_diag/fm_ablation/rules.json |
+| V15 vs the equal average of V12 and Chronos-2 (F57) | +1.20 / +1.16 / +1.09 / +3.31 / +3.91 / +3.61% | nb5c_diag/fm_ablation/table.csv, nb5c_diag/combo/medians.csv |
+| Lowest of the eight rows (six of D72, Chronos-2, TimesFM 2.5) by horizon | LightGBM + Chronos-2 / Chronos-2 / Chronos-2 / Chronos-2 / Chronos-2 / Chronos-2 | nb5c_diag/fm_ablation/table.csv |
 
 ## Forecast skill and statistics (NB5, NB6)
 _empty_

@@ -1091,8 +1091,20 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
   1 h and no more than 1% higher at any other horizon. Whether a model that needs Chronos-2 at every issue time
   becomes the main model is the author's decision at the freeze (D50); what the paper may claim follows D72's
   rule. Queue (`queue_v15.py`, scratch): V14_5s, then D71's rule, V15_5s, TX2_5s, LGB_fm_seeds.
-- **Result:** pending. V15_5s = V12_5s + `fm=1` (D71's rule kept V12) started 22 Nov 2026, 04:19; its log shows
-  Chronos-2 present for 100.00% of the defined targets of each unit. Then the ablation (D72).
+- **Result (22 Nov 2026, 141 min):** the rule is not met; V12 stays the candidate. V15_5s = V12_5s + `fm=1`
+  (D71's rule kept V12); its log shows Chronos-2 present for 100.00% of the defined targets of each unit.
+  - Ensemble median nRMSE 0.13170 / 0.15593 / 0.17898 / 0.20761 / 0.22966 / 0.20507 (15 min to 6 h).
+  - Against V12: −0.90 / −0.47 / +0.65 / +0.20 / −0.81 / −0.24%, so 0.65% higher at 1 h.
+  - By unit the input helps more than the medians show: the mean per-unit change is negative at every horizon
+    (−0.22 / −0.25 / −0.61 / −1.18 / −2.13 / −2.84%), and V15 is lower on 8, 9 and 9 of 10 units at 2, 4 and 6 h (Wilcoxon p
+    0.037, 0.004, 0.006); at 1 h on 7 of 10 (p 0.23). The rule, fixed before the
+    run, uses the median over units and stays as fixed.
+  - Single seeds at 1 h are lower than V12's (mean 0.17978 against 0.18090) and agree more
+    (s.d. 0.0019 against 0.0035), but averaging the 5 seeds gains less (−0.45% against
+    −1.70%).
+  - Above Chronos-2 alone at every horizon (+1.52 / +1.14 / +0.80 / +2.20 / +4.75 / +2.51%), and above the plain equal average of V12
+    and Chronos-2 (F57) at every horizon (+1.09 to +3.91%). Lowest of the five at no horizon.
+  - The ablation and what the paper may claim: D72, F60.
 
 ### D71 — PVSetFormer variant V14: V12's short-horizon gate with V13's 7- and 28-day input [R1 round, Phase 5]
 - **Reason:** V12 (D67) and V13 (D69) both met their rules, and D69 fixed in advance that V14 then combines them
@@ -1159,7 +1171,24 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
   it also reports each forecaster's gain from the input and the same comparisons without SQ567 and UG Hall2 2F
   (F59). Written before any run with the input; a dry run with stand-ins (V14_5s for V15, the bases for TX2 and
   LGB_fm) reproduced `vs_all/V14_5s.csv` exactly and gave zero gains for the stand-ins.
-- **Result:** pending (queued after V15_5s).
+- **Result (22 Nov 2026; `tools/fm_ablation.py`, `results/nb5c_diag/fm_ablation/`):** TX2_5s took 21 min,
+  LGB_fm_seeds 9 min; Chronos-2 present at 100.00% of every unit's slots in all three runs; LightGBM's
+  `--check` reproduced NB5a (5,060 rows).
+  - Gain from the input, ratio of medians at 15 min / 30 min / 1 h / 2 h / 4 h / 6 h:
+    - PVSetFormer (V15 vs V12): −0.90 / −0.47 / +0.65 / +0.20 / −0.81 / −0.24%;
+    - TimeXer (TX2 vs TX1): −0.40 / +0.04 / +0.50 / −1.52 / −1.67 / −0.73%;
+    - LightGBM (LGB_fm vs LGB_seeds): −0.29 / −0.67 / −0.89 / −2.51 / −2.18 / −3.32%, lower on 10 / 10 / 10 / 10 / 10 / 9 of 10 units
+      (p ≤ 0.004).
+  - **First rule** ("uses the input better": V15 below both TX2_5s and LGB_fm_seeds): met at 1 h, 4 h and 6 h, not
+    at 15 min, 30 min or 2 h. Every difference is below 3% (largest 2.69%), so all are level (guide §3.10).
+    The paper may not say that PVSetFormer uses the input better.
+  - **Second rule** ("improves on Chronos-2": V15 below Chronos-2 alone): met at no horizon (+1.52 / +1.14 / +0.80 / +2.20 / +4.75 / +2.51%).
+  - Without SQ567 and UG Hall2 2F (F59): V15 against TX2_5s +0.16 / −0.20 / −0.37 / −0.11 / −0.87 / −0.70%,
+    against LGB_fm_seeds +0.86 / 0.00 / −0.78 / +1.06 / −0.73 / −2.84%, against Chronos-2
+    −0.12 / +0.24 / +0.32 / +2.71 / +3.77 / +4.66%.
+  - Lowest of the eight rows (the six, Chronos-2, TimesFM 2.5): LightGBM with the input at 15 min
+    (0.12874); Chronos-2 alone from 30 min to 6 h. None of the three trained forecasters with the input is
+    below Chronos-2 alone from 30 min (F60).
 
 ### D16 — pvlib 0.16.1 and ruptures 1.1.10 are installed locally and pinned [environment, Phase 0]
 - **Request or reason:** both are in the guide's software list (§5.6) and were missing locally on 18 Nov 2026.

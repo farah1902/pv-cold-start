@@ -345,3 +345,7 @@ One entry per work session: what was asked, what was done, the key numbers, what
 - **Ablation scorer (22 Nov, D72):** `tools/fm_ablation.py`, written while V15 runs and before any result with the
   input: applies V15's rule (D70) and D72's rule as fixed, with the F59 view without the two units. Dry run on
   stand-ins reproduces `vs_all/V14_5s.csv`.
+- **V15_5s and the ablation (22 Nov, 04:19–07:10):** V15 not kept (D70): +0.65% at 1 h against V12, although
+  lower on 9 and 9 of 10 units at 4 and 6 h. TX2_5s (21 min) and LGB_fm_seeds (9 min) with
+  the same input: gains of up to 1.7% and 3.3%; V15 level with both everywhere; D72's
+  second rule met at no horizon; Chronos-2 alone lowest from 30 min (F60). Scored with `tools/fm_ablation.py`.

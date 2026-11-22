@@ -717,6 +717,28 @@ repository). Paths are relative to `data/raw/hkust/Dataset/Time series dataset/`
   8) units, and a median over 8 units is not the same statistic as one over 10. LightGBM's setting stays as rule 1
   chose it (the author, 22 Nov 2026, D72); the paper reports the validation leads over LightGBM with this caveat.
 
+### F60 — Chronos-2's forecast as an input lowers every trained forecaster a little, LightGBM most consistently, but none of them reaches Chronos-2 alone from 30 min, and PVSetFormer's learned rows use it less well than a plain average — *provisional*
+- **Evidence:** `results/nb5c_diag/fm_ablation/` (`python tools/fm_ablation.py`, D72; 10 validation units, NB5a's
+  slots, 5-seed ensembles; Chronos-2 c1344_full, zero-shot). Each forecaster with the input against itself without
+  it, ratio of median nRMSE at 15 min / 30 min / 1 h / 2 h / 4 h / 6 h:
+  - PVSetFormer (V15_5s vs V12_5s): −0.90 / −0.47 / +0.65 / +0.20 / −0.81 / −0.24%; mean per-unit change −0.22 / −0.25 / −0.61 / −1.18 / −2.13 / −2.84%; lower on
+    6 / 5 / 7 / 8 / 9 / 9 of 10 units.
+  - TimeXer (TX2_5s vs TX1_5s): −0.40 / +0.04 / +0.50 / −1.52 / −1.67 / −0.73%; lower on 5 / 5 / 6 / 9 / 7 / 7 of 10.
+  - LightGBM (LGB_fm_seeds vs LGB_seeds): −0.29 / −0.67 / −0.89 / −2.51 / −2.18 / −3.32%; lower on 10 / 10 / 10 / 10 / 10 / 9 of 10
+    (p ≤ 0.004).
+  - Median nRMSE at 1 h: V15 0.17898, TX2 0.17934, LGB_fm 0.17968; Chronos-2 alone 0.17755; the equal
+    average of V12 and Chronos-2 (F57) 0.17704. V15 against that average: +1.20 / +1.16 / +1.09 / +3.31 / +3.91 / +3.61%.
+  - V15's single seeds at 1 h: mean 0.17978 (V12 0.18090), s.d. 0.0019 (V12
+    0.0035); the 5-seed average gains −0.45% (V12 −1.70%).
+- **Reading:** given Chronos-2's quantiles, the three trained forecasters lean on them only partly. With the input,
+  none is below Chronos-2 alone from 30 min, and the three are level with each other (below 3%) at every horizon.
+  LightGBM gains most consistently (every unit up to 4 h); PVSetFormer gains on most units from 2 h, but its
+  zero-start rows end above a fixed 50/50 average of its own forecast and Chronos-2's at every horizon. A possible
+  cause, not tested: the rows start at zero, training stops early (mean best epoch 14.3), and on
+  its own training rows the network's fit looks better than it is out of sample, so the loss gives it little reason
+  to move weight to Chronos-2. The input also makes the seeds agree, which removes much of what the seed average
+  used to gain. Provisional: 10 units, medians; at 1 h the per-unit gain is not consistent (p 0.23).
+
 ### F16 — Not every site file starts on the 1st of a month — *solid*
 - **Evidence:** among the 18 site files of the first event list, Indoor Sports Centre (2021-12-02), Zone J2
   (2021-11-13), Zone D (2022-01-20) and UG Hall9 (2023-02-11) start mid-month. The audit counts 5 of the 15-min and

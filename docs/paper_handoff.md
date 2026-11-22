@@ -35,8 +35,9 @@ telemetry start instead of grid connection (F06); metadata errors (D01).
   by 2–8% (F56).
 - That PVSetFormer's 1-h lead over LightGBM on validation will hold at the test: part of it comes from two
   units whose first window LightGBM's setting cannot learn (F59); the test units have far more history.
-- If PVSetFormer takes Chronos-2's forecast as an input (V15, D70): that it beats the foundation models on its
-  own. Say it improves on Chronos-2, and only with the ablation that gives TimeXer and LightGBM the same input.
+- That PVSetFormer uses Chronos-2's forecast better than TimeXer or LightGBM, or that it improves on Chronos-2:
+  with the same input the three are level (below 3%) at every horizon, and none is below Chronos-2 alone from
+  30 min (D72, F60).
 - That the foundation models beat the trained forecasters at 1 h: the differences are below 3% (F56); from 2 h
   several exceed it, on validation only so far.
 - That PVSetFormer beats TimeXer: on validation the candidate V12 is level with TimeXer at 1 h (0.17782 vs
@@ -77,11 +78,10 @@ telemetry start instead of grid connection (F06); metadata errors (D01).
 ## 8. What is still missing
 Before the freeze:
 - TabPFN-TS (A6c) waits for the author's licence (D65);
-- PVSetFormer rounds toward the target of D68 (lowest of the five forecasters on validation; V13 met its rule, F58; V14 not kept, D71);
-  the Chronos-2 input (V15_5s on V12, running since 22 Nov 04:19, D70), then its ablation on TimeXer and
-  LightGBM (queued, rule fixed, D72);
+- PVSetFormer rounds toward the target of D68 (lowest of the five forecasters on validation; V13 met its rule, F58; V14 not kept, D71;
+  V15 with the Chronos-2 input not kept, D70; its ablation done, D72, F60);
 - PVSetFormer design rounds until the freeze (D50; candidate V12_5s since D67's result; V11a not kept; V13 met its
-  rule but is above V12 at 1 h; V14 not kept, D71; V15_5s running, D70); at the freeze, R1 (`make_nb5c.py --final`) and PVSetFormer's conformal layer are rerun on the final
+  rule but is above V12 at 1 h; V14 not kept, D71; V15 not kept, D70); at the freeze, R1 (`make_nb5c.py --final`) and PVSetFormer's conformal layer are rerun on the final
   candidate;
 - freeze part 2 (2a LightGBM, 2b conformal, 2c R1, 2d foundation models) and the `protocol-freeze` tag.
 
