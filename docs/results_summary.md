@@ -303,7 +303,26 @@ Source: `results/nb5b_fm/summary.json`, `medians.csv`, `comparison.csv`, `fm_con
 | Tag `protocol-freeze` (D78), commit | `6c435e8` | git tag (annotated, pushed) |
 
 ## Forecast skill and statistics (NB5, NB6)
-_empty_
+
+### NB6 scorer, check on the validation units (D79)
+Source: `results/nb6_validation/summary.json`, `primary.csv`, `secondary.csv`, `checks.csv` (development data, the 10 validation units, n = 10; `python tools/nb6_score.py --set validation`, D79). Not the test.
+
+| Quantity | Value | Source file |
+| --- | --- | --- |
+| Checks passed (rebuilt scores, statistics functions, known comparisons) | 157 of 157 | checks.csv |
+| Main vs A1 at 1 h: medians; ratio; units lower; one-sided exact p | 0.17782 vs 0.19623; -9.38%; 10 of 10; 0.00098 | primary.csv |
+| Same: Hodges–Lehmann difference [exact 95% interval] | -0.01644 [-0.02663, -0.00940] | primary.csv |
+| LGB vs main at 1 h: ratio of medians; row lower; p; Holm p; wording | +1.96%; 4 of 10; 0.770; 1.000; level | secondary.csv |
+| A6a vs main at 1 h: ratio of medians; row lower; p; Holm p; wording | -0.15%; 8 of 10; 0.432; 1.000; level | secondary.csv |
+| A6b vs main at 1 h: ratio of medians; row lower; p; Holm p; wording | +0.67%; 7 of 10; 0.492; 1.000; level | secondary.csv |
+| A6d vs main at 1 h: ratio of medians; row lower; p; Holm p; wording | +0.35%; 6 of 10; 0.375; 1.000; level | secondary.csv |
+| A6e vs main at 1 h: ratio of medians; row lower; p; Holm p; wording | +0.74%; 4 of 10; 0.557; 1.000; level | secondary.csv |
+| weighted PVSetFormer + Chronos-2 vs A6a at 1 h: ratio of medians; row lower; p; Holm p; wording | -0.48%; 3 of 10; 0.492; 1.000; level | secondary.csv |
+| weighted TimeXer + Chronos-2 vs A6a at 1 h: ratio of medians; row lower; p; Holm p; wording | -0.58%; 4 of 10; 0.557; 1.000; level | secondary.csv |
+| weighted LightGBM + Chronos-2 vs A6a at 1 h: ratio of medians; row lower; p; Holm p; wording | -0.11%; 7 of 10; 0.275; 1.000; level | secondary.csv |
+
+### Test (NB6)
+_empty: the test forecasts are not yet generated_
 
 ## Secondary analyses (NB7) and Safi (NB8a)
 _empty_

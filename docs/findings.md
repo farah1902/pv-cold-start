@@ -792,6 +792,49 @@ repository). Paths are relative to `data/raw/hkust/Dataset/Time series dataset/`
   - Neither result changes V12 or any frozen setting (D78). Development data; the paper's numbers come from the
     test run.
 
+### F63 — The HKUST dataset is named in none of the documented pretraining sources of Chronos-2 or TimesFM 2.5, and every documented PV source is ruled out; the corpora are only partly disclosed, so contact cannot be excluded outright — *strong*
+- **How checked (22 Nov 2026):** the model cards, technical reports and dataset records listed below, fetched and read
+  in this session (web fetch; verbatim where quoted). Several long pages were truncated, and those parts were read only
+  as summaries; this is noted where it matters. Nothing was downloaded, and no project data were sent anywhere.
+- **The HKUST dataset:** Dryad doi:10.5061/dryad.m37pvmd99 (Lin et al.). Dryad says "Published Apr 02, 2024;
+  Updated Sep 08, 2024", and DataCite gives Issued and Available 2024-04-02, with versions 4 (2024-04-02) and 7
+  (2024-09-08). Its licence is CC0-1.0 in both records. `data/README.md` still has the licence "to confirm".
+- **Chronos-2:**
+  - The model card (live, and at the pinned revision `29ec376`, the same text) lists its training data as a "Subset
+    of Chronos Datasets (excluding test portion of datasets that overlap with GIFT-Eval)", a "Subset of GIFT-Eval
+    Pretrain", and "Synthetic univariate and multivariate data".
+  - The technical report is arXiv:2510.15821v1 (Ansari et al., 17 Oct 2025). §4.2: multivariate and covariate tasks
+    use synthetic data only. Its Table 6 lists 23 real univariate datasets. None is from Hong Kong; the only solar row
+    is "Solar | 5min, 10min, 1H | 5166 | Energy | Ansari et al. (2024)".
+  - The Chronos datasets (`autogluon/chronos_datasets`, 67 subsets) hold two solar subsets, `solar` and `solar_1h`.
+    Both have 5,166 series and point to NREL's solar power data. The dataset-viewer statistics of `solar_1h` give
+    latitude 25.15 to 48.75 and longitude −123.35 to −69.65, all in the United States, one year (8,760 hours), with
+    subset names `<state>-pv-2006`.
+  - The viewer's statistics failed for the 5-min `solar` subset. Its first 10 rows are all `al-pv-2006` (Alabama),
+    starting 2006-01-01.
+- **TimesFM 2.5:**
+  - The model card (live, and at the pinned revision `1d95242`, the same text) lists "GiftEvalPretrain", "Wikimedia
+    Pageviews, cutoff Nov 2023", "Google Trends top queries, cutoff EoY 2022", and "Synthetic and augmented data".
+    It gives no counts and no full composition.
+  - The TimesFM paper (arXiv:2310.10688v4) has, in its Table 1 (the 1.0 corpus), no solar or PV source.
+- **GIFT-Eval Pretrain** (`Salesforce/GiftEvalPretrain`, read through the Hub API, 152 folders, last modified
+  2025-01-21):
+  - No folder names Hong Kong or HKUST. The two PV-related folders are `solar_power` and `residential_pv_power`.
+  - In LOTSA (arXiv:2402.02592, the tables of v2), `solar_power` is the Monash archive's single series at a
+    4-second step. `residential_pv_power` is "Residential PV Power" (Bergmeir et al. 2023): 233 series at a 1-min step.
+  - Its source, Zenodo 10.5281/zenodo.8219786 ("Residential Power and Battery Data"; Monash University, sponsored by
+    SwitchDin), was published on 2023-08-07.
+- **Reading:**
+  - No documented pretraining source of either model names or describes the HKUST data. Each PV source that is
+    documented is ruled out by location (NREL, United States), by resolution and series count (1-min or 4-s data, 233
+    series or 1), or by date: both the Zenodo and the Monash records were published before the HKUST data went public
+    on 2 April 2024.
+  - Two things stay open. Both models describe their real data as subsets, and TimesFM 2.5's "synthetic and
+    augmented data" are not described. The corpora were also checked by their metadata, not series by series. So
+    contact with the HKUST series is unlikely but not excluded.
+  - This matters only for rows A6a and A6b and the weighting check (a model that had seen the test series could look
+    better than a true cold start). They stay zero-shot rows, and the paper states this check and its limit.
+
 ### F16 — Not every site file starts on the 1st of a month — *solid*
 - **Evidence:** among the 18 site files of the first event list, Indoor Sports Centre (2021-12-02), Zone J2
   (2021-11-13), Zone D (2022-01-20) and UG Hall9 (2023-02-11) start mid-month. The audit counts 5 of the 15-min and

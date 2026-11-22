@@ -370,3 +370,11 @@ One entry per work session: what was asked, what was done, the key numbers, what
   `2d27ea1e82060a0f…`; the YAML differs from `9ccffb7241172915…` in the parent commit and the guide's label only.
 - **Protocol frozen (22 Nov, D78):** annotated tag `protocol-freeze` on `6c435e8`, pushed; frozen configuration sha256
   `2d27ea1e82060a0f…`; the 16 pinned files checked at that commit. Next: the test run.
+- **Pretraining data of the foundation models (22 Nov, F63):** model cards (live and at the pinned revisions),
+  the Chronos-2 and TimesFM reports, GIFT-Eval Pretrain, the Chronos datasets, LOTSA and the Zenodo source checked by
+  web fetch. The HKUST data are in no documented source; every PV source documented is ruled out by place, resolution
+  or date; not provable, since both corpora are only partly disclosed.
+- **NB6 scorer (22 Nov, D79):** `src/pvcold/evaluate.py` and `tools/nb6_score.py`; the validation check passes
+  157 checks (four runs: the observation of NB5a's unit series kept exactly; float32 tolerance for the
+  scores made in memory before the float32 write; the conformal layer applied in float32 as validated). Test-run tools
+  written (`tools/nb6_forecast.py`, `tools/make_nb6_colab.py`, `fm_infer.py --revision`); no test forecast yet.

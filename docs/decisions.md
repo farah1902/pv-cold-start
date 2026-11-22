@@ -1373,6 +1373,74 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
     commit against their frozen sha256 (no mismatch). Pushed to origin; the remote tag resolves to the same
     commit. From here on, no design change, whatever the test shows (D73).
 
+### D79 — NB6 scorer and statistics, checked on the validation units; the test-run tools [protocol, Phase 6]
+- **Request (the author, 22 Nov 2026, after the tag):** before any test forecast is scored, (1) write the NB6
+  scoring and statistics tool (primary test, the eight secondary tests with Holm, Hodges–Lehmann, Diebold–Mariano,
+  bootstraps, §4.4's wording classes, read from the frozen configuration), run it on the validation units, where it
+  must reproduce the known numbers, and commit it; (2) check the Chronos-2 and TimesFM 2.5 reports and model cards
+  for their pretraining data (F63). Then generate all test forecasts, record their file hashes in a commit, and score
+  once, primary test first.
+- **Tools:**
+  - `src/pvcold/evaluate.py`: the frozen rules gathered in one module (ensembles, weighted pairs, composition, NB5a's
+    slots, conformal layer) and the statistics.
+  - `tools/nb6_score.py --set validation|test`: the scorer. Test mode reads only forecasts listed in a committed
+    manifest whose hashes match. It refuses to write over `results/nb6_test/`.
+  - `tools/nb6_forecast.py`: the test forecasts, per row, resumable (`--plan`, `--row`, `--fm-inputs`, `--manifest`).
+  - `tools/make_nb6_colab.py`: the Colab notebook for A6a and A6b. `tools/fm_infer.py --revision` pins the weights to
+    the frozen commits. `nb6` sets in `make_drive_mirror.py` and `fetch_drive_runs.py`.
+- **Choices the guide left open (the agent's; the author may change them before the test is scored):**
+  - Observation: the event's target series (NB2's `targets15_kW`) over its AC rating, so the multi-unit events (Zone
+    D, Zone A2 inverters 2–3, Library, Wong Check She) and the site periods (Zone J2, J1, L2) are scored as NB2
+    defined them. On the 10 validation units it equals NB5a's unit series (checked).
+  - A3 is the main model's forecasts composed with prior G0, not a separate training. PVSetFormer never reads the
+    target's prior, and the frozen A3 setting, seeds and inputs are the main row's, so a retraining would repeat the
+    main row's training (not checked for bit-identity).
+  - Observation: for a single inverter target, NB5a's unit series itself. NB2's event target over the AC rating
+    agrees with it to float32 rounding only (up to 6·10⁻⁸ on the validation units), so the scores would not
+    reproduce exactly otherwise.
+  - Reproduction tolerances: 10⁻¹² where the stored development scores were computed from the stored float32 files
+    (PVSetFormer, TimeXer, the foundation models, the weighted pairs, the conformal layers). 10⁻⁸ where the
+    development scorer worked on float64 forecasts in memory and wrote them at float32 (LGB_seeds, NB5a's
+    forecasters, NB5d); there the largest difference was 4.4·10⁻¹⁰.
+  - The conformal layer multiplies the float64 correction by the float32 G̃ in float32, as NB5c's notebooks did
+    under numpy 1.26 (a scalar does not upcast an array). This keeps the test's layer exactly the validated one.
+  - Hodges–Lehmann: the median of the Walsh averages. The 95% interval is [W(k), W(N + 1 − k)] from the exact
+    signed-rank distribution, and the achieved level is reported (n 13: k = 18, from the table critical value 17).
+  - Diebold–Mariano: squared loss of the member mean, the event's slots in time order (across nights and origins),
+    Newey–West variance with lag h − 1 and Bartlett weights 1 − k/h, the HLN factor, and a two-sided p from t(T − 1).
+  - Wording classes: the ratio of medians against the 3% line, and the Holm-adjusted p. Below 3% but significant,
+    the lower forecaster is named from the sign of the Hodges–Lehmann estimate; a conflict with the ratio's sign is
+    flagged.
+  - Comparisons of §4.4 outside the family (main vs CLIPER, A4, A4b, A9) are reported by effect size, overall and
+    by sensor period (NB3's `event_periods.csv`), on the slots each pair shares. DM is run for main vs A1, CLIPER, A4
+    and A4b, with Holm across the drifted events for A4 and A4b.
+  - Bootstraps: percentile intervals; whole target days resampled, B = 2,000; non-circular 3-day moving blocks; the
+    hierarchical bootstrap resamples events, then days, with a fresh day draw for every drawn event. One seeded stream
+    per analysis (`C.SEED` with the analysis label).
+  - The four sensitivity events are scored but enter no test. The primary and secondary tests pair the 13 scored
+    events.
+- **Result on the validation units** (`python tools/nb6_score.py --set validation`, 6 min;
+  `results/nb6_validation/`):
+  - 157 checks passed: every rebuilt score equals the stored development score (main, LightGBM, TimeXer,
+    A6e and the A4c check ensembles; NB5a's forecasters; Chronos-2 and TimesFM 2.5; the three weighted pairs at the
+    frozen weights; A4, A4b, A9, A9n; the raw and conformal intervals of the main model and LightGBM).
+  - The statistics functions agree with scipy and statsmodels (signed-rank null, Holm, the Newey–West variance).
+  - The known comparisons come out unchanged: R1 at the freeze (D74), F56's medians and p-values against V12, F62's
+    A6e and the medians of part 2e.
+  - On n = 10 units, not the test: main vs A1 at 1 h 0.17782 vs 0.19623
+    (-9.38%), lower on 10 of 10, one-sided exact p 0.00098, Hodges–Lehmann
+    -0.01644 [-0.02663, -0.00940].
+  - The family on the validation units:
+    - LGB vs main: +1.96%, lower on 4 of 10, p 0.770, Holm 1.000: level
+    - A6a vs main: -0.15%, lower on 8 of 10, p 0.432, Holm 1.000: level
+    - A6b vs main: +0.67%, lower on 7 of 10, p 0.492, Holm 1.000: level
+    - A6d vs main: +0.35%, lower on 6 of 10, p 0.375, Holm 1.000: level
+    - A6e vs main: +0.74%, lower on 4 of 10, p 0.557, Holm 1.000: level
+    - weighted PVSetFormer + Chronos-2 vs A6a: -0.48%, lower on 3 of 10, p 0.492, Holm 1.000: level
+    - weighted TimeXer + Chronos-2 vs A6a: -0.58%, lower on 4 of 10, p 0.557, Holm 1.000: level
+    - weighted LightGBM + Chronos-2 vs A6a: -0.11%, lower on 7 of 10, p 0.275, Holm 1.000: level
+  - These are development numbers. The test pairs 13 events, and no design change follows from any of them (D73).
+
 ### D16 — pvlib 0.16.1 and ruptures 1.1.10 are installed locally and pinned [environment, Phase 0]
 - **Request or reason:** both are in the guide's software list (§5.6) and were missing locally on 18 Nov 2026.
 - **Change:** `pip install pvlib==0.16.1 ruptures==1.1.10`. A dry run first showed that nothing else would be

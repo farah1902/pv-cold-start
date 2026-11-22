@@ -200,7 +200,8 @@ arch=timexer ... fm=1`, LightGBM `python tools/r1_lgb_seeds.py --fm` (`LGB_fm_se
 (seconds; `results/nb5c_diag/fm_ablation/`). Weighting check with Chronos-2 (part 2e, D75): `python
 tools/weight_check.py` (3 min; `results/nb5c_weights/`). Frozen configuration (D77): `python tools/freeze_config.py`
 (seconds; every pinned file must be committed; `results/freeze/`). Rows A6e and A4c with V12 on validation (D78):
-`python tools/freeze_rows_val.py` (seconds, after the runs `A6e_V12_5s` and `A4c_V12`; `results/nb5c_rows_v12/`). The packages live only in the separate environment
+`python tools/freeze_rows_val.py` (seconds, after the runs `A6e_V12_5s` and `A4c_V12`; `results/nb5c_rows_v12/`).
+NB6 (D79): the scorer `python tools/nb6_score.py --set validation` (6 min; `results/nb6_validation/`, must pass every check) and, once only, `--set test` after the test forecasts' manifest is committed (`results/nb6_test/`, never overwritten). Test forecasts: `python tools/nb6_forecast.py --plan`, then `--row nb5a|LGB|sources|main|A2|A4c|A6e|A6d` (resumable parts in `results/nb6_forecasts/parts/`), `--fm-inputs` and the Colab round trip (`python tools/make_nb6_colab.py`, `make_drive_mirror.py --set nb6`, `NB6_colab`, `fetch_drive_runs.py --set nb6`), then `--manifest` and commit `results/nb6_forecasts/manifest.json` before scoring. The packages live only in the separate environment
 `.venv_fm` (`requirements-fm.txt`): never install them in the main one (numpy 2, torch 2.15). Downloads from the
 Hugging Face hub run with `HF_HUB_DISABLE_IMPLICIT_TOKEN=1` (the stored token has expired).
 PVSetFormer development (D36): one round `python tools/pvsf_dev.py --name V<k> --seeds 1 --set key=value ...`

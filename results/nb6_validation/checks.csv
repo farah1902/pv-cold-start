@@ -1,0 +1,158 @@
+check,max_abs_diff,tolerance,passed
+"signed-rank null vs scipy, n 10",0.0,1e-12,True
+"HL vs Walsh averages, n 10",0.0,1e-15,True
+"signed-rank null vs scipy, n 10",0.0,1e-12,True
+"HL vs Walsh averages, n 10",0.0,1e-15,True
+"signed-rank null vs scipy, n 10",0.0,1e-12,True
+"HL vs Walsh averages, n 10",0.0,1e-15,True
+"signed-rank null vs scipy, n 10",0.0,1e-12,True
+"HL vs Walsh averages, n 10",0.0,1e-15,True
+"signed-rank null vs scipy, n 10",0.0,1e-12,True
+"HL vs Walsh averages, n 10",0.0,1e-15,True
+"signed-rank null vs scipy, n 10",0.0,1e-12,True
+"HL vs Walsh averages, n 10",0.0,1e-15,True
+"signed-rank null vs scipy, n 10",0.0,1e-12,True
+"HL vs Walsh averages, n 10",0.0,1e-15,True
+"signed-rank null vs scipy, n 10",0.0,1e-12,True
+"HL vs Walsh averages, n 10",0.0,1e-15,True
+"signed-rank null vs scipy, n 10",0.0,1e-12,True
+"HL vs Walsh averages, n 10",0.0,1e-15,True
+"signed-rank null vs scipy, n 10",0.0,1e-12,True
+"HL vs Walsh averages, n 10",0.0,1e-15,True
+"signed-rank null vs scipy, n 10",0.0,1e-12,True
+"HL vs Walsh averages, n 10",0.0,1e-15,True
+"signed-rank null vs scipy, n 10",0.0,1e-12,True
+"HL vs Walsh averages, n 10",0.0,1e-15,True
+"signed-rank null vs scipy, n 10",0.0,1e-12,True
+"HL vs Walsh averages, n 10",0.0,1e-15,True
+"signed-rank null vs scipy, n 10",0.0,1e-12,True
+"HL vs Walsh averages, n 10",0.0,1e-15,True
+"signed-rank null vs scipy, n 10",0.0,1e-12,True
+"HL vs Walsh averages, n 10",0.0,1e-15,True
+"signed-rank null vs scipy, n 10",0.0,1e-12,True
+"HL vs Walsh averages, n 10",0.0,1e-15,True
+"signed-rank null vs scipy, n 10",0.0,1e-12,True
+"HL vs Walsh averages, n 10",0.0,1e-15,True
+"signed-rank null vs scipy, n 10",0.0,1e-12,True
+"HL vs Walsh averages, n 10",0.0,1e-15,True
+"signed-rank null vs scipy, n 10",0.0,1e-12,True
+"HL vs Walsh averages, n 10",0.0,1e-15,True
+"signed-rank null vs scipy, n 10",0.0,1e-12,True
+"HL vs Walsh averages, n 10",0.0,1e-15,True
+"signed-rank null vs scipy, n 13",0.0,1e-12,True
+"HL vs Walsh averages, n 13",0.0,1e-15,True
+"signed-rank null vs scipy, n 13",0.0,1e-12,True
+"HL vs Walsh averages, n 13",0.0,1e-15,True
+"signed-rank null vs scipy, n 13",0.0,1e-12,True
+"HL vs Walsh averages, n 13",0.0,1e-15,True
+"signed-rank null vs scipy, n 13",0.0,1e-12,True
+"HL vs Walsh averages, n 13",0.0,1e-15,True
+"signed-rank null vs scipy, n 13",0.0,1e-12,True
+"HL vs Walsh averages, n 13",0.0,1e-15,True
+"signed-rank null vs scipy, n 13",0.0,1e-12,True
+"HL vs Walsh averages, n 13",0.0,1e-15,True
+"signed-rank null vs scipy, n 13",0.0,1e-12,True
+"HL vs Walsh averages, n 13",0.0,1e-15,True
+"signed-rank null vs scipy, n 13",0.0,1e-12,True
+"HL vs Walsh averages, n 13",0.0,1e-15,True
+"signed-rank null vs scipy, n 13",0.0,1e-12,True
+"HL vs Walsh averages, n 13",0.0,1e-15,True
+"signed-rank null vs scipy, n 13",0.0,1e-12,True
+"HL vs Walsh averages, n 13",0.0,1e-15,True
+"signed-rank null vs scipy, n 13",0.0,1e-12,True
+"HL vs Walsh averages, n 13",0.0,1e-15,True
+"signed-rank null vs scipy, n 13",0.0,1e-12,True
+"HL vs Walsh averages, n 13",0.0,1e-15,True
+"signed-rank null vs scipy, n 13",0.0,1e-12,True
+"HL vs Walsh averages, n 13",0.0,1e-15,True
+"signed-rank null vs scipy, n 13",0.0,1e-12,True
+"HL vs Walsh averages, n 13",0.0,1e-15,True
+"signed-rank null vs scipy, n 13",0.0,1e-12,True
+"HL vs Walsh averages, n 13",0.0,1e-15,True
+"signed-rank null vs scipy, n 13",0.0,1e-12,True
+"HL vs Walsh averages, n 13",0.0,1e-15,True
+"signed-rank null vs scipy, n 13",0.0,1e-12,True
+"HL vs Walsh averages, n 13",0.0,1e-15,True
+"signed-rank null vs scipy, n 13",0.0,1e-12,True
+"HL vs Walsh averages, n 13",0.0,1e-15,True
+"signed-rank null vs scipy, n 13",0.0,1e-12,True
+"HL vs Walsh averages, n 13",0.0,1e-15,True
+"signed-rank null vs scipy, n 13",0.0,1e-12,True
+"HL vs Walsh averages, n 13",0.0,1e-15,True
+n 13: P(T+ <= 17) <= 0.025 < P(T+ <= 18) (table critical value 17),0.02392578125,0.025,True
+Holm vs statsmodels,0.0,1e-15,True
+DM Newey-West vs statsmodels HAC (lag h - 1),5.551115123125783e-16,1e-10,True
+observation SQ567: event target / AC = y15 (float32),5.960464477539063e-08,1e-06,True
+observation UG Hall2 2F: event target / AC = y15 (float32),5.960464477539063e-08,1e-06,True
+observation UG Hall2 RF: event target / AC = y15 (float32),0.0,1e-06,True
+observation Zone A1: event target / AC = y15 (float32),1.1920928955078125e-07,1e-06,True
+observation Zone A4: event target / AC = y15 (float32),5.960464477539063e-08,1e-06,True
+observation Zone A2 1: event target / AC = y15 (float32),1.1920928955078125e-07,1e-06,True
+observation SQ Apartment1-12: event target / AC = y15 (float32),1.1920928955078125e-07,1e-06,True
+observation SQ Apartment13-24: event target / AC = y15 (float32),1.1920928955078125e-07,1e-06,True
+observation SQ Apartment25-36: event target / AC = y15 (float32),1.1920928955078125e-07,1e-06,True
+observation SQ Apartment37-48: event target / AC = y15 (float32),1.1920928955078125e-07,1e-06,True
+main = V12_5s ensemble: slots,0.0,0.0,True
+"main = V12_5s ensemble: nRMSE, CRPS, PICP80",9.71445146547012e-17,1e-12,True
+LGB = LGB_seeds ensemble (scored before the float32 write): slots,0.0,0.0,True
+"LGB = LGB_seeds ensemble (scored before the float32 write): nRMSE, CRPS, PICP80",4.395302177773175e-10,1e-08,True
+A6d = TX1_5s ensemble: slots,0.0,0.0,True
+"A6d = TX1_5s ensemble: nRMSE, CRPS, PICP80",9.71445146547012e-17,1e-12,True
+A6e = A6e_V12_5s ensemble: slots,0.0,0.0,True
+"A6e = A6e_V12_5s ensemble: nRMSE, CRPS, PICP80",9.71445146547012e-17,1e-12,True
+A4c_V12 at seed 20261119: slots,0.0,0.0,True
+"A4c_V12 at seed 20261119: nRMSE, CRPS, PICP80",9.71445146547012e-17,1e-12,True
+V12_5s at seed 20261119: slots,0.0,0.0,True
+"V12_5s at seed 20261119: nRMSE, CRPS, PICP80",9.71445146547012e-17,1e-12,True
+A6a = chronos2_c1344_full: slots,0.0,0.0,True
+"A6a = chronos2_c1344_full: nRMSE, CRPS, PICP80",9.71445146547012e-17,1e-12,True
+A6b = timesfm25_c1344_none: slots,0.0,0.0,True
+"A6b = timesfm25_c1344_none: nRMSE, CRPS, PICP80",9.71445146547012e-17,1e-12,True
+LGB = NB5a (scored before the float32 write): slots,0.0,0.0,True
+"LGB = NB5a (scored before the float32 write): nRMSE, CRPS, PICP80",4.190886110366776e-10,1e-08,True
+A0 = NB5a (scored before the float32 write): slots,0.0,0.0,True
+"A0 = NB5a (scored before the float32 write): nRMSE, CRPS, PICP80",2.1420609730427032e-10,1e-08,True
+A1 = NB5a (scored before the float32 write): slots,0.0,0.0,True
+"A1 = NB5a (scored before the float32 write): nRMSE, CRPS, PICP80",9.71445146547012e-17,1e-08,True
+PeEn = NB5a (scored before the float32 write): slots,0.0,0.0,True
+"PeEn = NB5a (scored before the float32 write): nRMSE, CRPS, PICP80",2.765272177907008e-10,1e-08,True
+CLIPER = NB5a (scored before the float32 write): slots,0.0,0.0,True
+"CLIPER = NB5a (scored before the float32 write): nRMSE, CRPS, PICP80",8.146420482635364e-10,1e-08,True
+A5 = NB5a (scored before the float32 write): slots,0.0,0.0,True
+"A5 = NB5a (scored before the float32 write): nRMSE, CRPS, PICP80",3.218208755040308e-10,1e-08,True
+A7 = NB5a (scored before the float32 write): slots,0.0,0.0,True
+"A7 = NB5a (scored before the float32 write): nRMSE, CRPS, PICP80",9.71445146547012e-17,1e-08,True
+weighted PVSetFormer + Chronos-2 = part 2e scores at the frozen weights,9.71445146547012e-17,1e-12,True
+weighted TimeXer + Chronos-2 = part 2e scores at the frozen weights,9.71445146547012e-17,1e-12,True
+weighted LightGBM + Chronos-2 = part 2e scores at the frozen weights,9.71445146547012e-17,1e-12,True
+A4: slots = NB5d,0.0,0.0,True
+A4 = NB5d (scored before the float32 write),4.917226625877902e-10,1e-08,True
+A4b: slots = NB5d,0.0,0.0,True
+A4b = NB5d (scored before the float32 write),3.37666200556086e-10,1e-08,True
+A9: slots = NB5d,0.0,0.0,True
+A9 = NB5d (scored before the float32 write),9.71445146547012e-17,1e-08,True
+A9n: slots = NB5d,0.0,0.0,True
+A9n = NB5d (scored before the float32 write),9.71445146547012e-17,1e-08,True
+main: raw and conformal intervals = nb5c_conformal,8.326672684688674e-17,1e-12,True
+LGB: raw and conformal intervals = nb5c_conformal_lgb,9.020562075079397e-17,1e-12,True
+R1 at the freeze: V12_5s at 1 h (D74),2.7755575615628914e-17,1e-12,True
+R1 at the freeze: LGB_seeds at 1 h (D74),3.936426185013886e-11,1e-08,True
+R1 at the freeze: Wilcoxon p (D74),0.0,1e-12,True
+R1 at the freeze: units won by V12 (D74),0.0,0.0,True
+"A6a median at 1 h = vs_all (F56, D74)",1.6653345369377348e-16,1e-09,True
+"A6a vs main, Wilcoxon p at 1 h = vs_all",0.0,1e-09,True
+"A6b median at 1 h = vs_all (F56, D74)",8.326672684688674e-17,1e-09,True
+"A6b vs main, Wilcoxon p at 1 h = vs_all",0.0,1e-09,True
+"A6d median at 1 h = vs_all (F56, D74)",5.551115123125783e-17,1e-09,True
+"A6d vs main, Wilcoxon p at 1 h = vs_all",0.0,1e-09,True
+"LGB median at 1 h = vs_all (F56, D74)",3.936426185013886e-11,1e-09,True
+"LGB vs main, Wilcoxon p at 1 h = vs_all",0.0,1e-09,True
+A6e vs main at 1 h = F62,2.220446049250313e-14,1e-09,True
+"A6e vs main, Wilcoxon p = F62",0.0,1e-12,True
+weighted PVSetFormer + Chronos-2 median at 1 h = part 2e (F61),5.551115123125783e-17,1e-12,True
+Chronos-2 median at 1 h in the PVSetFormer pair (F61),5.551115123125783e-17,1e-12,True
+weighted TimeXer + Chronos-2 median at 1 h = part 2e (F61),5.551115123125783e-17,1e-12,True
+Chronos-2 median at 1 h in the TimeXer pair (F61),5.551115123125783e-17,1e-12,True
+weighted LightGBM + Chronos-2 median at 1 h = part 2e (F61),5.551115123125783e-17,1e-12,True
+Chronos-2 median at 1 h in the LightGBM pair (F61),5.551115123125783e-17,1e-12,True
+A1 median at 1 h = NB5a (rounded to 5 decimals),3.473347124055559e-06,5e-06,True

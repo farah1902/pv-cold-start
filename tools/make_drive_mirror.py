@@ -2,8 +2,9 @@
 
     python tools/make_drive_mirror.py [--set nb5b|nb5e] [DEST]
 
-Sets: nb5b (D66, default destination "G:/My Drive/pv-cold-start") and nb5e (D70, Chronos-2 at every PVSetFormer issue
-time, default destination "G:/My Drive/pv-cold-start-nb5e").
+Sets: nb5b (D66, default destination "G:/My Drive/pv-cold-start"), nb5e (D70, Chronos-2 at every PVSetFormer issue
+time, default destination "G:/My Drive/pv-cold-start-nb5e") and nb6 (D79, the test forecasts of rows A6a and A6b,
+default destination "G:/My Drive/pv-cold-start-nb6").
 
 Copies the notebook, tools/fm_infer.py, src/pvcold/*.py, requirements-fm.txt and results/nb5b_inputs/ (1.7 MB; no raw
 data, no documents). All-or-nothing: the copy is assembled in a temporary folder next to the destination, checked file
@@ -24,7 +25,10 @@ SETS = {"nb5b": ("G:/My Drive/pv-cold-start", ["notebooks/NB5b_colab.ipynb", "to
                  "results/nb5b_inputs/tasks.parquet"] + SRC_PY),
         "nb5e": ("G:/My Drive/pv-cold-start-nb5e", ["notebooks/NB5e_colab.ipynb", "tools/fm_infer.py", "requirements-fm.txt",
                  "results/nb5e_inputs/inputs_manifest.json", "results/nb5e_inputs/series.parquet",
-                 "results/nb5e_inputs/tasks.parquet"] + SRC_PY)}
+                 "results/nb5e_inputs/tasks.parquet"] + SRC_PY),
+        "nb6": ("G:/My Drive/pv-cold-start-nb6", ["notebooks/NB6_colab.ipynb", "tools/fm_infer.py", "requirements-fm.txt",
+                "results/nb6_forecasts/fm_inputs/inputs_manifest.json", "results/nb6_forecasts/fm_inputs/series.parquet",
+                "results/nb6_forecasts/fm_inputs/tasks.parquet"] + SRC_PY)}      # D79: the test, rows A6a and A6b
 
 
 def sha(p: Path) -> str:

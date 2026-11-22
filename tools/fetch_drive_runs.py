@@ -2,8 +2,9 @@
 
     python tools/fetch_drive_runs.py [--set nb5b|nb5e] [MIRROR]
 
-Sets: nb5b (D66; runs results/nb5b_runs/, inputs results/nb5b_inputs/, the 8 grid settings) and nb5e (D70; runs
-results/nb5e_runs/, inputs results/nb5e_inputs/, one part per validation event of Chronos-2 c1344 full).
+Sets: nb5b (D66; runs results/nb5b_runs/, inputs results/nb5b_inputs/, the 8 grid settings), nb5e (D70; runs
+results/nb5e_runs/, inputs results/nb5e_inputs/, one part per validation event of Chronos-2 c1344 full) and nb6 (D79;
+runs results/nb6_forecasts/fm/, inputs results/nb6_forecasts/fm_inputs/, the two frozen settings on the test events).
 
 For every run record results/nb5b_runs/<setting>.json on the mirror: its inputs_sha256 must equal the local
 results/nb5b_inputs/inputs_manifest.json (the inputs the local scoring uses), it must not be a smoke test (limit 0),
@@ -24,7 +25,9 @@ import pandas as pd
 REPO = Path(__file__).resolve().parents[1]
 GRID = [f"{m}_c{c}_{cov}" for m in ("chronos2", "timesfm25") for c in (336, 1344) for cov in ("full", "none")]
 SETS = {"nb5b": ("G:/My Drive/pv-cold-start", "nb5b_runs", "nb5b_inputs"),
-        "nb5e": ("G:/My Drive/pv-cold-start-nb5e", "nb5e_runs", "nb5e_inputs")}
+        "nb5e": ("G:/My Drive/pv-cold-start-nb5e", "nb5e_runs", "nb5e_inputs"),
+        "nb6": ("G:/My Drive/pv-cold-start-nb6", "nb6_forecasts/fm", "nb6_forecasts/fm_inputs")}   # D79: the test
+NB6_SETTINGS = ["chronos2_c1344_full", "timesfm25_c1344_none"]       # frozen rows A6a, A6b (part 2d)
 QC = [f"q{t:.1f}" for t in np.round(np.arange(0.1, 1.0, 0.1), 1)]
 
 
@@ -43,7 +46,8 @@ def main():
     assert src.exists(), f"{src} not found: has the Colab run written anything, and has Drive synced?"
     man_all = json.loads((REPO / "results" / inputs / "inputs_manifest.json").read_text())
     man = man_all["sha256"]
-    expect = GRID if a.set == "nb5b" else [f"chronos2_c1344_full__e{i:02d}" for i in range(len(man_all["events"]))]
+    expect = (GRID if a.set == "nb5b" else NB6_SETTINGS if a.set == "nb6"
+              else [f"chronos2_c1344_full__e{i:02d}" for i in range(len(man_all["events"]))])
     new, same = [], []
     for js in sorted(src.glob("*.json")):
         rec = json.loads(js.read_text())

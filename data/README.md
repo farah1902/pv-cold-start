@@ -6,7 +6,7 @@ and SHA-256 checksum, as they were on 18 November 2026 (165 files, 1,673.8 MB). 
 
 | Folder | What it holds | Source | Licence (status) |
 | --- | --- | --- | --- |
-| `raw/hkust/Dataset/` | 44 inverter files (5 min), 37 site files with optimizers (15 min), 23 site files without optimizers (1 h), 1-min weather (7 variables, 2021–2023), Brick metadata (`.ttl`) | Lin et al., Dryad, doi:10.5061/dryad.m37pvmd99 (Sept 2024 version, with tilt and azimuth) | Dryad README says "N/A"; reported as CC0 in the research guide — **to confirm before release** |
+| `raw/hkust/Dataset/` | 44 inverter files (5 min), 37 site files with optimizers (15 min), 23 site files without optimizers (1 h), 1-min weather (7 variables, 2021–2023), Brick metadata (`.ttl`) | Lin et al., Dryad, doi:10.5061/dryad.m37pvmd99 (Sept 2024 version, with tilt and azimuth) | CC0-1.0: the Dryad record (API `license` field) and DataCite (`rightsList`), checked on 22 Nov 2026 (F63); the README inside the archive says "N/A". First public on Dryad on 2 Apr 2024 (version 4), updated 8 Sep 2024 (version 7) |
 | `raw/hkust/README.md` | The Dryad README | same | same |
 | `raw/hkust/s41597-025-04397-y.pdf` | Data descriptor: Lin et al., *Scientific Data* 12:63 (2025), doi:10.1038/s41597-025-04397-y | Springer Nature | Article under CC BY-NC-ND 4.0 (stated on its p. 13) |
 | `raw/safi/` | Safi rooftop raw files: `Electric {a-Si, m-Si, p-Si}.xlsx`, `Tc {a-Si, m-Si, p-Si}.xlsx`, `Weather data.xlsx`, `Preprocessed Data.xlsx` (**never used**: filtered by its authors, research guide §8) | Mendeley Data b2s4ycc2gz, v1; article Id Omar et al., *Data in Brief* 34 (2021) 106756 | CC BY 4.0 per the research guide — **to confirm** |

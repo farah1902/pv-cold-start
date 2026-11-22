@@ -59,6 +59,17 @@ def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def weights_path(repo: str, rev: str | None) -> str:
+    """The weights to load: the repository name (latest cached), or with --revision the snapshot of exactly that
+    commit (NB6: the revisions frozen in part 2d and the frozen configuration)."""
+    if not rev:
+        return repo
+    from huggingface_hub import snapshot_download
+    path = snapshot_download(repo, revision=rev)
+    assert Path(path).name == rev, f"{repo}: snapshot {Path(path).name} is not the pinned revision {rev}"
+    return path
+
+
 def revision(repo: str) -> str | None:
     """The commit of the weights in the local Hugging Face cache (the snapshot folder's name)."""
     from huggingface_hub import try_to_load_from_cache
@@ -78,9 +89,9 @@ def fill(x: np.ndarray) -> np.ndarray:
 class Chronos2:
     def __init__(self, a):
         from chronos import Chronos2Pipeline
-        self.pipe = Chronos2Pipeline.from_pretrained(WEIGHTS["chronos2"], device_map=a.device)
+        self.pipe = Chronos2Pipeline.from_pretrained(weights_path(WEIGHTS["chronos2"], a.revision), device_map=a.device)
         own = {round(float(q), 4) for q in self.pipe.quantiles}
-        self.meta = {"revision": revision(WEIGHTS["chronos2"]),
+        self.meta = {"revision": a.revision or revision(WEIGHTS["chronos2"]), "revision_pinned": bool(a.revision),
                      "max_context": int(self.pipe.model.chronos_config.context_length),
                      "native_quantiles": all(round(float(t), 4) in own for t in FC.TAUS)}   # else interpolated
         self.cov = a.cov
@@ -102,12 +113,14 @@ class Chronos2:
 class TimesFM25:
     def __init__(self, a):
         import timesfm
-        self.m = timesfm.TimesFM_2p5_200M_torch.from_pretrained(WEIGHTS["timesfm25"], torch_compile=False)
+        self.m = timesfm.TimesFM_2p5_200M_torch.from_pretrained(weights_path(WEIGHTS["timesfm25"], a.revision),
+                                                                 torch_compile=False)
         self.fc = dict(max_context=int(np.ceil(a.context / 32) * 32), max_horizon=PL, normalize_inputs=True,
                        use_continuous_quantile_head=True, force_flip_invariance=True, infer_is_positive=True,
                        fix_quantile_crossing=True, return_backcast=a.cov == "full", per_core_batch_size=a.batch)
         self.m.compile(timesfm.ForecastConfig(**self.fc))
-        self.meta = {"revision": revision(WEIGHTS["timesfm25"]), "forecast_config": self.fc,
+        self.meta = {"revision": a.revision or revision(WEIGHTS["timesfm25"]), "revision_pinned": bool(a.revision),
+                     "forecast_config": self.fc,
                      "native_quantiles": True,                                  # 10 outputs: mean, q0.1 .. q0.9
                      "xreg": {"mode": "xreg + timesfm", "covariates": GEO_DAY, "ridge": 0.0} if a.cov == "full" else None}
         self.cov = a.cov
@@ -135,6 +148,7 @@ def main() -> None:
     ap.add_argument("--batch", type=int, default=64, help="issue times per call")
     ap.add_argument("--limit", type=int, default=0, help="smoke test: first N tasks of each event")
     ap.add_argument("--events", nargs="*", default=None, help="only these events (D70: one part per event)")
+    ap.add_argument("--revision", default=None, help="load exactly this commit of the weights (NB6, frozen)")
     a = ap.parse_args()
 
     import torch
