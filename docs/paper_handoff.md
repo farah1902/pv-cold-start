@@ -77,11 +77,11 @@ telemetry start instead of grid connection (F06); metadata errors (D01).
 ## 8. What is still missing
 Before the freeze:
 - TabPFN-TS (A6c) waits for the author's licence (D65);
-- PVSetFormer rounds toward the target of D68 (lowest of the five forecasters on validation; V13 met its rule, F58; V14_5s running, D71);
-  the Chronos-2 input (V15, D70) after the author's Colab run of `NB5e_colab`, with its ablation on TimeXer and
-  LightGBM (code and rule ready, D72);
+- PVSetFormer rounds toward the target of D68 (lowest of the five forecasters on validation; V13 met its rule, F58; V14 not kept, D71);
+  the Chronos-2 input (V15_5s on V12, running since 22 Nov 04:19, D70), then its ablation on TimeXer and
+  LightGBM (queued, rule fixed, D72);
 - PVSetFormer design rounds until the freeze (D50; candidate V12_5s since D67's result; V11a not kept; V13 met its
-  rule but is above V12 at 1 h; V14_5s running, D71); at the freeze, R1 (`make_nb5c.py --final`) and PVSetFormer's conformal layer are rerun on the final
+  rule but is above V12 at 1 h; V14 not kept, D71; V15_5s running, D70); at the freeze, R1 (`make_nb5c.py --final`) and PVSetFormer's conformal layer are rerun on the final
   candidate;
 - freeze part 2 (2a LightGBM, 2b conformal, 2c R1, 2d foundation models) and the `protocol-freeze` tag.
 

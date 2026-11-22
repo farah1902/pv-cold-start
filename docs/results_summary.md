@@ -261,6 +261,12 @@ Source: `results/nb5b_fm/summary.json`, `medians.csv`, `comparison.csv`, `fm_con
 | V13 vs V12_5s: median over units; units lower | −0.84 / −0.27 / +0.17 / +0.19 / −0.57 / −1.28%; 5 / 5 / 6 / 7 / 9 / 10 of 10 | nb5c_variants/V13_5s, V12_5s/scores.csv |
 | V13 against the four others (ratio of medians), 15 min / 30 min / 1 h / 2 h / 4 h / 6 h: Chronos-2; TimesFM 2.5 | +1.59 / +1.35 / +0.32 / +2.19 / +5.00 / +1.44%; +2.09 / +1.05 / −0.50 / +1.41 / +3.71 / −0.78% | nb5c_diag/vs_all/V13_5s.csv |
 | Same: TimeXer; LightGBM | +1.26 / +0.30 / −0.18 / −1.39 / −2.16 / −2.94%; +2.07 / +0.04 / −1.76 / −1.30 / −2.76 / −6.91% | nb5c_diag/vs_all/V13_5s.csv |
+| V14 (V12 + V13's 7- and 28-day input, D71) 5-seed ensemble, median nRMSE at 15 min / 30 min / 1 h / 2 h / 4 h / 6 h | 0.13199 / 0.15817 / 0.18032 / 0.20989 / 0.23051 / 0.20514 | nb5c_variants/V14_5s/scores.csv |
+| V14 vs V12_5s (D71's rule): ratio of medians; mean of per-unit changes; units lower; Wilcoxon p | −0.68 / +0.96 / +1.41 / +1.30 / −0.44 / −0.20%; +0.16 / +0.43 / +0.11 / +0.06 / −0.22 / −0.78%; 6 / 5 / 5 / 7 / 8 / 8 of 10; 0.92 / 0.77 / 0.85 / 0.70 / 0.43 / 0.38 | nb5c_variants/V14_5s, V12_5s/scores.csv |
+| V14 vs V12_5s, median CRPS; V14 vs V13_5s, median nRMSE | −1.22 / +0.88 / +1.05 / +1.67 / −1.01 / +0.93%; +0.16 / +1.23 / +1.23 / +1.11 / +0.13 / +1.09% | nb5c_variants/V14_5s, V12_5s, V13_5s/scores.csv |
+| V14 single seeds at 1 h: range; mean; s.d. over seeds at 1 h / 6 h | 0.18054–0.18521; 0.18232; 0.0018 / 0.0059 | nb5c_variants/V14_5s/scores.csv |
+| V14 against the four others (ratio of medians), 15 min / 30 min / 1 h / 2 h / 4 h / 6 h: Chronos-2; TimesFM 2.5 | +1.75 / +2.60 / +1.56 / +3.33 / +5.14 / +2.55%; +2.25 / +2.29 / +0.73 / +2.54 / +3.84 / +0.30% | nb5c_diag/vs_all/V14_5s.csv |
+| Same: TimeXer; LightGBM | +1.42 / +1.53 / +1.05 / −0.29 / −2.04 / −1.88%; +2.23 / +1.27 / −0.54 / −0.20 / −2.64 / −5.89% | nb5c_diag/vs_all/V14_5s.csv |
 
 ## Forecast skill and statistics (NB5, NB6)
 _empty_

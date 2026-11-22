@@ -1091,7 +1091,8 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
   1 h and no more than 1% higher at any other horizon. Whether a model that needs Chronos-2 at every issue time
   becomes the main model is the author's decision at the freeze (D50); what the paper may claim follows D72's
   rule. Queue (`queue_v15.py`, scratch): V14_5s, then D71's rule, V15_5s, TX2_5s, LGB_fm_seeds.
-- **Result:** pending (V15_5s and the ablation, D72).
+- **Result:** pending. V15_5s = V12_5s + `fm=1` (D71's rule kept V12) started 22 Nov 2026, 04:19; its log shows
+  Chronos-2 present for 100.00% of the defined targets of each unit. Then the ablation (D72).
 
 ### D71 — PVSetFormer variant V14: V12's short-horizon gate with V13's 7- and 28-day input [R1 round, Phase 5]
 - **Reason:** V12 (D67) and V13 (D69) both met their rules, and D69 fixed in advance that V14 then combines them
@@ -1104,7 +1105,17 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
   V12 stays the candidate (V13 is above V12 at 1 h, so it does not replace V12 under the same rule).
 - **Next:** V15 (D70) adds the Chronos-2 input to whichever variant is the candidate when the author's `NB5e_colab`
   run is back.
-- **Result:** pending.
+- **Result (22 Nov 2026, 153 min):** the rule is not met; V12 stays the candidate.
+  - Ensemble median nRMSE 0.13199 / 0.15817 / 0.18032 / 0.20989 / 0.23051 / 0.20514 (15 min to 6 h).
+  - Against V12: −0.68 / +0.96 / +1.41 / +1.30 / −0.44 / −0.20%. It is lower at 15 min, 4 h and 6 h, but 1.41%
+    higher at 1 h.
+  - From 30 min to 2 h V14 is above both V12 and V13. At 4 h it keeps most of V13's gain (+0.13% against V13), at
+    6 h little of it (+1.09%).
+  - Every difference against V12 is below 1.5%, and none is consistent across units (5–8 of 10 lower, Wilcoxon
+    p ≥ 0.38).
+  - Single seeds at 1 h: mean 0.18232 (V12 0.18090, V13 0.18015), s.d. 0.0018 (V12 0.0035, V13 0.0011).
+  - Lowest of the five forecasters at no horizon.
+  - The queue then started V15_5s on V12 (D70), at 04:19.
 
 ### D72 — Ablation of the Chronos-2 input: TimeXer and LightGBM receive what V15 receives [fairness, Phase 5]
 - **Reason:** D70 and D68. Before the paper credits PVSetFormer with a gain from Chronos-2's forecast, the other two
