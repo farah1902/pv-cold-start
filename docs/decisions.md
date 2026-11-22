@@ -1274,6 +1274,24 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
   same problem as A6d (level, F44, F59); the agent proposes "whether the set transformer adds anything over boosting
   on the same task; level at 1 h on validation (F44, F59)", for the author to accept before the tag.
 
+### D77 — The frozen configuration of the protocol; the tag waits for the author's check [protocol, Phase 5]
+- **Reason:** D21 and D73: the tag `protocol-freeze`, with the frozen configuration hash, before any test event is
+  scored.
+- **Change:** `python tools/freeze_config.py` writes `results/freeze/frozen_config.yaml`:
+  - 16 pinned files, each with its sha256, checked against the hash its notebook or tool recorded: parts 1 and
+    2a–2e, the sensor settings, the NB0 configuration snapshot, the event, unit, donor and test-bed tables, the data
+    manifest and the guide. Every pinned file must be committed, or the tool stops.
+  - The settings of the test rows derived from part 2c: the main model V12; A6e = V12 + `summary_only=1`; A4c = V12
+    + `ext=sensor_corr`; A6d TimeXer at the CVX setting; LightGBM's 5 seeds with its 5-seed conformal layer (D64);
+    A6a and A6b at part 2d; A6c dropped; the weights of part 2e.
+  - NB5a's part 2b (single LightGBM) is pinned as the origin of the conformal rules (D35); the test's LightGBM rows
+    use the 5-seed layer.
+- **Frozen configuration hash:** sha256 `805388260696999d123ff4d0d9aa016e8d325599753181e5f823675c9e1a4286` (built on commit `aadfa8a`).
+- **Tag:** `protocol-freeze` is set only after the author has seen the reworded rows A6a, A6d and A6e (D76), the
+  weighting criterion (D73) and the proposed LGB row (D76). A change to any of them changes the guide and so the
+  hash; the tool is then re-run.
+- **Result:** pending the author's check.
+
 ### D16 — pvlib 0.16.1 and ruptures 1.1.10 are installed locally and pinned [environment, Phase 0]
 - **Request or reason:** both are in the guide's software list (§5.6) and were missing locally on 18 Nov 2026.
 - **Change:** `pip install pvlib==0.16.1 ruptures==1.1.10`. A dry run first showed that nothing else would be

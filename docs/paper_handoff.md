@@ -81,8 +81,8 @@ telemetry start instead of grid connection (F06); metadata errors (D01).
 - That satellite data confirm the HKUST sensor drift, unless the CAMS all-sky check is actually run (D14).
 
 ## 8. What is still missing
-Before the tag: the author's check of the reworded guide rows and of the weighting criterion (D73, D76); then
-the frozen configuration and the `protocol-freeze` tag (D77).
+Before the tag: the author's check of the reworded guide rows and of the weighting criterion (D73, D76). The
+frozen configuration is built (D77, sha256 `805388260696999d…`); then the `protocol-freeze` tag.
 
 Done on development data by 22 Nov 2026: NB0–NB4, NB5a and its conformal layer, the PVSetFormer rounds V1–V15
 (D36–D72), R1 re-run with V12 and its conformal layer (D74), LightGBM's 5-seed conformal layer (D64), TimeXer and

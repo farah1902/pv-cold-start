@@ -1,0 +1,258 @@
+protocol: protocol-freeze (D21, D77)
+commit_parent: aadfa8aef8bc17abe4cb1a18b668990468969230
+primary_horizon_steps: 4
+files:
+  part1_index_gains_prior:
+    path: results/nb3_index/frozen_config_part1.yaml
+    sha256: cb671b7f67138e7e82eeece27241e60a37284fd124946ac72d42e9a2daa80252
+    decision: D31
+  sensor_and_satellite_sources:
+    path: results/nb4_sensor/sensor_config.yaml
+    sha256: 4c47bfac9fa359fe0776925498b3d7328607c312be359b12d92f32198f49e79d
+    decision: D32
+  part2a_lightgbm:
+    path: results/nb5a_dev/lgb_config_part2a.yaml
+    sha256: d03bb0b86827009edcc4d37bd6ebb88de1697e1c8aac60646e988f4e9fe75abe
+    decision: D33, D34
+  part2b_conformal_rules_lightgbm_single:
+    path: results/nb5a_conformal/conformal_config_part2b.yaml
+    sha256: c68d5a3aa17a680621d60f1edc924997ec8955923f588e5fbbc41109cd0b8c9e
+    decision: D35
+  part2b_conformal_lightgbm_5_seeds:
+    path: results/nb5c_conformal_lgb/conformal_config_part2b_lgb5.yaml
+    sha256: feb062a2dda885a5b7791f242c188ccf970f7219d8dfc0648e657a29e7181a3b
+    decision: D64
+  part2b_conformal_pvsetformer:
+    path: results/nb5c_conformal/conformal_config_part2b_pvsf.yaml
+    sha256: 2b171cf0954d0cd855d432fa644bacaf7f002a1a49ae15bad6d62583a8f8fdf2
+    decision: D46, D74
+  part2c_rule_r1:
+    path: results/nb5c_r1/r1_config_part2c.yaml
+    sha256: f947effd8c9c62b6799f4e5dd15d042d92357157b1c69385afc21b1ce96ad88a
+    decision: D45, D74
+  part2d_foundation_models:
+    path: results/nb5b_fm/fm_config_part2d.yaml
+    sha256: d637d1b05e16aac80a04ab73b702efd78471a6719dd8f7a37dcf2cd4c3d0d5d6
+    decision: D59
+  part2e_weighting_check:
+    path: results/nb5c_weights/weight_config_part2e.yaml
+    sha256: 26ff86ca7ebc9abcfab602770b1813d1609575fda0eeb9c530d82f1c9f12db22
+    decision: D73, D75
+  config_snapshot_nb0:
+    path: results/nb0_setup/config_snapshot.yaml
+    sha256: 056369c1f085282f56450b3c4d039369e2a6d7e5697d953634941db620fe4cd3
+    decision: NB0
+  events:
+    path: results/nb2_panel/events.csv
+    sha256: 0180a356439195282f3cf340cc6c1854ebf3141f7f67f18582d1599ee00cc871
+    decision: D12-D14, D27
+  units:
+    path: results/nb2_panel/units.csv
+    sha256: 202558aa69cb18114e1264d76923da88dcf08e6659c24c7b195d60088abd1bbc
+    decision: NB2
+  donors:
+    path: results/nb2_panel/donors.csv
+    sha256: 3b9412ccb43b9f0877e00780e728e8f4a441c0e4d66fbf3eba24da2c8c9a273f
+    decision: NB2
+  hidden_unit_testbed:
+    path: results/nb2_panel/testbed.csv
+    sha256: 3b7507034ee2605689d6fe664e7a5dbc0e3f2ae50df5a65b5f217da0ea811c6c
+    decision: D18
+  data_manifest:
+    path: data/MANIFEST_sha256.csv
+    sha256: 52affa88fc066717ad1dd0dfc57b5c050aae8de14ffc88602c2c5337b0620fb5
+    decision: D15
+  research_guide:
+    path: docs/research_guide.md
+    sha256: e3394b884323c9daea8bc2787c1d495d09fd8d2f011465a43f07b69075f56c69
+    decision: D76
+test_rows:
+  main:
+    model: PVSetFormer
+    variant: V12_5s
+    cfg:
+      arch: pvsf
+      aux: 0.0
+      balance: 1
+      batch: 256
+      d: 64
+      donor_dropout: 0.1
+      donor_id: 0
+      donor_rel: 0
+      dropout: 0.1
+      ext: ''
+      fleet_token: 1
+      heads: 4
+      hhead: 0
+      hhead_n: 0
+      hmask: 0
+      lin: 1
+      lr: 0.001
+      max_epochs: 100
+      n_dec: 2
+      n_enc: 2
+      n_sky: 4
+      patience: 15
+      summary_only: 0
+      vgate: 0
+      vlin: 0
+      vmed: 1
+      vmed_n: 2
+      vol: 0
+      weight_decay: 0.5
+    n_params: 224331
+    seeds:
+    - 20261119
+    - 20261120
+    - 20261121
+    - 20261122
+    - 20261123
+    intervals: part2b_conformal_pvsetformer
+  LGB:
+    model: quantile LightGBM, 5-seed ensemble (D64)
+    params:
+      learning_rate: 0.05
+      min_data_in_leaf: 200
+      num_leaves: 31
+    seeds:
+    - 20261119
+    - 20261120
+    - 20261121
+    - 20261122
+    - 20261123
+    intervals: part2b_conformal_lightgbm_5_seeds
+  A2: main model with the median index (part 1 estimator 'median')
+  A3: main model with prior G0 (g = 1)
+  A4: LightGBM (part 2a) on the raw pyranometer index (D50, D51)
+  A4b: LightGBM (part 2a) on the corrected pyranometer index (D50, D51)
+  A4c:
+    model: main model plus the corrected sensor index (D51, D56)
+    cfg:
+      arch: pvsf
+      aux: 0.0
+      balance: 1
+      batch: 256
+      d: 64
+      donor_dropout: 0.1
+      donor_id: 0
+      donor_rel: 0
+      dropout: 0.1
+      ext: sensor_corr
+      fleet_token: 1
+      heads: 4
+      hhead: 0
+      hhead_n: 0
+      hmask: 0
+      lin: 1
+      lr: 0.001
+      max_epochs: 100
+      n_dec: 2
+      n_enc: 2
+      n_sky: 4
+      patience: 15
+      summary_only: 0
+      vgate: 0
+      vlin: 0
+      vmed: 1
+      vmed_n: 2
+      vol: 0
+      weight_decay: 0.5
+  A6a:
+    model: Chronos-2, zero-shot
+    setting: chronos2_c1344_full
+    revision: 29ec3766d36d6f73f0696f85560a422f50e8498c
+  A6b:
+    model: TimesFM 2.5, zero-shot
+    setting: timesfm25_c1344_none
+    revision: 1d952420fba87f3c6dee4f240de0f1a0fbc790e3
+  A6c: dropped before the freeze (TabPFN-TS, D73)
+  A6d:
+    model: TimeXer, CVX setting (D49)
+    cfg:
+      d: 32
+      heads: 4
+      n_sky: 4
+      n_enc: 2
+      n_dec: 2
+      dropout: 0.1
+      lr: 0.003
+      weight_decay: 0.01
+      batch: 256
+      max_epochs: 100
+      patience: 15
+      donor_dropout: 0.1
+      fleet_token: 0
+      balance: 1
+      lin: 0
+      aux: 0.0
+      summary_only: 0
+      vol: 0
+      vgate: 0
+      arch: timexer
+    seeds:
+    - 20261119
+    - 20261120
+    - 20261121
+    - 20261122
+    - 20261123
+  A6e:
+    model: main model on the fleet summary only (rule R2)
+    cfg:
+      arch: pvsf
+      aux: 0.0
+      balance: 1
+      batch: 256
+      d: 64
+      donor_dropout: 0.1
+      donor_id: 0
+      donor_rel: 0
+      dropout: 0.1
+      ext: ''
+      fleet_token: 1
+      heads: 4
+      hhead: 0
+      hhead_n: 0
+      hmask: 0
+      lin: 1
+      lr: 0.001
+      max_epochs: 100
+      n_dec: 2
+      n_enc: 2
+      n_sky: 4
+      patience: 15
+      summary_only: 1
+      vgate: 0
+      vlin: 0
+      vmed: 1
+      vmed_n: 2
+      vol: 0
+      weight_decay: 0.5
+  A9: satellite (CAMS) clear-sky index persisted forward x prior gain (D51)
+  weighting_check:
+    rule: per horizon, weight w on Chronos-2 from the grid 0, 0.1, ..., 1; blend (1 - w) * trained + w * Chronos-2, quantile
+      by quantile, sorted again; w chosen on the 10 validation units by the lowest median nRMSE over units, a tie to the weight
+      nearest 0.5; the same procedure for the three pairs; the 50/50 average reported as a fixed reference; raw quantiles;
+      secondary analysis (Discussion)
+    weights:
+      LightGBM:
+        1: 0.4
+        2: 0.8
+        4: 0.8
+        8: 0.8
+        16: 1.0
+        24: 0.9
+      PVSetFormer:
+        1: 0.8
+        2: 0.7
+        4: 0.3
+        8: 0.5
+        16: 0.8
+        24: 0.6
+      TimeXer:
+        1: 0.6
+        2: 0.7
+        4: 0.3
+        8: 0.8
+        16: 1.0
+        24: 0.7
+    reference_weight: 0.5

@@ -354,3 +354,5 @@ One entry per work session: what was asked, what was done, the key numbers, what
   R1 re-run with V12 (met, −1.92% at 1 h; part 2c `f947effd8c9c`); PVSetFormer's conformal
   layer on V12 kept; `tools/weight_check.py` chose the weights (part 2e `26ff86ca7ebc`; F61, in sample);
   the guide revised by 17 edits (D76). `make_nb5c.py` now counts design variants only.
+- **Frozen configuration (22 Nov, D77):** `tools/freeze_config.py` pins 16 files and the test rows' settings; sha256
+  `805388260696999d…`. The `protocol-freeze` tag waits for the author's check of the reworded guide rows.

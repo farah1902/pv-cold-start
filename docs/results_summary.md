@@ -291,6 +291,7 @@ Source: `results/nb5b_fm/summary.json`, `medians.csv`, `comparison.csv`, `fm_con
 | Same, against Chronos-2 alone: PVSetFormer; TimeXer; LightGBM pair | −0.09 / −0.41 / −0.48 / −1.07 / −0.18 / −1.21%; −0.44 / −0.31 / −0.58 / −1.26 / +0.00 / −0.59%; −0.70 / −0.13 / −0.11 / −0.22 / +0.00 / −0.15% | nb5c_weights/chosen.csv |
 | PVSetFormer pair vs Chronos-2: units lower; Wilcoxon p | 9 / 6 / 3 / 3 / 8 / 7 of 10; 0.01 / 0.11 / 0.49 / 0.49 / 0.04 / 0.16 | nb5c_weights/scores.csv |
 | Weighting configuration (part 2e), sha256 | `26ff86ca7ebc9abc…` | weight_config_part2e.yaml |
+| Frozen configuration (D77; 16 pinned files and the test rows), sha256 | `805388260696999d…` | freeze/frozen_config.yaml |
 
 ## Forecast skill and statistics (NB5, NB6)
 _empty_
