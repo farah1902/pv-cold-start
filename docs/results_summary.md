@@ -300,6 +300,7 @@ Source: `results/nb5b_fm/summary.json`, `medians.csv`, `comparison.csv`, `fm_con
 | Frozen configuration (D77; 16 pinned files and the test rows; superseded by D78's rebuild), sha256 | `805388260696999d…` | freeze/frozen_config.yaml (commit 47e1ae9) |
 | Frozen configuration (D78; 16 pinned files, the test rows with their seeds, the primary and the eight secondary tests; superseded at the author's third check, never tagged), sha256 | `9ccffb7241172915…` | freeze/frozen_config.yaml (commit 92cd0c6) |
 | Frozen configuration, final (D78; as above, the guide labelled "D76, D78"), sha256 | `2d27ea1e82060a0f…` | freeze/frozen_config.yaml |
+| Tag `protocol-freeze` (D78), commit | `6c435e8` | git tag (annotated, pushed) |
 
 ## Forecast skill and statistics (NB5, NB6)
 _empty_

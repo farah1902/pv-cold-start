@@ -368,3 +368,5 @@ One entry per work session: what was asked, what was done, the key numbers, what
 - **The author's third check and the final freeze (22 Nov, D78):** approved with two fixes: the freeze tool labels
   the guide "D76, D78", and F62's title follows §4.4's wording rule. The tool re-run on `5e056f0` gives sha256
   `2d27ea1e82060a0f…`; the YAML differs from `9ccffb7241172915…` in the parent commit and the guide's label only.
+- **Protocol frozen (22 Nov, D78):** annotated tag `protocol-freeze` on `6c435e8`, pushed; frozen configuration sha256
+  `2d27ea1e82060a0f…`; the 16 pinned files checked at that commit. Next: the test run.

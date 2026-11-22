@@ -105,7 +105,8 @@ something, record it and follow it, even if you would have chosen otherwise.
   against the current file, log the changes, then replace it. Older versions live in `docs/history/`.
 - **Development is closed (D73, 22 Nov 2026).** The author closed D68: no more PVSetFormer design rounds. The main
   index forecaster is PVSetFormer V12_5s (R1 re-run at the freeze, D74); its setting is frozen part 2c. No design
-  change after the `protocol-freeze` tag, whatever the test shows. TimeXer gets the same per-donor inputs, and the
+  change after the `protocol-freeze` tag, whatever the test shows. The tag is set (D78): commit `6c435e8`,
+  frozen configuration `results/freeze/frozen_config.yaml`, sha256 `2d27ea1e82060a0f…`. TimeXer gets the same per-donor inputs, and the
   main model also runs on the fleet summary only (R2, A6e = V12 + `summary_only=1`). The sensor rows A4 and A4b use
   LightGBM; A9 stays the persisted satellite index; A4c is the main model plus the corrected sensor index (D51).
 - **Headline wording (D73):** "causal fleet index", not "censored" (the estimator stays censored, D31, in the

@@ -1367,6 +1367,11 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
   - **Final frozen configuration:** `python tools/freeze_config.py` re-run, sha256 `2d27ea1e82060a0f87622dadd0c0a3d0e395e905aa2f39e019db770330f19b0a` (built on
     commit `5e056f0`; 16 pinned files). Against `9ccffb7241172915…`, the YAML differs in two lines only: the parent
     commit and the guide's label. It replaces that hash, which was never tagged.
+  - **Tag set (22 Nov 2026):** annotated tag `protocol-freeze` (tag object `5b48f64`) on commit
+    `6c435e80628e705531d1aa2689f3704b1f045858`, which holds the final `results/freeze/frozen_config.yaml` (sha256
+    `2d27ea1e82060a0f87622dadd0c0a3d0e395e905aa2f39e019db770330f19b0a`, the hash in the tag's message). Before tagging, all 16 pinned files were checked at that
+    commit against their frozen sha256 (no mismatch). Pushed to origin; the remote tag resolves to the same
+    commit. From here on, no design change, whatever the test shows (D73).
 
 ### D16 — pvlib 0.16.1 and ruptures 1.1.10 are installed locally and pinned [environment, Phase 0]
 - **Request or reason:** both are in the guide's software list (§5.6) and were missing locally on 18 Nov 2026.
