@@ -154,3 +154,9 @@ is 0.65% above V12 at 1 h, so it fails its rule, although by unit it is lower th
 2 h. The ablation (D72) gives TimeXer and LightGBM the same input: all three gain a little (LightGBM on every unit
 up to 4 h), all three stay level with each other, and none is below Chronos-2 alone from 30 min. V15's learned rows
 also end above a plain 50/50 average of V12 and Chronos-2 at every horizon (F60). V12 stays the candidate.
+
+**Development closed; V12 is the final variant (22 Nov 2026, D73, D74).** The author closed D68 after V15 and its
+ablation: no round was lowest of the five forecasters at any horizon, and differences below 3% are level. R1, re-run
+with V12 at the freeze, keeps PVSetFormer (0.17782 against LightGBM's 0.18130
+at 1 h), and its conformal layer is kept. 20 design variants and 2 searches were tried,
+all on development data.

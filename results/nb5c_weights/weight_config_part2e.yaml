@@ -1,0 +1,53 @@
+decision: 'D75 (rule: D73)'
+grid:
+- 0.0
+- 0.1
+- 0.2
+- 0.3
+- 0.4
+- 0.5
+- 0.6
+- 0.7
+- 0.8
+- 0.9
+- 1.0
+members:
+  Chronos-2: part 2d chronos2
+  LightGBM: LGB_seeds
+  PVSetFormer: V12_5s
+  TimeXer: TX1_5s
+members_summary_sha256:
+  LightGBM: 36937388bd72f72b794dd1c709c4b74de8cf0417de9aadb32d21a64bf18df377
+  PVSetFormer: 6fb1520c43ecbc3b40002608e44cad4a14870a9349d32d98e9cb326d14273429
+  TimeXer: 95eacaf0e31fdaaf86227cc8d8f2f13b28694c8eab12afd3621b47ce83622ca7
+part: 2e
+part2c_sha256: f947effd8c9c62b6799f4e5dd15d042d92357157b1c69385afc21b1ce96ad88a
+part2d_sha256: d637d1b05e16aac80a04ab73b702efd78471a6719dd8f7a37dcf2cd4c3d0d5d6
+reference_weight: 0.5
+rule: per horizon, weight w on Chronos-2 from the grid 0, 0.1, ..., 1; blend (1 -
+  w) * trained + w * Chronos-2, quantile by quantile, sorted again; w chosen on the
+  10 validation units by the lowest median nRMSE over units, a tie to the weight nearest
+  0.5; the same procedure for the three pairs; the 50/50 average reported as a fixed
+  reference; raw quantiles; secondary analysis (Discussion)
+weights:
+  LightGBM:
+    1: 0.4
+    2: 0.8
+    4: 0.8
+    8: 0.8
+    16: 1.0
+    24: 0.9
+  PVSetFormer:
+    1: 0.8
+    2: 0.7
+    4: 0.3
+    8: 0.5
+    16: 0.8
+    24: 0.6
+  TimeXer:
+    1: 0.6
+    2: 0.7
+    4: 0.3
+    8: 0.8
+    16: 1.0
+    24: 0.7

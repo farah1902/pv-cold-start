@@ -16,7 +16,7 @@ min_scores: 50
 model: PVSetFormer
 normalisation: Gt(t + h)
 part: 2b
-part2c_sha256: d6a24ddb931d0b887753a68df2d982cf3d1114e6cc8d141c5a7f93994ff06487
+part2c_sha256: f947effd8c9c62b6799f4e5dd15d042d92357157b1c69385afc21b1ce96ad88a
 per: event, origin, horizon
 power_bounds:
 - 0.0
@@ -27,4 +27,4 @@ seeds:
 - 20261121
 - 20261122
 - 20261123
-variant: V4a_5s
+variant: V12_5s

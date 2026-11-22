@@ -10,12 +10,13 @@ _Empty._
 
 ## 3. Corrections to the guide
 See `decisions.md`, entries marked **[guide deviation]**: D07 (Morocco scope). Also: the positioning table (guide §1)
-must add Longarini et al. (2026) (F19). Additions approved on 18 Nov: D18–D22.
+must add Longarini et al. (2026) (F19). Additions approved on 18 Nov: D18–D22. Before the freeze (22 Nov):
+D73 (title, headline "causal fleet index", TabPFN-TS dropped) and D76 (rows A6a, A6d, A6e reworded).
 
 ## 4. Status of each contribution
 | Contribution | Status |
 | --- | --- |
-| 1. Causal fleet-factor forecaster | Index forecaster chosen by rule R1 on 21 Nov 2026: PVSetFormer (V4a), 0.18001 vs LightGBM 0.18130 at 1 h on validation (D45, F44) |
+| 1. Causal fleet index | Index forecaster by rule R1, re-run at the freeze: PVSetFormer V12, 0.17782 vs LightGBM 0.18130 at 1 h on validation (level, D74, F59); Chronos-2 on the same index level at 1 h and lower from 2 h (F56) |
 | 2. DC/AC gain prior with shrinkage update | Planned (D02) |
 | 3. Evaluation protocol: real starts, information set, error budget, sensor ablation; Safi external case | Events and drift boundary fixed (NB2, NB3); sensor and satellite index sources built (NB4, F35); sensor and satellite rows on the validation units (NB5d, F51): the fleet index is better up to 1 h and level from 2 h |
 
@@ -35,6 +36,10 @@ telemetry start instead of grid connection (F06); metadata errors (D01).
   by 2–8% (F56).
 - That PVSetFormer's 1-h lead over LightGBM on validation will hold at the test: part of it comes from two
   units whose first window LightGBM's setting cannot learn (F59); the test units have far more history.
+- That a weighted pair of a trained forecaster and Chronos-2 is the method or the main model: it is a secondary
+  analysis (D73, D75), and its validation scores are in sample (F61).
+- That the attention over the donor set is what makes PVSetFormer work: without it the model forecasts as well
+  (F47, strong).
 - That PVSetFormer uses Chronos-2's forecast better than TimeXer or LightGBM, or that it improves on Chronos-2:
   with the same input the three are level (below 3%) at every horizon, and none is below Chronos-2 alone from
   30 min (D72, F60).
@@ -76,19 +81,16 @@ telemetry start instead of grid connection (F06); metadata errors (D01).
 - That satellite data confirm the HKUST sensor drift, unless the CAMS all-sky check is actually run (D14).
 
 ## 8. What is still missing
-Before the freeze:
-- TabPFN-TS (A6c) waits for the author's licence (D65);
-- PVSetFormer rounds toward the target of D68 (lowest of the five forecasters on validation; V13 met its rule, F58; V14 not kept, D71;
-  V15 with the Chronos-2 input not kept, D70; its ablation done, D72, F60);
-- PVSetFormer design rounds until the freeze (D50; candidate V12_5s since D67's result; V11a not kept; V13 met its
-  rule but is above V12 at 1 h; V14 not kept, D71; V15 not kept, D70); at the freeze, R1 (`make_nb5c.py --final`) and PVSetFormer's conformal layer are rerun on the final
-  candidate;
-- freeze part 2 (2a LightGBM, 2b conformal, 2c R1, 2d foundation models) and the `protocol-freeze` tag.
+Before the tag: the author's check of the reworded guide rows and of the weighting criterion (D73, D76); then
+the frozen configuration and the `protocol-freeze` tag (D77).
 
-Done on development data by 21 Nov 2026: NB0–NB4, NB5a and its conformal layer, R1 (NB5c, D45) and PVSetFormer's
-conformal layer (D46), LightGBM's 5-seed conformal layer (D64), TimeXer and A6e (R2, F47, F48), the sensor and
-satellite rows (NB5d, F51), A4c (D56), and the foundation models A6a and A6b (NB5b, D59, F56).
-After the freeze: the test run (NB5) and everything from NB6 on.
+Done on development data by 22 Nov 2026: NB0–NB4, NB5a and its conformal layer, the PVSetFormer rounds V1–V15
+(D36–D72), R1 re-run with V12 and its conformal layer (D74), LightGBM's 5-seed conformal layer (D64), TimeXer and
+A6e (R2, F47, F48), the sensor and satellite rows (NB5d, F51), A4c (D56), the foundation models A6a and A6b
+(NB5b, D59, F56), the Chronos-2 input and its ablation (D70, D72, F60) and the weighting check (D75, F61).
+After the freeze: the test run (all rows on the 17 events and the hidden-unit test bed; the foundation models on
+a Colab GPU), the weighting check on the test (part 2e), the computation-cost table (guide §6 item 13), and
+everything from NB6 on.
 
 ## 9. Writing conventions
 Roadmap Phase 10: clear academic English, short sentences, active verbs; research questions and hypotheses as one

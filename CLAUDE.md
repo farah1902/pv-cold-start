@@ -1,7 +1,8 @@
 # CLAUDE.md — instructions for agents working in this repository
 
-Working title: *PVSetFormer: forecasting new rooftop PV inverters from day one, without history or a pyranometer*
-(D25; a fallback title applies if rule R1 keeps LightGBM). A newly installed rooftop inverter is forecast from
+Working title: *Forecasting new rooftop PV inverters from day one, without history or a pyranometer: a causal
+fleet index and a nameplate gain prior* (D73; PVSetFormer, the index forecaster chosen by rule R1, is named in the
+method section). A newly installed rooftop inverter is forecast from
 its first day, with no history of its own and no irradiance sensor, from (i) a campus clear-sky index estimated causally
 from the inverters already online and (ii) a gain prior from its nameplate DC/AC ratio. Main data: the HKUST rooftop PV
 dataset (Lin et al., Dryad doi:10.5061/dryad.m37pvmd99; Scientific Data 12:63, 2025), 2021–2023. External case: the
@@ -102,24 +103,20 @@ something, record it and follow it, even if you would have chosen otherwise.
 - **The research guide belongs to the author.** Never edit `docs/research_guide.md` silently. A change of plan found
   by the work is recorded as a decision marked **[guide deviation]**. When the author sends a new version, diff it
   against the current file, log the changes, then replace it. Older versions live in `docs/history/`.
-- **PVSetFormer is the author's own model (D24, D25).** Improving it is "the real work": as many design rounds as
-  needed, but **only on development data** (the 10 validation units and the fleet index before 2021-10-05). Log every
-  variant as a decision. All models get the same hyperparameter budget. It becomes the main model only if it beats
-  LightGBM on the validation units at 1 h before the `protocol-freeze` tag (R1). TimeXer gets the same per-donor inputs,
-  and PVSetFormer also runs on the fleet summary only (R2).
-- **Main model (D50, 21 Nov 2026):** keep developing PVSetFormer until the freeze, aiming to make the donors
-  useful (F47) and to close the short-horizon gap; the main model and the title are decided at the freeze.
-  The sensor rows A4 and A4b use LightGBM; A9 stays the persisted satellite index (guide); A4c is the main
-  model plus the corrected sensor index (D51).
+- **Development is closed (D73, 22 Nov 2026).** The author closed D68: no more PVSetFormer design rounds. The main
+  index forecaster is PVSetFormer V12_5s (R1 re-run at the freeze, D74); its setting is frozen part 2c. No design
+  change after the `protocol-freeze` tag, whatever the test shows. TimeXer gets the same per-donor inputs, and the
+  main model also runs on the fleet summary only (R2, A6e = V12 + `summary_only=1`). The sensor rows A4 and A4b use
+  LightGBM; A9 stays the persisted satellite index; A4c is the main model plus the corrected sensor index (D51).
+- **Headline wording (D73):** "causal fleet index", not "censored" (the estimator stays censored, D31, in the
+  method). The paper never claims "best" from differences below 3%.
+- **Weighting check (D73, D75):** each trained forecaster with Chronos-2, weights per horizon frozen as part 2e
+  (`results/nb5c_weights/`), applied unchanged at the test; a secondary analysis for the Discussion only.
 - **LightGBM at the test (D64, 21 Nov 2026):** its 5-seed ensemble (`LGB_seeds`), with its conformal layer rebuilt
   from that ensemble (`tools/lgb_seeds_cal.py`, then `NB5c_conformal_lgb`).
 - **LightGBM's setting stays (D72, 22 Nov 2026):** part 2a as rule 1 chose it, even though it learns nothing at
   the two shortest first origins (F59); report F59 as a caveat, do not retune.
-- **TabPFN-TS (D65, 21 Nov 2026):** wait until the author has accepted the TabPFN licence; local inference only.
-- **PVSetFormer is the main model (D68, 21 Nov 2026):** "the goal of this paper is to show that PVSetFormer is the
-  best". Develop it until it is the lowest of the five forecasters (LightGBM, TimeXer, Chronos-2, TimesFM 2.5) at
-  every horizon on the validation units (`tools/pvsf_vs_all.py`); Colab may be used. Development data only; the
-  paper claims "best" only where the test run shows it.
+- **TabPFN-TS (D73, 22 Nov 2026):** dropped (row A6c); Future work only.
 - **Guide revisions on request:** when the author asks the agent to change the guide, apply the edits by an
   all-or-nothing script, keep the previous version in `docs/history/`, and log a decision (as in D25).
 - **Data are never committed** (about 1.7 GB). `data/MANIFEST_sha256.csv` is committed instead (D15).
@@ -149,7 +146,7 @@ data/raw/archives/      original downloads: Dataset.zip (Dryad), b2s4ycc2gz-1.zi
 data/external/cams/mcclear/   CAMS McClear clear-sky only, UT, Wh/m2 per 1-min step (HKUST, Safi)        (ignored)
 data/external/open-meteo/     ERA5 hourly, Benguerir only (follow-up paper)                               (ignored)
 data/external/pv_density/     ISPRS source PDF, digitised density grid, cluster map (Introduction)        (ignored)
-docs/research_guide.md  master plan (author), 18 Nov 2026 version
+docs/research_guide.md  master plan (author), 22 Nov 2026 version (before the freeze, D76)
 docs/history/           methodology_v0.md (2 Nov), review-audit-18-nov.md, hkust-data-audit.md (31 Oct)
 docs/*.md               decisions, findings, results_summary, methods, research_log, data_dictionary,
                         figures_and_tables, paper_handoff
@@ -193,7 +190,9 @@ nb5e`. Scoreboard against the four others: `python tools/pvsf_vs_all.py <round>`
 `python tools/combo_diag.py` (7 min). Ablation of the Chronos-2 input (D72): TimeXer `pvsf_dev.py --set
 arch=timexer ... fm=1`, LightGBM `python tools/r1_lgb_seeds.py --fm` (`LGB_fm_seeds`). LightGBM's rounds per task:
 `python tools/lgb_rounds_diag.py` (F59). Scoring of the ablation and of V15's rule: `python tools/fm_ablation.py`
-(seconds; `results/nb5c_diag/fm_ablation/`). The packages live only in the separate environment
+(seconds; `results/nb5c_diag/fm_ablation/`). Weighting check with Chronos-2 (part 2e, D75): `python
+tools/weight_check.py` (3 min; `results/nb5c_weights/`). Frozen configuration (D77): `python tools/freeze_config.py`
+(seconds; every pinned file must be committed; `results/freeze/`). The packages live only in the separate environment
 `.venv_fm` (`requirements-fm.txt`): never install them in the main one (numpy 2, torch 2.15). Downloads from the
 Hugging Face hub run with `HF_HUB_DISABLE_IMPLICIT_TOKEN=1` (the stored token has expired).
 PVSetFormer development (D36): one round `python tools/pvsf_dev.py --name V<k> --seeds 1 --set key=value ...`

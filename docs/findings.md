@@ -739,6 +739,23 @@ repository). Paths are relative to `data/raw/hkust/Dataset/Time series dataset/`
   to move weight to Chronos-2. The input also makes the seeds agree, which removes much of what the seed average
   used to gain. Provisional: 10 units, medians; at 1 h the per-unit gain is not consistent (p 0.23).
 
+### F61 — Weighted with Chronos-2 per horizon, each trained forecaster ends just below Chronos-2 alone on the units that chose the weights; the pairs are level with each other — *provisional*
+- **Evidence:** `results/nb5c_weights/` (`python tools/weight_check.py`, D75; 10 validation units, NB5a's slots, raw
+  quantiles; the weights are chosen and scored on the same units, so these numbers are in sample).
+  - Weights on Chronos-2 at 15 min / 30 min / 1 h / 2 h / 4 h / 6 h: PVSetFormer 0.8 / 0.7 / 0.3 / 0.5 / 0.8 / 0.6; TimeXer
+    0.6 / 0.7 / 0.3 / 0.8 / 1.0 / 0.7; LightGBM 0.4 / 0.8 / 0.8 / 0.8 / 1.0 / 0.9.
+  - Against Chronos-2 alone (ratio of medians): PVSetFormer pair −0.09 / −0.41 / −0.48 / −1.07 / −0.18 / −1.21%; TimeXer pair
+    −0.44 / −0.31 / −0.58 / −1.26 / +0.00 / −0.59%; LightGBM pair −0.70 / −0.13 / −0.11 / −0.22 / +0.00 / −0.15%.
+  - The PVSetFormer pair is lower than Chronos-2 on 9 / 6 / 3 / 3 / 8 / 7 of 10 units (Wilcoxon p
+    0.01 / 0.11 / 0.49 / 0.49 / 0.04 / 0.16).
+  - Lowest pair by horizon: LightGBM / PVSetFormer / TimeXer / TimeXer / PVSetFormer / PVSetFormer. The 50/50 reference: PVSetFormer 0.13014 / 0.15414 / 0.17704 / 0.20097 / 0.22102 / 0.19793.
+- **Reading:** weighted with Chronos-2, each trained forecaster ends at or just below Chronos-2 alone. The gains
+  are small (all below 3%) and in sample, and at 4 h TimeXer's and LightGBM's pairs keep Chronos-2 alone (weight
+  1). By unit the PVSetFormer pair is lower than Chronos-2 on 9 of 10 at 15 min but on only 3 of 10 at 1 h and
+  2 h, so at the primary horizon the median gain is not consistent across units. The weights also move between neighbouring horizons, a sign
+  that the median nRMSE is flat in w near its minimum. Which trained forecaster pairs best changes with the
+  horizon. The test events, with the weights frozen, give the out-of-sample answer (D73).
+
 ### F16 — Not every site file starts on the 1st of a month — *solid*
 - **Evidence:** among the 18 site files of the first event list, Indoor Sports Centre (2021-12-02), Zone J2
   (2021-11-13), Zone D (2022-01-20) and UG Hall9 (2023-02-11) start mid-month. The audit counts 5 of the 15-min and

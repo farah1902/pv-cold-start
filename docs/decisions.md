@@ -648,6 +648,7 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
 - **Evidence:** `results/nb5c_variants/CVX/`, `results/nb5c_variants/TX1/`.
 
 ### D50 — The main model after A6e: keep developing until the freeze [method, Phase 5] [author decision]
+- **Closed by D73 (22 Nov 2026):** development ended; the main model is V12 and the title is D25's fallback.
 - **Request or reason:** with 5 seeds, PVSetFormer without donor tokens (A6e) equals the full model on validation
   (F47). Asked how to handle the main model, the author chose (21 Nov 2026) "Keep trying until freeze".
 - **Change:**
@@ -936,6 +937,7 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
   `feb062a2dda885a5…`), with the LightGBM part-2a configuration and `LGB_seeds`' summary hashed in its summary.
 
 ### D65 — TabPFN-TS (row A6c) waits for the author to accept the TabPFN licence [author decision, Phase 5]
+- **Closed by D73 (22 Nov 2026):** TabPFN-TS is dropped and goes to Future work.
 - **Request:** the author, 21 Nov 2026, on the three options of D59 (local TabPFN-2 weights with telemetry off, the
   TabPFN-3.5 weights once the author has accepted their licence, or dropping the row): "u can wait to accept the
   licence".
@@ -1000,6 +1002,7 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
   TimeXer, −1.9% against LightGBM (6 of 10 units, p 0.77). By D69, if V13 meets its rule, V14 = V12 + V13's input.
 
 ### D68 — PVSetFormer stays the main model; the development target is to beat all four other forecasters [author decision, Phase 5]
+- **Closed by D73 (22 Nov 2026):** the target is retired; the design rounds end with V12.
 - **Request:** the author, 21 Nov 2026, after F56: "i want honestly to keep my model the main one and become the best
   of all the 4 others, so please refine tuning the model and make it the best one, i can re train it in colab or
   what ever u want but the goal of this paper is to show that PVSetFormer is the best".
@@ -1189,6 +1192,87 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
   - Lowest of the eight rows (the six, Chronos-2, TimesFM 2.5): LightGBM with the input at 15 min
     (0.12874); Chronos-2 alone from 30 min to 6 h. None of the three trained forecasters with the input is
     below Chronos-2 alone from 30 min (F60).
+
+### D73 — D68 closed: the freeze with V12, the fallback title, the weighting check, TabPFN-TS dropped [author decision, Phase 5] [guide deviation]
+- **Request:** after V15 and its ablation (F60), the agent set out three directions; the author asked to discuss a
+  written proposal first, then decided (22 Nov 2026): "I accept all four: (1) close D68 and freeze with V12; (2) the
+  D25 fallback title as my new decision, logged as a guide deviation; (3) all forecasters at the test as already
+  planned; (4) the weighting check, run on validation and test, with its rule fixed in part 2 before the freeze:
+  per-horizon weight on the grid 0–1 in steps of 0.1, chosen on the 10 validation units only, the same procedure for
+  the V12, TimeXer and LightGBM pairs with Chronos-2, the 50/50 average reported as a fixed reference." Also:
+  reword A6a, A6d and A6e in the guide before the freeze, by script, with the old version in `docs/history/`; headline
+  wording "causal fleet index", not "censored"; drop TabPFN-TS (A6c) and mention it in Future work; then re-run R1
+  and the conformal layer on V12, edit the guide, freeze part 2 and set the tag, after showing the author the
+  reworded A6a, A6d and A6e text.
+- **Reason (the discussion, checked against the files):**
+  - no round on the five-forecaster scoreboard was lowest at any horizon (V4a_5s, V9, V12–V15; `vs_all/`);
+  - below 3% a difference is level (guide §3.10): V12 is 0.15% above Chronos-2 at 1 h, 5.6% above at 4 h;
+  - the donor set adds nothing on validation (F47, strong), and part of the lead over LightGBM comes from F59;
+  - the paper is decided by the test against A1 (guide, pre-registered criteria), not by another version.
+- **Change:**
+  - D68's target ("lowest of the five") is retired and the design rounds end. The main index forecaster is
+    PVSetFormer V12_5s, by rule R1 re-run at the freeze (D74).
+  - **[guide deviation]** Working title: *Forecasting new rooftop PV inverters from day one, without history or a
+    pyranometer: a causal fleet index and a nameplate gain prior.* D25 tied this title to R1 keeping LightGBM; R1
+    kept PVSetFormer, and the author chose it anyway. PVSetFormer is named in the method section. The headline says
+    "causal fleet index"; the estimator stays the censored one (D31), as the method section says.
+  - Every forecaster runs on the fleet index at the test, as planned (guide §5.1).
+  - TabPFN-TS (A6c) is dropped and goes to Future work; D65 is closed.
+  - The weighting check is a secondary analysis with its rule frozen as part 2e (D75), reported in the Discussion.
+  - The guide is revised (D76) and part 2 is frozen (D77).
+- **Choices left to the agent, stated for the author's check before the tag:** the weight is the one with the
+  lowest median nRMSE over the 10 units (the measure of every rule here), a tie going to the weight nearest 0.5; the
+  blends use raw quantiles (no conformal layer), as F57 did.
+
+### D74 — Rule R1 and PVSetFormer's conformal layer re-run on V12 [method, Phase 5]
+- **Reason:** D73 (the final variant is V12_5s; D45 asked for NB5c to be re-run with the final variant).
+- **Change and result:**
+  - `python tools/make_nb5c.py --final V12_5s`, `NB5c_R1_decision.ipynb` executed: PVSetFormer 0.17782,
+    LightGBM 0.18130 at 1 h (−1.92%, 6 of 10 units, Wilcoxon p
+    0.77). R1 is met; PVSetFormer stays the main index forecaster. Part 2c: sha256
+    `f947effd8c9c62b6…` (V12's setting, 224,331 parameters, the 5 seeds, LightGBM's part 2a).
+  - The count of variants now covers PVSetFormer's design rounds only: 20 (V1 … V15 with their a/b
+    versions; a 5-seed re-run counts once), plus the searches CV2, CV4. The generator
+    no longer counts TimeXer runs, the R2 runs (A6e) or A4c from `log.csv`; D45's count of 6 named CV2 among them.
+  - As in D45, the margin is below 3% and part of it comes from F59: the paper does not claim from it that
+    PVSetFormer beats LightGBM.
+  - `python tools/make_nb5c_conformal.py`, `NB5c_conformal.ipynb` executed: the layer is kept. At 1 h PICP80
+    0.707 → 0.790 and IS80 0.5864 → 0.5805 (lower on 8 of 10 units); all 180 groups have at
+    least 50 scores; the raw PICP80 equals the R1 scores (difference 0). Settings sha256
+    `2b171cf0954d0cd8…`.
+  - Test rows derived from V12's setting (D77): A6e = V12 + `summary_only=1` (172,683 parameters) and A4c = V12 +
+    `ext=sensor_corr` (224,907); both build. Neither ran with V12 on validation (their validation rows used V4a:
+    F47, D56). V12's stored setting has no `clim` or `fm` key (options added later, off by default).
+- **Evidence:** `results/nb5c_r1/`, `results/nb5c_conformal/`.
+
+### D75 — The weighting check with Chronos-2: rule and weights, frozen part 2e [method, Phase 5]
+- **Reason:** D73 (4).
+- **Change:** `python tools/weight_check.py` (3 min). For each pair (PVSetFormer V12_5s, TimeXer TX1_5s, LightGBM
+  LGB_seeds, each with Chronos-2 at its part-2d setting; 5-seed means as in F57), the blend (1 − w) × trained + w ×
+  Chronos-2, quantile by quantile and sorted, is scored on NB5a's slots for w = 0, 0.1, …, 1. The weight per horizon
+  is the one with the lowest median nRMSE over the 10 validation units (tie: nearest 0.5). `blend()` in the tool is
+  the function the test run applies with the frozen weights.
+- **Checks:** w = 0 reproduces each member alone and w = 0.5 the equal averages of F57 (`results/nb5c_diag/combo/`),
+  and w = 1 gives the same Chronos-2 scores in the three pairs.
+- **Weights on Chronos-2 (15 min / 30 min / 1 h / 2 h / 4 h / 6 h):** PVSetFormer 0.8 / 0.7 / 0.3 / 0.5 / 0.8 / 0.6;
+  TimeXer 0.6 / 0.7 / 0.3 / 0.8 / 1.0 / 0.7; LightGBM 0.4 / 0.8 / 0.8 / 0.8 / 1.0 / 0.9.
+- **Validation result (in sample, F61):** median nRMSE at the chosen weights, PVSetFormer 0.12961 / 0.15354 / 0.17669 / 0.20097 / 0.21884 / 0.19763;
+  TimeXer 0.12916 / 0.15369 / 0.17652 / 0.20058 / 0.21924 / 0.19887; LightGBM 0.12882 / 0.15397 / 0.17736 / 0.20268 / 0.21924 / 0.19975; Chronos-2 alone 0.12973 / 0.15417 / 0.17755 / 0.20314 / 0.21924 / 0.20004.
+- **Frozen part 2e:** `results/nb5c_weights/weight_config_part2e.yaml`, sha256 `26ff86ca7ebc9abc…`.
+
+### D76 — Guide revision of 22 Nov 2026, before the freeze [guide deviation, Phase 5]
+- **Request:** the author (D73): reword A6a, A6d and A6e before the freeze, by script, with the old version kept.
+- **Change:** 17 edits applied all-or-nothing (`guide_d76.py`, scratch; dry run first). The previous version is
+  `docs/history/methodology_2026-11-22_pre-freeze.md` (sha256 `e0da0309771390c0…`, identical to the file before the
+  edits); 1,006 → 1,011 lines; new sha256 `e3394b884323c9da…`.
+  - Title of the document, working title (D73) and a revision note; contribution 1 becomes "A causal fleet index".
+  - §5: the opening names V12 and the censored estimator; row Main; rows A6a, A6d and A6e reworded to what the
+    validation units showed (F56, F48, F47); row A6c removed.
+  - TabPFN-TS removed from the baselines paragraph, the software line and the NB5b row; Future work item 8 added.
+  - The weighting check: a paragraph in §5.4 and a bullet in the Discussion plan.
+- **Proposed, not applied:** the claim of row LGB ("a set transformer beats boosting on the same task") has the
+  same problem as A6d (level, F44, F59); the agent proposes "whether the set transformer adds anything over boosting
+  on the same task; level at 1 h on validation (F44, F59)", for the author to accept before the tag.
 
 ### D16 — pvlib 0.16.1 and ruptures 1.1.10 are installed locally and pinned [environment, Phase 0]
 - **Request or reason:** both are in the guide's software list (§5.6) and were missing locally on 18 Nov 2026.

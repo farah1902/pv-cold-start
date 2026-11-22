@@ -281,6 +281,16 @@ Source: `results/nb5b_fm/summary.json`, `medians.csv`, `comparison.csv`, `fm_con
 | D72's rules, 15 min / 30 min / 1 h / 2 h / 4 h / 6 h: V15 below TX2 and LGB_fm; V15 below Chronos-2 | no / no / yes / no / yes / yes; no / no / no / no / no / no (all differences with TX2 and LGB_fm below 3%: level) | nb5c_diag/fm_ablation/rules.json |
 | V15 vs the equal average of V12 and Chronos-2 (F57) | +1.20 / +1.16 / +1.09 / +3.31 / +3.91 / +3.61% | nb5c_diag/fm_ablation/table.csv, nb5c_diag/combo/medians.csv |
 | Lowest of the eight rows (six of D72, Chronos-2, TimesFM 2.5) by horizon | LightGBM + Chronos-2 / Chronos-2 / Chronos-2 / Chronos-2 / Chronos-2 / Chronos-2 | nb5c_diag/fm_ablation/table.csv |
+| R1 at the freeze (D74): PVSetFormer V12_5s vs LightGBM LGB_seeds at 1 h; units won; Wilcoxon p | 0.17782 vs 0.18130 (−1.92%); 6 of 10; 0.77 | nb5c_r1/summary.json |
+| PVSetFormer design variants before the freeze; searches | 20; CV2, CV4 | nb5c_r1/r1_config_part2c.yaml |
+| Configuration part 2c (V12), sha256 | `f947effd8c9c62b6…` | r1_config_part2c.yaml |
+| PVSetFormer V12 conformal layer at 1 h: PICP80 raw → calibrated; IS80 raw → calibrated; units with lower IS80 | 0.707 → 0.790; 0.5864 → 0.5805; 8 of 10 | nb5c_conformal/summary.json |
+| PVSetFormer V12 conformal settings (part 2b), sha256 | `2b171cf0954d0cd8…` | conformal_config_part2b_pvsf.yaml |
+| Weighting check (D75), weights on Chronos-2 at 15 min / 30 min / 1 h / 2 h / 4 h / 6 h: PVSetFormer; TimeXer; LightGBM | 0.8 / 0.7 / 0.3 / 0.5 / 0.8 / 0.6; 0.6 / 0.7 / 0.3 / 0.8 / 1.0 / 0.7; 0.4 / 0.8 / 0.8 / 0.8 / 1.0 / 0.9 | nb5c_weights/chosen.csv |
+| Same, median nRMSE at the chosen weights (in sample): PVSetFormer; TimeXer; LightGBM | 0.12961 / 0.15354 / 0.17669 / 0.20097 / 0.21884 / 0.19763; 0.12916 / 0.15369 / 0.17652 / 0.20058 / 0.21924 / 0.19887; 0.12882 / 0.15397 / 0.17736 / 0.20268 / 0.21924 / 0.19975 | nb5c_weights/chosen.csv |
+| Same, against Chronos-2 alone: PVSetFormer; TimeXer; LightGBM pair | −0.09 / −0.41 / −0.48 / −1.07 / −0.18 / −1.21%; −0.44 / −0.31 / −0.58 / −1.26 / +0.00 / −0.59%; −0.70 / −0.13 / −0.11 / −0.22 / +0.00 / −0.15% | nb5c_weights/chosen.csv |
+| PVSetFormer pair vs Chronos-2: units lower; Wilcoxon p | 9 / 6 / 3 / 3 / 8 / 7 of 10; 0.01 / 0.11 / 0.49 / 0.49 / 0.04 / 0.16 | nb5c_weights/scores.csv |
+| Weighting configuration (part 2e), sha256 | `26ff86ca7ebc9abc…` | weight_config_part2e.yaml |
 
 ## Forecast skill and statistics (NB5, NB6)
 _empty_

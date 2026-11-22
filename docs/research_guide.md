@@ -1,10 +1,12 @@
-# PVSetFormer: cold-start PV forecasting without a pyranometer — full methodology
+# Cold-start PV forecasting without history or a pyranometer — full methodology
 
-Nov 2, 2026 · @farah · revised 18 Nov 2026
+Nov 2, 2026 · @farah · revised 18 and 22 Nov 2026
 
-**Working paper title (D25):** *PVSetFormer: forecasting new rooftop PV inverters from day one, without history or a pyranometer.* If rule R1 keeps quantile LightGBM as the main index forecaster, the fallback title is *Forecasting new rooftop PV inverters from day one, without history or a pyranometer: a causal fleet index and a nameplate gain prior.*
+**Working paper title (D73):** *Forecasting new rooftop PV inverters from day one, without history or a pyranometer: a causal fleet index and a nameplate gain prior.* It was D25's fallback title; the author made it the working title on 22 Nov 2026, before the freeze, although rule R1 kept PVSetFormer. PVSetFormer, the index forecaster chosen by R1, is named in the method section.
 
 **Revision of 18 Nov 2026 (evening):** this version integrates decisions D07 and D17–D25 of `docs/decisions.md`: Morocco scope (virtual fleets to the follow-up paper), CAMS all-sky data, the hidden-unit test bed, the satellite as a second drift reference, release additions, the protocol-freeze tag, the prior reported in days, the foundation-model and TimeXer baselines, and PVSetFormer with rules R1 and R2. The previous version is `docs/history/methodology_2026-11-18_audit.md`.
+
+**Revision of 22 Nov 2026 (before the protocol freeze):** this version integrates D73 of `docs/decisions.md`. D25's fallback title becomes the working title, and the headline says "causal fleet index". The claims of rows A6a, A6d and A6e are reworded to what the validation units showed (F47, F48, F56). TabPFN-TS (A6c) is dropped and moved to Future work. The weighting check with Chronos-2 is added as a secondary analysis (frozen part 2e, D75). The previous version is `docs/history/methodology_2026-11-22_pre-freeze.md`.
 
 ## Status
 
@@ -36,7 +38,7 @@ Most cold-start papers also simulate the cold start by hiding a station that was
 
 ### Three contributions (no more)
 
-1. **A causal fleet-factor forecaster with PVSetFormer.** The campus clear-sky index k(t) is estimated from peers up to the issue time only, with clipping treated as censoring, then forecast probabilistically for 15 min to 6 h by PVSetFormer: a transformer that reads the peer inverters as a set (no coordinates), treats clipped readings as censored, and asks one question per horizon from the known future sun geometry (Section 5.4). The new inverter needs no history, no coordinates and no irradiance sensor.
+1. **A causal fleet index.** The campus clear-sky index k(t) is estimated from the peer inverters up to the issue time only, with clipped readings handled inside the estimator (Section 3). A new inverter then becomes a series that a probabilistic forecaster can predict for 15 min to 6 h, with no history of its own, no coordinates and no irradiance sensor. The paper's forecaster is PVSetFormer (Section 5.4), chosen by rule R1; quantile LightGBM, TimeXer and two zero-shot foundation models run on the same index as rows.
 2. **A physical gain prior.** Each inverter's gain is predicted from its DC/AC ratio, with uncertainty from the donor fleet, then updated by Bayesian shrinkage as its own data arrive. This tells an operator when to retire the cold-start model.
 3. **An honest evaluation protocol.** Real telemetry start dates, a formal information set, an exact error budget (index vs gain vs residual), and a sensor ablation showing that irradiance-based transfer works while the sensor is stable and fails after its step drift, even after recalibration (to be confirmed by A4b). An external case study on a Moroccan rooftop in Safi then measures how much adaptation a new country needs.
 
@@ -453,13 +455,13 @@ Licences: MIT for the code and CC BY 4.0 for the derived data. The original Drya
 
 ## 5. Models
 
-The main model is the censored index and the DC/AC prior with one of two index forecasters, chosen on the validation units by rule R1 before the freeze: PVSetFormer (Section 5.4) or quantile LightGBM on the fleet state (9 quantiles × 6 horizons = 54 models per training origin). Every other model removes exactly one claim, so each row of the results table tests one sentence of the paper.
+The main model is the causal fleet index (censored estimator, D31) and the DC/AC prior with the index forecaster chosen on the validation units by rule R1 before the freeze: PVSetFormer (Section 5.4; variant V12, D45, D74), against quantile LightGBM on the fleet state (9 quantiles × 6 horizons = 54 models per training origin). Every other model removes exactly one claim, so each row of the results table tests one sentence of the paper.
 
 ### 5.1 All models
 
 | ID | Model | Claim it tests |
 | --- | --- | --- |
-| **Main** | Censored index + DC/AC prior + PVSetFormer (or quantile LightGBM, rule R1) | The full method |
+| **Main** | Causal fleet index (censored estimator) + DC/AC prior + PVSetFormer (chosen by rule R1) | The full method |
 | LGB | The main pipeline with the quantile LightGBM bank, when PVSetFormer is main | A set transformer beats boosting on the same task |
 | A0 | Climatological index (slot median over the last 60 days) × prior gain; probabilistic version from the same 60 days | Cloud dynamics matter |
 | A1 | Persisted fleet index × prior gain; PeEn ensemble for probabilistic scores | Learning beats persistence |
@@ -470,11 +472,10 @@ The main model is the censored index and the DC/AC prior with one of two index f
 | A4b | Same learner on the corrected pyranometer index | The fleet beats even a recalibrated sensor |
 | A4c | Main model plus the corrected sensor index | Adding the sensor helps or hurts |
 | A5 | k-nearest-neighbour analogs in the fleet-state space (K = 50), quantiles of their future index | Boosting beats analog forecasting (a cross-learning style baseline) |
-| A6a | Chronos-2, zero-shot, past fleet state as past covariates and u(t + h) as known future covariates | A pre-trained foundation model does not replace campus-trained forecasting |
+| A6a | Chronos-2, zero-shot, past fleet state as past covariates and u(t + h) as known future covariates | The fleet index lets a forecaster with no training on the campus predict a unit with no history; compared with the trained forecasters as a peer, not assumed to lose (on validation: level at 1 h, lower from 2 h, F56) |
 | A6b | TimesFM 2.5, zero-shot, same covariates | Same, second foundation model |
-| A6c | TabPFN-TS, zero-shot, same covariates | Same, tabular foundation model |
-| A6d | TimeXer, trained, same per-donor series, u(t + h) through its future-exogenous variant, pinball loss | PVSetFormer's design beats a state-of-the-art exogenous transformer given the same information (rule R2) |
-| A6e | PVSetFormer on the fleet summary only (no donor set) | The gain comes from the design, not only from more information (rule R2) |
+| A6d | TimeXer, trained, same per-donor series, u(t + h) through its future-exogenous variant, pinball loss | Whether PVSetFormer's design adds anything over a state-of-the-art exogenous transformer given the same information (rule R2); on validation the two are level at 1 h (F48) |
+| A6e | PVSetFormer on the fleet summary only (no donor set) | Whether the donor set adds information beyond the fleet summary (rule R2); on validation it adds nothing measurable (F47) |
 | A7 | Same-time fleet index (oracle, labelled as not a forecast) | Upper bound; virtual metering |
 | A8 | Same-roof scaling (capacity additions only) | Beats what an operator would do |
 | L1, L2 | Smart persistence and LightGBM on the unit's own history (90-day curve only) | When to retire the cold-start model |
@@ -524,9 +525,11 @@ PVSetFormer forecasts the 9 quantiles of k(t + h) for the six horizons at once, 
 - **Development, rule R1.** All design work uses development data only: the 10 validation units and the fleet index before the first test event (May to September 2021). The model may go through as many design rounds as needed; every variant is logged as a decision, and the number of variants is reported. Hyperparameter search uses the same budget as LightGBM and TimeXer.
 - **Ablations, one component at a time.** Without the donor set (A6e), without the clipping flags, with clock-time positions, with the future geometry concatenated instead of used as queries, and with sorted instead of monotone quantiles.
 
-**Baselines with the same interface (D23).** Chronos-2, TimesFM 2.5 and TabPFN-TS run zero-shot, with the past fleet state as past covariates and u(t + h) as known future covariates. TimeXer is trained like PVSetFormer, on the same per-donor series, with u(t + h) through its future-exogenous variant (rule R2). Packages and licences are checked at NB0, and inference stays local.
+**Baselines with the same interface (D23).** Chronos-2 and TimesFM 2.5 run zero-shot (TabPFN-TS was dropped before the freeze, D73), with the past fleet state as past covariates and u(t + h) as known future covariates. TimeXer is trained like PVSetFormer, on the same per-donor series, with u(t + h) through its future-exogenous variant (rule R2). Packages and licences are checked at NB0, and inference stays local.
 
 Because all forecasters share inputs, outputs and training windows, each row isolates one design choice.
+
+**Secondary analysis: weighting with Chronos-2 (D73, frozen part 2e, D75).** Each trained forecaster (PVSetFormer, TimeXer, LightGBM; 5-seed ensembles) is paired with Chronos-2: the blended quantiles are (1 − w\_h) × trained + w\_h × Chronos-2, sorted again, with one weight per horizon on the grid 0, 0.1, …, 1. The weights are chosen on the 10 validation units only, by the lowest median nRMSE over units, with the same procedure for the three pairs, and frozen; the 50/50 average is reported as a fixed reference. On the test events the frozen weights are applied unchanged, to raw quantiles. The result goes to the Discussion, never as the main model.
 
 ### 5.5 Results tables the models feed
 
@@ -542,7 +545,7 @@ Metrics and tests are defined once, in Sections 3.9 and 4.4.
 
 ### 5.6 Software
 
-Python 3.12 locally with pandas, pvlib 0.16.1, lightgbm 4.6.0, ruptures 1.1.10, scipy and statsmodels. PyTorch for PVSetFormer and TimeXer, and the packages of Chronos-2, TimesFM 2.5 and TabPFN-TS, on Google Colab (D04, D23).
+Python 3.12 locally with pandas, pvlib 0.16.1, lightgbm 4.6.0, ruptures 1.1.10, scipy and statsmodels. PyTorch for PVSetFormer and TimeXer, and the packages of Chronos-2 and TimesFM 2.5, on Google Colab (D04, D23).
 
 ### 5.7 Notebooks
 
@@ -556,7 +559,7 @@ The study runs in 12 notebooks backed by one small Python package (`pvcold/`) th
 | NB3\_index\_gains\_prior | Median vs censored index, donor gains, DC/AC priors G0/G1/G2, tuning on validation events, then the freeze | Index series per event, gains, frozen config hash | Figs. 3–4, prior and estimator tables |
 | NB4\_sensor\_baselines | Sensor QC, night offset, monthly recalibration for A4, A4b, A4c | Corrected sensor index | Sensor table inputs |
 | NB5\_forecasting | Main LightGBM bank plus A0, A1, CLIPER, A2, A3, A5, A7, A8; rolling origin; 200-member composition | Forecast store (event × model × horizon) | — |
-| NB5b\_foundation\_models | Chronos-2, TimesFM 2.5 and TabPFN-TS, zero-shot (Colab) | Foundation-model forecasts | Rows A6a–A6c |
+| NB5b\_foundation\_models | Chronos-2 and TimesFM 2.5, zero-shot (Colab) | Foundation-model forecasts | Rows A6a–A6b |
 | NB5c\_pvsetformer | PVSetFormer and TimeXer: development on the validation units, the R1 selection, then rolling origins with 5 seeds (Colab GPU) | Transformer forecasts, R1 record | Main model or row; rows A6d, A6e |
 | NB6\_evaluation\_statistics | Scores, Wilcoxon with Holm, Hodges–Lehmann, bootstraps, Diebold–Mariano, error budget, conditional verification, leakage table | Score table, statistics tables | Main tables, Figs. 5–8 |
 | NB7\_secondary\_analyses | 90-day gain update and retirement day, capacity additions, fleet size, hourly track | Secondary tables | Fig. 9, Fig. S1 |
@@ -742,6 +745,7 @@ Job: answer one question per subsection, in the order of the contributions. The 
 - **Why the fleet beats the sensor:** a shared index averages many roofs, and a single instrument has no redundancy.
 - **Limitations:** one campus, low tilt diversity, 13 scored events, telemetry start instead of grid connection.
 - **Threats to validity and the leakage lesson:** how much leaky protocols inflate skill.
+- **Weighting with Chronos-2 (secondary, frozen part 2e):** the per-horizon weights chosen on the validation units, applied unchanged to the test events for the three trained forecasters alike, beside the 50/50 average; what a forecaster trained on the campus adds to a zero-shot one on the same index.
 
 ### Paper §8 — Future work
 
@@ -752,6 +756,7 @@ Job: answer one question per subsection, in the order of the contributions. The 
 5. **Online gains:** detecting soiling, faults and degradation from the gain drift.
 6. **Hierarchical forecasts,** reconciled from inverter to station to feeder.
 7. **Fine-tuned foundation models** as index forecasters (the zero-shot ones are baselines here, D23).
+8. **Tabular foundation models** such as TabPFN-TS as further zero-shot rows (dropped before the freeze here, D73).
 
 ## 8. Morocco: how it enters the story
 

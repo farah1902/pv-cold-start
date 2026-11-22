@@ -349,3 +349,8 @@ One entry per work session: what was asked, what was done, the key numbers, what
   lower on 9 and 9 of 10 units at 4 and 6 h. TX2_5s (21 min) and LGB_fm_seeds (9 min) with
   the same input: gains of up to 1.7% and 3.3%; V15 level with both everywhere; D72's
   second rule met at no horizon; Chronos-2 alone lowest from 30 min (F60). Scored with `tools/fm_ablation.py`.
+- **D73–D76 (22 Nov):** the author closed D68 after discussing a written proposal: freeze with V12, D25's fallback
+  title, every forecaster at the test, the weighting check with Chronos-2 as frozen part 2e, TabPFN-TS dropped.
+  R1 re-run with V12 (met, −1.92% at 1 h; part 2c `f947effd8c9c`); PVSetFormer's conformal
+  layer on V12 kept; `tools/weight_check.py` chose the weights (part 2e `26ff86ca7ebc`; F61, in sample);
+  the guide revised by 17 edits (D76). `make_nb5c.py` now counts design variants only.

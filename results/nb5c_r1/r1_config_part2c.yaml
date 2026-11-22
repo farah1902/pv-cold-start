@@ -1,5 +1,26 @@
 R1_lgb_ensemble: 0.181302
-R1_pvsf_ensemble: 0.180012
+R1_pvsf_ensemble: 0.177818
+design_variants:
+- V1
+- V2
+- V3
+- V4a
+- V4b
+- V5a
+- V5b
+- V6a
+- V6b
+- V7a
+- V7b
+- V8a
+- V8b
+- V10a
+- V9
+- V11a
+- V12
+- V13
+- V14
+- V15
 ensemble: mean of the sorted quantiles across seeds, sorted again
 lgb_config_sha256: d03bb0b86827009edcc4d37bd6ebb88de1697e1c8aac60646e988f4e9fe75abe
 lgb_params:
@@ -13,11 +34,17 @@ pvsetformer_cfg:
   aux: 0.0
   balance: 1
   batch: 256
-  d: 32
+  d: 64
   donor_dropout: 0.1
+  donor_id: 0
+  donor_rel: 0
   dropout: 0.1
+  ext: ''
   fleet_token: 1
   heads: 4
+  hhead: 0
+  hhead_n: 0
+  hmask: 0
   lin: 1
   lr: 0.001
   max_epochs: 100
@@ -26,14 +53,22 @@ pvsetformer_cfg:
   n_sky: 4
   patience: 15
   summary_only: 0
+  vgate: 0
+  vlin: 0
+  vmed: 1
+  vmed_n: 2
+  vol: 0
   weight_decay: 0.5
-pvsetformer_n_params: 60157
-pvsetformer_variant: V4a_5s
+pvsetformer_n_params: 224331
+pvsetformer_variant: V12_5s
 rule: 'R1 (D25, D37): median validation nRMSE at 1 h, 5-seed ensembles of both models'
+searches_before_decision:
+- CV2
+- CV4
 seeds:
 - 20261119
 - 20261120
 - 20261121
 - 20261122
 - 20261123
-variants_before_decision: 6
+variants_before_decision: 20
