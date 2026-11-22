@@ -1,5 +1,5 @@
 protocol: protocol-freeze (D21, D77, D78)
-commit_parent: 0354cbd91b6936b2f166dc78f442f38986b4c65b
+commit_parent: 5e056f04bf946f483937e68be6112b5a62870e18
 primary_horizon_steps: 4
 statistics:
   primary:
@@ -98,7 +98,7 @@ files:
   research_guide:
     path: docs/research_guide.md
     sha256: 0e10f424bbf71e2dc052982e7c37f8011ead7a06aaabdecf58c4b6700fe1a320
-    decision: D76
+    decision: D76, D78
 test_rows:
   main:
     model: PVSetFormer

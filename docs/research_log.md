@@ -365,3 +365,6 @@ One entry per work session: what was asked, what was done, the key numbers, what
 - **A6e and A4c with V12, guide and freeze (22 Nov, 17:00–18:10, D78):** A4c_V12 35 min, A6e_V12_5s 27 min. A6e
   +0.74% at 1 h against V12 (level by the rule); A4c level at every horizon at the same seed (F62). Guide revised by
   6 edits; frozen configuration rebuilt, sha256 `9ccffb7241172915…`. The tag waits for the author's check.
+- **The author's third check and the final freeze (22 Nov, D78):** approved with two fixes: the freeze tool labels
+  the guide "D76, D78", and F62's title follows §4.4's wording rule. The tool re-run on `5e056f0` gives sha256
+  `2d27ea1e82060a0f…`; the YAML differs from `9ccffb7241172915…` in the parent commit and the guide's label only.

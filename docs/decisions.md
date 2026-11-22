@@ -1364,6 +1364,9 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
     title's last clause on A4c ("the corrected sensor adds nothing").
   - Then the `protocol-freeze` tag on the commit that holds the final `frozen_config.yaml`, pushed, with the tag's
     commit and hash recorded here.
+  - **Final frozen configuration:** `python tools/freeze_config.py` re-run, sha256 `2d27ea1e82060a0f87622dadd0c0a3d0e395e905aa2f39e019db770330f19b0a` (built on
+    commit `5e056f0`; 16 pinned files). Against `9ccffb7241172915…`, the YAML differs in two lines only: the parent
+    commit and the guide's label. It replaces that hash, which was never tagged.
 
 ### D16 — pvlib 0.16.1 and ruptures 1.1.10 are installed locally and pinned [environment, Phase 0]
 - **Request or reason:** both are in the guide's software list (§5.6) and were missing locally on 18 Nov 2026.

@@ -298,7 +298,8 @@ Source: `results/nb5b_fm/summary.json`, `medians.csv`, `comparison.csv`, `fm_con
 | A4c with V12 (corrected sensor index, 1 seed, D78) vs V12 at the same seed 20261119, median nRMSE at 15 min / 30 min / 1 h / 2 h / 4 h / 6 h | 0.1328 / 0.1575 / 0.17791 / 0.2073 / 0.2321 / 0.2111 vs 0.1316 / 0.1551 / 0.17800 / 0.2074 / 0.2301 / 0.2063 (+0.88 / +1.53 / −0.05 / −0.06 / +0.85 / +2.35%) | nb5c_rows_v12/table.csv |
 | Same: units where A4c is lower; Wilcoxon p | 3 / 3 / 3 / 3 / 5 / 4 of 10; 0.43 / 0.19 / 0.23 / 0.11 / 0.38 / 0.56 | nb5c_rows_v12/table.csv |
 | Frozen configuration (D77; 16 pinned files and the test rows; superseded by D78's rebuild), sha256 | `805388260696999d…` | freeze/frozen_config.yaml (commit 47e1ae9) |
-| Frozen configuration (D78; 16 pinned files, the test rows with their seeds, the primary and the eight secondary tests), sha256 | `9ccffb7241172915…` | freeze/frozen_config.yaml |
+| Frozen configuration (D78; 16 pinned files, the test rows with their seeds, the primary and the eight secondary tests; superseded at the author's third check, never tagged), sha256 | `9ccffb7241172915…` | freeze/frozen_config.yaml (commit 92cd0c6) |
+| Frozen configuration, final (D78; as above, the guide labelled "D76, D78"), sha256 | `2d27ea1e82060a0f…` | freeze/frozen_config.yaml |
 
 ## Forecast skill and statistics (NB5, NB6)
 _empty_
