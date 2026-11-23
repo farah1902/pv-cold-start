@@ -393,3 +393,8 @@ One entry per work session: what was asked, what was done, the key numbers, what
   mirror and fetch sets. On one CPU training, the path from part to meta to mirror to fetch to refetch was checked.
   The Drive mirror for A6a and A6b (`pv-cold-start-nb6`, 17 files) was built once Drive was running. No test score
   exists.
+- **No double runs; mirrors ready (23 Nov, D80):** the local runners now skip A4c, A2 and tb_main unless
+  `PVSF_CPU_ROWS=1` (`36fa5ad`). So the running chain goes from main to A6e and A6d, and the test-bed queue runs only
+  its NB5a and source rows. The GPU mirror `G:/My Drive/pv-cold-start-nb6gpu` was rebuilt from `36fa5ad` (57 files,
+  110 MB). The first one, from `1ccae60`, was deleted before any use. Main row: 41 of 255 trainings at 20:40. Next,
+  for the author: NB6_gpu, then NB6_colab (about 2 h, from the development run times).
