@@ -432,6 +432,24 @@ def hl_day_bootstrap(sums_by_event: dict, B: int, rng) -> dict:
     return {"boot_lo": float(np.quantile(hl, 0.025)), "boot_hi": float(np.quantile(hl, 0.975))}
 
 
+def joint_day_bootstrap(sums_by_unit: dict, B: int, rng) -> dict:
+    """Units that share one sky (the hidden-unit test bed, D18): whole target days resampled jointly for every unit
+    (the same days for all), each unit's nRMSE difference recomputed, and the median over units; percentile 95%
+    interval. A unit without a slot on a drawn day contributes nothing for that day."""
+    days = sorted(set().union(*[set(s.index) for s in sums_by_unit.values()]))
+    pos = {d: i for i, d in enumerate(days)}
+    U = len(sums_by_unit)
+    M = np.zeros((len(days), U, 3))
+    for j, s in enumerate(sums_by_unit.values()):
+        M[[pos[d] for d in s.index], j, :] = s[["sa", "sb", "n"]].to_numpy()
+    idx = rng.integers(0, len(days), size=(B, len(days)))
+    tot = M[idx].sum(axis=1)                                  # (B, U, 3)
+    with np.errstate(invalid="ignore", divide="ignore"):
+        d = np.sqrt(tot[..., 0] / tot[..., 2]) - np.sqrt(tot[..., 1] / tot[..., 2])
+    med = np.nanmedian(d, axis=1)
+    return {"days": len(days), "boot_lo": float(np.quantile(med, 0.025)), "boot_hi": float(np.quantile(med, 0.975))}
+
+
 def rng_for(label: str) -> np.random.Generator:
     """One reproducible stream per analysis: C.SEED with the label hashed into the seed sequence."""
     return np.random.default_rng([C.SEED, int(hashlib.sha256(label.encode()).hexdigest()[:8], 16)])

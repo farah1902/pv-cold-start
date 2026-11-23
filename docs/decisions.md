@@ -1450,6 +1450,21 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
     Windows pages heavily.
   - Rows A6a and A6b run on Colab (NB6_colab) from `results/nb6_forecasts/fm_inputs/`: 17 events, 63,657 issue
     times; its manifest is committed.
+- **The hidden-unit test bed (D18) and the test path, before any test score (22–23 Nov 2026):**
+  - `tools/nb6_testbed.py --index` built the 10 pseudo events (2 dates × 5 groups; donors by NB2's rule without
+    every unit of the group's stations, 25–33 each). Each pseudo event has NB3's censored index with the frozen part
+    1, priors for the 69 hidden units (65 G2, 4 G0), and NB4's refitted gains (`results/nb6_testbed/`).
+  - Its forecasts are queued after the chain (`tools/nb6_run_testbed.sh --wait`): NB5a's forecasters, the source
+    rows and the main model. One index forecast per date and group serves all the group's units, each composed with
+    its own prior.
+  - The scorer's test mode scores the test bed: main vs A1, A4, A4b and A9 per date and horizon, over the hidden
+    units. Its interval resamples whole days jointly for all units (they share one sky, D18).
+  - `tools/nb6_manifest.py` replaces `nb6_forecast.py --manifest`. It covers the 17 events' rows, the test bed and
+    the Colab files, and records the hashes of the inputs.
+  - Rehearsal (`nb6_score.py --set rehearse`): validation forecasts written in the test layout and read through
+    the test path (manifest, hashes, frozen seed ensembles). The primary and secondary tables equal the validation
+    mode's to 10⁻¹². The test bed is rehearsed with synthetic observations once its parts exist, so no hidden unit's
+    power is read before the scoring.
 
 ### D16 — pvlib 0.16.1 and ruptures 1.1.10 are installed locally and pinned [environment, Phase 0]
 - **Request or reason:** both are in the guide's software list (§5.6) and were missing locally on 18 Nov 2026.

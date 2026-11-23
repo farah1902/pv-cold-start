@@ -104,20 +104,31 @@ def validation_sources(fz: dict) -> dict:
     return {"rows": out, "cal": cal, "ref": fc5}
 
 
-def test_sources(fz: dict) -> dict:
-    """The test forecasts listed in results/nb6_forecasts/manifest.json, each checked against its committed hash."""
-    man_p = C.RESULTS / "nb6_forecasts" / "manifest.json"
-    assert man_p.exists(), "no test forecast manifest: generate the test forecasts first"
-    rel = man_p.relative_to(ROOT).as_posix()
-    assert git("ls-files", rel) == rel and git("status", "--porcelain", "--", rel) == "", "manifest not committed"
-    git("merge-base", "--is-ancestor", "protocol-freeze", "HEAD")
+def test_sources(fz: dict, man_p: Path, require_commit: bool = True) -> dict:
+    """The forecasts listed in a manifest (results/nb6_forecasts/manifest.json for the test), each checked against its
+    hash. For the test the manifest must be committed, on a descendant of the protocol-freeze tag."""
+    assert man_p.exists(), f"no manifest {man_p}: generate the test forecasts first (tools/nb6_manifest.py)"
+    if require_commit:
+        rel = man_p.relative_to(ROOT).as_posix()
+        assert git("ls-files", rel) == rel and git("status", "--porcelain", "--", rel) == "", "manifest not committed"
+        git("merge-base", "--is-ancestor", "protocol-freeze", "HEAD")
     man = json.loads(man_p.read_text())
     assert man["frozen_config_sha256"] == EV.load_frozen()[1], "the manifest was built on another frozen configuration"
     files = {}
     for name, f in man["files"].items():
-        p = ROOT / f["path"]
-        assert EV.sha256(p) == f["sha256"], f"{name}: forecast file differs from the committed manifest"
+        p = Path(f["path"]) if Path(f["path"]).is_absolute() else ROOT / f["path"]
+        assert EV.sha256(p) == f["sha256"], f"{name}: forecast file differs from the manifest"
         files[name] = pd.read_parquet(p)
+        for c in ("origin", "t"):
+            files[name][c] = pd.to_datetime(files[name][c])
+    out = rows_from_files(fz, files)
+    out["manifest_sha256"] = EV.sha256(man_p)
+    out["files"] = files
+    return out
+
+
+def rows_from_files(fz: dict, files: dict) -> dict:
+    """The 17 events' rows from the manifest files: frozen seed ensembles, NB5a's forecasters, the source rows."""
     tr = fz["test_rows"]
     out = {r: EV.ensemble(files[r], tr[r]["seeds"]) for r in ("main", "LGB", "A2", "A4c", "A6d", "A6e")}
     out["A6a"], out["A6b"] = EV.ensemble(files["A6a"]), EV.ensemble(files["A6b"])
@@ -130,7 +141,93 @@ def test_sources(fz: dict) -> dict:
     for r, (src, m) in SOURCE_ROWS.items():
         out[r] = fx[(fx.source == src) & (fx.model == m)].drop(columns=["source", "model"]).reset_index(drop=True)
     cal = {"main": EV.ensemble(files["main_cal"], tr["main"]["seeds"]), "LGB": EV.ensemble(files["LGB_cal"], tr["LGB"]["seeds"])}
-    return {"rows": out, "cal": cal, "ref": ref, "manifest_sha256": EV.sha256(man_p)}
+    return {"rows": out, "cal": cal, "ref": ref}
+
+
+# --- Hidden-unit test bed (D18) ------------------------------------------------------------------------------------
+TB_ROWS = ["main", "A1"]                                     # plus the source rows; guide §4.4: main and sensor comparisons
+TB_REFS = ["A1", "A4", "A4b", "A9"]
+
+
+class TBContext(EV.Context):
+    """The test bed's pseudo events (results/nb6_testbed): each hidden unit is scored on its own unit series, with
+    its group's donors and gains and its own prior (checked against nb6_testbed/priors.csv). observe: an optional
+    function v -> series replacing the observations (the rehearsal's synthetic values, so no test outcome is read)."""
+
+    def __init__(self, observe=None):
+        super().__init__()
+        TBD = C.RESULTS / "nb6_testbed"
+        pe = pd.read_csv(TBD / "pseudo_events.csv", parse_dates=["start"])
+        self.p = dict(self.p)
+        self.p["events"], self.p["donors"] = pe, pd.read_csv(TBD / "donors.csv")
+        self.E = pe.set_index("event")
+        self.group_of = pe[pe.level == "unit"].set_index("event")["group_event"].to_dict()
+        g = pd.read_csv(TBD / "gains.csv")
+        self.gains3 = pd.concat([g[g.event == G].assign(event=u) for u, G in self.group_of.items()], ignore_index=True)
+        gx = pd.read_csv(TBD / "gains_external.csv")
+        self.gx = pd.concat([gx[gx.event == G].assign(event=u) for u, G in self.group_of.items()], ignore_index=True)
+        self.pri3 = pd.read_csv(TBD / "priors.csv").set_index("event")
+        self.observe = observe
+
+    def y_series(self, v):
+        if v not in self._y:
+            self._y[v] = self.observe(v) if self.observe else self.p["y15"][self.E.loc[v, "units"]]
+        return self._y[v]
+
+
+def expand(f: pd.DataFrame, group_of: dict) -> pd.DataFrame:
+    """A group-level forecast frame repeated for each hidden unit of the group (one index forecast serves all)."""
+    parts = [f[f.event == G].assign(event=u) for u, G in group_of.items()]
+    return pd.concat(parts, ignore_index=True)
+
+
+def score_testbed(files: dict, fz: dict, tbc: TBContext) -> tuple:
+    """Main, A1 and the source rows on every hidden unit, on NB5a's slots of its group (the unit's own observation)."""
+    ref = expand(files["tb_nb5a"], tbc.group_of)
+    units = list(tbc.group_of)
+    keys = {u: EV.slot_keys(ref, u, tbc) for u in units}
+    rows = {"main": expand(EV.ensemble(files["tb_main"], fz["test_rows"]["main"]["seeds"]), tbc.group_of),
+            "A1": ref[ref.model == "A1"].drop(columns="model")}
+    SC, SL = [], []
+    for r, f in rows.items():
+        sc, sl = EV.score_row(f, r, keys, tbc)
+        SC.append(sc), SL.append(sl)
+    fx = expand(files["tb_sources"], tbc.group_of)
+    for r, (s, m) in SOURCE_ROWS.items():
+        f = fx[(fx.source == s) & (fx.model == m)].drop(columns=["source", "model"]).reset_index(drop=True)
+        gsrc = lambda v, s=s: tbc.source_gain(v, tbc.gx[(tbc.gx.event == v) & (tbc.gx.source == s)]  # noqa: E731
+                                              .set_index("donor")["gain"])
+        sc, sl = EV.score_row(f, r, keys, tbc, gain=gsrc, full=False)
+        SC.append(sc), SL.append(sl)
+    SL = pd.concat(SL, ignore_index=True)
+    for c in ("event", "row"):
+        SL[c] = SL[c].astype("category")
+    return pd.concat(SC, ignore_index=True), SL
+
+
+def testbed_stats(SL: pd.DataFrame, tbc: TBContext) -> pd.DataFrame:
+    """Per pseudo-start date (stable 2022, drifted 2023) and horizon: main against A1, A4, A4b and A9 over the hidden
+    units, on the slots each pair shares. All units share one sky, so the interval of the median difference over
+    units resamples whole days jointly for every unit (guide §4.4, D18)."""
+    out = []
+    dates = tbc.E.loc[list(tbc.group_of), "start"]
+    for d in sorted(dates.unique()):
+        us = dates.index[dates == d].tolist()
+        for ref in TB_REFS:
+            for h in FC.H:
+                sums = {u: EV.day_sums(SL, "main", ref, u, h) for u in us}
+                sums = {u: s for u, s in sums.items() if len(s)}
+                if len(sums) < 2:
+                    continue
+                dd = np.array([np.sqrt(s.sa.sum() / s.n.sum()) - np.sqrt(s.sb.sum() / s.n.sum()) for s in sums.values()])
+                ra = np.array([np.sqrt(s.sa.sum() / s.n.sum()) for s in sums.values()])
+                rb = np.array([np.sqrt(s.sb.sum() / s.n.sum()) for s in sums.values()])
+                out.append({"date": pd.Timestamp(d).date(), "comparison": f"main vs {ref}", "h": h, "units": len(sums),
+                            "median_main": float(np.median(ra)), "median_ref": float(np.median(rb)),
+                            "diff_pct": 100 * float(np.median(ra) / np.median(rb) - 1),
+                            "units_main_lower": int((dd < 0).sum()), "median_diff": float(np.median(dd)),
+                            **EV.joint_day_bootstrap(sums, EV.B_BOOT, EV.rng_for(f"tb {d} {ref} {h}"))})
+    return pd.DataFrame(out)
 
 
 # --- Scoring --------------------------------------------------------------------------------------------------------
@@ -393,27 +490,36 @@ def check_known(P, S, SC, checks):
 # --- Main -----------------------------------------------------------------------------------------------------------
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--set", choices=["validation", "test"], required=True)
+    ap.add_argument("--set", choices=["validation", "test", "rehearse"], required=True)
+    ap.add_argument("--manifest", default=None, help="rehearse: a manifest of validation forecasts in the test layout")
     args = ap.parse_args()
     t0 = time.time()
     fz, fz_hash = EV.load_frozen()
-    out_name = "nb6_validation" if args.set == "validation" else "nb6_test"
+    out_name = {"validation": "nb6_validation", "test": "nb6_test", "rehearse": "nb6_rehearsal"}[args.set]
     if args.set == "test":
         assert not (C.RESULTS / out_name).exists(), "results/nb6_test exists: the test is scored once"
     ctx = EV.Context()
     gx = pd.read_csv(C.RESULTS / "nb4_sensor" / "gains_external.csv")
+    tb = None
     if args.set == "validation":
-        events = ctx.events("validation")
+        events = all_events = ctx.events("validation")
         src = validation_sources(fz)
         periods = {v: "stable" for v in events}           # June-July 2021, before any drift boundary
+    elif args.set == "rehearse":                          # the test's code path on validation forecasts (no test outcome)
+        events = all_events = ctx.events("validation")
+        src = test_sources(fz, Path(args.manifest), require_commit=False)
+        periods = {v: "stable" for v in events}
+        if "tb_main" in src["files"]:                     # the test bed with synthetic observations only
+            rng = np.random.default_rng(0)
+            tb = TBContext(observe=lambda v: pd.Series(rng.uniform(0, 0.9, len(ctx.p["y15"])), index=ctx.p["y15"].index))
     else:
-        events_scored, events_sens = ctx.events("scored"), ctx.events("sensitivity")
-        events = events_scored
-        src = test_sources(fz)
+        events = ctx.events("scored")
+        all_events = events + ctx.events("sensitivity")
+        src = test_sources(fz, C.RESULTS / "nb6_forecasts" / "manifest.json")
         per = pd.read_csv(C.RESULTS / "nb3_index" / "event_periods.csv").set_index("event")["sensor_period"]
         periods = per.to_dict()
-    print(f"{args.set}: {len(events)} events; frozen configuration {fz_hash[:16]}", flush=True)
-    all_events = events if args.set == "validation" else events_scored + events_sens
+        tb = TBContext()
+    print(f"{args.set}: {len(events)} events paired; frozen configuration {fz_hash[:16]}", flush=True)
     SC, SL, CF, keys = score_all(src, all_events, fz, ctx, gx)
     print(f"scored in {time.time() - t0:.0f} s", flush=True)
 
@@ -427,11 +533,25 @@ def main():
     DS = descriptive(SL, events, periods)
     DM = dm_table(SL, events, periods)
     BE, BC = bootstraps(SL, events, periods)
+    tables = {}
+    if tb is not None:
+        TSC, TSL = score_testbed(src["files"], fz, tb)
+        TS = testbed_stats(TSL, tb)
+        tables.update({"testbed_scores": TSC, "testbed": TS})
+        print(f"test bed: {TSC.event.nunique()} hidden units scored", flush=True)
     if args.set == "validation":
         check_statistics(checks)
         check_reproduction(SC, CF, src, ctx, keys, checks)
         check_known(P, S, SC, checks)
         print(f"checks passed: {len(checks)}", flush=True)
+    if args.set == "rehearse":                            # the test path must give the validation mode's numbers
+        vP = pd.read_csv(C.RESULTS / "nb6_validation" / "primary.csv")
+        vS = pd.read_csv(C.RESULTS / "nb6_validation" / "secondary.csv")
+        for a, b, label in ((P, vP, "primary"), (S, vS, "secondary")):
+            num = [c for c in b.columns if pd.api.types.is_numeric_dtype(b[c]) and c in a.columns]
+            close(a[num].to_numpy(dtype=float), b[num].to_numpy(dtype=float), 1e-12, f"rehearsal {label} = validation",
+                  checks)
+        print(f"rehearsal checks passed: {len(checks)}", flush=True)
     CK = pd.DataFrame(checks)
 
     pd.set_option("display.width", 220)
@@ -447,10 +567,10 @@ def main():
                "secondary": [{k: py(r[k]) for k in ["row", "ref", "diff_pct", "events_row_lower", "p", "p_holm", "hl",
                                                      "wording", "lower"]} for _, r in S.iterrows()],
                "n_checks": len(checks), "checks_passed": bool(CK["passed"].all()) if len(CK) else None}
-    if args.set == "test":
+    if args.set != "validation":
         summary["manifest_sha256"] = src["manifest_sha256"]
-    tables = {"scores": SC, "conformal": CF, "primary": P, "secondary": S, "descriptive": DS, "dm": DM,
-              "bootstrap_events": BE, "bootstrap_campus": BC}
+    tables.update({"scores": SC, "conformal": CF, "primary": P, "secondary": S, "descriptive": DS, "dm": DM,
+                   "bootstrap_events": BE, "bootstrap_campus": BC})
     if len(CK):
         tables["checks"] = CK
     out = A.write_outputs(out_name, tables, summary, parquet={"slots": SL})
