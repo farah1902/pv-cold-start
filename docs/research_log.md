@@ -378,3 +378,10 @@ One entry per work session: what was asked, what was done, the key numbers, what
   157 checks (four runs: the observation of NB5a's unit series kept exactly; float32 tolerance for the
   scores made in memory before the float32 write; the conformal layer applied in float32 as validated). Test-run tools
   written (`tools/nb6_forecast.py`, `tools/make_nb6_colab.py`, `fm_infer.py --revision`); no test forecast yet.
+- **Test run under way (22-23 Nov, D79):** the author chose local CPU. Done: NB5a's forecasters on the 17 events
+  (51 tasks, 24 min), LightGBM's 5 seeds with calibration sets (255 tasks, 91 min), the sensor and satellite sources
+  (153 tasks, 28 min), the foundation-model inputs, the hidden-unit test bed's index (10 pseudo events, 69 units).
+  The main row started on 23 Nov at 01:42 (6 workers; memory steady near 5 GB, pagefile 10-11%); then A4c, A2, A6e,
+  A6d and the test bed (`tools/nb6_run_testbed.sh --wait`). Rehearsal of the whole test path (17-event rows from the
+  validation forecasts, the test bed from stand-in forecasts with synthetic observations): validation tables
+  reproduced to 1e-12, 69 hidden units scored in every row. No test score exists.
