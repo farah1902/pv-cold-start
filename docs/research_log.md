@@ -398,3 +398,15 @@ One entry per work session: what was asked, what was done, the key numbers, what
   its NB5a and source rows. The GPU mirror `G:/My Drive/pv-cold-start-nb6gpu` was rebuilt from `36fa5ad` (57 files,
   110 MB). The first one, from `1ccae60`, was deleted before any use. Main row: 41 of 255 trainings at 20:40. Next,
   for the author: NB6_gpu, then NB6_colab (about 2 h, from the development run times).
+- **Local rows paused (23 Nov, 23:27):** at the author's request, both local runs were stopped. The chain
+  (`nb6_run_all.sh 6`) and the test-bed queue (`nb6_run_testbed.sh 6 --wait`) were killed, along with the main row's
+  Python process and its 6 workers; no process is left. Saved: main has 48 of 255 trainings, all trained, none
+  skipped; every one has its meta, forecast and calibration files, and all read back (119 CPU-hours). There are no
+  `.tmp` files and no orphans. The 6 trainings in progress had written nothing and will restart from zero.
+  LGB, sources and NB5a are complete; A6e, A6d and the test bed's NB5a and source rows are not started. The author
+  is running NB6_gpu (A4c, A2, tb_main) and NB6_colab (A6a, A6b) on Colab. **Resume:** first check that no
+  `nb6_forecast.py` process is alive (PowerShell `Get-CimInstance Win32_Process`). Then run
+  `bash tools/nb6_run_all.sh 6`: LGB and sources find every part done and train nothing, main continues from 48, A4c and A2 are skipped
+  (GPU), then A6e and A6d. After that, run `bash tools/nb6_run_testbed.sh 6 --wait`. On Windows, TaskStop does not
+  end the Python children; end them with `taskkill /PID <nb6_forecast pid> /T /F` after stopping the bash runners.
+  No test score exists.
