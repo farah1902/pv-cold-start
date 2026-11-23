@@ -385,3 +385,11 @@ One entry per work session: what was asked, what was done, the key numbers, what
   A6d and the test bed (`tools/nb6_run_testbed.sh --wait`). Rehearsal of the whole test path (17-event rows from the
   validation forecasts, the test bed from stand-in forecasts with synthetic observations): validation tables
   reproduced to 1e-12, 69 hidden units scored in every row. No test score exists.
+- **GPU for three test rows (23 Nov, D80):** at 19:43 the main row had finished 40 of 255 trainings in 18 h
+  (2.5 h each on the 4-core laptop); about 6 days of local rows remained. The author chose a Colab GPU for A4c, A2
+  and the test bed's main. A device switch was added to `setformer.py`. The CPU check passed: the shortest V12_5s
+  training is reproduced bit for bit, so the local main row and A6e and A6d are unaffected. The gate (GPU vs CPU on
+  validation) was fixed before any GPU run. Added `tools/nb6_gpu.py`, `notebooks/NB6_gpu.ipynb` and the `nb6gpu`
+  mirror and fetch sets. On one CPU training, the path from part to meta to mirror to fetch to refetch was checked.
+  The Drive mirror for A6a and A6b (`pv-cold-start-nb6`, 17 files) was built once Drive was running. No test score
+  exists.

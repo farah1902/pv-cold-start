@@ -119,6 +119,11 @@ something, record it and follow it, even if you would have chosen otherwise.
   consistently lower by less than 3%; from 3%, the difference named with its p-value (guide §4.4).
 - **Rows on the main model at the test (D78):** A2, A3, A4c, A6e (and A6d) use part 2c's 5 seeds and its
   ensembling, as written in the frozen configuration; the 1-seed A4c_V12 run was a validation check only.
+- **Where the test rows run (D79, D80, 23 Nov 2026):** main, A6e and A6d on the local CPU (`tools/nb6_run_all.sh`);
+  A4c, A2 and the test bed's main on a Colab GPU (`notebooks/NB6_gpu.ipynb`), only after the validation gate
+  passes (GPU ensemble level with V12_5s, under 3%, and per-seed medians within 3 standard errors, at every
+  horizon). `setformer.py` defaults to the CPU, and its CPU path is checked bit for bit (`nb6_gpu.py --cpu-check`).
+  Fetch the GPU parts before the local chain reaches A4c.
 - **LightGBM at the test (D64, 21 Nov 2026):** its 5-seed ensemble (`LGB_seeds`), with its conformal layer rebuilt
   from that ensemble (`tools/lgb_seeds_cal.py`, then `NB5c_conformal_lgb`).
 - **LightGBM's setting stays (D72, 22 Nov 2026):** part 2a as rule 1 chose it, even though it learns nothing at
@@ -201,7 +206,7 @@ arch=timexer ... fm=1`, LightGBM `python tools/r1_lgb_seeds.py --fm` (`LGB_fm_se
 tools/weight_check.py` (3 min; `results/nb5c_weights/`). Frozen configuration (D77): `python tools/freeze_config.py`
 (seconds; every pinned file must be committed; `results/freeze/`). Rows A6e and A4c with V12 on validation (D78):
 `python tools/freeze_rows_val.py` (seconds, after the runs `A6e_V12_5s` and `A4c_V12`; `results/nb5c_rows_v12/`).
-NB6 (D79): the scorer `python tools/nb6_score.py --set validation` (6 min; `results/nb6_validation/`, must pass every check) and, once only, `--set test` after the test forecasts' manifest is committed (`results/nb6_test/`, never overwritten). Test forecasts: `python tools/nb6_forecast.py --plan`, then `--row nb5a|LGB|sources|main|A2|A4c|A6e|A6d` (resumable parts in `results/nb6_forecasts/parts/`), `--fm-inputs` and the Colab round trip (`python tools/make_nb6_colab.py`, `make_drive_mirror.py --set nb6`, `NB6_colab`, `fetch_drive_runs.py --set nb6`), then `--manifest` and commit `results/nb6_forecasts/manifest.json` before scoring. The packages live only in the separate environment
+NB6 (D79): the scorer `python tools/nb6_score.py --set validation` (6 min; `results/nb6_validation/`, must pass every check) and, once only, `--set test` after the test forecasts' manifest is committed (`results/nb6_test/`, never overwritten). Test forecasts: `python tools/nb6_forecast.py --plan`, then `--row nb5a|LGB|sources|main|A2|A4c|A6e|A6d` (resumable parts in `results/nb6_forecasts/parts/`), `--fm-inputs` and the Colab round trip (`python tools/make_nb6_colab.py`, `make_drive_mirror.py --set nb6`, `NB6_colab`, `fetch_drive_runs.py --set nb6`), then `python tools/nb6_manifest.py` and commit `results/nb6_forecasts/manifest.json` before scoring. GPU rows (D80): commit, `python tools/make_nb6_gpu.py`, `python tools/make_drive_mirror.py --set nb6gpu` (about 115 MB), the author runs `NB6_gpu` (Run all; resumable), then `python tools/fetch_drive_runs.py --set nb6gpu` (repeat while Drive syncs) and `python tools/nb6_gpu.py --gate` locally (the committed `results/nb6_gpu_gate/`). The packages for the foundation models live only in the separate environment
 `.venv_fm` (`requirements-fm.txt`): never install them in the main one (numpy 2, torch 2.15). Downloads from the
 Hugging Face hub run with `HF_HUB_DISABLE_IMPLICIT_TOKEN=1` (the stored token has expired).
 PVSetFormer development (D36): one round `python tools/pvsf_dev.py --name V<k> --seeds 1 --set key=value ...`

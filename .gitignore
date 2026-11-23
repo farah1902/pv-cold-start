@@ -17,6 +17,9 @@ venv/
 results/.tmp_*/
 results/.*.log
 results/**/*.parquet
+# NB6 parts (D79, D80): rebuilt by their tools; the committed manifest records every hash
+results/nb6_forecasts/parts/
+results/nb6_gpu_val/
 _local_archive/
 .DS_Store
 Thumbs.db

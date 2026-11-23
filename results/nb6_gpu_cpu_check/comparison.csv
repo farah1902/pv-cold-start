@@ -1,0 +1,3 @@
+file,rows_new,rows_stored,keys_equal,dtype_new,dtype_stored,bitwise_equal,max_abs_diff
+forecasts,5022,5022,True,float32,float32,True,0.0
+calibration,485,485,True,float32,float32,True,0.0

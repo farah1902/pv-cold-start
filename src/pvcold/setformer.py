@@ -7,6 +7,7 @@ validity, over the last 4 h in 1-h patches, plus static features. Development us
 """
 from __future__ import annotations
 
+import os
 import time
 
 import numpy as np
@@ -412,6 +413,14 @@ def n_params(cfg: dict) -> int:
 
 
 # --- Training ---------------------------------------------------------------------------------------------------------
+def _device() -> str:
+    """Execution device (D80): "cpu" unless the environment variable PVSF_DEVICE names another ("cuda" for the Colab GPU
+    runs of the test rows A4c, A2 and the test bed's main). Execution only: model, inputs, settings and seeds are the
+    same. On "cpu" every .to() below returns its tensor unchanged, so the operations are those of the development runs
+    (checked bit for bit against V12_5s, tools/nb6_gpu.py --cpu-check)."""
+    return os.environ.get("PVSF_DEVICE", "cpu")
+
+
 def _tensors(B: dict, rows=None):
     import torch
     sl = slice(None) if rows is None else rows
@@ -445,20 +454,26 @@ def _aux_loss(dpred, dy, dm, dc, w=None):
 
 def _predict(model, B: dict, batch: int = 1024) -> np.ndarray:
     import torch
+    dev = _device()
     model.eval()
     out = []
     with torch.no_grad():
         for i in range(0, len(B["anchor"]), batch):
-            out.append(model(*_tensors(B, slice(i, i + batch))).numpy())
+            out.append(model(*[t.to(dev) for t in _tensors(B, slice(i, i + batch))]).cpu().numpy())
     return np.concatenate(out) if out else np.zeros((0, len(FC.H), len(FC.TAUS)))
 
 
 def _train(Btr: dict, ytr, mtr, cfg, seed, epochs, Bva=None, yva=None, mva=None, w=None):
     """AdamW on the masked pinball loss; with a validation set, early stopping (returns the best epoch count)."""
     import torch
+    dev = _device()
+    if dev != "cpu":                                     # D80: reproducible GPU kernels where torch has them
+        torch.use_deterministic_algorithms(True, warn_only=True)
     torch.manual_seed(seed)
     rng = np.random.default_rng(seed)
-    model = build_model(cfg)
+    model = build_model(cfg).to(dev)                     # initialised on the CPU generator, then moved
+    if w is not None:
+        w = w.to(dev)
     nowd = [p for n_, p in model.named_parameters() if n_ in NO_DECAY]
     if nowd:                                             # linear and volatility paths are not shrunk
         rest = [p for n_, p in model.named_parameters() if n_ not in NO_DECAY]
@@ -466,27 +481,29 @@ def _train(Btr: dict, ytr, mtr, cfg, seed, epochs, Bva=None, yva=None, mva=None,
                                 lr=cfg["lr"], weight_decay=cfg["weight_decay"])
     else:
         opt = torch.optim.AdamW(model.parameters(), lr=cfg["lr"], weight_decay=cfg["weight_decay"])
-    taus = torch.tensor(FC.TAUS, dtype=torch.float32)
-    Ttr = _tensors(Btr)
-    ytr_t, mtr_t = torch.from_numpy(np.nan_to_num(ytr).astype(np.float32)), torch.from_numpy(mtr.astype(np.float32))
+    taus = torch.tensor(FC.TAUS, dtype=torch.float32).to(dev)
+    Ttr = [t.to(dev) for t in _tensors(Btr)]
+    ytr_t = torch.from_numpy(np.nan_to_num(ytr).astype(np.float32)).to(dev)
+    mtr_t = torch.from_numpy(mtr.astype(np.float32)).to(dev)
     lam = float(cfg.get("aux", 0.0))
     if lam > 0:                                          # donor futures, only for training pairs (target before origin)
-        Dy = torch.from_numpy(Btr["dy"])
-        Dm = torch.from_numpy(Btr["dv"] * mtr.astype(np.float32)[:, None, :])
-        Dc = torch.from_numpy(Btr["dc"])
+        Dy = torch.from_numpy(Btr["dy"]).to(dev)
+        Dm = torch.from_numpy(Btr["dv"] * mtr.astype(np.float32)[:, None, :]).to(dev)
+        Dc = torch.from_numpy(Btr["dc"]).to(dev)
     if Bva is not None:
         Tva = _tensors(Bva)
-        yva_t, mva_t = torch.from_numpy(np.nan_to_num(yva).astype(np.float32)), torch.from_numpy(mva.astype(np.float32))
+        yva_t = torch.from_numpy(np.nan_to_num(yva).astype(np.float32)).to(dev)
+        mva_t = torch.from_numpy(mva.astype(np.float32)).to(dev)
     best, best_ep, wait, hist = np.inf, 0, 0, []
     best_state = None
     for ep in range(1, epochs + 1):
         model.train()
         perm = rng.permutation(len(ytr))
         for i in range(0, len(perm), cfg["batch"]):
-            b = torch.from_numpy(perm[i:i + cfg["batch"]])
+            b = torch.from_numpy(perm[i:i + cfg["batch"]]).to(dev)
             xb = [t[b] for t in Ttr]
             if cfg["donor_dropout"] > 0:                 # random donor subsets (guide §5.4)
-                keep = torch.rand(xb[2].shape) >= cfg["donor_dropout"]
+                keep = torch.rand(xb[2].shape, device=dev) >= cfg["donor_dropout"]
                 on = xb[2] & keep
                 on[on.sum(1) == 0] = xb[2][on.sum(1) == 0]
                 xb[2] = on
@@ -504,7 +521,7 @@ def _train(Btr: dict, ytr, mtr, cfg, seed, epochs, Bva=None, yva=None, mva=None,
             continue
         model.eval()
         with torch.no_grad():
-            vl = float(_loss(torch.from_numpy(_predict(model, Bva)), yva_t, mva_t, taus, w))
+            vl = float(_loss(torch.from_numpy(_predict(model, Bva)).to(dev), yva_t, mva_t, taus, w))
         hist.append(vl)
         if vl < best - 1e-6:
             best, best_ep, wait = vl, ep, 0

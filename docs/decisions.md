@@ -1466,6 +1466,56 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
     mode's to 10⁻¹². The test bed is rehearsed with synthetic observations once its parts exist, so no hidden unit's
     power is read before the scoring.
 
+### D80 — PVSetFormer's test rows A4c, A2 and the test bed's main run on a Colab GPU; a device switch after the freeze [execution, Phase 6]
+- **Request (the author, 23 Nov 2026):** after 19 h the main row had finished 40 of its 255 trainings on the
+  laptop's 4 cores (i5-1145G7, 6 workers, 2.5 h per large training on average). From the run times of those 40
+  trainings, the local rows still needed about 6 days: main about 26 h more, A4c and A2 about 40 h each, the test bed's
+  main about 20 h, A6e and A6d about 5 h each. The agent offered two options: a Colab GPU for A4c, A2 and the test
+  bed's main, through a device switch checked first (recommended), or staying on the CPU. The author chose the GPU.
+- **Change (execution only):**
+  - `setformer._device()` reads `PVSF_DEVICE` and defaults to `cpu`.
+  - `_train` and `_predict` move the model (initialised on the CPU generator, as before) and the tensors to that
+    device. On a GPU, torch's deterministic algorithms are on (warn only), and `CUBLAS_WORKSPACE_CONFIG` is set.
+  - The model, inputs, settings, seeds, ensembling and scoring are unchanged.
+  - `setformer.py` is not one of the files the frozen configuration pins (configurations and data), but the change
+    comes after the `protocol-freeze` tag, so it is recorded here.
+- **The CPU path is unchanged (checked):** `python tools/nb6_gpu.py --cpu-check` re-ran the shortest V12_5s training
+  (UG Hall2 2F, origin 3 Jun 2021, seed 20261121) with the edited file.
+  - Its 5,022 forecast rows and 485 calibration rows equal the stored ones bit for bit, with best epoch 8 as stored
+    (`results/nb6_gpu_cpu_check/`).
+  - So the local rows run the same operations as the development runs: the main row, whose workers started from the
+    old file, and A6e and A6d later.
+- **Where each row runs:**
+  - Local CPU: main, A6e and A6d, together with the rows already done (LightGBM, NB5a's forecasters, the sources)
+    and the test bed's NB5a and source rows.
+  - Colab GPU (`notebooks/NB6_gpu.ipynb`): A4c, A2 and tb_main.
+  - A GPU training does not reproduce the CPU training of the same seed: its kernels round differently, and its
+    dropout draws come from the CUDA generator.
+  - Every part's meta records the device, the GPU, the torch, CUDA, numpy and pandas versions, the hashes of its
+    files and the hash of the code that ran.
+- **The gate, fixed before any GPU run:**
+  - The validation round is V12 on the 10 validation units with the 5 frozen seeds (150 trainings). It is scored by
+    `tools/pvsf_dev.py`'s scorer; the gate's copy of that scorer rebuilds V12_5s's stored scores to 1.1·10⁻¹⁶.
+  - It passes if, at every horizon: (i) the GPU ensemble's median nRMSE is within 3% of the CPU ensemble's (V12_5s;
+    3% is the paper's level line, guide §4.4); and (ii) the mean of the 5 per-seed medians is within 3 standard
+    errors of the CPU one. On the CPU, the seeds' standard deviation is 1.5–3.6% of the median.
+  - If it fails, the three rows stay on the CPU.
+  - A dry run with V12_5s's CPU forecasts relabelled as GPU parts gave zero differences and passed. This checks the
+    code; it is not evidence about the GPU.
+  - The gate runs on Colab before the test rows (`--row` refuses to start without a passed `GATE.json` for the same
+    code). It is then re-run locally on the fetched parts; the local `results/nb6_gpu_gate/` is the committed record.
+- **Race with the local chain:** the chain starts A4c and A2 itself once main finishes (in about 26 h). A row skips
+  every training whose meta already exists, so the GPU parts must be fetched before then. `fetch_drive_runs.py --set
+  nb6gpu` moves the forecast and calibration files in before the metas. If the GPU rows are late, the agent stops the
+  local A4c run before it duplicates work, and records it in the log.
+- **Tools:**
+  - `tools/nb6_gpu.py` (`--cpu-check`, `--validate`, `--gate`, `--row`).
+  - `tools/make_nb6_gpu.py` → `notebooks/NB6_gpu.ipynb`.
+  - `nb6gpu` sets in `make_drive_mirror.py` (the code must be committed; `MIRROR_MANIFEST.json` records the commit)
+    and in `fetch_drive_runs.py` (hashes, device, code and seed checked).
+  - The parts folders are git-ignored; the test manifest records their hashes.
+- **For the paper:** the Methods give the device of each row and the gate; the gate's table goes in the supplement.
+
 ### D16 — pvlib 0.16.1 and ruptures 1.1.10 are installed locally and pinned [environment, Phase 0]
 - **Request or reason:** both are in the guide's software list (§5.6) and were missing locally on 18 Nov 2026.
 - **Change:** `pip install pvlib==0.16.1 ruptures==1.1.10`. A dry run first showed that nothing else would be
