@@ -123,7 +123,8 @@ something, record it and follow it, even if you would have chosen otherwise.
   A4c, A2 and the test bed's main on a Colab GPU (`notebooks/NB6_gpu.ipynb`), only after the validation gate
   passes (GPU ensemble level with V12_5s, under 3%, and per-seed medians within 3 standard errors, at every
   horizon). `setformer.py` defaults to the CPU, and its CPU path is checked bit for bit (`nb6_gpu.py --cpu-check`).
-  Fetch the GPU parts before the local chain reaches A4c.
+  Locally, `nb6_forecast.py --row A4c|A2` and `nb6_testbed.py --row main` skip these rows unless `PVSF_CPU_ROWS=1`
+  (the fallback if the gate fails).
 - **LightGBM at the test (D64, 21 Nov 2026):** its 5-seed ensemble (`LGB_seeds`), with its conformal layer rebuilt
   from that ensemble (`tools/lgb_seeds_cal.py`, then `NB5c_conformal_lgb`).
 - **LightGBM's setting stays (D72, 22 Nov 2026):** part 2a as rule 1 chose it, even though it learns nothing at

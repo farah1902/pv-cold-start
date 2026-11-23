@@ -1504,10 +1504,13 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
     code; it is not evidence about the GPU.
   - The gate runs on Colab before the test rows (`--row` refuses to start without a passed `GATE.json` for the same
     code). It is then re-run locally on the fetched parts; the local `results/nb6_gpu_gate/` is the committed record.
-- **Race with the local chain:** the chain starts A4c and A2 itself once main finishes (in about 26 h). A row skips
-  every training whose meta already exists, so the GPU parts must be fetched before then. `fetch_drive_runs.py --set
-  nb6gpu` moves the forecast and calibration files in before the metas. If the GPU rows are late, the agent stops the
-  local A4c run before it duplicates work, and records it in the log.
+- **No double runs:** the running chain (`nb6_run_all.sh`) would start A4c and A2 itself once main finishes, and
+  the test-bed queue would start tb_main. The local runners therefore skip these three rows:
+  - `nb6_forecast.py --row A4c|A2` and `nb6_testbed.py --row main` print that the row runs on the GPU and return,
+    unless `PVSF_CPU_ROWS=1` is set. That variable is the fallback if the gate fails.
+  - The chain then goes from main to A6e and A6d, and the queue runs the test bed's NB5a and source rows only. Both
+    runners re-read their file only when a row starts, so the running main row is not touched.
+  - `fetch_drive_runs.py --set nb6gpu` moves the forecast and calibration files in before the metas.
 - **Tools:**
   - `tools/nb6_gpu.py` (`--cpu-check`, `--validate`, `--gate`, `--row`).
   - `tools/make_nb6_gpu.py` → `notebooks/NB6_gpu.ipynb`.

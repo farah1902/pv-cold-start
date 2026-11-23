@@ -187,8 +187,14 @@ def cost(I: Inputs, v: str, o) -> float:
     return float(iss.sum() * int(I.E.loc[v, "n_donors"]))
 
 
+GPU_ROWS = ("A4c", "A2")                   # D80: trained on a Colab GPU (tools/nb6_gpu.py); here only with PVSF_CPU_ROWS=1
+
+
 def run_row(row: str, jobs: int, limit: int | None):
     from joblib import Parallel, delayed
+    if row in GPU_ROWS and os.environ.get("PVSF_CPU_ROWS") != "1":
+        print(f"{row}: trained on the Colab GPU (D80, tools/nb6_gpu.py); not run here", flush=True)
+        return
     fz, fz_hash, params = frozen()
     I = Inputs()
     t0 = time.time()
