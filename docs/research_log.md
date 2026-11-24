@@ -456,3 +456,11 @@ One entry per work session: what was asked, what was done, the key numbers, what
       checked, and the code hash `1c60ce12ff0a` is unchanged;
     - `make_drive_mirror.py --refresh` updates the nb6gpu mirror in place, refused once any GPU output exists;
     - only the notebook and the manifest are replaced, with the new commit.
+- **TimeXer failed on the GPU; fixed (24 Nov, D80 extension addendum):**
+  - V12_5s's validation round finished on Colab: 150 trainings in 31 min, 24 s each.
+  - TX1_5s stopped at once: `timexer.py:95` makes a tensor without a device, which landed on the CPU.
+  - Fixed, and `tools/nb6_device_check.py` added. It flags that line on the old code and passes all six rows on the
+    new one.
+  - The code hash is now `9ff15d754470`. The CPU checks again pass bit for bit, and the device check passes.
+  - Parts made with other code are moved to `outdated_<code>/` and redone, so V12's round reruns (about 31 min).
+  - Mirror refreshed in place. No gate result and no test score exist.

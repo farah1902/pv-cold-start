@@ -92,7 +92,7 @@ def build_timexer(cfg: dict):
             don = self.donor_in(torch.cat([x.reshape(B, n, -1), static[..., :F_STATIC]], -1))  # (B, n, d)
             marks = torch.cat([fleet[:, :, 2 * PATCH:F_FLEET], geo], -1).transpose(1, 2)   # (B, N_MARK, NP)
             exo = self.drop(torch.cat([don, self.mark_in(marks)], 1))
-            pad = torch.cat([~online, torch.zeros(B, N_MARK, dtype=torch.bool)], 1)
+            pad = torch.cat([~online, torch.zeros(B, N_MARK, dtype=torch.bool, device=online.device)], 1)   # D80 ext.
             for blk in self.blocks:
                 en = blk(en, exo, pad)
             o = self.head(self.norm(en).reshape(B, -1)).reshape(B, len(FC.H), 9)

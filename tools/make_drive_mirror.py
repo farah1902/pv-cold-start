@@ -64,13 +64,12 @@ def sha(p: Path) -> str:
 
 
 def refresh(set_name: str, dest: Path, FILES: list[str], commit: str):
-    """Update an nb6gpu mirror in place before any GPU run (D80 extension, 24 Nov 2026): the same file list, every
-    unchanged file checked on the mirror, each changed file written next to its target and renamed over it, then
-    MIRROR_MANIFEST.json with the new commit. Refused once the mirror holds any GPU output."""
+    """Update an nb6gpu mirror in place (D80 extension, 24 Nov 2026): the same file list, every unchanged file
+    checked on the mirror, each changed file written next to its target and renamed over it, then MIRROR_MANIFEST.json
+    with the new commit. GPU outputs already on the mirror stay: each part records the code it ran, and
+    tools/nb6_gpu.py moves parts made with other code to outdated_<code>/ and redoes them."""
     assert set_name == "nb6gpu", "--refresh is for the nb6gpu mirror only"
     old = json.loads((dest / "MIRROR_MANIFEST.json").read_text(encoding="utf-8"))
-    for out in ("results/nb6_gpu_val", "results/nb6_forecasts"):
-        assert not (dest / out).exists(), f"{dest / out} exists: a GPU run has started, rebuild instead"
     assert sorted(old["sha256"]) == sorted(FILES), "the file list changed: rebuild the mirror instead"
     new = {f: sha(REPO / f) for f in FILES}
     changed = [f for f in FILES if new[f] != old["sha256"][f]]

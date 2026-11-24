@@ -323,13 +323,15 @@ Source: `results/nb6_validation/summary.json`, `primary.csv`, `secondary.csv`, `
 
 ### Test-run execution checks (D80 and its extension)
 Sources: `results/nb6_gpu_cpu_check_V12_5s/` and `results/nb6_gpu_cpu_check_TX1_5s/` (`comparison.csv`,
-`summary.json`; `python tools/nb6_gpu.py --cpu-check --ref ...`), `results/nb6_cpu_main/cpu_parts.csv`. No forecast
-is scored here.
+`summary.json`; `python tools/nb6_gpu.py --cpu-check --ref ...`), `results/nb6_device_check/`,
+`results/nb6_cpu_main/cpu_parts.csv`. Checks at code `9ff15d754470` (after the TimeXer device fix, 24 Nov). No
+forecast is scored here.
 
 | Quantity | Value | Source file |
 | --- | --- | --- |
 | CPU path at the new code, V12_5s shortest training (UG Hall2 2F, 3 Jun 2021, seed 20261121): forecast rows, calibration rows identical bit for bit; best epoch | 5,022 of 5,022; 485 of 485; 8 (stored 8) | nb6_gpu_cpu_check_V12_5s/comparison.csv, summary.json |
 | Same, TX1_5s shortest training (UG Hall2 2F, 3 Jun 2021, seed 20261122): forecast rows, calibration rows; best epoch | 5,022 of 5,022; 485 of 485; 1 (stored 1) | nb6_gpu_cpu_check_TX1_5s/comparison.csv, summary.json |
+| Device check, every GPU row (main, A2, A4c, A6e, A6d, tb_main): tensor constructors without a device in our model code | none (the failing code: timexer.py line 95) | nb6_device_check/rows.csv |
 | CPU main trainings made before the switch (a check only): trainings; (event, origin) groups with all 5 seeds; CPU-hours | 48; 9; 119.0 | nb6_cpu_main/cpu_parts.csv |
 | GPU gates (V12_5s, TX1_5s) and projected GPU hours | pending (NB6_gpu) | `results/nb6_gpu_gate_{V12_5s,TX1_5s}/` |
 

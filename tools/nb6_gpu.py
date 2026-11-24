@@ -112,6 +112,24 @@ def paths(kind: str, row: str, v: str, o, seed) -> tuple[Path, Path, Path]:
             NF.part_path(row, v, o, seed, "meta").with_suffix(".json"))
 
 
+def done(kind, row, v, o, seed, code) -> bool:
+    """True if this training is done with this code. One made with other code (its meta names another code_sha256,
+    e.g. the V12_5s round of 24 Nov before the TimeXer device fix) is moved, meta first, to
+    <parts>/outdated_<its code[:12]>/ and is redone: the gate, the fetch and the manifest see only current-code parts."""
+    fcp, calp, mp = paths(kind, row, v, o, seed)
+    if not mp.exists():
+        return False
+    m = json.loads(mp.read_text())
+    if m.get("code_sha256") == code:
+        return True
+    old = mp.parent / f"outdated_{str(m.get('code_sha256'))[:12]}"
+    old.mkdir(exist_ok=True)
+    for f in (mp, fcp, calp):
+        if f.exists():
+            os.replace(f, old / f.name)
+    return False
+
+
 def gpu_task(kind, row, v, Ar, o, e, cfg, seed, code, procs):
     """nb6_forecast.pvsf_task's steps, with the device record in the meta (written last, atomically)."""
     fcp, calp, mp = paths(kind, row, v, o, seed)
@@ -219,8 +237,10 @@ def cpu_check(ref: str):
 
 def validate(ref: str, procs: int):
     cfg, arrays, tasks, _, _, _ = val_setup(ref)
-    todo = [t for t in tasks if not paths("val", ref, t[0], t[1], t[3])[2].exists()]
-    print(f"validation round {ref}: {len(tasks)} trainings, {len(tasks) - len(todo)} done before", flush=True)
+    code = code_sha()
+    todo = [t for t in tasks if not done("val", ref, t[0], t[1], t[3], code)]
+    print(f"validation round {ref}: {len(tasks)} trainings, {len(tasks) - len(todo)} done before with this code",
+          flush=True)
     if todo:
         run("val", ref, todo, arrays, cfg, procs)
 
@@ -390,8 +410,9 @@ def run_row(row, procs):
         assert json.loads(gp.read_text())["code_sha256"] == code_sha(), f"{row}: the gate {ref} was passed with other code"
     fz, fz_hash, _ = NF.frozen()
     I, cfg, seeds, mk = row_setup(row, fz)
+    code = code_sha()
     tasks = [(v, o, e, sd) for v in I.EVENTS for o, e in I.origins(v) for sd in seeds
-             if not paths("test", row, v, o, sd)[2].exists()]
+             if not done("test", row, v, o, sd, code)]
     tasks.sort(key=lambda t: -NF.cost(I, t[0], t[1]))                # longest first
     arrays = {v: mk(v) for v in {t[0] for t in tasks}}
     print(f"{row}: frozen {fz_hash[:16]}, {len(I.EVENTS) * 3 * len(seeds)} trainings in all, {len(tasks)} to run",

@@ -1595,6 +1595,29 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
 - **For the paper:** every neural row and the test bed's main ran on one GPU after a gate on validation; the
   development runs and the gates' references ran on a CPU. The 48 CPU trainings and their comparison go in the
   supplement, with the gate tables.
+- **Addendum, the TimeXer device fix (24 Nov 2026, before any gate or test training):**
+  - **What failed:** on Colab, the V12_5s validation round finished on the GPU: 150 trainings, 31 min, 2
+    processes, 24 s per training on average. The TX1_5s round then stopped at its first training: `timexer.py` line
+    95 made its padding mask with `torch.zeros(...)` without a device, so it was on the CPU while the inputs were on
+    CUDA. D80's switch covered `setformer.py` only, and the CPU checks cannot see a device mismatch.
+  - **Fix (execution only):** that tensor now takes `device=online.device`. On the CPU this is the same operation;
+    the TX1_5s CPU check is again bit for bit.
+  - **Device check (new):** `tools/nb6_device_check.py` runs one real training step of every GPU row's model on the
+    CPU. It records each tensor constructor called from our model files without a device argument.
+    - It finds `timexer.py:95` on the failing code and nothing in any of the six rows after the fix
+      (`results/nb6_device_check/`).
+    - It is run before every GPU mirror.
+  - **The code hash changes:** `1c60ce12ff0a` becomes `9ff15d754470`, so the 150 V12_5s GPU trainings no longer
+    count and are redone. One code version for every GPU part keeps the record simple; the redo costs about 31 GPU
+    minutes.
+    - `nb6_gpu.py` now treats a training whose meta names other code as not done.
+    - It moves such a training, meta first, to `<parts>/outdated_<code>/` and redoes it, so the gate, the fetch and
+      the manifest see only current-code parts.
+    - The first V12 round is kept there; it can show the GPU's run-to-run spread, since torch warned that the
+      memory-efficient attention backward is not deterministic.
+  - **Rechecked at the new code:** both CPU checks (bit for bit) and the device check.
+  - **Mirror:** refreshed in place (`make_drive_mirror.py --refresh`, which now allows existing outputs because each
+    part records its code). Not run yet.
 
 ### D16 — pvlib 0.16.1 and ruptures 1.1.10 are installed locally and pinned [environment, Phase 0]
 - **Request or reason:** both are in the guide's software list (§5.6) and were missing locally on 18 Nov 2026.
