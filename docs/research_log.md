@@ -442,3 +442,9 @@ One entry per work session: what was asked, what was done, the key numbers, what
     - The full TimeXer gate runs on stand-in parts and writes GATE.json with the mirror's commit.
   - The laptop started the test bed's NB5a and source rows (`nb6_run_testbed.sh 8`; its main skips).
   - Next, for the author: NB6_gpu, then NB6_colab.
+- **Test bed's light rows done (24 Nov, 00:07–00:41):** on 8 workers, no errors.
+  - tb_nb5a: 30 parts in 896 s. The 10 pseudo events at 3 origins have NB5a's 7 forecasters, 1,393,980 rows.
+  - tb_sources: 90 parts in 1,135 s. The 10 pseudo events, 3 origins and 3 sources give 784,970 rows.
+  - tb_main skipped, as a GPU row.
+  - Every local row now exists: nb5a, LGB, sources, tb_nb5a and tb_sources.
+  - Waiting for: NB6_gpu (the six neural rows) and NB6_colab (A6a, A6b). No test score exists.
