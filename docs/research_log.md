@@ -432,3 +432,13 @@ One entry per work session: what was asked, what was done, the key numbers, what
     - one TX1 training through the GPU path's code on the CPU: bit for bit.
   - The laptop now runs only the light rows, the fetch, the gates' local re-run and the scoring.
   - No test score exists.
+- **GPU mirror rebuilt (24 Nov, D80 extension):** the D80 mirror (`36fa5ad`) held no output, checked twice, and was
+  deleted.
+  - `G:/My Drive/pv-cold-start-nb6gpu` was rebuilt from `8df904a`: 64 files, 149.7 MB, all hashes match.
+  - Colab was simulated locally: the mirror copied into an empty folder with its hash check, without git.
+    - From that copy, the code hash (`1c60ce12ff0a`, the CPU checks' code), the frozen hash, both reference setups,
+      the projections and all six rows' inputs resolve.
+    - `--row` refuses to start without a gate.
+    - The full TimeXer gate runs on stand-in parts and writes GATE.json with the mirror's commit.
+  - The laptop started the test bed's NB5a and source rows (`nb6_run_testbed.sh 8`; its main skips).
+  - Next, for the author: NB6_gpu, then NB6_colab.
