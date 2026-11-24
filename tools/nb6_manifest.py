@@ -6,7 +6,9 @@ Replaces `nb6_forecast.py --manifest` (which predates the hidden-unit test bed):
 test bed's rows and inputs, and the Colab files of A6a and A6b. For every row it checks the frozen seeds and that each
 (event, origin, seed) has its part, concatenates the parts into results/nb6_forecasts/<name>.parquet, and records
 path, sha256, rows and parts. It also records the sha256 of the inputs the forecasts were made from (the test bed's
-index and gains, the foundation-model inputs). The scorer reads only files whose hashes match this manifest, and only
+index and gains, the foundation-model inputs), and the device of every PVSetFormer-family row (D80 extension: one
+device per row; main, A2, A4c, A6e and tb_main on one device, the GPU only with a passed V12_5s gate; A6d on the GPU
+only if the TX1_5s gate passed too). The scorer reads only files whose hashes match this manifest, and only
 once the manifest is committed. All-or-nothing: the parquet files and the manifest are written only if every check
 passes.
 """
@@ -46,7 +48,7 @@ def main():
     if tmp.exists():
         shutil.rmtree(tmp)
     tmp.mkdir(parents=True)
-    files = {}
+    files, device = {}, {}
     for name, (folder, cal, seeds_row, evset) in ROWS.items():
         parts = sorted((PARTS / folder).glob("*.parquet"))
         parts = [x for x in parts if x.name.endswith("__cal.parquet") == cal]
@@ -63,11 +65,31 @@ def main():
             metas = [json.loads(x.read_text()) for x in (PARTS / folder).glob("*__meta.json")]
             assert len(metas) == 3 * len(evs) * len(fz["test_rows"][seeds_row]["seeds"]), f"{name}: trainings"
             assert not any(m["skipped"] for m in metas), f"{name}: a training was skipped"
+            devs = sorted({str(m.get("device", "cpu")) for m in metas})   # the CPU runner's metas name no device
+            assert len(devs) == 1, f"{name}: trainings on more than one device {devs}"
+            device[folder] = {"device": devs[0], "gpu": sorted({str(m["gpu"]) for m in metas if "gpu" in m}),
+                              "code_sha256": sorted({m["code_sha256"] for m in metas if "code_sha256" in m})}
         path = tmp / f"{name}.parquet"
         df.to_parquet(path, index=False)
         files[name] = {"path": f"results/nb6_forecasts/{name}.parquet", "sha256": EV.sha256(path), "rows": int(len(df)),
                        "parts": len(parts)}
         print(f"{name}: {len(df)} rows from {len(parts)} parts", flush=True)
+    # D80 extension: one device for the main model's rows; A6d on the GPU only if both gates passed (committed records)
+    gates = {}
+    for ref in ("V12_5s", "TX1_5s"):
+        s = ROOT / "results" / f"nb6_gpu_gate_{ref}" / "summary.json"
+        gates[ref] = json.loads(s.read_text())["passed"] if s.exists() else None
+    fam = ["main", "A2", "A4c", "A6e", "tb_main"]
+    fam_dev = {device[r]["device"] for r in fam}
+    assert len(fam_dev) == 1, f"the main model's rows ran on different devices: { {r: device[r]['device'] for r in fam} }"
+    on_gpu = fam_dev.pop().startswith("cuda")
+    assert not on_gpu or gates["V12_5s"] is True, "GPU rows without a passed V12_5s gate in results/nb6_gpu_gate_V12_5s"
+    assert on_gpu or gates["V12_5s"] is not True, "the V12_5s gate passed, yet the main model's rows ran on the CPU"
+    a6d_gpu = on_gpu and gates["TX1_5s"] is True
+    assert device["A6d"]["device"].startswith("cuda") == a6d_gpu, \
+        f"A6d ran on {device['A6d']['device']}; the gates say {'GPU' if a6d_gpu else 'CPU'}"
+    gpu_codes = {c for d in device.values() for c in d["code_sha256"]}
+    assert len(gpu_codes) <= 1, f"the GPU rows ran more than one version of the code: {gpu_codes}"
     for row in ("A6a", "A6b"):                                 # the Colab files, checked as fetch_drive_runs did
         p = OUT / "fm" / f"{fz['test_rows'][row]['setting']}.parquet"
         assert p.exists(), f"{row}: {p.name} missing (run NB6_colab, then fetch_drive_runs.py --set nb6)"
@@ -82,7 +104,8 @@ def main():
     inputs = {x.relative_to(ROOT).as_posix(): EV.sha256(x) for x in
               sorted(TBD.glob("*.parquet")) + sorted(TBD.glob("*.csv")) + sorted((OUT / "fm_inputs").glob("*"))}
     man = {"tool": "nb6_manifest", "decision": "D79", "frozen_config_sha256": fz_hash, "commit": NF.git("rev-parse", "HEAD"),
-           "events": E, "testbed_events": TBE, "environment": A_.versions(), "files": files, "inputs": inputs}
+           "events": E, "testbed_events": TBE, "environment": A_.versions(), "files": files, "inputs": inputs,
+           "devices": device, "gpu_gates_passed": gates}
     for name in ROWS:                                          # all checks passed: move into place
         (tmp / f"{name}.parquet").replace(OUT / f"{name}.parquet")
         assert EV.sha256(OUT / f"{name}.parquet") == files[name]["sha256"]

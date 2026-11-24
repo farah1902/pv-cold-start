@@ -14,7 +14,9 @@ checked against the files it pins; nothing is tuned here. The code paths are tho
   (A9: persisted, A9n: same-time oracle), as NB5d;
 - main, A2, A4c, A6e, A6d: setformer.fit_predict with the frozen cfg and seeds (tools/pvsf_dev.py's task): forecasts
   and calibration sets. A2 reads NB3's median index; A4c adds NB4's corrected sensor index; A6e is the fleet summary
-  only; A6d is TimeXer. A3 is not run: it is the main model's forecasts composed with prior G0 (NB6 scorer);
+  only; A6d is TimeXer. A3 is not run: it is the main model's forecasts composed with prior G0 (NB6 scorer). These
+  five rows train on a Colab GPU (D80 and its extension, tools/nb6_gpu.py); --row skips them here unless
+  PVSF_CPU_ROWS=1 (the fallback if a gate fails);
 - A6a and A6b (Chronos-2, TimesFM 2.5) run on a Colab GPU (notebooks/NB6_colab.ipynb, tools/fm_infer.py with the
   frozen weights revisions) from the inputs of --fm-inputs (NB5b_inputs' procedure on the nb5a issue times); their
   outputs come back to results/nb6_forecasts/fm/<setting>.parquet.
@@ -82,7 +84,8 @@ def pvsf_cfg(fz: dict, row: str) -> dict:
     run = PVSF_ROWS.get(row)
     if run:
         s = json.loads((C.RESULTS / "nb5c_variants" / run / "summary.json").read_text())
-        ran = {k: v for k, v in s["cfg"].items() if k not in OFF}
+        # the defaults on both sides: TX1_5s predates 11 switches (all off), absent from its record (D80 ext.)
+        ran = {k: v for k, v in {**SF.DEFAULTS, **s["cfg"]}.items() if k not in OFF}
         mine = {k: v for k, v in cfg.items() if k not in OFF}
         assert ran == mine, f"{row}: frozen cfg differs from the validation run {run}"
     if row == "main":
@@ -187,13 +190,13 @@ def cost(I: Inputs, v: str, o) -> float:
     return float(iss.sum() * int(I.E.loc[v, "n_donors"]))
 
 
-GPU_ROWS = ("A4c", "A2")                   # D80: trained on a Colab GPU (tools/nb6_gpu.py); here only with PVSF_CPU_ROWS=1
+GPU_ROWS = ("main", "A2", "A4c", "A6e", "A6d")   # D80 ext.: on a Colab GPU (tools/nb6_gpu.py); here only with PVSF_CPU_ROWS=1
 
 
 def run_row(row: str, jobs: int, limit: int | None):
     from joblib import Parallel, delayed
     if row in GPU_ROWS and os.environ.get("PVSF_CPU_ROWS") != "1":
-        print(f"{row}: trained on the Colab GPU (D80, tools/nb6_gpu.py); not run here", flush=True)
+        print(f"{row}: trained on the Colab GPU (D80 ext., tools/nb6_gpu.py); not run here", flush=True)
         return
     fz, fz_hash, params = frozen()
     I = Inputs()

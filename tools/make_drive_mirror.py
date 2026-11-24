@@ -4,11 +4,12 @@
 
 Sets: nb5b (D66, default destination "G:/My Drive/pv-cold-start"), nb5e (D70, Chronos-2 at every PVSetFormer issue
 time, default destination "G:/My Drive/pv-cold-start-nb5e") and nb6 (D79, the test forecasts of rows A6a and A6b,
-default destination "G:/My Drive/pv-cold-start-nb6") and nb6gpu (D80, PVSetFormer's test rows A4c, A2 and the test bed's
-main on a Colab GPU, with the validation round and its gate; default destination "G:/My Drive/pv-cold-start-nb6gpu";
+default destination "G:/My Drive/pv-cold-start-nb6") and nb6gpu (D80 and its extension: every PVSetFormer-family test
+row on a Colab GPU, with the validation rounds and their gates; default destination "G:/My Drive/pv-cold-start-nb6gpu";
 what tools/nb6_gpu.py reads: its code, the frozen configuration and every file it pins, the panel, NB3's index, NB4's
-source index, the test bed, and V12_5s's run with NB5a's validation forecasts for the gate's scorer, about 115 MB;
-its code must be committed, and MIRROR_MANIFEST.json records the commit).
+source index, the test bed, the V12_5s and TX1_5s runs with NB5a's validation forecasts for the gates' scorer, and the
+summaries and task tables of A4c_V12 and A6e_V12_5s; its code must be committed, and MIRROR_MANIFEST.json records the
+commit).
 
 Copies the notebook, tools/fm_infer.py, src/pvcold/*.py, requirements-fm.txt and results/nb5b_inputs/ (1.7 MB; no raw
 data, no documents). All-or-nothing: the copy is assembled in a temporary folder next to the destination, checked file
@@ -38,17 +39,20 @@ SETS = {"nb5b": ("G:/My Drive/pv-cold-start", ["notebooks/NB5b_colab.ipynb", "to
 
 
 def nb6gpu_files() -> list[str]:
-    """D80: every file tools/nb6_gpu.py reads on Colab (validation round, gate, rows A4c, A2 and tb_main)."""
+    """D80 and its extension: every file tools/nb6_gpu.py reads on Colab (the validation rounds V12_5s and TX1_5s,
+    their gates and time projections, the rows main, A2, A4c, A6e, A6d and tb_main)."""
     import yaml
     fz = yaml.safe_load((REPO / "results" / "freeze" / "frozen_config.yaml").read_text(encoding="utf-8"))
     R = "results/"
     files = ["notebooks/NB6_gpu.ipynb", "tools/nb6_gpu.py", "tools/nb6_forecast.py", "tools/nb6_testbed.py",
              R + "freeze/frozen_config.yaml", R + "freeze/summary.json", R + "nb1_audit/summary.json",
-             R + "nb3_index/gains.csv", R + "nb4_sensor/index15.parquet", R + "nb5a_dev/val_forecasts.parquet",
-             R + "nb5c_variants/A4c_V12/summary.json"]
+             R + "nb3_index/gains.csv", R + "nb4_sensor/index15.parquet", R + "nb5a_dev/val_forecasts.parquet"]
     files += [R + f"nb2_panel/{k}.parquet" for k in ("y15", "flags15", "geometry15", "targets15_kW")]
     files += [R + f"nb3_index/{k}.parquet" for k in ("k_cens", "k_med", "sigma", "c", "n")]
-    files += [R + f"nb5c_variants/V12_5s/{k}" for k in ("summary.json", "tasks.csv", "scores.csv", "forecasts.parquet")]
+    for run in ("V12_5s", "TX1_5s"):                             # the gates' references (scores rebuilt from forecasts)
+        files += [R + f"nb5c_variants/{run}/{k}" for k in ("summary.json", "tasks.csv", "scores.csv", "forecasts.parquet")]
+    for run in ("A4c_V12", "A6e_V12_5s"):                        # cfg checks (nb6_forecast.pvsf_cfg), run-time ratios
+        files += [R + f"nb5c_variants/{run}/{k}" for k in ("summary.json", "tasks.csv")]
     files += [R + f"nb6_testbed/{k}" for k in ("pseudo_events.csv", "gains.csv", "k_cens.parquet", "sigma.parquet",
                                                  "c.parquet", "n.parquet")]
     files += [f["path"] for f in fz["files"].values()]           # every file the frozen configuration pins

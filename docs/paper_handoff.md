@@ -95,7 +95,8 @@ A6e (R2, F47, F48), the sensor and satellite rows (NB5d, F51), A4c (D56), the fo
 A6e and A4c with V12's setting (D78, F62).
 After the freeze: the NB6 scorer is written and checked on the validation units (D79); the pretraining data of
 the foundation models are checked (F63). Still to do: the test forecasts (all rows on the 17 events and the
-hidden-unit test bed; the foundation models on a Colab GPU), their hashes committed, then the single scoring
+hidden-unit test bed; every PVSetFormer-family row and the foundation models on a Colab GPU, D80 and its
+extension), their hashes committed, then the single scoring
 (primary test first), the weighting check on the test (part 2e), the computation-cost table (guide §6 item 13),
 and NB6's other parts (error budget, conditional verification, leakage table, power check) and NB7.
 

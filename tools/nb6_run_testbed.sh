@@ -3,6 +3,9 @@
 # test bed last). Resumable like the chain. Logs to results/nb6_forecasts/logs/tb_<row>.log.
 #
 #   bash tools/nb6_run_testbed.sh [PVSF_JOBS] [--wait]     # --wait: start only once the chain has logged "all local rows done"
+#
+# Since the D80 extension the test bed's main trains on the Colab GPU and skips here (unless PVSF_CPU_ROWS=1): the
+# laptop runs only its NB5a and source rows, so --wait is no longer needed.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 PVSF_JOBS="${1:-6}"

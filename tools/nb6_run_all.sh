@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
-# NB6 test forecasts, every local row in the author's order (D79: local CPU, 22 Nov 2026). Resumable: a finished part
+# NB6 test forecasts, every local row in the author's order (D79: local CPU, 22 Nov 2026). Since the D80 extension
+# (23 Nov 2026) the PVSetFormer-family rows (main, A4c, A2, A6e, A6d) train on a Colab GPU (tools/nb6_gpu.py) and
+# skip here; PVSF_CPU_ROWS=1 bash tools/nb6_run_all.sh runs them on this CPU (the fallback if a gate fails; A6d
+# alone: PVSF_CPU_ROWS=1 python tools/nb6_forecast.py --row A6d). Resumable: a finished part
 # is never recomputed, so after any stop the same command continues where it left off. Each row logs to
 # results/nb6_forecasts/logs/<row>.log; the chain stops at the first failing row.
 #

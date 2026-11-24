@@ -5,7 +5,7 @@
 Sets: nb5b (D66; runs results/nb5b_runs/, inputs results/nb5b_inputs/, the 8 grid settings), nb5e (D70; runs
 results/nb5e_runs/, inputs results/nb5e_inputs/, one part per validation event of Chronos-2 c1344 full) and nb6 (D79;
 runs results/nb6_forecasts/fm/, inputs results/nb6_forecasts/fm_inputs/, the two frozen settings on the test events),
-and nb6gpu (D80; PVSetFormer's GPU trainings, see fetch_nb6gpu).
+and nb6gpu (D80 and its extension; every PVSetFormer-family GPU training, see fetch_nb6gpu).
 
 For every run record results/nb5b_runs/<setting>.json on the mirror: its inputs_sha256 must equal the local
 results/nb5b_inputs/inputs_manifest.json (the inputs the local scoring uses), it must not be a smoke test (limit 0),
@@ -38,7 +38,8 @@ def sha(p: Path) -> str:
 
 
 def fetch_nb6gpu(mirror: Path):
-    """D80: the GPU trainings (validation round, test rows A4c, A2, tb_main) back into the repository. A training is
+    """D80 and its extension: the GPU trainings (validation rounds V12_5s and TX1_5s, the test rows main, A2, A4c, A6e,
+    A6d, tb_main) back into the repository. A training is
     copied only when its meta, forecast and calibration files are on the mirror, the two hashes equal those its meta
     records, it ran on a GPU with this repository's code (tools/nb6_gpu.py's code_sha256), was not skipped and has a
     frozen seed; one already here must be identical. Trainings still syncing are left for the next fetch. Staged in a
@@ -49,9 +50,10 @@ def fetch_nb6gpu(mirror: Path):
     sys.path.insert(0, str(REPO / "tools"))
     import nb6_gpu as G
     fz = yaml.safe_load((REPO / "results" / "freeze" / "frozen_config.yaml").read_text(encoding="utf-8"))
-    seeds = {int(s) for r in ("main", "A4c") for s in fz["test_rows"][r]["seeds"]}
+    seeds = {int(s) for r in G.GPU_ROWS for s in fz["test_rows"][G.SEEDS_ROW[r]]["seeds"]}
     code = G.code_sha()
-    folders = ["results/nb6_gpu_val/parts"] + [f"results/nb6_forecasts/parts/{r}" for r in G.GPU_ROWS]
+    folders = ([f"results/nb6_gpu_val/{ref}/parts" for ref in G.REFS]
+               + [f"results/nb6_forecasts/parts/{r}" for r in G.GPU_ROWS])
     plan, pending, same = [], [], {}
     for rel in folders:
         src, dst = mirror / rel, REPO / rel

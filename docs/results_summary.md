@@ -321,6 +321,18 @@ Source: `results/nb6_validation/summary.json`, `primary.csv`, `secondary.csv`, `
 | weighted TimeXer + Chronos-2 vs A6a at 1 h: ratio of medians; row lower; p; Holm p; wording | -0.58%; 4 of 10; 0.557; 1.000; level | secondary.csv |
 | weighted LightGBM + Chronos-2 vs A6a at 1 h: ratio of medians; row lower; p; Holm p; wording | -0.11%; 7 of 10; 0.275; 1.000; level | secondary.csv |
 
+### Test-run execution checks (D80 and its extension)
+Sources: `results/nb6_gpu_cpu_check_V12_5s/` and `results/nb6_gpu_cpu_check_TX1_5s/` (`comparison.csv`,
+`summary.json`; `python tools/nb6_gpu.py --cpu-check --ref ...`), `results/nb6_cpu_main/cpu_parts.csv`. No forecast
+is scored here.
+
+| Quantity | Value | Source file |
+| --- | --- | --- |
+| CPU path at the new code, V12_5s shortest training (UG Hall2 2F, 3 Jun 2021, seed 20261121): forecast rows, calibration rows identical bit for bit; best epoch | 5,022 of 5,022; 485 of 485; 8 (stored 8) | nb6_gpu_cpu_check_V12_5s/comparison.csv, summary.json |
+| Same, TX1_5s shortest training (UG Hall2 2F, 3 Jun 2021, seed 20261122): forecast rows, calibration rows; best epoch | 5,022 of 5,022; 485 of 485; 1 (stored 1) | nb6_gpu_cpu_check_TX1_5s/comparison.csv, summary.json |
+| CPU main trainings made before the switch (a check only): trainings; (event, origin) groups with all 5 seeds; CPU-hours | 48; 9; 119.0 | nb6_cpu_main/cpu_parts.csv |
+| GPU gates (V12_5s, TX1_5s) and projected GPU hours | pending (NB6_gpu) | `results/nb6_gpu_gate_{V12_5s,TX1_5s}/` |
+
 ### Test (NB6)
 _empty: the test forecasts are not yet generated_
 

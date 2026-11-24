@@ -410,3 +410,25 @@ One entry per work session: what was asked, what was done, the key numbers, what
   (GPU), then A6e and A6d. After that, run `bash tools/nb6_run_testbed.sh 6 --wait`. On Windows, TaskStop does not
   end the Python children; end them with `taskkill /PID <nb6_forecast pid> /T /F` after stopping the bash runners.
   No test score exists.
+  *Superseded the next day by the D80 extension:* main no longer resumes locally.
+- **Every PVSetFormer-family row on the GPU (24 Nov, D80 extension):** the author asked that every neural row run on
+  one device, because the ablations A2 and A4c are compared with the main row and A2's validation effect was about 2%.
+  The author also wanted the laptop free.
+  - Rows on the GPU, in order: main, A2, A4c, A6e, A6d, tb_main.
+  - Gates: V12_5s gates all six, and TX1_5s (TimeXer) gates A6d too; both were fixed before any GPU run.
+  - Checked before the change: Drive held no GPU output.
+  - The 48 CPU main trainings were moved to `results/nb6_cpu_main/parts/`, with hashes in `cpu_parts.csv`, as a
+    check only.
+  - Both CPU checks pass bit for bit at the new code.
+  - Found and fixed: `nb6_forecast.pvsf_cfg` compared TX1_5s's record without the defaults (11 later switches, all
+    off), so A6d would have stopped on the laptop too.
+  - Dry runs:
+    - both gates on relabelled CPU forecasts: zero differences, pass;
+    - the projection on CPU run times: main 351 h, about `--plan`'s 349, and 1,337 single-thread hours for the six
+      rows;
+    - the CPU-vs-GPU check on CPU parts: zero;
+    - the fetch on an empty mirror;
+    - every row's inputs and cfg built;
+    - one TX1 training through the GPU path's code on the CPU: bit for bit.
+  - The laptop now runs only the light rows, the fetch, the gates' local re-run and the scoring.
+  - No test score exists.

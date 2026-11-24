@@ -157,7 +157,7 @@ def source_task(v, Ss, S, src, o, e, params):
 def run_row(row, jobs, limit):
     from joblib import Parallel, delayed
     if row == "main" and os.environ.get("PVSF_CPU_ROWS") != "1":      # D80: tb_main runs on the Colab GPU
-        print("tb_main: trained on the Colab GPU (D80, tools/nb6_gpu.py); not run here", flush=True)
+        print("tb_main: trained on the Colab GPU (D80 ext., tools/nb6_gpu.py); not run here", flush=True)
         return
     fz, fz_hash, params = NF.frozen()
     I = TBInputs()

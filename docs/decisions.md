@@ -1519,6 +1519,83 @@ plan in `docs/research_guide.md`. D01–D07 answer the guide's open decisions D1
   - The parts folders are git-ignored; the test manifest records their hashes.
 - **For the paper:** the Methods give the device of each row and the gate; the gate's table goes in the supplement.
 
+### D80, extension — every PVSetFormer-family test row on one Colab GPU; a TimeXer gate; the CPU main trainings kept as a check [execution, Phase 6]
+- **Request (the author, 23–24 Nov 2026, before any GPU run):**
+  - Splitting devices weakens the paper: A2 and A4c are ablations compared directly with the main row. On
+    validation the censoring effect (A2) was only about 2%, so a device difference could be as large as the effect.
+  - Even with D80, about 36 h of laptop time remained.
+  - So every PVSetFormer-family row runs on the Colab GPU, in this order: main, A2, A4c, A6e, A6d, tb_main.
+  - The local runners skip all of them; the fallback `PVSF_CPU_ROWS=1` stays.
+- **Status before the change:**
+  - No GPU run had started; the Drive mirror of D80 held no output.
+  - The local run had been stopped at the author's request (23 Nov, 23:27), with main at 48 of 255 trainings.
+  - No test score exists.
+- **The gate, extended (fixed now, before any GPU run):**
+  - Two validation references, each the CPU run of a frozen row's setting on the 10 validation units with the 5
+    frozen seeds (150 trainings):
+    - V12_5s, the main model: it gates main, A2, A4c, A6e and tb_main;
+    - TX1_5s, TimeXer, A6d's setting: it gates A6d.
+  - Same two criteria as D80 for each: the ensemble median nRMSE within 3% of the CPU one, and the mean of the
+    per-seed medians within 3 standard errors, at every horizon.
+  - If V12 fails, all six rows stay on the CPU. If only TimeXer fails, A6d alone runs on the CPU.
+  - A6d needs both gates (the agent's reading of the author's rule; the author may overrule it). If V12 fails, the
+    rows A6d is compared with run on the CPU, so TimeXer stays there with them.
+  - The notebook stops if V12 fails. If only TimeXer fails, it skips A6d.
+  - `--row` refuses to start without the passed GATE.json files that row needs, for the same code.
+- **CPU checks (bit for bit, at the new code):** `nb6_gpu.py --cpu-check --ref V12_5s|TX1_5s` re-ran the shortest
+  training of each reference on the CPU.
+  - V12_5s (UG Hall2 2F, origin 3 Jun 2021, seed 20261121): 5,022 forecast rows and 485 calibration rows identical,
+    best epoch 8 as stored.
+  - TX1_5s (UG Hall2 2F, origin 3 Jun 2021, seed 20261122): 5,022 forecast rows and 485 calibration rows
+    identical, best epoch 1 as stored.
+  - Records: `results/nb6_gpu_cpu_check_V12_5s/` and `results/nb6_gpu_cpu_check_TX1_5s/`. D80's record
+    `results/nb6_gpu_cpu_check/` (code of `1ccae60`) is kept unchanged.
+  - One TX1_5s training also ran through the GPU path's code (`run`, `gpu_task`, meta) on the CPU and gave the
+    stored forecasts bit for bit.
+- **A fix found by the check (code, not design):** `nb6_forecast.pvsf_cfg` compared the frozen cfg, with the defaults
+  filled in, against the validation run's record without them. TX1_5s predates 11 switches, all off: clim, donor_id,
+  donor_rel, ext, fm, hhead, hhead_n, hmask, vlin, vmed, vmed_n. So A6d's check failed, although its frozen cfg
+  equals TX1_5s's exactly. The local A6d row would have stopped at the same assertion. Both sides now get the
+  defaults; the bit-for-bit TimeXer check confirms that the current code with those defaults is TX1_5s.
+- **The 48 CPU main trainings (a check only):**
+  - They are moved out of the test folder to `results/nb6_cpu_main/parts/` (git-ignored) by
+    `tools/nb6_cpu_main_park.py`, with every file's sha256 in `results/nb6_cpu_main/cpu_parts.csv` (committed).
+  - They cover 9 (event, origin) groups with all 5 seeds (SQ Block P, Shaw Auditorium and Zone A2 inverters 2-3, each
+    at its 3 origins) and UG Hall9 at its first origin with 3 seeds (119 CPU-hours).
+  - The test uses the GPU main row only.
+  - After it is fetched, `tools/nb6_cpu_gpu_check.py` compares the two devices on those trainings: forecasts only,
+    never the panel or an observation. Its metrics were fixed now, in the tool's docstring:
+    - per training: the index-quantile differences (median and all nine), the 80% widths and the best epochs;
+    - the same-device seed-to-seed difference as the scale;
+    - the 5-seed ensembles of the 9 complete groups.
+  - A dry run with the CPU parts standing in for the GPU ones gives zero differences.
+- **Projected GPU time:**
+  - Each gate fits the validation trainings' GPU run times on the task cost (`nb6_forecast.cost`). A4c and A6e are
+    scaled by their CPU run-time ratio to V12 on the same validation trainings (0.832 and 0.145). The fit is summed
+    over each row's test trainings and divided by the processes run at once.
+  - The notebook prints it after the gates. A dry run on the CPU run times gives 1,337 single-thread hours for the
+    six rows (main 351, A2 351, A4c 292, A6e 51, A6d 48, tb_main 244), in line with `--plan` (349 for a V12 row).
+  - The GPU figure divides this by the GPU's speed-up and the number of processes, both unknown until the
+    validation round.
+- **Devices in the manifest:** `nb6_manifest.py` now records the device of every PVSetFormer-family row and refuses:
+  - a row trained on two devices;
+  - the main model's five rows on different devices;
+  - GPU rows without the committed passed V12 gate;
+  - A6d on a device other than the gates imply;
+  - GPU parts made with different code.
+- **Tools changed:**
+  - `tools/nb6_gpu.py`: `--ref`, two gates, projection, `procs` in the meta, `timexer.py` in the code hash.
+  - `tools/make_nb6_gpu.py` → `notebooks/NB6_gpu.ipynb`.
+  - `nb6_forecast.py`: GPU_ROWS and the cfg fix.
+  - `nb6_testbed.py`; the runner scripts' comments.
+  - The `nb6gpu` sets of `make_drive_mirror.py` (adds TX1_5s's run and the A4c_V12 and A6e_V12_5s summaries and
+    task tables) and `fetch_drive_runs.py` (both validation folders, the six rows).
+  - New: `tools/nb6_cpu_main_park.py` and `tools/nb6_cpu_gpu_check.py`.
+  - The Drive mirror is rebuilt from the commit of this decision.
+- **For the paper:** every neural row and the test bed's main ran on one GPU after a gate on validation; the
+  development runs and the gates' references ran on a CPU. The 48 CPU trainings and their comparison go in the
+  supplement, with the gate tables.
+
 ### D16 — pvlib 0.16.1 and ruptures 1.1.10 are installed locally and pinned [environment, Phase 0]
 - **Request or reason:** both are in the guide's software list (§5.6) and were missing locally on 18 Nov 2026.
 - **Change:** `pip install pvlib==0.16.1 ruptures==1.1.10`. A dry run first showed that nothing else would be
