@@ -448,3 +448,11 @@ One entry per work session: what was asked, what was done, the key numbers, what
   - tb_main skipped, as a GPU row.
   - Every local row now exists: nb5a, LGB, sources, tb_nb5a and tb_sources.
   - Waiting for: NB6_gpu (the six neural rows) and NB6_colab (A6a, A6b). No test score exists.
+- **NB6_gpu's first cell stopped on Colab (24 Nov):** "notebooks/NB6_gpu.ipynb differs from the mirror manifest".
+  - The open notebook is the one file Colab saves to Drive itself. Every other file on the mirror matched its hash.
+  - Nothing had run.
+  - Fix:
+    - the setup cell no longer hash-checks `notebooks/`, since nothing runs from the notebook; the code files are
+      checked, and the code hash `1c60ce12ff0a` is unchanged;
+    - `make_drive_mirror.py --refresh` updates the nb6gpu mirror in place, refused once any GPU output exists;
+    - only the notebook and the manifest are replaced, with the new commit.

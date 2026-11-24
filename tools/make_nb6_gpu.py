@@ -47,6 +47,8 @@ nb.cells = [
          "if ROOT.exists():\n"
          "    shutil.rmtree(ROOT)          # links are removed, not followed: Drive keeps the outputs\n"
          "for f, h in man['sha256'].items():\n"
+         "    if f.startswith('notebooks/'):\n"
+         "        continue                 # this open notebook: Colab saves it to Drive itself; nothing runs from it\n"
          "    d = ROOT / f\n"
          "    d.parent.mkdir(parents=True, exist_ok=True)\n"
          "    shutil.copyfile(DRIVE_REPO / f, d)\n"

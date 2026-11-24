@@ -63,10 +63,41 @@ def sha(p: Path) -> str:
     return hashlib.sha256(p.read_bytes()).hexdigest()
 
 
+def refresh(set_name: str, dest: Path, FILES: list[str], commit: str):
+    """Update an nb6gpu mirror in place before any GPU run (D80 extension, 24 Nov 2026): the same file list, every
+    unchanged file checked on the mirror, each changed file written next to its target and renamed over it, then
+    MIRROR_MANIFEST.json with the new commit. Refused once the mirror holds any GPU output."""
+    assert set_name == "nb6gpu", "--refresh is for the nb6gpu mirror only"
+    old = json.loads((dest / "MIRROR_MANIFEST.json").read_text(encoding="utf-8"))
+    for out in ("results/nb6_gpu_val", "results/nb6_forecasts"):
+        assert not (dest / out).exists(), f"{dest / out} exists: a GPU run has started, rebuild instead"
+    assert sorted(old["sha256"]) == sorted(FILES), "the file list changed: rebuild the mirror instead"
+    new = {f: sha(REPO / f) for f in FILES}
+    changed = [f for f in FILES if new[f] != old["sha256"][f]]
+    for f in FILES:
+        if f not in changed and not f.startswith("notebooks/"):   # Colab may have saved the open notebook
+            assert sha(dest / f) == new[f], f"{f} differs on the mirror"
+    for f in changed:
+        tmp = dest / (f + ".tmp")
+        shutil.copyfile(REPO / f, tmp)
+        assert sha(tmp) == new[f], f"copy of {f} differs"
+        tmp.replace(dest / f)
+    for f in FILES:
+        assert f.startswith("notebooks/") and f not in changed or sha(dest / f) == new[f], f"{f} differs after the update"
+    (dest / "MIRROR_MANIFEST.json").write_text(json.dumps({"source": "local repository (master copy)", "commit": commit,
+                                                           "refreshed_from": old.get("commit"), "sha256": new},
+                                                          indent=1), encoding="utf-8")
+    print(f"refreshed {dest}: {len(changed)} files replaced {changed}, {len(FILES) - len(changed)} checked unchanged, "
+          f"commit {old.get('commit', '')[:10]} -> {commit[:10]}")
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--set", choices=sorted(SETS), default="nb5b")
     ap.add_argument("dest", nargs="?", default=None)
+    ap.add_argument("--refresh", action="store_true",
+                    help="nb6gpu only: update an existing mirror in place (same file list, no GPU output yet); "
+                         "unchanged files are checked, changed ones replaced, the manifest written last")
     a = ap.parse_args()
     default, FILES = SETS[a.set]
     FILES = FILES if FILES is not None else nb6gpu_files()
@@ -76,6 +107,8 @@ def main():
     if a.set == "nb6gpu":                     # the GPU parts record the code they ran: it must be a commit
         dirty = git("status", "--porcelain", "--", *FILES)
         assert not dirty, "commit these first: " + "; ".join(dirty.splitlines())
+    if a.refresh:
+        return refresh(a.set, dest, FILES, git("rev-parse", "HEAD"))
     assert dest.parent.exists(), f"{dest.parent} not found (is Google Drive for desktop running?)"
     assert not dest.exists(), f"{dest} exists: delete it first (the local repository is the master copy)"
     tmp = dest.with_name(dest.name + ".tmp")
